@@ -2,6 +2,7 @@
 
 using Duality.ColorFormat;
 using OpenTK;
+using System;
 
 namespace FrozenCore.Data
 {
@@ -23,7 +24,7 @@ namespace FrozenCore.Data
             _colorDelta = _max - _min;
         }
 
-        public override ColorRgba GetRandom(FastRandom inRandom)
+        public override ColorRgba GetRandom(Random inRandom)
         {
             Vector4 color = _min + GetDeltaValue((float)inRandom.NextDouble());
             return new ColorRgba((byte)color.X, (byte)color.Y, (byte)color.Z, (byte)color.W);

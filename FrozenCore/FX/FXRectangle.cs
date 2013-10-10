@@ -16,7 +16,7 @@ namespace FrozenCore.FX
             inCanvas.DrawRect(inPosition.X - Size.X / 2, inPosition.Y - Size.Y / 2, inPosition.Z, Size.X, Size.Y);
         }
 
-        protected override Vector3 _GetPoint(FastRandom inRandom)
+        protected override Vector3 _GetPoint(Random inRandom)
         {
             float x = ((float)inRandom.NextDouble() * Size.X) - (Size.X / 2);
             float y = ((float)inRandom.NextDouble() * Size.Y) - (Size.Y / 2);

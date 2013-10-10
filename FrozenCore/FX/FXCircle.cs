@@ -16,7 +16,7 @@ namespace FrozenCore.FX
             inCanvas.DrawCircle(inPosition.X, inPosition.Y, inPosition.Z, Radius);
         }
 
-        protected override Vector3 _GetPoint(FastRandom inRandom)
+        protected override Vector3 _GetPoint(Random inRandom)
         {
             float angle = (float)inRandom.NextDouble() * MathF.TwoPi;
             float distance = (float)inRandom.NextDouble() * Radius;

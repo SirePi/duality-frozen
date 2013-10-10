@@ -1,6 +1,7 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using Duality;
+using System;
 
 namespace FrozenCore.Data
 {
@@ -20,7 +21,7 @@ namespace FrozenCore.Data
             _delta = Max - Min;
         }
 
-        public override float GetRandom(FastRandom inRandom)
+        public override float GetRandom(Random inRandom)
         {
             return (float)(Min + (inRandom.NextDouble() * _delta));
         }

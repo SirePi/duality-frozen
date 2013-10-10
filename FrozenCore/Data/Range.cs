@@ -25,7 +25,7 @@ namespace FrozenCore.Data
             Max = inMax;
         }
 
-        public abstract T GetRandom(FastRandom inRandom);
+        public abstract T GetRandom(Random inRandom);
 
         /// <summary>
         /// Get the value corresponding to the required interpolation. Parameter must be between 0 and 1

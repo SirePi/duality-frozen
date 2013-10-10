@@ -17,7 +17,7 @@ namespace FrozenCore.FX
             // nothing else to draw
         }
 
-        protected override Vector3 _GetPoint(FastRandom inRandom)
+        protected override Vector3 _GetPoint(Random inRandom)
         {
             return Vector3.Zero;
         }

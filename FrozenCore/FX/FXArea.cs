@@ -25,13 +25,13 @@ namespace FrozenCore.FX
             inCanvas.PopState();
         }
 
-        public Vector3 GetPoint(FastRandom inRandom)
+        public Vector3 GetPoint(Random inRandom)
         {
             return GameObj.Transform.Pos + _GetPoint(inRandom);
         }
 
         protected abstract void _DrawInEditor(Canvas inCanvas, Vector3 inPosition);
 
-        protected abstract Vector3 _GetPoint(FastRandom inRandom);
+        protected abstract Vector3 _GetPoint(Random inRandom);
     }
 }

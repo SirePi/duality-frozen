@@ -1,5 +1,6 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
+using System;
 namespace FrozenCore.Data
 {
     /// <summary>
@@ -17,7 +18,7 @@ namespace FrozenCore.Data
             _delta = Max - Min;
         }
 
-        public override int GetRandom(FastRandom inRandom)
+        public override int GetRandom(Random inRandom)
         {
             return (int)(Min + (inRandom.NextDouble() * _delta));
         }
