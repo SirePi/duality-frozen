@@ -121,7 +121,6 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(TargetDir)FrozenCore*" "$(SolutionDir)..\..\Plugins\*"
-copy /Y "$(TargetDir)NAudio*" "$(SolutionDir)..\..\Plugins\*"
 copy /Y "$(TargetDir)Triangulator*" "$(SolutionDir)..\..\Plugins\*"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

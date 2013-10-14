@@ -74,7 +74,7 @@ namespace FrozenCore.FX
                 Position = newPosition;
                 _rotation += (_rotationSpeed * inElapsedTimeInSeconds);
                 _scale += (_scaleSpeed * inElapsedTimeInSeconds);
-                _currentColor = _colorRange.Interpolate(decay);
+                _currentColor = _colorRange.Lerp(decay);
             }
         }
 

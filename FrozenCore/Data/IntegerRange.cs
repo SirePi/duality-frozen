@@ -23,7 +23,7 @@ namespace FrozenCore.Data
             return (int)(Min + (inRandom.NextDouble() * _delta));
         }
 
-        protected override int _Interpolate(float inValue)
+        protected override int _Lerp(float inValue)
         {
             return (int)(Min + (_delta * inValue));
         }

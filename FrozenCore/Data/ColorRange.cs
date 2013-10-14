@@ -30,7 +30,7 @@ namespace FrozenCore.Data
             return new ColorRgba((byte)color.X, (byte)color.Y, (byte)color.Z, (byte)color.W);
         }
 
-        protected override ColorRgba _Interpolate(float inValue)
+        protected override ColorRgba _Lerp(float inValue)
         {
             Vector4 color = _min + GetDeltaValue(inValue);
             return new ColorRgba((byte)color.X, (byte)color.Y, (byte)color.Z, (byte)color.W);

@@ -32,12 +32,12 @@ namespace FrozenCore.Data
         /// </summary>
         /// <param name="inValue"></param>
         /// <returns></returns>
-        public T Interpolate(float inValue)
+        public T Lerp(float inValue)
         {
             System.Diagnostics.Debug.Assert(inValue >= 0);
             System.Diagnostics.Debug.Assert(inValue <= 1);
 
-            return _Interpolate(inValue);
+            return _Lerp(inValue);
         }
 
         public override string ToString()
@@ -45,6 +45,6 @@ namespace FrozenCore.Data
             return String.Format("{0} -> {1}", Min, Max);
         }
 
-        protected abstract T _Interpolate(float inValue);
+        protected abstract T _Lerp(float inValue);
     }
 }
