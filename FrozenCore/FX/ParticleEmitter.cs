@@ -230,12 +230,12 @@ namespace FrozenCore.FX
                     if (_particlesAlive < _particlesNumberRange.Max)
                     {
                         int particlesLimit = (int)Math.Ceiling(NewParticlesPerSecond * secondsPast);
-                        /*
+                        
                         if (_particlesAlive < _particlesNumberRange.Min)
                         {
                             particlesLimit = _particlesNumberRange.Min - _particlesAlive;
                         }
-                        */
+                        
                         int createdParticles = 0;
                         while (_particlesAlive < _particlesNumberRange.Max && createdParticles < particlesLimit)
                         {

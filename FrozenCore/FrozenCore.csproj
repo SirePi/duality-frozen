@@ -70,10 +70,12 @@
     <Compile Include="Components\InputDebugger.cs" />
     <Compile Include="Components\InputReceiverVisual.cs" />
     <Compile Include="Components\InputController.cs" />
+    <Compile Include="Components\ThreadedLoader.cs" />
+    <Compile Include="Components\VisualTreeHider.cs" />
     <Compile Include="FrozenCorePlugin.cs" />
     <Compile Include="Data\Graph\Graph.cs" />
     <Compile Include="Data\Graph\Link.cs" />
-    <Compile Include="Data\Graph\Node.cs" />
+    <Compile Include="Data\Graph\INode.cs" />
     <Compile Include="Data\Range.cs" />
     <Compile Include="Data\ColorRange.cs" />
     <Compile Include="EnumExtensions.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="FX\ParticleEmitter.cs" />
     <Compile Include="FX\Particle.cs" />
     <Compile Include="FX\ParticleMaterial.cs" />
+    <Compile Include="Resources\LoadableResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

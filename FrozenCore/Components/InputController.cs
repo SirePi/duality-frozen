@@ -300,6 +300,8 @@ namespace FrozenCore.Components
             {
                 Receiver.MouseDown(e);
             }
+
+            Mouse_Move(sender, new OpenTK.Input.MouseMoveEventArgs(e.X, e.Y, 0, 0));
         }
 
         private void Mouse_ButtonUp(object sender, OpenTK.Input.MouseButtonEventArgs e)
@@ -315,10 +317,14 @@ namespace FrozenCore.Components
             {
                 Receiver.MouseUp(e);
             }
+
+            Mouse_Move(sender, new OpenTK.Input.MouseMoveEventArgs(e.X, e.Y, 0, 0));
         }
 
         private void Mouse_Move(object sender, OpenTK.Input.MouseMoveEventArgs e)
         {
+            Log.Game.Write("{0}, {1}", new object[] { e.X, e.Y });
+
             if (_draggedElement != null)
             {
                 _currentMousePosition.X = e.X;
