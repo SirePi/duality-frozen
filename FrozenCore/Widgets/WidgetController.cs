@@ -1,11 +1,15 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using System;
+using System.Linq;
 using Duality;
 using Duality.Components;
 using OpenTK;
+using FrozenCore.Components;
+using Duality.Resources;
+using System.Collections.Generic;
 
-namespace FrozenCore.Components
+namespace FrozenCore.Widgets
 {
     /// <summary>
     /// This Component can be assigned to a Camera in order to detect and manage Input events such as Mouse and
@@ -16,7 +20,7 @@ namespace FrozenCore.Components
     /// <seealso cref="BaseInputReceiver"/>
     [Serializable]
     [RequiredComponent(typeof(Camera))]
-    public class InputController : Component, ICmpInitializable
+    public class WidgetController : Component, ICmpInitializable
     {
         [Flags]
         public enum ModifierKeys
@@ -50,17 +54,13 @@ namespace FrozenCore.Components
         protected ModifierKeys _modifierKeys;
 
         /// <summary>
-        /// [GET/SET] If the Receiver should always be notified of events even if there is a Focused InputVisualReceiver
-        /// </summary>
-        public bool AlwaysNotifyReceiver { get; set; }
-        /// <summary>
         /// [GET] The currently Focused InputVisualReceiver
         /// </summary>
-        public InputReceiverVisual FocusedElement { get; private set; }
+        public Widget FocusedElement { get; private set; }
         /// <summary>
         /// [GET] The currently Hovered InputVisualReceiver
         /// </summary>
-        public InputReceiverVisual HoveredElement { get; private set; }
+        public Widget HoveredElement { get; private set; }
         /// <summary>
         /// [GET/SET] If the Controller should register for Keyboard events
         /// </summary>
@@ -77,10 +77,6 @@ namespace FrozenCore.Components
         /// [GET/SET] If the Controller should register for Mouse events
         /// </summary>
         public bool MouseEnabled { get; set; }
-        /// <summary>
-        /// [GET/SET] The default BaseInputReceiver
-        /// </summary>
-        public BaseInputReceiver Receiver { get; set; }
         /// <summary>
         /// [GET/SET] The Keyboard key that will be treated as a Right Mouse click
         /// </summary>
@@ -111,7 +107,7 @@ namespace FrozenCore.Components
         /// <summary>
         /// Constructor
         /// </summary>
-        public InputController()
+        public WidgetController()
         {
             LeftMouseKey = OpenTK.Input.Key.Enter;
             RightMouseKey = OpenTK.Input.Key.Unknown;
@@ -134,7 +130,7 @@ namespace FrozenCore.Components
 
         void ICmpInitializable.OnInit(Component.InitContext context)
         {
-            if (context == InitContext.Activate)
+            if (context == Component.InitContext.Activate)
             {
                 if (MouseEnabled)
                 {
@@ -156,7 +152,7 @@ namespace FrozenCore.Components
 
         void ICmpInitializable.OnShutdown(Component.ShutdownContext context)
         {
-            if (context == ShutdownContext.Deactivate)
+            if (context == Component.ShutdownContext.Deactivate)
             {
                 DualityApp.Mouse.ButtonDown -= _mouseDownEventHandler;
                 DualityApp.Mouse.ButtonUp -= _mouseUpEventHandler;
@@ -197,34 +193,23 @@ namespace FrozenCore.Components
 
             if (FocusedElement != null)
             {
-                if (FocusedElement.ReceiveMouseClicks)
+                if (e.Key == LeftMouseKey)
                 {
-                    if (e.Key == LeftMouseKey)
-                    {
-                        FocusedElement.MouseDown(LEFT_CLICK_DOWN);
-                        FocusedElement.MouseDown(LEFT_CLICK_UP);
-                    }
-                    else if (e.Key == RightMouseKey)
-                    {
-                        FocusedElement.MouseDown(RIGHT_CLICK_DOWN);
-                        FocusedElement.MouseDown(RIGHT_CLICK_UP);
-                    }
-                    else if (e.Key == MiddleMouseKey)
-                    {
-                        FocusedElement.MouseDown(MIDDLE_CLICK_DOWN);
-                        FocusedElement.MouseDown(MIDDLE_CLICK_UP);
-                    }
+                    FocusedElement.MouseDown(LEFT_CLICK_DOWN);
+                    FocusedElement.MouseDown(LEFT_CLICK_UP);
+                }
+                else if (e.Key == RightMouseKey)
+                {
+                    FocusedElement.MouseDown(RIGHT_CLICK_DOWN);
+                    FocusedElement.MouseDown(RIGHT_CLICK_UP);
+                }
+                else if (e.Key == MiddleMouseKey)
+                {
+                    FocusedElement.MouseDown(MIDDLE_CLICK_DOWN);
+                    FocusedElement.MouseDown(MIDDLE_CLICK_UP);
                 }
 
-                else if (FocusedElement.ReceiveKeys)
-                {
-                    FocusedElement.KeyDown(e, _modifierKeys);
-                }
-            }
-
-            if (Receiver != null && ShouldNotifyReceiver())
-            {
-                Receiver.KeyDown(e, _modifierKeys);
+                FocusedElement.KeyDown(e, _modifierKeys);
             }
         }
 
@@ -255,14 +240,9 @@ namespace FrozenCore.Components
                 _modifierKeys -= ModifierKeys.RAlt;
             }
 
-            if (FocusedElement != null && FocusedElement.ReceiveKeys)
+            if (FocusedElement != null)
             {
                 FocusedElement.KeyUp(e, _modifierKeys);
-            }
-
-            if (Receiver != null && ShouldNotifyReceiver())
-            {
-                Receiver.KeyUp(e, _modifierKeys);
             }
         }
 
@@ -270,21 +250,9 @@ namespace FrozenCore.Components
         {
             FocusedElement = HoveredElement;
 
-            if (FocusedElement != null && FocusedElement.Draggable)
-            {
-                _lastMousePosition.X = e.X;
-                _lastMousePosition.Y = e.Y;
-
-                _draggedElement = FocusedElement;
-            }
-            else if (FocusedElement != null && FocusedElement.ReceiveMouseClicks)
+            if (FocusedElement != null)
             {
                 FocusedElement.MouseDown(e);
-            }
-
-            if (Receiver != null && ShouldNotifyReceiver())
-            {
-                Receiver.MouseDown(e);
             }
 
             Mouse_Move(sender, new OpenTK.Input.MouseMoveEventArgs(e.X, e.Y, 0, 0));
@@ -292,79 +260,60 @@ namespace FrozenCore.Components
 
         protected virtual void Mouse_ButtonUp(object sender, OpenTK.Input.MouseButtonEventArgs e)
         {
-            _draggedElement = null;
-
-            if (FocusedElement != null && FocusedElement.ReceiveMouseClicks)
+            if (FocusedElement != null)
             {
                 FocusedElement.MouseUp(e);
-            }
-
-            if (Receiver != null && ShouldNotifyReceiver())
-            {
-                Receiver.MouseUp(e);
             }
 
             Mouse_Move(sender, new OpenTK.Input.MouseMoveEventArgs(e.X, e.Y, 0, 0));
         }
 
-        protected virtual void Mouse_Move(object sender, OpenTK.Input.MouseMoveEventArgs e)
+
+        protected virtual void Mouse_WheelChanged(object sender, OpenTK.Input.MouseWheelEventArgs e)
         {
-            Drag(e.X, e.Y);
-
-            InputReceiverVisual irv = null;
-            Component cmp = (Component)GameObj.Camera.PickRendererAt(e.X, e.Y);
-
-            if (cmp != null)
+            if (FocusedElement != null)
             {
-                irv = cmp.GameObj.GetComponent<InputReceiverVisual>();
+                FocusedElement.MouseWheel(e);
+            }
+        }
+
+        protected void Mouse_Move(object sender, OpenTK.Input.MouseMoveEventArgs e)
+        {
+            if (FocusedElement != null)
+            {
+                FocusedElement.MouseMove(e);
             }
 
-            if (HoveredElement != irv)
+            _currentMousePosition.X = e.X;
+            _currentMousePosition.Y = e.Y;
+
+            //_currentMousePosition = GameObj.Camera.GetSpaceCoord(_currentMousePosition).Xy;
+
+            IEnumerable<Widget> activeGUIComponents = Scene.Current.ActiveObjects.GetComponents<Widget>();
+            IEnumerable<Widget> hoveredGUIComponents = activeGUIComponents.Where(gc => gc.GetActiveAreaOnScreen(GameObj.Camera).Contains(_currentMousePosition));
+
+            Widget hgc = null;
+
+            if (hoveredGUIComponents.Count() > 0)
+            {
+                float closestZ = hoveredGUIComponents.Min(gc => gc.GameObj.Transform.Pos.Z);
+                hgc = hoveredGUIComponents.Where(gc => gc.GameObj.Transform.Pos.Z == closestZ).FirstOrDefault();
+            }
+
+            if (HoveredElement != hgc)
             {
                 if (HoveredElement != null)
                 {
                     HoveredElement.MouseLeave();
                 }
 
-                if (irv != null)
+                if (hgc != null)
                 {
-                    irv.MouseEnter();
+                    hgc.MouseEnter();
                 }
             }
 
-            HoveredElement = irv;
-        }
-
-        protected virtual void Mouse_WheelChanged(object sender, OpenTK.Input.MouseWheelEventArgs e)
-        {
-            if (FocusedElement != null && FocusedElement.ReceiveMouseWheel)
-            {
-                FocusedElement.MouseWheel(e);
-            }
-
-            if (Receiver != null && ShouldNotifyReceiver())
-            {
-                Receiver.MouseWheel(e);
-            }
-        }
-
-        protected bool ShouldNotifyReceiver()
-        {
-            return (FocusedElement == null || (FocusedElement != null && AlwaysNotifyReceiver));
-        }
-
-        protected void Drag(int inX, int inY)
-        {
-            if (_draggedElement != null)
-            {
-                _currentMousePosition.X = inX;
-                _currentMousePosition.Y = inY;
-
-                _draggedElement.Dragged(_currentMousePosition - _lastMousePosition);
-
-                _lastMousePosition.X = inX;
-                _lastMousePosition.Y = inY;
-            }
+            HoveredElement = hgc;
         }
     }
 }

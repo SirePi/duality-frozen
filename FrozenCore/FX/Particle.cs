@@ -78,9 +78,9 @@ namespace FrozenCore.FX
             }
         }
 
-        internal void UpdateVertices(IDrawDevice device, float inPreprocessedScale)
+        internal void UpdateVertices(IDrawDevice device, Vector3 inPreprocessedPosition, float inPreprocessedScale)
         {
-            Vector3 inPreprocessedPosition = Position * inPreprocessedScale;
+            Vector3 preprocessedPosition = (inPreprocessedPosition + Position) * inPreprocessedScale;
 
             Vector2 xDot, yDot;
             MathF.GetTransformDotVec(_rotation, inPreprocessedScale, out xDot, out yDot);
@@ -96,30 +96,30 @@ namespace FrozenCore.FX
             MathF.TransformDotVec(ref edge3, ref xDot, ref yDot);
             MathF.TransformDotVec(ref edge4, ref xDot, ref yDot);
 
-            Vertices[0].Pos.X = inPreprocessedPosition.X + edge1.X;
-            Vertices[0].Pos.Y = inPreprocessedPosition.Y + edge1.Y;
-            Vertices[0].Pos.Z = inPreprocessedPosition.Z;
+            Vertices[0].Pos.X = preprocessedPosition.X + edge1.X;
+            Vertices[0].Pos.Y = preprocessedPosition.Y + edge1.Y;
+            Vertices[0].Pos.Z = preprocessedPosition.Z;
             Vertices[0].TexCoord.X = 0;
             Vertices[0].TexCoord.Y = 0;
             Vertices[0].Color = _currentColor;
 
-            Vertices[1].Pos.X = inPreprocessedPosition.X + edge2.X;
-            Vertices[1].Pos.Y = inPreprocessedPosition.Y + edge2.Y;
-            Vertices[1].Pos.Z = inPreprocessedPosition.Z;
+            Vertices[1].Pos.X = preprocessedPosition.X + edge2.X;
+            Vertices[1].Pos.Y = preprocessedPosition.Y + edge2.Y;
+            Vertices[1].Pos.Z = preprocessedPosition.Z;
             Vertices[1].TexCoord.X = 0;
             Vertices[1].TexCoord.Y = 1;
             Vertices[1].Color = _currentColor;
 
-            Vertices[2].Pos.X = inPreprocessedPosition.X + edge3.X;
-            Vertices[2].Pos.Y = inPreprocessedPosition.Y + edge3.Y;
-            Vertices[2].Pos.Z = inPreprocessedPosition.Z;
+            Vertices[2].Pos.X = preprocessedPosition.X + edge3.X;
+            Vertices[2].Pos.Y = preprocessedPosition.Y + edge3.Y;
+            Vertices[2].Pos.Z = preprocessedPosition.Z;
             Vertices[2].TexCoord.X = 1;
             Vertices[2].TexCoord.Y = 1;
             Vertices[2].Color = _currentColor;
 
-            Vertices[3].Pos.X = inPreprocessedPosition.X + edge4.X;
-            Vertices[3].Pos.Y = inPreprocessedPosition.Y + edge4.Y;
-            Vertices[3].Pos.Z = inPreprocessedPosition.Z;
+            Vertices[3].Pos.X = preprocessedPosition.X + edge4.X;
+            Vertices[3].Pos.Y = preprocessedPosition.Y + edge4.Y;
+            Vertices[3].Pos.Z = preprocessedPosition.Z;
             Vertices[3].TexCoord.X = 1;
             Vertices[3].TexCoord.Y = 0;
             Vertices[3].Color = _currentColor;

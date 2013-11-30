@@ -175,7 +175,7 @@ namespace FrozenCore.FX
 
                             if (toDraw)
                             {
-                                p.UpdateVertices(device, scaleTemp);
+                                p.UpdateVertices(device, posTemp, scaleTemp);
                                 Array.Copy(p.Vertices, 0, _particleVertices, index * 4, 4);
                             }
                             index++;

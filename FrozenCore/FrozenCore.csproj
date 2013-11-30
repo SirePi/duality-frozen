@@ -46,11 +46,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Duality">
-      <HintPath>..\..\..\Duality.dll</HintPath>
+    <Reference Include="Duality, Version=1.0.5070.18613, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>G:\Work\Duality\BrokenGalaxy\Duality\Duality.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>G:\Work\Duality\FrozenCoreExample\FrozenCoreSample\OpenTK.dll</HintPath>
@@ -70,6 +70,7 @@
     <Compile Include="Components\InputDebugger.cs" />
     <Compile Include="Components\InputReceiverVisual.cs" />
     <Compile Include="Components\InputController.cs" />
+    <Compile Include="Components\MouseDebugger.cs" />
     <Compile Include="Components\ThreadedLoader.cs" />
     <Compile Include="Components\VisualTreeHider.cs" />
     <Compile Include="FrozenCorePlugin.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="FastRandom.cs" />
     <Compile Include="Data\FloatRange.cs" />
     <Compile Include="Data\IntegerRange.cs" />
+    <Compile Include="FrozenUtilities.cs" />
     <Compile Include="FX\FXRectangle.cs" />
     <Compile Include="FX\FXCircle.cs" />
     <Compile Include="FX\FXPoint.cs" />
@@ -91,6 +93,14 @@
     <Compile Include="FX\ParticleEmitter.cs" />
     <Compile Include="FX\Particle.cs" />
     <Compile Include="FX\ParticleMaterial.cs" />
+    <Compile Include="MultiSpacePoint.cs" />
+    <Compile Include="Polygon.cs" />
+    <Compile Include="Widgets\Button.cs" />
+    <Compile Include="Widgets\Window.cs" />
+    <Compile Include="Widgets\Widget.cs" />
+    <Compile Include="Widgets\WidgetController.cs" />
+    <Compile Include="Widgets\Skin.cs" />
+    <Compile Include="Resources\Script.cs" />
     <Compile Include="Resources\LoadableResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -120,7 +130,6 @@
     <Content Include="Components.txt" />
     <None Include="LICENSE" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(TargetDir)FrozenCore*" "$(SolutionDir)..\..\Plugins\*"

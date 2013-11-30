@@ -3,6 +3,7 @@
 using System;
 using Duality;
 using OpenTK;
+using Duality.Components;
 
 namespace FrozenCore.Components
 {
@@ -18,17 +19,9 @@ namespace FrozenCore.Components
     public abstract class InputReceiverVisual : BaseInputReceiver
     {
         /// <summary>
-        /// [GET/SET] If the associated Transform can be dragged by holding the Left Mouse Button
+        /// [GET/SET] If the associated ICmpRenderer can be dragged by holding the Left Mouse Button
         /// </summary>
         public bool Draggable { get; set; }
-        /// <summary>
-        /// [GET/SET] The Next InputReceiverVisual in the GUI
-        /// </summary>
-        public InputReceiverVisual NextControl { get; set; }
-        /// <summary>
-        /// [GET/SET] The Previous InputReceiverVisual in the GUI (not used)
-        /// </summary>
-        public InputReceiverVisual PrevControl { get; set; }
         /// <summary>
         /// [GET/SET] If the Component is notified of KeyUp and KeyDown events
         /// </summary>

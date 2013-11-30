@@ -27,7 +27,7 @@ namespace FrozenCore.FX
 
         public Vector3 GetPoint(Random inRandom)
         {
-            return GameObj.Transform.Pos + _GetPoint(inRandom);
+            return _GetPoint(inRandom);
         }
 
         protected abstract void _DrawInEditor(Canvas inCanvas, Vector3 inPosition);

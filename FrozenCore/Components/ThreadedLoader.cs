@@ -19,7 +19,7 @@ namespace FrozenCore.Components
         {
             if (context == InitContext.Activate)
             {
-                if (ResourceToLoad != null && _loadingThread == null)
+                if (ResourceToLoad.Res != null && _loadingThread == null)
                 {
                     _loadingThread = new Thread(new ThreadStart(ResourceToLoad.Res.LoadInBackground));
                     _loadingThread.IsBackground = true;
