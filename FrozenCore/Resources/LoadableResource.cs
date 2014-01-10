@@ -15,6 +15,11 @@ namespace FrozenCore
             IsLoaded = false;
         }
 
-        public abstract void LoadInBackground();
+        public void LoadInBackground()
+        {
+            IsLoaded = _LoadInBackground();
+        }
+
+        protected abstract bool _LoadInBackground();
     }
 }

@@ -7,6 +7,7 @@ using FrozenCore.Components;
 using Duality.Components.Renderers;
 using OpenTK;
 using Duality.Resources;
+using Duality.Components;
 
 namespace FrozenCore.Widgets
 {
@@ -23,6 +24,20 @@ namespace FrozenCore.Widgets
         {
             Title = new FormattedText();
             _isDragged = false;
+
+            AddCloseButton();
+        }
+
+        private void AddCloseButton()
+        {
+            GameObject closeButton = new GameObject("closeButton", this.GameObj);
+
+            Transform t = closeButton.AddComponent<Transform>();
+
+            Button b = closeButton.AddComponent<Button>();
+            b.VisibilityGroup = this.VisibilityGroup;
+
+            Scene.Current.AddObject(closeButton);
         }
 
         public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
@@ -47,35 +62,54 @@ namespace FrozenCore.Widgets
 
         protected override void Draw(IDrawDevice device)
         {
-            Canvas c = new Canvas(device);
-            Vector2 textCenter = Title.Size / 2;
-            Vector3 titleLeft = (_points[1].WorldCoords + _points[5].WorldCoords) / 2;
-            
-            c.CurrentState.TransformHandle = textCenter;
-            c.CurrentState.TransformAngle = GameObj.Transform.Angle;
+            if (Title != null)
+            {
+                Canvas c = new Canvas(device);
+                Vector2 textOrigin = new Vector2(0, Title.Size.Y / 2);
+                Vector3 titleLeft = (_points[1].WorldCoords + _points[5].WorldCoords) / 2;
 
-            c.DrawText(Title, titleLeft.X + textCenter.X, titleLeft.Y + textCenter.Y, titleLeft.Z, null, Alignment.Left);
+                c.CurrentState.TransformHandle = textOrigin;
+                c.CurrentState.TransformAngle = GameObj.Transform.Angle;
+
+                c.DrawText(Title, titleLeft.X + textOrigin.X, titleLeft.Y + textOrigin.Y, titleLeft.Z - .1f, null, Alignment.Left);
+            }
         }
 
         public override void MouseEnter()
         {
             base.MouseEnter();
 
-            SetTextureTopLeft(Skin.Res.HoverTopLeft);
+            if (_widgetEnabled && Skin.Res != null)
+            {
+                SetTextureTopLeft(Skin.Res.HoverOrigin);
+            }
         }
 
         public override void MouseLeave()
         {
             base.MouseLeave();
 
-            SetTextureTopLeft(Skin.Res.NormalTopLeft);
+            if (_widgetEnabled && Skin.Res != null)
+            {
+                SetTextureTopLeft(Skin.Res.NormalOrigin);
+            }
+        }
+
+        public override void MouseMove(OpenTK.Input.MouseMoveEventArgs e)
+        {
+            base.MouseMove(e);
+
+            if (_isDragged)
+            {
+                this.GameObj.Transform.Pos += (new Vector3(e.XDelta, e.YDelta, 0));
+            }
         }
 
         public override Polygon GetActiveAreaOnScreen(Duality.Components.Camera inCamera)
         {
             _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
             _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
-            _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[8].WorldCoords).Xy;
+            _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[7].WorldCoords).Xy;
             _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[4].WorldCoords).Xy;
 
             return _activeAreaOnScreen;

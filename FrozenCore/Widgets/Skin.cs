@@ -16,15 +16,11 @@ namespace FrozenCore.Widgets
         public ContentRef<Texture> Texture { get; set; }
 
         public Vector2 Size { get; set; }
+        public Vector4 Border { get; set; } // X, Y, Z, W = Left, Top, Right, Bottom
 
-        public Vector2 NormalTopLeft { get; set; }
-        public Vector2 HoverTopLeft { get; set; }
-        public Vector2 ActiveTopLeft { get; set; }
-        public Vector2 DisabledTopLeft { get; set; }
-
-        /// <summary>
-        /// X, Y, Z, W = Left, Top, Right, Bottom
-        /// </summary>
-        public Vector4 Border { get; set; }
+        public Vector2 NormalOrigin { get; set; }
+        public Vector2 HoverOrigin { get; set; }
+        public Vector2 ActiveOrigin { get; set; }
+        public Vector2 DisabledOrigin { get; set; }
     }
 }

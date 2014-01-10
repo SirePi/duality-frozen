@@ -19,6 +19,7 @@ namespace FrozenCore.Widgets
         public static readonly Rect NO_ACTIVE_AREA;
 
         public ContentRef<Skin> Skin { get; set; }
+
         /// <summary>
         /// [GET/SET] The Previous InputReceiverVisual in the GUI (not used)
         /// </summary>
@@ -46,11 +47,19 @@ namespace FrozenCore.Widgets
         private Vector2 _uvDelta;
         [NonSerialized]
         private bool _uvCalculated;
+        [NonSerialized]
+        protected bool _widgetEnabled;
+
+        public bool IsWidgetEnabled
+        {
+            get { return _widgetEnabled; }
+        }
 
         public Widget()
         {
             _activeArea = NO_ACTIVE_AREA;
             _activeAreaOnScreen = new Polygon(4);
+            _widgetEnabled = true;
 
             _vertices = new VertexC1P3T2[36];
             _points = new MultiSpacePoint[16];
@@ -98,6 +107,16 @@ namespace FrozenCore.Widgets
         {
         }
 
+        public void SetEnabled(bool inEnabled)
+        {
+            _widgetEnabled = inEnabled;
+
+            if (!_widgetEnabled && Skin.Res != null)
+            {
+                SetTextureTopLeft(Skin.Res.DisabledOrigin);
+            }
+        }
+
         void ICmpRenderer.Draw(IDrawDevice device)
         {
             if (Skin.Res != null)
@@ -134,7 +153,7 @@ namespace FrozenCore.Widgets
                          * 25    26|29    30|33    34
                          *****************************/
 
-                        SetTextureTopLeft(s.NormalTopLeft);
+                        SetTextureTopLeft(s.NormalOrigin);
                     }
 
                     _uvCalculated = true;
