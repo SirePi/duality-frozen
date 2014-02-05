@@ -8,5 +8,9 @@ namespace FrozenCore
 {
     public static class FrozenUtilities
     {
+        public static bool IsDualityEditor
+        {
+            get { return (DualityApp.ExecEnvironment == DualityApp.ExecutionEnvironment.Editor && DualityApp.ExecContext == DualityApp.ExecutionContext.Editor); }
+        }
     }
 }

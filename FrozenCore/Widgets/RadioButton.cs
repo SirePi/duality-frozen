@@ -12,33 +12,47 @@ using FrozenCore.Widgets.Skin;
 namespace FrozenCore.Widgets
 {
     [Serializable]
-    public class Button : Widget
+    public class RadioButton : Widget
     {
         private ContentRef<BaseSkin> _skin;
-        private ContentRef<Script> _onLeftClick;
-        private ContentRef<Script> _onRightClick;
+        private ContentRef<Script> _onChecked;
+        private ContentRef<Script> _onUnchecked;
         private FormattedText _text;
+        private bool _isChecked;
+        private string _radioGroup;
 
         public ContentRef<BaseSkin> Skin
         {
             get { return _skin; }
-            set 
-            { 
+            set
+            {
                 _skin = value;
                 BaseSkinRes = value.Res;
             }
         }
 
-        public ContentRef<Script> OnLeftClick
+        public ContentRef<Script> OnChecked
         {
-            get { return _onLeftClick; }
-            set { _onLeftClick = value; }
+            get { return _onChecked; }
+            set { _onChecked = value; }
         }
 
-        public ContentRef<Script> OnRightClick
+        public ContentRef<Script> OnUnchecked
         {
-            get { return _onRightClick; }
-            set { _onRightClick = value; }
+            get { return _onUnchecked; }
+            set { _onUnchecked = value; }
+        }
+
+        public bool IsChecked
+        {
+            get { return _isChecked; }
+            set { _isChecked = value; }
+        }
+
+        public string RadioGroup
+        {
+            get { return _radioGroup; }
+            set { _radioGroup = value; }
         }
 
         public FormattedText Text
@@ -47,24 +61,29 @@ namespace FrozenCore.Widgets
             set { _text = value; }
         }
 
-        public Button()
+        public RadioButton()
         {
             _text = new FormattedText();
         }
 
-        public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
-        {
-            if (e.Button == OpenTK.Input.MouseButton.Right && OnRightClick.Res != null)
-            {
-                OnRightClick.Res.Execute(this.GameObj);
-            }
-        }
-
         public override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
         {
-            if (e.Button == OpenTK.Input.MouseButton.Left && OnLeftClick.Res != null)
+            if (e.Button == OpenTK.Input.MouseButton.Left && !IsChecked)
             {
-                OnLeftClick.Res.Execute(this.GameObj);
+                IsChecked = true;
+
+                if (!String.IsNullOrWhiteSpace(RadioGroup))
+                {
+                    foreach (RadioButton button in Scene.Current.FindComponents<RadioButton>().Where(rb => rb.RadioGroup == this.RadioGroup && rb != this))
+                    {
+                        button.Uncheck();
+                    }
+                }
+
+                if (OnChecked.Res != null)
+                {
+                    OnChecked.Res.Execute(this.GameObj);
+                }
             }
         }
 
@@ -100,15 +119,22 @@ namespace FrozenCore.Widgets
 
             if (_widgetEnabled)
             {
-                SetTextureTopLeft(Skin.Res.Origin.Normal);
+                if (IsChecked)
+                {
+                    SetTextureTopLeft(Skin.Res.Origin.Active);
+                }
+                else
+                {
+                    SetTextureTopLeft(Skin.Res.Origin.Normal);
+                }
             }
         }
 
         public override Polygon GetActiveAreaOnScreen(Duality.Components.Camera inCamera)
         {
             _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
-            _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
-            _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
+            _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[1].WorldCoords).Xy;
+            _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[13].WorldCoords).Xy;
             _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
 
             return _activeAreaOnScreen;
@@ -117,6 +143,19 @@ namespace FrozenCore.Widgets
         protected override void Initialize(Component.InitContext context)
         {
             BaseSkinRes = Skin.Res;
+        }
+
+        private void Uncheck()
+        {
+            if (IsChecked)
+            {
+                IsChecked = false;
+                if (OnUnchecked.Res != null)
+                {
+                    OnUnchecked.Res.Execute(this.GameObj);
+                }
+                MouseLeave();
+            }
         }
     }
 }

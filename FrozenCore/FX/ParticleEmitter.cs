@@ -109,7 +109,7 @@ namespace FrozenCore.FX
 
         void ICmpInitializable.OnInit(Component.InitContext context)
         {
-            _inEditor = (DualityApp.ExecEnvironment == DualityApp.ExecutionEnvironment.Editor && DualityApp.ExecContext == DualityApp.ExecutionContext.Editor);
+            _inEditor = FrozenUtilities.IsDualityEditor;
 
             if (context == InitContext.Activate && Material != null)
             {

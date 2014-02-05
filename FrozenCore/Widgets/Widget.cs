@@ -1,58 +1,96 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Duality;
-using FrozenCore.Components;
 using Duality.Components;
-using OpenTK;
-using Duality.VertexFormat;
 using Duality.Resources;
+using Duality.VertexFormat;
+using FrozenCore.Widgets.Skin;
+using OpenTK;
+using Duality.EditorHints;
 
 namespace FrozenCore.Widgets
 {
     [Serializable]
     [RequiredComponent(typeof(Transform))]
-    public abstract class Widget : Component, ICmpRenderer
+    public abstract class Widget : Component, ICmpRenderer, ICmpUpdatable, ICmpInitializable
     {
         [NonSerialized]
         public static readonly Rect NO_ACTIVE_AREA;
 
-        public ContentRef<Skin> Skin { get; set; }
-
-        /// <summary>
-        /// [GET/SET] The Previous InputReceiverVisual in the GUI (not used)
-        /// </summary>
-        public Rect Rect { get; set; }
+        [NonSerialized]
+        protected static readonly float DELTA_Z = .001f;
 
         [NonSerialized]
         protected Rect _activeArea;
+
         [NonSerialized]
         protected Polygon _activeAreaOnScreen;
+
+        [NonSerialized]
+        protected MultiSpacePoint[] _points;
+
+        [NonSerialized]
+        private BaseSkin _baseSkinRes;
+
+        [NonSerialized]
+        protected VertexC1P3T2[] _vertices;
+
+        [NonSerialized]
+        protected bool _widgetEnabled;
+
         [NonSerialized]
         private BatchInfo _batchInfo;
 
         [NonSerialized]
-        protected MultiSpacePoint[] _points;
-        [NonSerialized]
-        protected VertexC1P3T2[] _vertices;
-
-        public VisibilityFlag VisibilityGroup { get; set; }
+        private Vector2 _skinSize;
 
         [NonSerialized]
         private Vector2 _textureSize;
-        [NonSerialized]
-        private Vector2 _skinSize;
-        [NonSerialized]
-        private Vector2 _uvDelta;
+
         [NonSerialized]
         private bool _uvCalculated;
-        [NonSerialized]
-        protected bool _widgetEnabled;
 
+        [NonSerialized]
+        private Vector2 _uvDelta;
+
+        [EditorHintFlags(MemberFlags.Invisible)]
+        float ICmpRenderer.BoundRadius
+        {
+            get { return 0; } //Size.BoundingRadius; }
+        }
+
+        [EditorHintFlags(MemberFlags.Invisible)]
         public bool IsWidgetEnabled
         {
             get { return _widgetEnabled; }
+            set { _widgetEnabled = value; }
+        }
+
+        protected BaseSkin BaseSkinRes
+        {
+            set
+            {
+                _baseSkinRes = value;
+                _uvCalculated = false;
+            }
+        }
+
+        private Rect _rect;
+        /// <summary>
+        /// [GET/SET] The Previous InputReceiverVisual in the GUI (not used)
+        /// </summary>
+        [EditorHintDecimalPlaces(1)]
+        public Rect Rect 
+        {
+            get { return _rect; }
+            set { _rect = value; }
+        }
+
+        private VisibilityFlag _visiblityFlag;
+
+        public VisibilityFlag VisibilityGroup
+        {
+            get { return _visiblityFlag; }
+            set { _visiblityFlag = value; }
         }
 
         public Widget()
@@ -70,66 +108,25 @@ namespace FrozenCore.Widgets
             }
         }
 
-        float ICmpRenderer.BoundRadius
+        public void Close()
         {
-            get { return 0; } //Size.BoundingRadius; }
+            Scene.Current.RemoveObject(this.GameObj);
         }
 
-        public virtual void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
-        {
-        }
-
-        public virtual void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
-        {
-        }
-
-        public virtual void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
-        {
-        }
-
-        public virtual void MouseEnter()
-        {
-        }
-
-        public virtual void MouseLeave()
-        {
-        }
-
-        public virtual void MouseMove(OpenTK.Input.MouseMoveEventArgs e)
-        {
-        }
-
-        public virtual void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
-        {
-        }
-
-        public virtual void MouseWheel(OpenTK.Input.MouseWheelEventArgs e)
-        {
-        }
-
-        public void SetEnabled(bool inEnabled)
-        {
-            _widgetEnabled = inEnabled;
-
-            if (!_widgetEnabled && Skin.Res != null)
-            {
-                SetTextureTopLeft(Skin.Res.DisabledOrigin);
-            }
-        }
+        public abstract Polygon GetActiveAreaOnScreen(Camera inCamera);
 
         void ICmpRenderer.Draw(IDrawDevice device)
         {
-            if (Skin.Res != null)
+            if (_baseSkinRes != null)
             {
-                Skin s = Skin.Res;
-                _skinSize = s.Size;
+                _skinSize = _baseSkinRes.Size;
 
                 if (!_uvCalculated)
                 {
-                    if (s.Texture.Res != null)
+                    if (_baseSkinRes.Texture.Res != null)
                     {
-                        _batchInfo = new BatchInfo(DrawTechnique.Mask, Colors.White, s.Texture);
-                        _textureSize = s.Texture.Res.Size;
+                        _batchInfo = new BatchInfo(DrawTechnique.Mask, Colors.White, _baseSkinRes.Texture);
+                        _textureSize = _baseSkinRes.Texture.Res.Size;
                         _uvDelta = _skinSize / _textureSize;
 
                         /********************
@@ -141,19 +138,19 @@ namespace FrozenCore.Widgets
 
                         /*****************************
                          *  0     3| 4     7| 8    11
-                         * 
+                         *
                          *  1     2| 5     6| 9    10
                          * --    --+--    --+--    --
                          * 12    15|16    19|20    23
-                         * 
+                         *
                          * 13    14|17    18|21    22
                          * --    --+--    --+--    --
                          * 24    27|28    31|32    35
-                         * 
+                         *
                          * 25    26|29    30|33    34
                          *****************************/
 
-                        SetTextureTopLeft(s.NormalOrigin);
+                        SetTextureTopLeft(_baseSkinRes.Origin.Normal);
                     }
 
                     _uvCalculated = true;
@@ -175,8 +172,8 @@ namespace FrozenCore.Widgets
                     Vector2 topLeft = rectTemp.TopLeft;
                     Vector2 bottomRight = rectTemp.BottomRight;
 
-                    Vector2 innerTopLeft = rectTemp.TopLeft + (new Vector2(s.Border.X, s.Border.Y) * GameObj.Transform.Scale);
-                    Vector2 innerBottomRight = rectTemp.BottomRight - (new Vector2(s.Border.Z, s.Border.W) * GameObj.Transform.Scale);
+                    Vector2 innerTopLeft = rectTemp.TopLeft + (new Vector2(_baseSkinRes.Border.X, _baseSkinRes.Border.Y) * GameObj.Transform.Scale);
+                    Vector2 innerBottomRight = rectTemp.BottomRight - (new Vector2(_baseSkinRes.Border.Z, _baseSkinRes.Border.W) * GameObj.Transform.Scale);
 
                     _points[0].SceneCoords.X = topLeft.X;
                     _points[0].SceneCoords.Y = topLeft.Y;
@@ -211,7 +208,7 @@ namespace FrozenCore.Widgets
                     _points[15].SceneCoords.X = bottomRight.X;
                     _points[15].SceneCoords.Y = bottomRight.Y;
 
-                    for(int i = 0; i < _points.Length; i++)
+                    for (int i = 0; i < _points.Length; i++)
                     {
                         _points[i].SceneCoords.Z = 0;
                         _points[i].WorldCoords = _points[i].SceneCoords;
@@ -222,7 +219,7 @@ namespace FrozenCore.Widgets
                         _points[i].SceneCoords += posTemp;
                         _points[i].WorldCoords += GameObj.Transform.Pos;
                     }
-                    
+
                     /**
                      * Repositioning the pieces
                      **/
@@ -373,7 +370,7 @@ namespace FrozenCore.Widgets
                     device.AddVertices(_batchInfo, VertexMode.Quads, _vertices);
                 }
 
-                Draw(device);
+                Draw(device, new Canvas(device));
             }
         }
 
@@ -391,28 +388,73 @@ namespace FrozenCore.Widgets
             {
                 result = false;
             }
-            
+
             return result;
         }
 
-        protected abstract void Draw(IDrawDevice device);
+        void ICmpUpdatable.OnUpdate()
+        {
+        }
 
-        public abstract Polygon GetActiveAreaOnScreen(Camera inCamera);
+        public virtual void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
+        {
+        }
+
+        public virtual void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
+        {
+        }
+
+        public virtual void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        {
+        }
+
+        public virtual void MouseEnter()
+        {
+        }
+
+        public virtual void MouseLeave()
+        {
+        }
+
+        public virtual void MouseMove(OpenTK.Input.MouseMoveEventArgs e)
+        {
+        }
+
+        public virtual void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
+        {
+        }
+
+        public virtual void MouseWheel(OpenTK.Input.MouseWheelEventArgs e)
+        {
+        }
+
+        public void SetEnabled(bool inEnabled)
+        {
+            _widgetEnabled = inEnabled;
+
+            if (!_widgetEnabled && _baseSkinRes != null)
+            {
+                SetTextureTopLeft(_baseSkinRes.Origin.Disabled);
+            }
+        }
+
+        protected abstract void Draw(IDrawDevice inDevice, Canvas inCanvas);
+
+        protected abstract void Initialize(Component.InitContext inContext);
 
         protected void SetTextureTopLeft(Vector2 inTopLeft)
         {
             /**
              * Calculating UV Coordinates of graphical corners
              **/
-            if (Skin.Res != null)
+            if (_baseSkinRes != null)
             {
-                Skin s = Skin.Res;
                 Vector2 k = _uvDelta / _skinSize;
 
-                float uvLeftBorder = s.Border.X * k.X;
-                float uvRightBorder = (s.Size.X - s.Border.Z) * k.X;
-                float uvTopBorder = s.Border.Y * k.Y;
-                float uvBottomBorder = (s.Size.Y - s.Border.W) * k.Y;
+                float uvLeftBorder = _baseSkinRes.Border.X * k.X;
+                float uvRightBorder = (_baseSkinRes.Size.X - _baseSkinRes.Border.Z) * k.X;
+                float uvTopBorder = _baseSkinRes.Border.Y * k.Y;
+                float uvBottomBorder = (_baseSkinRes.Size.Y - _baseSkinRes.Border.W) * k.Y;
 
                 Vector2 uvTopLeft = inTopLeft / _textureSize;
 
@@ -464,6 +506,16 @@ namespace FrozenCore.Widgets
                 _points[15].UVCoords.X = uvTopLeft.X + _uvDelta.X;
                 _points[15].UVCoords.Y = uvTopLeft.Y + _uvDelta.Y;
             }
+        }
+
+        void ICmpInitializable.OnInit(Component.InitContext context)
+        {
+            Initialize(context);
+        }
+
+        void ICmpInitializable.OnShutdown(Component.ShutdownContext context)
+        {
+            
         }
     }
 }
