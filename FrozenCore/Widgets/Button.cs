@@ -8,6 +8,7 @@ using Duality.Components.Renderers;
 using OpenTK;
 using Duality.Resources;
 using FrozenCore.Widgets.Skin;
+using Duality.EditorHints;
 
 namespace FrozenCore.Widgets
 {
@@ -18,6 +19,25 @@ namespace FrozenCore.Widgets
         private ContentRef<Script> _onLeftClick;
         private ContentRef<Script> _onRightClick;
         private FormattedText _text;
+
+        [NonSerialized]
+        private object _leftClickArgument;
+        [NonSerialized]
+        private object _rightClickArgument;
+
+        [EditorHintFlags(MemberFlags.Invisible)]
+        public object LeftClickArgument
+        {
+            private get { return _leftClickArgument; }
+            set {_leftClickArgument = value;}
+        }
+
+        [EditorHintFlags(MemberFlags.Invisible)]
+        public object RightClickArgument
+        {
+            private get { return _rightClickArgument; }
+            set {_rightClickArgument = value;}
+        }
 
         public ContentRef<BaseSkin> Skin
         {
@@ -56,7 +76,7 @@ namespace FrozenCore.Widgets
         {
             if (e.Button == OpenTK.Input.MouseButton.Right && OnRightClick.Res != null)
             {
-                OnRightClick.Res.Execute(this.GameObj);
+                OnRightClick.Res.Execute(this.GameObj, RightClickArgument);
             }
         }
 
@@ -64,7 +84,7 @@ namespace FrozenCore.Widgets
         {
             if (e.Button == OpenTK.Input.MouseButton.Left && OnLeftClick.Res != null)
             {
-                OnLeftClick.Res.Execute(this.GameObj);
+                OnLeftClick.Res.Execute(this.GameObj, LeftClickArgument);
             }
         }
 
