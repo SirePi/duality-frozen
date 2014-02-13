@@ -80,7 +80,7 @@ namespace FrozenCore.FX
 
         internal void UpdateVertices(IDrawDevice device, Vector3 inPreprocessedPosition, float inPreprocessedScale)
         {
-            Vector3 preprocessedPosition = (inPreprocessedPosition + Position) * inPreprocessedScale;
+            Vector3 preprocessedPosition = inPreprocessedPosition + (Position * inPreprocessedScale);
 
             Vector2 xDot, yDot;
             MathF.GetTransformDotVec(_rotation, inPreprocessedScale, out xDot, out yDot);

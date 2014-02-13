@@ -44,7 +44,7 @@ namespace FrozenCore.Widgets
         {
             public override void Execute(Duality.GameObject inSource, object inParameter)
             {
-                Window window = inSource.Parent.GetComponent<Widget>() as Window;
+                SkinnedWindow window = inSource.Parent.GetComponent<Widget>() as SkinnedWindow;
 
                 if (window != null)
                 {
@@ -57,7 +57,7 @@ namespace FrozenCore.Widgets
         {
             public override void Execute(Duality.GameObject inSource, object inParameter)
             {
-                Window window = inSource.Parent.GetComponent<Widget>() as Window;
+                SkinnedWindow window = inSource.Parent.GetComponent<Widget>() as SkinnedWindow;
 
                 if (window != null)
                 {

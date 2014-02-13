@@ -13,26 +13,16 @@ using Duality.EditorHints;
 namespace FrozenCore.Widgets
 {
     [Serializable]
-    public class CheckButton : Widget
+    public class SkinnedRadioButton : SkinnedWidget<BaseSkin>
     {
-        private ContentRef<BaseSkin> _skin;
         private ContentRef<Script> _onChecked;
         private ContentRef<Script> _onUnchecked;
         private FormattedText _text;
         private bool _isChecked;
+        private string _radioGroup;
 
         private object _checkedArgument;
         private object _uncheckedArgument;
-
-        public ContentRef<BaseSkin> Skin
-        {
-            get { return _skin; }
-            set
-            {
-                _skin = value;
-                BaseSkinRes = value.Res;
-            }
-        }
 
         public ContentRef<Script> OnChecked
         {
@@ -49,7 +39,17 @@ namespace FrozenCore.Widgets
         public bool IsChecked
         {
             get { return _isChecked; }
-            set { _isChecked = value; }
+            set 
+            { 
+                _isChecked = value;
+                OnCheckUncheck();
+            }
+        }
+
+        public string RadioGroup
+        {
+            get { return _radioGroup; }
+            set { _radioGroup = value; }
         }
 
         public FormattedText Text
@@ -72,29 +72,28 @@ namespace FrozenCore.Widgets
             set { _uncheckedArgument = value; }
         }
 
-        public CheckButton()
+        public SkinnedRadioButton()
         {
             _text = new FormattedText();
         }
 
         public override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
         {
-            if (e.Button == OpenTK.Input.MouseButton.Left)
+            if (e.Button == OpenTK.Input.MouseButton.Left && !IsChecked)
             {
-                IsChecked = !IsChecked;
+                IsChecked = true;
 
-                if (IsChecked && OnChecked.Res != null)
+                if (!String.IsNullOrWhiteSpace(RadioGroup))
                 {
-                    OnChecked.Res.Execute(this.GameObj, CheckedArgument);
-                }
-                if (!IsChecked && OnUnchecked.Res != null)
-                {
-                    OnUnchecked.Res.Execute(this.GameObj, UncheckedArgument);
+                    foreach (SkinnedRadioButton button in Scene.Current.FindComponents<SkinnedRadioButton>().Where(rb => rb.RadioGroup == this.RadioGroup && rb != this))
+                    {
+                        button.IsChecked = false;
+                    }
                 }
             }
         }
 
-        protected override void Draw(IDrawDevice inDevice, Canvas inCanvas)
+        protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
         {
             if (Text != null)
             {
@@ -147,9 +146,36 @@ namespace FrozenCore.Widgets
             return _activeAreaOnScreen;
         }
 
-        protected override void Initialize(Component.InitContext context)
+        protected override void OnInit(Component.InitContext inContext)
         {
-            BaseSkinRes = Skin.Res;
+            if (Skin.Res != null)
+            {
+                SetTextureTopLeft(IsChecked ? Skin.Res.Origin.Active : Skin.Res.Origin.Normal);
+            }
+        }
+
+        private void OnCheckUncheck()
+        {
+            if (IsChecked)
+            {
+                if (OnChecked.Res != null)
+                {
+                    OnChecked.Res.Execute(this.GameObj, UncheckedArgument);
+                }
+            }
+            else
+            {
+                if (OnUnchecked.Res != null)
+                {
+                    OnUnchecked.Res.Execute(this.GameObj, UncheckedArgument);
+                }
+            }
+            MouseLeave();
+        }
+
+        protected override void OnUpdate(float inSecondsPast)
+        {
+            
         }
     }
 }

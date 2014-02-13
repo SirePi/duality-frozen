@@ -13,11 +13,11 @@ using Duality.EditorHints;
 namespace FrozenCore.Widgets
 {
     [Serializable]
-    public class Button : Widget
+    public class SkinnedButton : SkinnedWidget<BaseSkin>
     {
-        private ContentRef<BaseSkin> _skin;
         private ContentRef<Script> _onLeftClick;
         private ContentRef<Script> _onRightClick;
+        private float _repeatLeftClickEvery;
         private FormattedText _text;
 
         [NonSerialized]
@@ -29,24 +29,21 @@ namespace FrozenCore.Widgets
         public object LeftClickArgument
         {
             private get { return _leftClickArgument; }
-            set {_leftClickArgument = value;}
+            set { _leftClickArgument = value; }
         }
 
         [EditorHintFlags(MemberFlags.Invisible)]
         public object RightClickArgument
         {
             private get { return _rightClickArgument; }
-            set {_rightClickArgument = value;}
+            set { _rightClickArgument = value; }
         }
 
-        public ContentRef<BaseSkin> Skin
+        [EditorHintDecimalPlaces(1)]
+        public float RepeatLeftClickEvery
         {
-            get { return _skin; }
-            set 
-            { 
-                _skin = value;
-                BaseSkinRes = value.Res;
-            }
+            get { return _repeatLeftClickEvery; }
+            set { _repeatLeftClickEvery = value; }
         }
 
         public ContentRef<Script> OnLeftClick
@@ -67,7 +64,7 @@ namespace FrozenCore.Widgets
             set { _text = value; }
         }
 
-        public Button()
+        public SkinnedButton()
         {
             _text = new FormattedText();
         }
@@ -77,6 +74,10 @@ namespace FrozenCore.Widgets
             if (e.Button == OpenTK.Input.MouseButton.Right && OnRightClick.Res != null)
             {
                 OnRightClick.Res.Execute(this.GameObj, RightClickArgument);
+            }
+            if (e.Button == OpenTK.Input.MouseButton.Left && OnLeftClick.Res != null && RepeatLeftClickEvery > 0)
+            {
+                OnLeftClick.Res.Execute(this.GameObj, LeftClickArgument);
             }
         }
 
@@ -88,7 +89,7 @@ namespace FrozenCore.Widgets
             }
         }
 
-        protected override void Draw(IDrawDevice inDevice, Canvas inCanvas)
+        protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
         {
             if (Text != null)
             {
@@ -134,9 +135,9 @@ namespace FrozenCore.Widgets
             return _activeAreaOnScreen;
         }
 
-        protected override void Initialize(Component.InitContext context)
+        protected override void OnUpdate(float inSecondsPast)
         {
-            BaseSkinRes = Skin.Res;
+            
         }
     }
 }

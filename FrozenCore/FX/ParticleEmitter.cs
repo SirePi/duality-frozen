@@ -15,6 +15,13 @@ namespace FrozenCore.FX
     public class ParticleEmitter : Component, IDisposable, ICmpUpdatable, ICmpRenderer, ICmpInitializable
     {
         [NonSerialized]
+        private static readonly Vector2 DEFAULT_PARTICLES = new Vector2(50, 100);
+        [NonSerialized]
+        private static readonly int DEFAULT_PARTICLES_PER_SECOND = 10;
+        [NonSerialized]
+        private static readonly Vector2 DEFAULT_TTL = new Vector2(1, 2);
+
+        [NonSerialized]
         protected ColorRange _colorRange;
 
         [NonSerialized]
@@ -98,6 +105,11 @@ namespace FrozenCore.FX
             DrawParticlesOffScreen = true;
             IsVisible = true;
             IsEnabled = true;
+
+            NewParticlesPerSecond = DEFAULT_PARTICLES_PER_SECOND;
+            InitialScale = Vector2.One;
+            ParticlesAmount = DEFAULT_PARTICLES;
+            TimeToLive = DEFAULT_TTL;
 
             VisibilityGroup = VisibilityFlag.Group0;
         }
@@ -251,7 +263,7 @@ namespace FrozenCore.FX
                 {
                     _sendBurst = false;
 
-                    foreach (Particle p in _particles)
+                    foreach (Particle p in _particles.Where(p => !p.IsAlive))
                     {
                         InitializeParticle(p);
                     }

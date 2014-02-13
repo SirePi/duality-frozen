@@ -13,6 +13,34 @@ namespace FrozenCore.Widgets.Skin
     [Serializable]
     public class BaseSkin : Resource
     {
+        public static readonly BaseSkin WHITE_SKIN = new BaseSkin()
+        {
+            Texture = Duality.Resources.Texture.White,
+            Size = Vector2.One,
+            Border = Vector4.Zero,
+            Origin = new SkinOrigin()
+            {
+                Active = Vector2.Zero,
+                Disabled = Vector2.Zero,
+                Hover = Vector2.Zero,
+                Normal = Vector2.Zero
+            }
+        };
+
+        public static readonly BaseSkin NO_SKIN = new BaseSkin()
+        {
+            Texture = Duality.Resources.Texture.None,
+            Size = Vector2.One,
+            Border = Vector4.Zero,
+            Origin = new SkinOrigin()
+            {
+                Active = Vector2.Zero,
+                Disabled = Vector2.Zero,
+                Hover = Vector2.Zero,
+                Normal = Vector2.Zero
+            }
+        };
+
         private ContentRef<Texture> _texture;
         private Vector2 _size;
         private Vector4 _border;
@@ -40,6 +68,11 @@ namespace FrozenCore.Widgets.Skin
         {
             get { return _origin; }
             set { _origin = value; }
+        }
+
+        public static ContentRef<T> GetWhiteSkin<T>() where T : BaseSkin
+        {
+            return new ContentRef<T>(WHITE_SKIN as T);
         }
     }
 }

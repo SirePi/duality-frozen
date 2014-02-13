@@ -7,6 +7,7 @@ using Duality;
 using Duality.ColorFormat;
 using OpenTK;
 using Duality.VertexFormat;
+using Duality.EditorHints;
 
 namespace FrozenCore.Widgets.Skin
 {
@@ -14,13 +15,13 @@ namespace FrozenCore.Widgets.Skin
     public class WindowSkin : BaseSkin
     {
         [NonSerialized]
-        private BaseSkin _closeButtonSkin;
+        private ContentRef<BaseSkin> _closeButtonSkin;
         [NonSerialized]
-        private BaseSkin _minimizeButtonSkin;
+        private ContentRef<BaseSkin> _minimizeButtonSkin;
         [NonSerialized]
-        private BaseSkin _maximizeButtonSkin;
+        private ContentRef<BaseSkin> _maximizeButtonSkin;
         [NonSerialized]
-        private BaseSkin _restoreButtonSkin;
+        private ContentRef<BaseSkin> _restoreButtonSkin;
 
         public Vector2 ButtonsSize { get; set; }
         public Vector4 ButtonsBorder { get; set; } // X, Y, Z, W = Left, Top, Right, Bottom
@@ -29,73 +30,77 @@ namespace FrozenCore.Widgets.Skin
         public SkinOrigin MaximizeButtonOrigin { get; set; }
         public SkinOrigin RestoreButtonOrigin { get; set; }
 
-        public BaseSkin CloseButtonSkin
+        [EditorHintFlags(MemberFlags.Invisible)]
+        public ContentRef<BaseSkin> CloseButtonSkin
         {
             get
             {
                 if (_closeButtonSkin == null)
                 {
-                    _closeButtonSkin = new BaseSkin()
+                    _closeButtonSkin = new ContentRef<BaseSkin>(new BaseSkin()
                     {
                         Border = ButtonsBorder,
                         Size = ButtonsSize,
                         Texture = Texture,
                         Origin = CloseButtonOrigin
-                    };
+                    });
                 }
                 return _closeButtonSkin;
             }
         }
 
-        public BaseSkin MinimizeButtonSkin
+        [EditorHintFlags(MemberFlags.Invisible)]
+        public ContentRef<BaseSkin> MinimizeButtonSkin
         {
             get
             {
                 if (_minimizeButtonSkin == null)
                 {
-                    _minimizeButtonSkin = new BaseSkin()
+                    _minimizeButtonSkin = new ContentRef<BaseSkin>(new BaseSkin()
                     {
                         Border = ButtonsBorder,
                         Size = ButtonsSize,
                         Texture = Texture,
                         Origin = MinimizeButtonOrigin
-                    };
+                    });
                 }
                 return _minimizeButtonSkin;
             }
         }
 
-        public BaseSkin MaximizeButtonSkin
+        [EditorHintFlags(MemberFlags.Invisible)]
+        public ContentRef<BaseSkin> MaximizeButtonSkin
         {
             get
             {
                 if (_maximizeButtonSkin == null)
                 {
-                    _maximizeButtonSkin = new BaseSkin()
+                    _maximizeButtonSkin = new ContentRef<BaseSkin>(new BaseSkin()
                     {
                         Border = ButtonsBorder,
                         Size = ButtonsSize,
                         Texture = Texture,
                         Origin = MaximizeButtonOrigin
-                    };
+                    });
                 }
                 return _maximizeButtonSkin;
             }
         }
 
-        public BaseSkin RestoreButtonSkin
+        [EditorHintFlags(MemberFlags.Invisible)]
+        public ContentRef<BaseSkin> RestoreButtonSkin
         {
             get
             {
                 if (_restoreButtonSkin == null)
                 {
-                    _restoreButtonSkin = new BaseSkin()
+                    _restoreButtonSkin = new ContentRef<BaseSkin>(new BaseSkin()
                     {
                         Border = ButtonsBorder,
                         Size = ButtonsSize,
                         Texture = Texture,
                         Origin = RestoreButtonOrigin
-                    };
+                    });
                 }
                 return _restoreButtonSkin;
             }

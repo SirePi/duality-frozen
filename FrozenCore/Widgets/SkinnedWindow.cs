@@ -13,20 +13,8 @@ using FrozenCore.Widgets.Skin;
 namespace FrozenCore.Widgets
 {
     [Serializable]
-    public class Window : Widget
+    public class SkinnedWindow : SkinnedWidget<WindowSkin>
     {
-        private ContentRef<WindowSkin> _skin;
-
-        public ContentRef<WindowSkin> Skin 
-        {
-            get { return _skin ; }
-            set 
-            {
-                _skin = value;
-                BaseSkinRes = value.Res;
-            }
-        }
-
         private FormattedText _title;
         public FormattedText Title
         {
@@ -65,7 +53,7 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         private bool _isDragged;
 
-        public Window()
+        public SkinnedWindow()
         {
             Title = new FormattedText();
             _isDragged = false;
@@ -79,11 +67,12 @@ namespace FrozenCore.Widgets
             t.RelativePos = new Vector3(Rect.W - Skin.Res.ButtonsSize.X, 0, -DELTA_Z);
             t.RelativeAngle = 0;
 
-            CloseButton cb = button.AddComponent<CloseButton>();
+            CloseButton cb = new CloseButton();
             cb.VisibilityGroup = this.VisibilityGroup;
-            cb.Skin = new ContentRef<BaseSkin>(Skin.Res.CloseButtonSkin);
+            cb.Skin = Skin.Res.CloseButtonSkin;
             cb.Rect = new Rect(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
 
+            button.AddComponent<CloseButton>(cb);
             Scene.Current.AddObject(button);
         }
 
@@ -95,11 +84,12 @@ namespace FrozenCore.Widgets
             t.RelativePos = new Vector3(Rect.W - (Skin.Res.ButtonsSize.X * 3), 0, -DELTA_Z);
             t.RelativeAngle = 0;
 
-            MinimizeButton mb = button.AddComponent<MinimizeButton>();
+            MinimizeButton mb = new MinimizeButton();
             mb.VisibilityGroup = this.VisibilityGroup;
-            mb.Skin = new ContentRef<BaseSkin>(Skin.Res.MinimizeButtonSkin);
+            mb.Skin = Skin.Res.MinimizeButtonSkin;
             mb.Rect = new Rect(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
 
+            button.AddComponent<MinimizeButton>(mb);
             Scene.Current.AddObject(button);
         }
 
@@ -111,11 +101,12 @@ namespace FrozenCore.Widgets
             t.RelativePos = new Vector3(Rect.W - (Skin.Res.ButtonsSize.X * 2), 0, -DELTA_Z);
             t.RelativeAngle = 0;
 
-            MaximizeButton mb = button.AddComponent<MaximizeButton>();
+            MaximizeButton mb = new MaximizeButton();
             mb.VisibilityGroup = this.VisibilityGroup;
-            mb.Skin = new ContentRef<BaseSkin>(Skin.Res.MaximizeButtonSkin);
+            mb.Skin = Skin.Res.MaximizeButtonSkin;
             mb.Rect = new Rect(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
 
+            button.AddComponent<MaximizeButton>(mb);
             Scene.Current.AddObject(button);
         }
 
@@ -127,12 +118,13 @@ namespace FrozenCore.Widgets
             t.RelativePos = new Vector3(Rect.W - (Skin.Res.ButtonsSize.X * 2), 0, -DELTA_Z);
             t.RelativeAngle = 0;
 
-            RestoreButton rb = button.AddComponent<RestoreButton>();
+            RestoreButton rb = new RestoreButton();
             rb.VisibilityGroup = this.VisibilityGroup;
-            rb.Skin = new ContentRef<BaseSkin>(Skin.Res.RestoreButtonSkin);
+            rb.Skin = Skin.Res.RestoreButtonSkin;
             rb.Rect = new Rect(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
             rb.IsWidgetEnabled = false;
 
+            button.AddComponent<RestoreButton>(rb);
             Scene.Current.AddObject(button);
         }
 
@@ -158,7 +150,7 @@ namespace FrozenCore.Widgets
             }
         }
 
-        protected override void Draw(IDrawDevice inDevice, Canvas inCanvas)
+        protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
         {
             if (Title != null)
             {
@@ -212,9 +204,9 @@ namespace FrozenCore.Widgets
             return _activeAreaOnScreen;
         }
 
-        protected override void Initialize(Component.InitContext inContext)
+        protected override void OnInit(Component.InitContext inContext)
         {
-            BaseSkinRes = Skin.Res;
+            base.OnInit(inContext);
 
             if (inContext == InitContext.Activate && !FrozenUtilities.IsDualityEditor)
             {
@@ -235,6 +227,11 @@ namespace FrozenCore.Widgets
                     AddRestoreButton();
                 }
             }
+        }
+
+        protected override void OnUpdate(float inSecondsPast)
+        {
+            
         }
     }
 }

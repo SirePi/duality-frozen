@@ -8,6 +8,7 @@ using OpenTK;
 using FrozenCore.Components;
 using Duality.Resources;
 using System.Collections.Generic;
+using FrozenCore.Widgets.Skin;
 
 namespace FrozenCore.Widgets
 {

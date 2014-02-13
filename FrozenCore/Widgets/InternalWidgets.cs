@@ -8,7 +8,7 @@ using Duality.Components;
 
 namespace FrozenCore.Widgets
 {
-    internal class CloseButton : Button
+    internal class CloseButton : SkinnedButton
     {
         public CloseButton()
         {
@@ -16,7 +16,7 @@ namespace FrozenCore.Widgets
         }
     }
 
-    internal class MinimizeButton: Button
+    internal class MinimizeButton: SkinnedButton
     {
         public MinimizeButton()
         {
@@ -24,7 +24,7 @@ namespace FrozenCore.Widgets
         }
     }
 
-    internal class MaximizeButton : Button
+    internal class MaximizeButton : SkinnedButton
     {
         public MaximizeButton()
         {
@@ -32,7 +32,7 @@ namespace FrozenCore.Widgets
         }
     }
 
-    internal class RestoreButton : Button
+    internal class RestoreButton : SkinnedButton
     {
         public RestoreButton()
         {
