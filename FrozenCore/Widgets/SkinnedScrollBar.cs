@@ -60,7 +60,7 @@ namespace FrozenCore.Widgets
             
         }
 
-        public override Polygon GetActiveAreaOnScreen(Camera inCamera)
+        internal override Polygon GetActiveAreaOnScreen(Camera inCamera)
         {
             return Polygon.NO_POLYGON;
         }

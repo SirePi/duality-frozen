@@ -69,7 +69,7 @@ namespace FrozenCore.Widgets
             _text = new FormattedText();
         }
 
-        public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
         {
             if (e.Button == OpenTK.Input.MouseButton.Right && OnRightClick.Res != null)
             {
@@ -81,7 +81,7 @@ namespace FrozenCore.Widgets
             }
         }
 
-        public override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
+        internal override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
         {
             if (e.Button == OpenTK.Input.MouseButton.Left && OnLeftClick.Res != null)
             {
@@ -105,27 +105,7 @@ namespace FrozenCore.Widgets
             }
         }
 
-        public override void MouseEnter()
-        {
-            base.MouseEnter();
-
-            if (_widgetEnabled)
-            {
-                SetTextureTopLeft(Skin.Res.Origin.Hover);
-            }
-        }
-
-        public override void MouseLeave()
-        {
-            base.MouseLeave();
-
-            if (_widgetEnabled)
-            {
-                SetTextureTopLeft(Skin.Res.Origin.Normal);
-            }
-        }
-
-        public override Polygon GetActiveAreaOnScreen(Duality.Components.Camera inCamera)
+        internal override Polygon GetActiveAreaOnScreen(Duality.Components.Camera inCamera)
         {
             _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
             _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;

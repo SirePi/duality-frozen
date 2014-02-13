@@ -88,7 +88,7 @@ namespace FrozenCore.Widgets
             Scene.Current.RemoveObject(this.GameObj);
         }
 
-        public abstract Polygon GetActiveAreaOnScreen(Camera inCamera);
+        internal abstract Polygon GetActiveAreaOnScreen(Camera inCamera);
 
         bool ICmpRenderer.IsVisible(IDrawDevice device)
         {
@@ -113,37 +113,21 @@ namespace FrozenCore.Widgets
             OnUpdate(Time.LastDelta / 1000f);
         }
 
-        public virtual void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
-        {
-        }
+        internal abstract void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k);
 
-        public virtual void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
-        {
-        }
+        internal abstract void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k);
 
-        public virtual void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
-        {
-        }
+        internal abstract void MouseDown(OpenTK.Input.MouseButtonEventArgs e);
 
-        public virtual void MouseEnter()
-        {
-        }
+        internal abstract void MouseEnter();
 
-        public virtual void MouseLeave()
-        {
-        }
+        internal abstract void MouseLeave();
 
-        public virtual void MouseMove(OpenTK.Input.MouseMoveEventArgs e)
-        {
-        }
+        internal abstract void MouseMove(OpenTK.Input.MouseMoveEventArgs e);
 
-        public virtual void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
-        {
-        }
+        internal abstract void MouseUp(OpenTK.Input.MouseButtonEventArgs e);
 
-        public virtual void MouseWheel(OpenTK.Input.MouseWheelEventArgs e)
-        {
-        }
+        internal abstract void MouseWheel(OpenTK.Input.MouseWheelEventArgs e);
 
         public void SetEnabled(bool inEnabled)
         {

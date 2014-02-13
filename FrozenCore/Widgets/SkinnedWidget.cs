@@ -386,5 +386,61 @@ namespace FrozenCore.Widgets
                 _points[15].UVCoords.Y = uvTopLeft.Y + _uvDelta.Y;
             }
         }
+
+        internal override void MouseEnter()
+        {
+            if (_widgetEnabled)
+            {
+                SetTextureTopLeft(Skin.Res.Origin.Hover);
+            }
+        }
+
+        internal override void MouseLeave()
+        {
+            if (_widgetEnabled)
+            {
+                SetTextureTopLeft(Skin.Res.Origin.Normal);
+            }
+        }
+
+        internal override void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
+        {
+            
+        }
+
+        internal override void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
+        {
+            
+        }
+
+        internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        {
+            
+        }
+
+        internal override void MouseMove(OpenTK.Input.MouseMoveEventArgs e)
+        {
+            
+        }
+
+        internal override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
+        {
+            
+        }
+
+        internal override void MouseWheel(OpenTK.Input.MouseWheelEventArgs e)
+        {
+            
+        }
+
+        protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
+        {
+            
+        }
+
+        protected override void OnUpdate(float inSecondsPast)
+        {
+            
+        }
     }
 }

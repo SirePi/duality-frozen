@@ -38,7 +38,11 @@ namespace FrozenCore.Widgets
         public bool IsChecked
         {
             get { return _isChecked; }
-            set { _isChecked = value; }
+            set
+            {
+                _isChecked = value;
+                OnCheckUncheck();
+            }
         }
 
         public FormattedText Text
@@ -66,7 +70,7 @@ namespace FrozenCore.Widgets
             _text = new FormattedText();
         }
 
-        public override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
+        internal override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
         {
             if (e.Button == OpenTK.Input.MouseButton.Left)
             {
@@ -99,20 +103,8 @@ namespace FrozenCore.Widgets
             }
         }
 
-        public override void MouseEnter()
+        internal override void MouseLeave()
         {
-            base.MouseEnter();
-
-            if (_widgetEnabled)
-            {
-                SetTextureTopLeft(Skin.Res.Origin.Hover);
-            }
-        }
-
-        public override void MouseLeave()
-        {
-            base.MouseLeave();
-
             if (_widgetEnabled)
             {
                 if (IsChecked)
@@ -126,7 +118,7 @@ namespace FrozenCore.Widgets
             }
         }
 
-        public override Polygon GetActiveAreaOnScreen(Duality.Components.Camera inCamera)
+        internal override Polygon GetActiveAreaOnScreen(Duality.Components.Camera inCamera)
         {
             _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
             _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[1].WorldCoords).Xy;
@@ -142,6 +134,25 @@ namespace FrozenCore.Widgets
             {
                 SetTextureTopLeft(IsChecked ? Skin.Res.Origin.Active : Skin.Res.Origin.Normal);
             }
+        }
+
+        private void OnCheckUncheck()
+        {
+            if (IsChecked)
+            {
+                if (OnChecked.Res != null)
+                {
+                    OnChecked.Res.Execute(this.GameObj, UncheckedArgument);
+                }
+            }
+            else
+            {
+                if (OnUnchecked.Res != null)
+                {
+                    OnUnchecked.Res.Execute(this.GameObj, UncheckedArgument);
+                }
+            }
+            MouseLeave();
         }
 
         protected override void OnUpdate(float inSecondsPast)
