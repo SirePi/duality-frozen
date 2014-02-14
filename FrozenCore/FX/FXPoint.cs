@@ -8,10 +8,6 @@ namespace FrozenCore.FX
     [Serializable]
     public class FXPoint : FXArea
     {
-        public FXPoint()
-        {
-        }
-
         protected override void _DrawInEditor(Duality.Canvas inCanvas, Vector3 inPosition)
         {
             // nothing else to draw

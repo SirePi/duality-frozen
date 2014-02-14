@@ -137,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Components.txt" />
+    <None Include="ClassDiagram.cd" />
     <None Include="SkinConfiguration.xsd">
       <SubType>Designer</SubType>
     </None>

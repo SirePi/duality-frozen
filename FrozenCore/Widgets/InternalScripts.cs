@@ -1,4 +1,6 @@
-﻿using System;
+﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -77,19 +79,27 @@ namespace FrozenCore.Widgets
             }
         }
 
-        internal class ScrollUpLeftButtonLeftMouseDown : InternalScript
+        internal class ScrollUpButtonLeftMouseDown : InternalScript
         {
             public override void Execute(Duality.GameObject inSource, object inParameter)
             {
-                throw new NotImplementedException();
+                SkinnedScrollBar scrollBar = inSource.Parent.GetComponent<Widget>() as SkinnedScrollBar;
+                if (scrollBar != null)
+                {
+                    scrollBar.Value = Math.Min(scrollBar.Maximum, scrollBar.Value + (int)inParameter);
+                }
             }
         }
 
-        internal class ScrollDownRightButtonLeftMouseDown : InternalScript
+        internal class ScrollDownButtonLeftMouseDown : InternalScript
         {
             public override void Execute(Duality.GameObject inSource, object inParameter)
             {
-                throw new NotImplementedException();
+                SkinnedScrollBar scrollBar = inSource.Parent.GetComponent<Widget>() as SkinnedScrollBar;
+                if (scrollBar != null)
+                {
+                    scrollBar.Value = Math.Min(scrollBar.Minimum, scrollBar.Value - (int)inParameter);
+                }
             }
         }
 

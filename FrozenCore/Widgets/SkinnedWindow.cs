@@ -1,4 +1,6 @@
-﻿using System;
+﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -64,7 +66,7 @@ namespace FrozenCore.Widgets
             GameObject button = new GameObject("closeButton", this.GameObj);
 
             Transform t = button.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - Skin.Res.ButtonsSize.X, 0, -DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - Skin.Res.ButtonsSize.X, 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             CloseButton cb = new CloseButton();
@@ -81,7 +83,7 @@ namespace FrozenCore.Widgets
             GameObject button = new GameObject("minimizeButton", this.GameObj);
 
             Transform t = button.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (Skin.Res.ButtonsSize.X * 3), 0, -DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - (Skin.Res.ButtonsSize.X * 3), 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             MinimizeButton mb = new MinimizeButton();
@@ -98,7 +100,7 @@ namespace FrozenCore.Widgets
             GameObject button = new GameObject("maximizeButton", this.GameObj);
 
             Transform t = button.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (Skin.Res.ButtonsSize.X * 2), 0, -DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - (Skin.Res.ButtonsSize.X * 2), 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             MaximizeButton mb = new MaximizeButton();
@@ -115,14 +117,14 @@ namespace FrozenCore.Widgets
             GameObject button = new GameObject("restoreButton", this.GameObj);
 
             Transform t = button.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (Skin.Res.ButtonsSize.X * 2), 0, -DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - (Skin.Res.ButtonsSize.X * 2), 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             RestoreButton rb = new RestoreButton();
             rb.VisibilityGroup = this.VisibilityGroup;
             rb.Skin = Skin.Res.RestoreButtonSkin;
             rb.Rect = new Rect(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
-            rb.IsWidgetEnabled = false;
+            rb.Active = false;
 
             button.AddComponent<RestoreButton>(rb);
             Scene.Current.AddObject(button);
@@ -160,7 +162,7 @@ namespace FrozenCore.Widgets
                 inCanvas.CurrentState.TransformHandle = textOrigin;
                 inCanvas.CurrentState.TransformAngle = GameObj.Transform.Angle;
 
-                inCanvas.DrawText(Title, titleLeft.X + textOrigin.X, titleLeft.Y + textOrigin.Y, titleLeft.Z - DELTA_Z, null, Alignment.Left);
+                inCanvas.DrawText(Title, titleLeft.X + textOrigin.X, titleLeft.Y + textOrigin.Y, titleLeft.Z + DELTA_Z, null, Alignment.Left);
             }
         }
 

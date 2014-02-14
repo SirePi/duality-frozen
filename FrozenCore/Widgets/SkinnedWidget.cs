@@ -1,4 +1,6 @@
-﻿using System;
+﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
+
+using System;
 using Duality;
 using Duality.Components;
 using Duality.Resources;

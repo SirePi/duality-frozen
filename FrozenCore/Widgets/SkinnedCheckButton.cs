@@ -1,4 +1,6 @@
-﻿using System;
+﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -99,7 +101,7 @@ namespace FrozenCore.Widgets
                 inCanvas.CurrentState.TransformHandle = textCenter;
                 inCanvas.CurrentState.TransformAngle = GameObj.Transform.Angle;
 
-                inCanvas.DrawText(Text, buttonCenter.X + textCenter.X, buttonCenter.Y + textCenter.Y, buttonCenter.Z - DELTA_Z, null, Alignment.Center);
+                inCanvas.DrawText(Text, buttonCenter.X + textCenter.X, buttonCenter.Y + textCenter.Y, buttonCenter.Z + DELTA_Z, null, Alignment.Center);
             }
         }
 

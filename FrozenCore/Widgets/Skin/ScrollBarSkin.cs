@@ -1,4 +1,6 @@
-﻿using System;
+﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +9,7 @@ using Duality;
 using Duality.ColorFormat;
 using OpenTK;
 using Duality.VertexFormat;
+using Duality.EditorHints;
 
 namespace FrozenCore.Widgets.Skin
 {
@@ -16,15 +19,16 @@ namespace FrozenCore.Widgets.Skin
         [NonSerialized]
         private BaseSkin _buttonsSkin;
         [NonSerialized]
-        private BaseSkin _sliderSkin;
+        private BaseSkin _cursorSkin;
 
         public Vector2 ButtonsSize { get; set; }
         public Vector4 ButtonsBorder { get; set; } // X, Y, Z, W = Left, Top, Right, Bottom
-        public Vector2 SliderSize { get; set; }
-        public Vector4 SliderBorder { get; set; } // X, Y, Z, W = Left, Top, Right, Bottom
         public SkinOrigin ButtonOrigin { get; set; }
-        public SkinOrigin SliderOrigin { get; set; }
+        public Vector2 CursorSize { get; set; }
+        public Vector4 CursorBorder { get; set; } // X, Y, Z, W = Left, Top, Right, Bottom
+        public SkinOrigin CursorOrigin { get; set; }
 
+        [EditorHintFlags(MemberFlags.Invisible)]
         public BaseSkin ButtonsSkin
         {
             get
@@ -43,21 +47,22 @@ namespace FrozenCore.Widgets.Skin
             }
         }
 
-        public BaseSkin SliderSkin
+        [EditorHintFlags(MemberFlags.Invisible)]
+        public BaseSkin CursorSkin
         {
             get
             {
-                if (_sliderSkin == null)
+                if (_cursorSkin == null)
                 {
-                    _sliderSkin = new BaseSkin()
+                    _cursorSkin = new BaseSkin()
                     {
-                        Border = SliderBorder,
-                        Size = SliderSize,
+                        Border = CursorBorder,
+                        Size = CursorSize,
                         Texture = Texture,
-                        Origin = SliderOrigin
+                        Origin = CursorOrigin
                     };
                 }
-                return _sliderSkin;
+                return _cursorSkin;
             }
         }
     }

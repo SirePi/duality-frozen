@@ -1,4 +1,6 @@
-﻿using System;
+﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
+
+using System;
 using Duality;
 using Duality.Components;
 using Duality.Resources;
@@ -17,7 +19,7 @@ namespace FrozenCore.Widgets
         public static readonly Rect NO_ACTIVE_AREA;
 
         [NonSerialized]
-        protected static readonly float DELTA_Z = .001f;
+        protected static readonly float DELTA_Z = -.001f;
 
         [NonSerialized]
         protected Rect _activeArea;
@@ -37,7 +39,7 @@ namespace FrozenCore.Widgets
         [EditorHintFlags(MemberFlags.Invisible)]
         float ICmpRenderer.BoundRadius
         {
-            get { return 0; } //Size.BoundingRadius; }
+            get { return Rect.BoundingRadius; }
         }
 
         [EditorHintFlags(MemberFlags.Invisible)]

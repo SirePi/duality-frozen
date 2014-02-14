@@ -1,4 +1,6 @@
-﻿using System;
+﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,7 +53,9 @@ namespace FrozenCore.Widgets
 
             if (inContext == InitContext.Activate && !FrozenUtilities.IsDualityEditor)
             {
-
+                AddScrollUpButton();
+                AddScrollDownButton();
+                AddScrollCursor();
             }
         }
 
@@ -65,43 +69,55 @@ namespace FrozenCore.Widgets
             return Polygon.NO_POLYGON;
         }
 
-        private void AddDecreaseButton()
+        private void AddScrollDownButton()
         {
-            GameObject button = new GameObject("decreaseButton", this.GameObj);
+            GameObject button = new GameObject("downButton", this.GameObj);
 
             Transform t = button.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (Skin.Res.ButtonsSize.X * 2), 0, -DELTA_Z);
-            t.RelativeAngle = 0;
+            t.RelativePos = new Vector3(Rect.W / 2, Rect.H - Skin.Res.ButtonsSize.Y / 2, DELTA_Z);
+            t.RelativeAngle = MathF.Pi;
 
-            RestoreButton rb = button.AddComponent<RestoreButton>();
-            rb.VisibilityGroup = this.VisibilityGroup;
-            rb.Skin = new ContentRef<BaseSkin>(Skin.Res.ButtonsSkin);
-            rb.Rect = new Rect(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
-            rb.IsWidgetEnabled = false;
+            ScrollDownButton sdb = new ScrollDownButton();
+            sdb.VisibilityGroup = this.VisibilityGroup;
+            sdb.Skin = Skin.Res.ButtonsSkin;
+            sdb.Rect = new Rect(Skin.Res.ButtonsSize.X / 2, Skin.Res.ButtonsSize.Y / 2, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
 
+            button.AddComponent<ScrollDownButton>(sdb);
             Scene.Current.AddObject(button);
         }
 
-        private void AddIncreaseButton()
+        private void AddScrollUpButton()
         {
-            GameObject button = new GameObject("increaseButton", this.GameObj);
+            GameObject button = new GameObject("upButton", this.GameObj);
 
             Transform t = button.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (Skin.Res.ButtonsSize.X * 2), 0, -DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W / 2, Skin.Res.ButtonsSize.Y / 2, DELTA_Z);
             t.RelativeAngle = 0;
 
-            RestoreButton rb = button.AddComponent<RestoreButton>();
-            rb.VisibilityGroup = this.VisibilityGroup;
-            rb.Skin = new ContentRef<BaseSkin>(Skin.Res.ButtonsSkin);
-            rb.Rect = new Rect(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
-            rb.IsWidgetEnabled = false;
+            ScrollUpButton sub = new ScrollUpButton();
+            sub.VisibilityGroup = this.VisibilityGroup;
+            sub.Skin = Skin.Res.ButtonsSkin;
+            sub.Rect = new Rect(Skin.Res.ButtonsSize.X / 2, Skin.Res.ButtonsSize.Y / 2, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
 
+            button.AddComponent<ScrollUpButton>(sub);
             Scene.Current.AddObject(button);
         }
 
-        protected override void OnUpdate(float inSecondsPast)
+        private void AddScrollCursor()
         {
-            
+            GameObject cursor = new GameObject("cursor", this.GameObj);
+
+            Transform t = cursor.AddComponent<Transform>();
+            t.RelativePos = new Vector3(Rect.W / 2, Rect.H / 2, DELTA_Z);
+            t.RelativeAngle = 0;
+
+            ScrollCursor sc = new ScrollCursor();
+            sc.VisibilityGroup = this.VisibilityGroup;
+            sc.Skin = Skin.Res.CursorSkin;
+            sc.Rect = new Rect(Skin.Res.CursorSize.X / 2, Skin.Res.CursorSize.Y / 2, Skin.Res.CursorSize.X, Skin.Res.CursorSize.Y);
+
+            cursor.AddComponent<ScrollCursor>(sc);
+            Scene.Current.AddObject(cursor);
         }
     }
 }

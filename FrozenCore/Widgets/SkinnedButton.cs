@@ -1,4 +1,6 @@
-﻿using System;
+﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +21,11 @@ namespace FrozenCore.Widgets
         private ContentRef<Script> _onRightClick;
         private float _repeatLeftClickEvery;
         private FormattedText _text;
+
+        [NonSerialized]
+        private bool _leftButtonDown;
+        [NonSerialized]
+        private float _secondsFromLastTick;
 
         [NonSerialized]
         private object _leftClickArgument;
@@ -77,16 +84,26 @@ namespace FrozenCore.Widgets
             }
             if (e.Button == OpenTK.Input.MouseButton.Left && OnLeftClick.Res != null && RepeatLeftClickEvery > 0)
             {
-                OnLeftClick.Res.Execute(this.GameObj, LeftClickArgument);
+                _leftButtonDown = true;
             }
         }
 
         internal override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
         {
-            if (e.Button == OpenTK.Input.MouseButton.Left && OnLeftClick.Res != null)
+            if (e.Button == OpenTK.Input.MouseButton.Left)
             {
-                OnLeftClick.Res.Execute(this.GameObj, LeftClickArgument);
+                _leftButtonDown = false;
+                if (OnLeftClick.Res != null && RepeatLeftClickEvery == 0)
+                {
+                    OnLeftClick.Res.Execute(this.GameObj, LeftClickArgument);
+                }
             }
+        }
+
+        internal override void MouseLeave()
+        {
+            base.MouseLeave();
+            _leftButtonDown = false;
         }
 
         protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
@@ -101,7 +118,7 @@ namespace FrozenCore.Widgets
                 inCanvas.CurrentState.TransformHandle = textCenter;
                 inCanvas.CurrentState.TransformAngle = GameObj.Transform.Angle;
 
-                inCanvas.DrawText(Text, buttonCenter.X + textCenter.X, buttonCenter.Y + textCenter.Y, buttonCenter.Z - DELTA_Z, null, Alignment.Center);
+                inCanvas.DrawText(Text, buttonCenter.X + textCenter.X, buttonCenter.Y + textCenter.Y, buttonCenter.Z + DELTA_Z, null, Alignment.Center);
             }
         }
 
@@ -117,7 +134,12 @@ namespace FrozenCore.Widgets
 
         protected override void OnUpdate(float inSecondsPast)
         {
-            
+            _secondsFromLastTick += inSecondsPast;
+            if (_secondsFromLastTick > RepeatLeftClickEvery && _leftButtonDown && OnLeftClick.Res != null)
+            {
+                _secondsFromLastTick = 0;
+                OnLeftClick.Res.Execute(this.GameObj, _leftClickArgument);
+            }
         }
     }
 }
