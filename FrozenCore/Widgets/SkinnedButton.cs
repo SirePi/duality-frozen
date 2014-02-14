@@ -82,9 +82,14 @@ namespace FrozenCore.Widgets
             {
                 OnRightClick.Res.Execute(this.GameObj, RightClickArgument);
             }
-            if (e.Button == OpenTK.Input.MouseButton.Left && OnLeftClick.Res != null && RepeatLeftClickEvery > 0)
+            if (e.Button == OpenTK.Input.MouseButton.Left)
             {
-                _leftButtonDown = true;
+                SetTextureTopLeft(Skin.Res.Origin.Active);
+
+                if (OnLeftClick.Res != null && RepeatLeftClickEvery > 0)
+                {
+                    _leftButtonDown = true;
+                }
             }
         }
 
@@ -93,9 +98,15 @@ namespace FrozenCore.Widgets
             if (e.Button == OpenTK.Input.MouseButton.Left)
             {
                 _leftButtonDown = false;
-                if (OnLeftClick.Res != null && RepeatLeftClickEvery == 0)
+
+                if (_isMouseOver)
                 {
-                    OnLeftClick.Res.Execute(this.GameObj, LeftClickArgument);
+                    SetTextureTopLeft(Skin.Res.Origin.Hover);
+
+                    if (OnLeftClick.Res != null && RepeatLeftClickEvery == 0)
+                    {
+                        OnLeftClick.Res.Execute(this.GameObj, LeftClickArgument);
+                    }
                 }
             }
         }
@@ -103,7 +114,22 @@ namespace FrozenCore.Widgets
         internal override void MouseLeave()
         {
             base.MouseLeave();
-            _leftButtonDown = false;
+        }
+
+        internal override void MouseEnter()
+        {
+            _isMouseOver = true;
+            if (_widgetEnabled)
+            {
+                if (!_leftButtonDown)
+                {
+                    SetTextureTopLeft(Skin.Res.Origin.Hover);
+                }
+                else
+                {
+                    SetTextureTopLeft(Skin.Res.Origin.Active);
+                }
+            }
         }
 
         protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)

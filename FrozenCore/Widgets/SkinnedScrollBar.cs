@@ -80,7 +80,7 @@ namespace FrozenCore.Widgets
             ScrollDownButton sdb = new ScrollDownButton();
             sdb.VisibilityGroup = this.VisibilityGroup;
             sdb.Skin = Skin.Res.ButtonsSkin;
-            sdb.Rect = new Rect(Skin.Res.ButtonsSize.X / 2, Skin.Res.ButtonsSize.Y / 2, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
+            sdb.Rect = new Rect(-Skin.Res.ButtonsSize.X / 2, -Skin.Res.ButtonsSize.Y / 2, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
 
             button.AddComponent<ScrollDownButton>(sdb);
             Scene.Current.AddObject(button);
@@ -97,7 +97,7 @@ namespace FrozenCore.Widgets
             ScrollUpButton sub = new ScrollUpButton();
             sub.VisibilityGroup = this.VisibilityGroup;
             sub.Skin = Skin.Res.ButtonsSkin;
-            sub.Rect = new Rect(Skin.Res.ButtonsSize.X / 2, Skin.Res.ButtonsSize.Y / 2, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
+            sub.Rect = new Rect(-Skin.Res.ButtonsSize.X / 2, -Skin.Res.ButtonsSize.Y / 2, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
 
             button.AddComponent<ScrollUpButton>(sub);
             Scene.Current.AddObject(button);
@@ -114,7 +114,7 @@ namespace FrozenCore.Widgets
             ScrollCursor sc = new ScrollCursor();
             sc.VisibilityGroup = this.VisibilityGroup;
             sc.Skin = Skin.Res.CursorSkin;
-            sc.Rect = new Rect(Skin.Res.CursorSize.X / 2, Skin.Res.CursorSize.Y / 2, Skin.Res.CursorSize.X, Skin.Res.CursorSize.Y);
+            sc.Rect = new Rect(-Skin.Res.CursorSize.X / 2, -Skin.Res.CursorSize.Y / 2, Skin.Res.CursorSize.X, Skin.Res.CursorSize.Y);
 
             cursor.AddComponent<ScrollCursor>(sc);
             Scene.Current.AddObject(cursor);

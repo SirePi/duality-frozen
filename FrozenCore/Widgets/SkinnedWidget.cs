@@ -32,6 +32,9 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         private Vector2 _uvDelta;
 
+        [NonSerialized]
+        protected bool _isMouseOver;
+
         public ContentRef<T> Skin
         {
             get { return _skin; }
@@ -391,6 +394,8 @@ namespace FrozenCore.Widgets
 
         internal override void MouseEnter()
         {
+            _isMouseOver = true;
+
             if (_widgetEnabled)
             {
                 SetTextureTopLeft(Skin.Res.Origin.Hover);
@@ -399,6 +404,8 @@ namespace FrozenCore.Widgets
 
         internal override void MouseLeave()
         {
+            _isMouseOver = false;
+
             if (_widgetEnabled)
             {
                 SetTextureTopLeft(Skin.Res.Origin.Normal);

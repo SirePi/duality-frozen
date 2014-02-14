@@ -149,18 +149,6 @@ namespace FrozenCore.FX
                         v[3].Color = bolt.CurrentColor;
 
                         device.AddVertices(bd.BatchInfo, VertexMode.Quads, v);
-
-                        /*
-                        Canvas c = new Canvas(device);
-                        c.CurrentState.ColorTint = Colors.Turquoise;
-                        //c.DrawCross(v[0].Pos.X, v[0].Pos.Y, v[0].Pos.Z, 15);
-                        c.DrawCross(bolt.Start.X, bolt.Start.Y, bolt.Start.Z, 15);
-                        //c.DrawCross(v[1].Pos.X, v[1].Pos.Y, v[1].Pos.Z, 15);
-                        c.CurrentState.ColorTint = Colors.Pink;
-                        //c.DrawCross(v[2].Pos.X, v[2].Pos.Y, v[2].Pos.Z, 15);
-                        c.DrawCross(bolt.End.X, bolt.End.Y, bolt.End.Z, 15);
-                        //c.DrawCross(v[3].Pos.X, v[3].Pos.Y, v[3].Pos.Z, 15);
-                         * */
                     }
                 }
             }

@@ -27,7 +27,7 @@ namespace FrozenCore.Widgets
 
         internal override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
         {
-            if (e.Button == OpenTK.Input.MouseButton.Left && !IsChecked)
+            if (e.Button == OpenTK.Input.MouseButton.Left && _isMouseOver && !IsChecked)
             {
                 IsChecked = true;
 
@@ -39,11 +39,6 @@ namespace FrozenCore.Widgets
                     }
                 }
             }
-        }
-
-        protected override void OnUpdate(float inSecondsPast)
-        {
-            
         }
     }
 }
