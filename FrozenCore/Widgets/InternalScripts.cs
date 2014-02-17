@@ -98,7 +98,7 @@ namespace FrozenCore.Widgets
                 SkinnedScrollBar scrollBar = inSource.Parent.GetComponent<Widget>() as SkinnedScrollBar;
                 if (scrollBar != null)
                 {
-                    scrollBar.Value = Math.Min(scrollBar.Minimum, scrollBar.Value - (int)inParameter);
+                    scrollBar.Value = Math.Max(scrollBar.Minimum, scrollBar.Value - (int)inParameter);
                 }
             }
         }
