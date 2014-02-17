@@ -11,6 +11,7 @@ using OpenTK;
 using Duality.Resources;
 using Duality.Components;
 using FrozenCore.Widgets.Skin;
+using Duality.ColorFormat;
 
 namespace FrozenCore.Widgets
 {
@@ -34,6 +35,8 @@ namespace FrozenCore.Widgets
         private bool _canMaximize;
         private bool _canMinimize;
 
+        private ColorRgba _titleColor;
+
         public bool CanClose
         {
             get { return _canClose; }
@@ -52,12 +55,20 @@ namespace FrozenCore.Widgets
             set { _canMinimize = value; }
         }
 
+        public ColorRgba TitleColor
+        {
+            get { return _titleColor; }
+            set { _titleColor = value; }
+        }
+
         [NonSerialized]
         private bool _isDragged;
 
         public SkinnedWindow()
         {
             Title = new FormattedText();
+            _titleColor = Colors.White;
+
             _isDragged = false;
         }
 
@@ -158,8 +169,11 @@ namespace FrozenCore.Widgets
             {
                 Vector3 titleLeft = (_points[1].WorldCoords + _points[5].WorldCoords) / 2;
 
+                inCanvas.PushState();
+                inCanvas.State.ColorTint = _titleColor;
                 inCanvas.State.TransformAngle = GameObj.Transform.Angle;
                 inCanvas.DrawText(Title, titleLeft.X, titleLeft.Y, titleLeft.Z + DELTA_Z, null, Alignment.Left);
+                inCanvas.PopState();
             }
         }
 

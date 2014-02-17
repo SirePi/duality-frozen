@@ -11,6 +11,7 @@ using OpenTK;
 using Duality.Resources;
 using FrozenCore.Widgets.Skin;
 using Duality.EditorHints;
+using Duality.ColorFormat;
 
 namespace FrozenCore.Widgets
 {
@@ -21,6 +22,7 @@ namespace FrozenCore.Widgets
         private ContentRef<Script> _onRightClick;
         private float _repeatLeftClickEvery;
         private FormattedText _text;
+        private ColorRgba _textColor;
 
         [NonSerialized]
         private bool _leftButtonDown;
@@ -31,8 +33,6 @@ namespace FrozenCore.Widgets
         private object _leftClickArgument;
         [NonSerialized]
         private object _rightClickArgument;
-        [NonSerialized]
-        private TextRenderer _txt;
 
         [EditorHintFlags(MemberFlags.Invisible)]
         public object LeftClickArgument
@@ -67,6 +67,12 @@ namespace FrozenCore.Widgets
             set { _onRightClick = value; }
         }
 
+        public ColorRgba TextColor
+        {
+            get { return _textColor; }
+            set { _textColor = value; }
+        }
+
         public FormattedText Text
         {
             get { return _text; }
@@ -76,6 +82,7 @@ namespace FrozenCore.Widgets
         public SkinnedButton()
         {
             _text = new FormattedText();
+            _textColor = Colors.White;
         }
 
         internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
@@ -140,8 +147,11 @@ namespace FrozenCore.Widgets
             {
                 Vector3 buttonCenter = (_points[5].WorldCoords + _points[10].WorldCoords) / 2;
 
+                inCanvas.PushState();
+                inCanvas.State.ColorTint = _textColor;
                 inCanvas.State.TransformAngle = GameObj.Transform.Angle;
                 inCanvas.DrawText(Text, buttonCenter.X, buttonCenter.Y, buttonCenter.Z + DELTA_Z, null, Alignment.Center);
+                inCanvas.PopState();
             }
         }
 

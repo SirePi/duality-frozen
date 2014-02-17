@@ -11,6 +11,7 @@ using OpenTK;
 using Duality.Resources;
 using FrozenCore.Widgets.Skin;
 using Duality.EditorHints;
+using Duality.ColorFormat;
 
 namespace FrozenCore.Widgets
 {
@@ -20,6 +21,7 @@ namespace FrozenCore.Widgets
         private ContentRef<Script> _onChecked;
         private ContentRef<Script> _onUnchecked;
         private FormattedText _text;
+        private ColorRgba _textColor;
         private bool _isChecked;
 
         private object _checkedArgument;
@@ -53,6 +55,12 @@ namespace FrozenCore.Widgets
             set { _text = value; }
         }
 
+        public ColorRgba TextColor
+        {
+            get { return _textColor; }
+            set { _textColor = value; }
+        }
+
         [EditorHintFlags(MemberFlags.Invisible)]
         public object CheckedArgument
         {
@@ -70,6 +78,7 @@ namespace FrozenCore.Widgets
         public SkinnedCheckButton()
         {
             _text = new FormattedText();
+            _textColor = Colors.White;
         }
 
         internal override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
@@ -95,8 +104,11 @@ namespace FrozenCore.Widgets
             {
                 Vector3 buttonCenter = (_points[5].WorldCoords + _points[10].WorldCoords) / 2;
 
+                inCanvas.PushState();
+                inCanvas.State.ColorTint = _textColor;
                 inCanvas.State.TransformAngle = GameObj.Transform.Angle;
                 inCanvas.DrawText(Text, buttonCenter.X, buttonCenter.Y, buttonCenter.Z + DELTA_Z, null, Alignment.Center);
+                inCanvas.PopState();
             }
         }
 
