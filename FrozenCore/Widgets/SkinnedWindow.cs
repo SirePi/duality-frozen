@@ -156,13 +156,10 @@ namespace FrozenCore.Widgets
         {
             if (Title != null)
             {
-                Vector2 textOrigin = new Vector2(0, Title.Size.Y / 2);
                 Vector3 titleLeft = (_points[1].WorldCoords + _points[5].WorldCoords) / 2;
 
-                inCanvas.CurrentState.TransformHandle = textOrigin;
-                inCanvas.CurrentState.TransformAngle = GameObj.Transform.Angle;
-
-                inCanvas.DrawText(Title, titleLeft.X + textOrigin.X, titleLeft.Y + textOrigin.Y, titleLeft.Z + DELTA_Z, null, Alignment.Left);
+                inCanvas.State.TransformAngle = GameObj.Transform.Angle;
+                inCanvas.DrawText(Title, titleLeft.X, titleLeft.Y, titleLeft.Z + DELTA_Z, null, Alignment.Left);
             }
         }
 

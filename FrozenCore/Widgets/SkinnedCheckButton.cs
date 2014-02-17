@@ -93,15 +93,10 @@ namespace FrozenCore.Widgets
         {
             if (Text != null)
             {
-                Vector2 textCenter = Text.Size / 2;
-
                 Vector3 buttonCenter = (_points[5].WorldCoords + _points[10].WorldCoords) / 2;
-                //Vector3 buttonCenter = (_points[0].WorldCoords + _points[15].WorldCoords) / 2;
 
-                inCanvas.CurrentState.TransformHandle = textCenter;
-                inCanvas.CurrentState.TransformAngle = GameObj.Transform.Angle;
-
-                inCanvas.DrawText(Text, buttonCenter.X + textCenter.X, buttonCenter.Y + textCenter.Y, buttonCenter.Z + DELTA_Z, null, Alignment.Center);
+                inCanvas.State.TransformAngle = GameObj.Transform.Angle;
+                inCanvas.DrawText(Text, buttonCenter.X, buttonCenter.Y, buttonCenter.Z + DELTA_Z, null, Alignment.Center);
             }
         }
 

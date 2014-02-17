@@ -97,7 +97,7 @@ namespace FrozenCore.FX
                     p3 += src + new Vector3(normal * .02f, p3.Z); ;
                     p4 += src + new Vector3(normal * -.04f, p4.Z); ;
 
-                    c.CurrentState.ColorTint = Colors.Pink;
+                    c.State.ColorTint = Colors.Pink;
                     c.DrawLine(src.X, src.Y, src.Z, p1.X, p1.Y, p1.Z);
                     c.DrawLine(p1.X, p1.Y, p1.Z, p2.X, p2.Y, p2.Z);
                     c.DrawLine(p2.X, p2.Y, p2.Z, p3.X, p3.Y, p3.Z);

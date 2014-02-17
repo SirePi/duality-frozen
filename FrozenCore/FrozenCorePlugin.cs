@@ -12,6 +12,8 @@ namespace FrozenCore
     /// </summary>
     public class FrozenCore : CorePlugin
     {
+        internal static readonly string FX_VISUAL_LOG = "FrozenCoreFXVisualLog";
+
         private static FastRandom _fastRandomInstance;
 
         public static FastRandom FastRandom

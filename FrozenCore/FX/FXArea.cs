@@ -18,7 +18,7 @@ namespace FrozenCore.FX
         {
             inCanvas.PushState();
 
-            inCanvas.CurrentState.ColorTint = Colors.Aqua;
+            inCanvas.State.ColorTint = Colors.Aqua;
             FrozenUtilities.DrawCross(inCanvas, GameObj.Transform.Pos, 10);
             _DrawInEditor(inCanvas, GameObj.Transform.Pos);
 
