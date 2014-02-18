@@ -65,25 +65,42 @@ namespace FrozenCore.Widgets
 
     internal class ScrollCursor : SkinnedButton
     {
-        private bool _isDragged;
+        private SkinnedScrollBar _parent;
+        private Vector2 _currentDelta;
 
         internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
         {
-            _isDragged = e.Button == OpenTK.Input.MouseButton.Left;
-        }
+            if (e.Button == OpenTK.Input.MouseButton.Left)
+            {
+                SetTextureTopLeft(Skin.Res.Origin.Active);
 
-        internal override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
-        {
-            _isDragged = false;
+                _leftButtonDown = true;
+                _currentDelta = Vector2.Zero;
+            }
         }
 
         internal override void MouseMove(OpenTK.Input.MouseMoveEventArgs e)
         {
             base.MouseMove(e);
 
-            if (_isDragged)
+            if (_leftButtonDown)
             {
-                this.GameObj.Transform.Pos += (new Vector3(e.XDelta, e.YDelta, 0));
+                float angle = MathF.DegToRad(this.GameObj.Transform.Angle);
+
+                _currentDelta.X += (e.XDelta * MathF.Sin(angle));
+                _currentDelta.Y += (e.YDelta * MathF.Cos(angle));
+
+                if (_parent == null)
+                {
+                    _parent = this.GameObj.Parent.GetComponent<SkinnedScrollBar>();
+                }
+
+                int valueChange = (int)(_currentDelta.Y / _parent.GetValueDelta());
+                if (valueChange != 0)
+                {
+                    _parent.Value += valueChange;
+                    _currentDelta = Vector2.Zero;
+                }
             }
         }
     }

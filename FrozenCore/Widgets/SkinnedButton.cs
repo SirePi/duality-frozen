@@ -25,7 +25,7 @@ namespace FrozenCore.Widgets
         private ColorRgba _textColor;
 
         [NonSerialized]
-        private bool _leftButtonDown;
+        protected bool _leftButtonDown;
         [NonSerialized]
         private float _secondsFromLastTick;
 
@@ -117,12 +117,21 @@ namespace FrozenCore.Widgets
                         OnLeftClick.Res.Execute(this.GameObj, LeftClickArgument);
                     }
                 }
+                else
+                {
+                    SetTextureTopLeft(Skin.Res.Origin.Normal);
+                }
             }
         }
 
         internal override void MouseLeave()
         {
-            base.MouseLeave();
+            _isMouseOver = false;
+
+            if (_widgetEnabled && !_leftButtonDown)
+            {
+                SetTextureTopLeft(Skin.Res.Origin.Normal);
+            }
         }
 
         internal override void MouseEnter()
