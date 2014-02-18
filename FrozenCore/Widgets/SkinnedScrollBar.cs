@@ -35,7 +35,7 @@ namespace FrozenCore.Widgets
             set 
             { 
                 _min = value;
-                Value = Math.Max(Value, _min);
+                UpdateCursor();
             }
         }
 
@@ -45,7 +45,7 @@ namespace FrozenCore.Widgets
             set 
             { 
                 _max = value;
-                Value = Math.Min(Value, _max);
+                UpdateCursor();
             }
         }
 
@@ -145,6 +145,9 @@ namespace FrozenCore.Widgets
         {
             if (_cursor != null)
             {
+                _value = Math.Min(Value, _max);
+                _value = Math.Max(Value, _min);
+
                 float length = Rect.H - (Skin.Res.ButtonsSize.Y * 2) - (Skin.Res.CursorSize.Y);
                 Vector3 direction = _downButton.Transform.Pos - _upButton.Transform.Pos;
 
@@ -152,6 +155,12 @@ namespace FrozenCore.Widgets
 
                 _cursor.Transform.Pos = origin + (direction.Normalized * (Value - Minimum) * length / (Maximum - Minimum));
             }
+        }
+
+        internal float GetValueDelta()
+        {
+            float length = Rect.H - (Skin.Res.ButtonsSize.Y * 2) - (Skin.Res.CursorSize.Y);
+            return length / (Maximum - Minimum);
         }
     }
 }
