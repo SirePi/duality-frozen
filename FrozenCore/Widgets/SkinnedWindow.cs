@@ -83,7 +83,7 @@ namespace FrozenCore.Widgets
             CloseButton cb = new CloseButton();
             cb.VisibilityGroup = this.VisibilityGroup;
             cb.Skin = Skin.Res.CloseButtonSkin;
-            cb.Rect = new Rect(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
+            cb.Rect = Rect.AlignTopLeft(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
 
             button.AddComponent<CloseButton>(cb);
             Scene.Current.AddObject(button);
@@ -100,7 +100,7 @@ namespace FrozenCore.Widgets
             MinimizeButton mb = new MinimizeButton();
             mb.VisibilityGroup = this.VisibilityGroup;
             mb.Skin = Skin.Res.MinimizeButtonSkin;
-            mb.Rect = new Rect(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
+            mb.Rect = Rect.AlignTopLeft(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
 
             button.AddComponent<MinimizeButton>(mb);
             Scene.Current.AddObject(button);
@@ -117,7 +117,7 @@ namespace FrozenCore.Widgets
             MaximizeButton mb = new MaximizeButton();
             mb.VisibilityGroup = this.VisibilityGroup;
             mb.Skin = Skin.Res.MaximizeButtonSkin;
-            mb.Rect = new Rect(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
+            mb.Rect = Rect.AlignTopLeft(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
 
             button.AddComponent<MaximizeButton>(mb);
             Scene.Current.AddObject(button);
@@ -134,7 +134,7 @@ namespace FrozenCore.Widgets
             RestoreButton rb = new RestoreButton();
             rb.VisibilityGroup = this.VisibilityGroup;
             rb.Skin = Skin.Res.RestoreButtonSkin;
-            rb.Rect = new Rect(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
+            rb.Rect = Rect.AlignTopLeft(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
             rb.Active = false;
 
             button.AddComponent<RestoreButton>(rb);
@@ -236,11 +236,6 @@ namespace FrozenCore.Widgets
                     AddRestoreButton();
                 }
             }
-        }
-
-        protected override void OnUpdate(float inSecondsPast)
-        {
-            
         }
     }
 }

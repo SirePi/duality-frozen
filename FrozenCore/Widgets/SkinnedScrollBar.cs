@@ -22,22 +22,41 @@ namespace FrozenCore.Widgets
         private int _max;
         private int _value;
 
+        [NonSerialized]
+        private GameObject _upButton;
+        [NonSerialized]
+        private GameObject _downButton;
+        [NonSerialized]
+        private GameObject _cursor;
+
         public int Minimum
         {
             get { return _min; }
-            set { _min = value; }
+            set 
+            { 
+                _min = value;
+                Value = Math.Max(Value, _min);
+            }
         }
 
         public int Maximum
         {
             get { return _max; }
-            set { _max = value; }
+            set 
+            { 
+                _max = value;
+                Value = Math.Min(Value, _max);
+            }
         }
 
         public int Value
         {
             get { return _value; }
-            set { _value = value; }
+            set 
+            { 
+                _value = value;
+                UpdateCursor();
+            }
         }
 
         public SkinnedScrollBar()
@@ -56,6 +75,8 @@ namespace FrozenCore.Widgets
                 AddScrollUpButton();
                 AddScrollDownButton();
                 AddScrollCursor();
+
+                UpdateCursor();
             }
         }
 
@@ -71,53 +92,66 @@ namespace FrozenCore.Widgets
 
         private void AddScrollDownButton()
         {
-            GameObject button = new GameObject("downButton", this.GameObj);
+            _downButton = new GameObject("downButton", this.GameObj);
 
-            Transform t = button.AddComponent<Transform>();
+            Transform t = _downButton.AddComponent<Transform>();
             t.RelativePos = new Vector3(Rect.W / 2, Rect.H - Skin.Res.ButtonsSize.Y / 2, DELTA_Z);
             t.RelativeAngle = MathF.Pi;
 
             ScrollDownButton sdb = new ScrollDownButton();
             sdb.VisibilityGroup = this.VisibilityGroup;
             sdb.Skin = Skin.Res.ButtonsSkin;
-            sdb.Rect = new Rect(-Skin.Res.ButtonsSize.X / 2, -Skin.Res.ButtonsSize.Y / 2, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
+            sdb.Rect = Rect.AlignCenter(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
 
-            button.AddComponent<ScrollDownButton>(sdb);
-            Scene.Current.AddObject(button);
+            _downButton.AddComponent<ScrollDownButton>(sdb);
+            Scene.Current.AddObject(_downButton);
         }
 
         private void AddScrollUpButton()
         {
-            GameObject button = new GameObject("upButton", this.GameObj);
+            _upButton = new GameObject("upButton", this.GameObj);
 
-            Transform t = button.AddComponent<Transform>();
+            Transform t = _upButton.AddComponent<Transform>();
             t.RelativePos = new Vector3(Rect.W / 2, Skin.Res.ButtonsSize.Y / 2, DELTA_Z);
             t.RelativeAngle = 0;
 
             ScrollUpButton sub = new ScrollUpButton();
             sub.VisibilityGroup = this.VisibilityGroup;
             sub.Skin = Skin.Res.ButtonsSkin;
-            sub.Rect = new Rect(-Skin.Res.ButtonsSize.X / 2, -Skin.Res.ButtonsSize.Y / 2, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
+            sub.Rect = Rect.AlignCenter(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
 
-            button.AddComponent<ScrollUpButton>(sub);
-            Scene.Current.AddObject(button);
+            _upButton.AddComponent<ScrollUpButton>(sub);
+            Scene.Current.AddObject(_upButton);
         }
 
         private void AddScrollCursor()
         {
-            GameObject cursor = new GameObject("cursor", this.GameObj);
+            _cursor = new GameObject("cursor", this.GameObj);
 
-            Transform t = cursor.AddComponent<Transform>();
+            Transform t = _cursor.AddComponent<Transform>();
             t.RelativePos = new Vector3(Rect.W / 2, Rect.H / 2, DELTA_Z);
             t.RelativeAngle = 0;
 
             ScrollCursor sc = new ScrollCursor();
             sc.VisibilityGroup = this.VisibilityGroup;
             sc.Skin = Skin.Res.CursorSkin;
-            sc.Rect = new Rect(-Skin.Res.CursorSize.X / 2, -Skin.Res.CursorSize.Y / 2, Skin.Res.CursorSize.X, Skin.Res.CursorSize.Y);
+            sc.Rect = Rect.AlignCenter(0, 0, Skin.Res.CursorSize.X, Skin.Res.CursorSize.Y);
 
-            cursor.AddComponent<ScrollCursor>(sc);
-            Scene.Current.AddObject(cursor);
+            _cursor.AddComponent<ScrollCursor>(sc);
+            Scene.Current.AddObject(_cursor);
+        }
+
+        private void UpdateCursor()
+        {
+            if (_cursor != null)
+            {
+                float length = Rect.H - (Skin.Res.ButtonsSize.Y * 2) - (Skin.Res.CursorSize.Y);
+                Vector3 direction = _downButton.Transform.Pos - _upButton.Transform.Pos;
+
+                Vector3 origin = _upButton.Transform.Pos + (direction / 2) - (direction.Normalized * length / 2);
+
+                _cursor.Transform.Pos = origin + (direction.Normalized * (Value - Minimum) * length / (Maximum - Minimum));
+            }
         }
     }
 }
