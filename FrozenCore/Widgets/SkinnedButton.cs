@@ -130,7 +130,7 @@ namespace FrozenCore.Widgets
         {
             _isMouseOver = false;
 
-            if (_widgetEnabled && !_leftButtonDown)
+            if (IsWidgetEnabled && !_leftButtonDown)
             {
                 SetTextureTopLeft(Skin.Res.Origin.Normal);
             }
@@ -139,7 +139,7 @@ namespace FrozenCore.Widgets
         internal override void MouseEnter()
         {
             _isMouseOver = true;
-            if (_widgetEnabled)
+            if (IsWidgetEnabled)
             {
                 if (!_leftButtonDown)
                 {

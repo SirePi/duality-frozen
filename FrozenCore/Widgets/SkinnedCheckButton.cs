@@ -118,7 +118,7 @@ namespace FrozenCore.Widgets
         {
             _isMouseOver = false;
 
-            if (_widgetEnabled)
+            if (IsWidgetEnabled)
             {
                 if (IsChecked)
                 {

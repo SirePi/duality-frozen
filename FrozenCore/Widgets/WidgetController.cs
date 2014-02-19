@@ -32,7 +32,10 @@ namespace FrozenCore.Widgets
             LControl = 0x04,
             RControl = 0x08,
             LShift = 0x10,
-            RShift = 0x20
+            RShift = 0x20,
+            Alt = LAlt | RAlt,
+            Conttrol = LControl | RControl,
+            Shift = RShift | LShift,
         }
 
         protected static readonly OpenTK.Input.MouseButtonEventArgs LEFT_CLICK_DOWN = new OpenTK.Input.MouseButtonEventArgs(0, 0, OpenTK.Input.MouseButton.Left, true);
@@ -249,14 +252,23 @@ namespace FrozenCore.Widgets
 
         protected virtual void Mouse_ButtonDown(object sender, OpenTK.Input.MouseButtonEventArgs e)
         {
-            FocusedElement = HoveredElement;
-
-            if (FocusedElement != null)
+            if (FocusedElement != HoveredElement)
             {
-                FocusedElement.MouseDown(e);
-            }
+                if (FocusedElement != null)
+                {
+                    FocusedElement.Deactivate();
+                }
 
-            Mouse_Move(sender, new OpenTK.Input.MouseMoveEventArgs(e.X, e.Y, 0, 0));
+                FocusedElement = HoveredElement;
+
+                if (FocusedElement != null)
+                {
+                    FocusedElement.Activate();
+                    FocusedElement.MouseDown(e);
+                }
+
+                Mouse_Move(sender, new OpenTK.Input.MouseMoveEventArgs(e.X, e.Y, 0, 0));
+            }
         }
 
         protected virtual void Mouse_ButtonUp(object sender, OpenTK.Input.MouseButtonEventArgs e)

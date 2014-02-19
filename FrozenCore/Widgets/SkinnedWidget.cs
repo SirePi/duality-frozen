@@ -298,7 +298,7 @@ namespace FrozenCore.Widgets
 
         protected override void OnEnabledChanged()
         {
-            if (!_widgetEnabled && _skin.Res != null)
+            if (!IsWidgetEnabled && _skin.Res != null)
             {
                 SetTextureTopLeft(_skin.Res.Origin.Disabled);
             }
@@ -396,7 +396,7 @@ namespace FrozenCore.Widgets
         {
             _isMouseOver = true;
 
-            if (_widgetEnabled)
+            if (IsWidgetEnabled)
             {
                 SetTextureTopLeft(Skin.Res.Origin.Hover);
             }
@@ -406,7 +406,7 @@ namespace FrozenCore.Widgets
         {
             _isMouseOver = false;
 
-            if (_widgetEnabled)
+            if (IsWidgetEnabled)
             {
                 SetTextureTopLeft(Skin.Res.Origin.Normal);
             }

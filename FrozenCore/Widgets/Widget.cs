@@ -28,7 +28,10 @@ namespace FrozenCore.Widgets
         protected VertexC1P3T2[] _vertices;
 
         [NonSerialized]
-        protected bool _widgetEnabled;
+        private bool _widgetEnabled;
+
+        [NonSerialized]
+        private bool _widgetActive;
 
         [EditorHintFlags(MemberFlags.Invisible)]
         float ICmpRenderer.BoundRadius
@@ -43,10 +46,14 @@ namespace FrozenCore.Widgets
             set { _widgetEnabled = value; }
         }
 
+        [EditorHintFlags(MemberFlags.Invisible)]
+        public bool IsWidgetActive
+        {
+            get { return _widgetActive; }
+            set { _widgetActive = value; }
+        }
         private Rect _rect;
-        /// <summary>
-        /// [GET/SET] The Previous InputReceiverVisual in the GUI (not used)
-        /// </summary>
+
         [EditorHintDecimalPlaces(1)]
         public Rect Rect 
         {
@@ -149,6 +156,16 @@ namespace FrozenCore.Widgets
         internal abstract void MouseUp(OpenTK.Input.MouseButtonEventArgs e);
 
         internal abstract void MouseWheel(OpenTK.Input.MouseWheelEventArgs e);
+
+        internal virtual void Activate()
+        {
+            _widgetActive = true;
+        }
+
+        internal virtual void Deactivate()
+        {
+            _widgetActive = false;
+        }
 
         public void SetEnabled(bool inEnabled)
         {

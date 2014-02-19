@@ -146,7 +146,7 @@ namespace FrozenCore.Widgets
         {
             base.MouseDown(e);
 
-            if (_widgetEnabled && IsDraggable)
+            if (IsWidgetEnabled && IsDraggable)
             {
                 SetTextureTopLeft(Skin.Res.Origin.Active);
                 _isDragged = true;
@@ -157,7 +157,7 @@ namespace FrozenCore.Widgets
         {
             base.MouseUp(e);
 
-            if (_widgetEnabled && IsDraggable)
+            if (IsWidgetEnabled && IsDraggable)
             {
                 SetTextureTopLeft(Skin.Res.Origin.Hover);
                 _isDragged = false;
@@ -180,7 +180,7 @@ namespace FrozenCore.Widgets
 
         internal override void MouseEnter()
         {
-            if (_widgetEnabled && Skin.Res != null && !_isDragged)
+            if (IsWidgetEnabled && Skin.Res != null && !_isDragged)
             {
                 SetTextureTopLeft(Skin.Res.Origin.Hover);
             }
@@ -188,7 +188,7 @@ namespace FrozenCore.Widgets
 
         internal override void MouseLeave()
         {
-            if (_widgetEnabled && Skin.Res != null && !_isDragged)
+            if (IsWidgetEnabled && Skin.Res != null && !_isDragged)
             {
                 SetTextureTopLeft(Skin.Res.Origin.Normal);
             }
