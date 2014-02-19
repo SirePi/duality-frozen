@@ -81,6 +81,8 @@ namespace FrozenCore.Widgets
 
         public SkinnedButton()
         {
+            ActiveArea = Widgets.ActiveArea.All;
+
             _text = new FormattedText();
             _textColor = Colors.White;
         }
@@ -162,16 +164,6 @@ namespace FrozenCore.Widgets
                 inCanvas.DrawText(Text, buttonCenter.X, buttonCenter.Y, buttonCenter.Z + DELTA_Z, null, Alignment.Center);
                 inCanvas.PopState();
             }
-        }
-
-        internal override Polygon GetActiveAreaOnScreen(Duality.Components.Camera inCamera)
-        {
-            _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
-            _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
-            _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
-            _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
-
-            return _activeAreaOnScreen;
         }
 
         protected override void OnUpdate(float inSecondsPast)

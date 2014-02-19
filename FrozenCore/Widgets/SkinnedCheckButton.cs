@@ -77,6 +77,8 @@ namespace FrozenCore.Widgets
 
         public SkinnedCheckButton()
         {
+            ActiveArea = Widgets.ActiveArea.LeftBorder;
+
             _text = new FormattedText();
             _textColor = Colors.White;
         }
@@ -127,16 +129,6 @@ namespace FrozenCore.Widgets
                     SetTextureTopLeft(Skin.Res.Origin.Normal);
                 }
             }
-        }
-
-        internal override Polygon GetActiveAreaOnScreen(Duality.Components.Camera inCamera)
-        {
-            _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
-            _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[1].WorldCoords).Xy;
-            _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[13].WorldCoords).Xy;
-            _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
-
-            return _activeAreaOnScreen;
         }
 
         protected override void OnInit(Component.InitContext context)

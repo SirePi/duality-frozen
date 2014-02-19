@@ -16,13 +16,7 @@ namespace FrozenCore.Widgets
     public abstract class Widget : Component, ICmpRenderer, ICmpUpdatable, ICmpInitializable 
     {
         [NonSerialized]
-        public static readonly Rect NO_ACTIVE_AREA;
-
-        [NonSerialized]
         protected static readonly float DELTA_Z = -.001f;
-
-        [NonSerialized]
-        protected Rect _activeArea;
 
         [NonSerialized]
         protected Polygon _activeAreaOnScreen;
@@ -68,11 +62,18 @@ namespace FrozenCore.Widgets
             set { _visiblityFlag = value; }
         }
 
+        private ActiveArea _activeArea;
+
+        public ActiveArea ActiveArea
+        {
+            get { return _activeArea; }
+            set { _activeArea = value; }
+        }
+
         public Widget()
         {
             VisibilityGroup = VisibilityFlag.Group0;
 
-            _activeArea = NO_ACTIVE_AREA;
             _activeAreaOnScreen = new Polygon(4);
             _widgetEnabled = true;
 
@@ -90,7 +91,25 @@ namespace FrozenCore.Widgets
             Scene.Current.RemoveObject(this.GameObj);
         }
 
-        internal abstract Polygon GetActiveAreaOnScreen(Camera inCamera);
+        internal Polygon GetActiveAreaOnScreen(Camera inCamera)
+        {
+            switch (ActiveArea)
+            {
+                case Widgets.ActiveArea.None:
+                    return Polygon.NO_POLYGON;
+
+                case Widgets.ActiveArea.Custom:
+                    return GetCustomAreaOnScreen(inCamera);
+
+                default:
+                    return GetDefaultActiveAreaOnScreen(inCamera);
+            }
+        }
+
+        internal virtual Polygon GetCustomAreaOnScreen(Camera inCamera)
+        {
+            return Polygon.NO_POLYGON;
+        }
 
         bool ICmpRenderer.IsVisible(IDrawDevice device)
         {
@@ -142,6 +161,7 @@ namespace FrozenCore.Widgets
         protected abstract void OnInit(Component.InitContext inContext);
         protected abstract void OnEnabledChanged();
         protected abstract void OnUpdate(float inSecondsPast);
+        protected abstract Polygon GetDefaultActiveAreaOnScreen(Camera inCamera);
 
         void ICmpInitializable.OnInit(Component.InitContext context)
         {

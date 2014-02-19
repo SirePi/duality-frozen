@@ -61,8 +61,10 @@ namespace FrozenCore.Widgets
 
         public SkinnedScrollBar()
         {
-            _min = 1;
-            _max = 100;
+            ActiveArea = Widgets.ActiveArea.LeftBorder;
+
+            _min = 0;
+            _max = 10;
             _value = _min;
         }
 
@@ -83,11 +85,6 @@ namespace FrozenCore.Widgets
         protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
         {
             
-        }
-
-        internal override Polygon GetActiveAreaOnScreen(Camera inCamera)
-        {
-            return Polygon.NO_POLYGON;
         }
 
         private void AddScrollDownButton()

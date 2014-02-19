@@ -66,9 +66,10 @@ namespace FrozenCore.Widgets
 
         public SkinnedWindow()
         {
-            Title = new FormattedText();
+            ActiveArea = Widgets.ActiveArea.TopBorder;
+            
+            _title = new FormattedText();
             _titleColor = Colors.White;
-
             _isDragged = false;
         }
 
@@ -201,16 +202,6 @@ namespace FrozenCore.Widgets
             {
                 this.GameObj.Transform.Pos += (new Vector3(e.XDelta, e.YDelta, 0));
             }
-        }
-
-        internal override Polygon GetActiveAreaOnScreen(Duality.Components.Camera inCamera)
-        {
-            _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
-            _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
-            _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[7].WorldCoords).Xy;
-            _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[4].WorldCoords).Xy;
-
-            return _activeAreaOnScreen;
         }
 
         protected override void OnInit(Component.InitContext inContext)
