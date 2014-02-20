@@ -1,14 +1,13 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Duality;
 using Duality.Components;
-using OpenTK;
-using FrozenCore.Components;
 using Duality.Resources;
-using System.Collections.Generic;
-using FrozenCore.Widgets.Skin;
+using FrozenCore.Components;
+using OpenTK;
 
 namespace FrozenCore.Widgets
 {
@@ -260,15 +259,15 @@ namespace FrozenCore.Widgets
                 }
 
                 FocusedElement = HoveredElement;
-
-                if (FocusedElement != null)
-                {
-                    FocusedElement.Activate();
-                    FocusedElement.MouseDown(e);
-                }
-
-                Mouse_Move(sender, new OpenTK.Input.MouseMoveEventArgs(e.X, e.Y, 0, 0));
             }
+
+            if (FocusedElement != null)
+            {
+                FocusedElement.Activate();
+                FocusedElement.MouseDown(e);
+            }
+
+            Mouse_Move(sender, new OpenTK.Input.MouseMoveEventArgs(e.X, e.Y, 0, 0));
         }
 
         protected virtual void Mouse_ButtonUp(object sender, OpenTK.Input.MouseButtonEventArgs e)
@@ -279,15 +278,6 @@ namespace FrozenCore.Widgets
             }
 
             Mouse_Move(sender, new OpenTK.Input.MouseMoveEventArgs(e.X, e.Y, 0, 0));
-        }
-
-
-        protected virtual void Mouse_WheelChanged(object sender, OpenTK.Input.MouseWheelEventArgs e)
-        {
-            if (FocusedElement != null)
-            {
-                FocusedElement.MouseWheel(e);
-            }
         }
 
         protected void Mouse_Move(object sender, OpenTK.Input.MouseMoveEventArgs e)
@@ -327,6 +317,14 @@ namespace FrozenCore.Widgets
             }
 
             HoveredElement = hgc;
+        }
+
+        protected virtual void Mouse_WheelChanged(object sender, OpenTK.Input.MouseWheelEventArgs e)
+        {
+            if (FocusedElement != null)
+            {
+                FocusedElement.MouseWheel(e);
+            }
         }
     }
 }

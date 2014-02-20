@@ -1,9 +1,6 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Duality;
 
 namespace FrozenCore.Components
@@ -11,21 +8,25 @@ namespace FrozenCore.Components
     [Serializable]
     public class VisualTreeHider : Component
     {
+        private bool _treeVisible;
         public bool IsTreeVisibile
         {
             get { return _treeVisible; }
             set
             {
                 _treeVisible = value;
-                ChangeTreeVisibility(); 
+                ChangeTreeVisibility();
             }
         }
-
-        private bool _treeVisible;
 
         public VisualTreeHider()
         {
             _treeVisible = true;
+        }
+
+        public void ToggleVisibility()
+        {
+            IsTreeVisibile = !IsTreeVisibile;
         }
 
         private void ChangeTreeVisibility()
@@ -34,11 +35,6 @@ namespace FrozenCore.Components
             {
                 c.Active = _treeVisible;
             }
-        }
-
-        public void ToggleVisibility()
-        {
-            IsTreeVisibile = !IsTreeVisibile;
         }
     }
 }

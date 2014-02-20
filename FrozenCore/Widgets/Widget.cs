@@ -3,18 +3,18 @@
 using System;
 using Duality;
 using Duality.Components;
+using Duality.EditorHints;
 using Duality.Resources;
 using Duality.VertexFormat;
-using FrozenCore.Widgets.Skin;
-using OpenTK;
-using Duality.EditorHints;
 
 namespace FrozenCore.Widgets
 {
     [Serializable]
     [RequiredComponent(typeof(Transform))]
-    public abstract class Widget : Component, ICmpRenderer, ICmpUpdatable, ICmpInitializable 
+    public abstract class Widget : Component, ICmpRenderer, ICmpUpdatable, ICmpInitializable
     {
+        #region NonSerialized fields
+
         [NonSerialized]
         protected static readonly float DELTA_Z = -.001f;
 
@@ -28,22 +28,28 @@ namespace FrozenCore.Widgets
         protected VertexC1P3T2[] _vertices;
 
         [NonSerialized]
-        private bool _widgetEnabled;
-
-        [NonSerialized]
         private bool _widgetActive;
 
+        [NonSerialized]
+        private bool _widgetEnabled;
+
+        #endregion NonSerialized fields
+
+        private ActiveArea _activeArea;
+
+        private Rect _rect;
+
+        private VisibilityFlag _visiblityFlag;
+
+        public ActiveArea ActiveArea
+        {
+            get { return _activeArea; }
+            set { _activeArea = value; }
+        }
         [EditorHintFlags(MemberFlags.Invisible)]
         float ICmpRenderer.BoundRadius
         {
             get { return Rect.BoundingRadius; }
-        }
-
-        [EditorHintFlags(MemberFlags.Invisible)]
-        public bool IsWidgetEnabled
-        {
-            get { return _widgetEnabled; }
-            set { _widgetEnabled = value; }
         }
 
         [EditorHintFlags(MemberFlags.Invisible)]
@@ -52,29 +58,22 @@ namespace FrozenCore.Widgets
             get { return _widgetActive; }
             set { _widgetActive = value; }
         }
-        private Rect _rect;
-
+        [EditorHintFlags(MemberFlags.Invisible)]
+        public bool IsWidgetEnabled
+        {
+            get { return _widgetEnabled; }
+            set { _widgetEnabled = value; }
+        }
         [EditorHintDecimalPlaces(1)]
-        public Rect Rect 
+        public Rect Rect
         {
             get { return _rect; }
             set { _rect = value; }
         }
-
-        private VisibilityFlag _visiblityFlag;
-
         public VisibilityFlag VisibilityGroup
         {
             get { return _visiblityFlag; }
             set { _visiblityFlag = value; }
-        }
-
-        private ActiveArea _activeArea;
-
-        public ActiveArea ActiveArea
-        {
-            get { return _activeArea; }
-            set { _activeArea = value; }
         }
 
         public Widget()
@@ -98,24 +97,19 @@ namespace FrozenCore.Widgets
             Scene.Current.RemoveObject(this.GameObj);
         }
 
-        internal Polygon GetActiveAreaOnScreen(Camera inCamera)
+        void ICmpInitializable.OnInit(Component.InitContext context)
         {
-            switch (ActiveArea)
-            {
-                case Widgets.ActiveArea.None:
-                    return Polygon.NO_POLYGON;
-
-                case Widgets.ActiveArea.Custom:
-                    return GetCustomAreaOnScreen(inCamera);
-
-                default:
-                    return GetDefaultActiveAreaOnScreen(inCamera);
-            }
+            OnInit(context);
         }
 
-        internal virtual Polygon GetCustomAreaOnScreen(Camera inCamera)
+        void ICmpInitializable.OnShutdown(Component.ShutdownContext context)
         {
-            return Polygon.NO_POLYGON;
+        }
+
+        void ICmpRenderer.Draw(IDrawDevice device)
+        {
+            Draw(device);
+            DrawCanvas(device, new Canvas(device));
         }
 
         bool ICmpRenderer.IsVisible(IDrawDevice device)
@@ -141,6 +135,42 @@ namespace FrozenCore.Widgets
             OnUpdate(Time.LastDelta / 1000f);
         }
 
+        public void SetEnabled(bool inEnabled)
+        {
+            _widgetEnabled = inEnabled;
+            OnEnabledChanged();
+        }
+
+        internal virtual void Activate()
+        {
+            _widgetActive = true;
+        }
+
+        internal virtual void Deactivate()
+        {
+            _widgetActive = false;
+        }
+
+        internal Polygon GetActiveAreaOnScreen(Camera inCamera)
+        {
+            switch (ActiveArea)
+            {
+                case Widgets.ActiveArea.None:
+                    return Polygon.NO_POLYGON;
+
+                case Widgets.ActiveArea.Custom:
+                    return GetCustomAreaOnScreen(inCamera);
+
+                default:
+                    return GetDefaultActiveAreaOnScreen(inCamera);
+            }
+        }
+
+        internal virtual Polygon GetCustomAreaOnScreen(Camera inCamera)
+        {
+            return Polygon.NO_POLYGON;
+        }
+
         internal abstract void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k);
 
         internal abstract void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k);
@@ -157,43 +187,16 @@ namespace FrozenCore.Widgets
 
         internal abstract void MouseWheel(OpenTK.Input.MouseWheelEventArgs e);
 
-        internal virtual void Activate()
-        {
-            _widgetActive = true;
-        }
-
-        internal virtual void Deactivate()
-        {
-            _widgetActive = false;
-        }
-
-        public void SetEnabled(bool inEnabled)
-        {
-            _widgetEnabled = inEnabled;
-            OnEnabledChanged();
-        }
-
         protected abstract void Draw(IDrawDevice inDevice);
+
         protected abstract void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas);
-        protected abstract void OnInit(Component.InitContext inContext);
-        protected abstract void OnEnabledChanged();
-        protected abstract void OnUpdate(float inSecondsPast);
+
         protected abstract Polygon GetDefaultActiveAreaOnScreen(Camera inCamera);
 
-        void ICmpInitializable.OnInit(Component.InitContext context)
-        {
-            OnInit(context);
-        }
+        protected abstract void OnEnabledChanged();
 
-        void ICmpInitializable.OnShutdown(Component.ShutdownContext context)
-        {
-            
-        }
+        protected abstract void OnInit(Component.InitContext inContext);
 
-        void ICmpRenderer.Draw(IDrawDevice device)
-        {
-            Draw(device);
-            DrawCanvas(device, new Canvas(device));
-        }
+        protected abstract void OnUpdate(float inSecondsPast);
     }
 }

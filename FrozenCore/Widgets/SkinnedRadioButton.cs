@@ -1,16 +1,8 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Duality;
-using FrozenCore.Components;
-using Duality.Components.Renderers;
-using OpenTK;
 using Duality.Resources;
-using FrozenCore.Widgets.Skin;
-using Duality.EditorHints;
 
 namespace FrozenCore.Widgets
 {

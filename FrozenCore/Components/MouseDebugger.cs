@@ -1,9 +1,6 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Duality;
 using Duality.Components;
 using OpenTK;
@@ -16,8 +13,14 @@ namespace FrozenCore.Components
     {
         [NonSerialized]
         private Vector2 _mousePosition;
+
         [NonSerialized]
         private Vector3 _worldPosition;
+
+        float ICmpRenderer.BoundRadius
+        {
+            get { return 0; }
+        }
 
         void ICmpInitializable.OnInit(Component.InitContext context)
         {
@@ -25,23 +28,10 @@ namespace FrozenCore.Components
                 DualityApp.Mouse.Move += new EventHandler<OpenTK.Input.MouseMoveEventArgs>(Mouse_Move);
         }
 
-        void Mouse_Move(object sender, OpenTK.Input.MouseMoveEventArgs e)
-        {
-            _mousePosition.X = e.X;
-            _mousePosition.Y = e.Y;
-
-            _worldPosition = GameObj.Camera.GetSpaceCoord(_mousePosition);
-        }
-
         void ICmpInitializable.OnShutdown(Component.ShutdownContext context)
         {
             if (context == ShutdownContext.Deactivate)
                 DualityApp.Mouse.Move -= new EventHandler<OpenTK.Input.MouseMoveEventArgs>(Mouse_Move);
-        }
-
-        float ICmpRenderer.BoundRadius
-        {
-            get { return 0; }
         }
 
         void ICmpRenderer.Draw(IDrawDevice device)
@@ -54,6 +44,14 @@ namespace FrozenCore.Components
         bool ICmpRenderer.IsVisible(IDrawDevice device)
         {
             return ((device.VisibilityMask & VisibilityFlag.ScreenOverlay) != VisibilityFlag.None);
+        }
+
+        private void Mouse_Move(object sender, OpenTK.Input.MouseMoveEventArgs e)
+        {
+            _mousePosition.X = e.X;
+            _mousePosition.Y = e.Y;
+
+            _worldPosition = GameObj.Camera.GetSpaceCoord(_mousePosition);
         }
     }
 }

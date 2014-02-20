@@ -1,38 +1,38 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Duality;
-using FrozenCore.Components;
-using Duality.Components.Renderers;
-using OpenTK;
-using Duality.Resources;
-using FrozenCore.Widgets.Skin;
-using Duality.EditorHints;
 using Duality.ColorFormat;
+using Duality.EditorHints;
+using FrozenCore.Widgets.Skin;
+using OpenTK;
 
 namespace FrozenCore.Widgets
 {
     [Serializable]
     public class SkinnedButton : SkinnedWidget<BaseSkin>
     {
+        #region NonSerialized fields
+
+        [NonSerialized]
+        protected bool _leftButtonDown;
+
+        [NonSerialized]
+        private object _leftClickArgument;
+
+        [NonSerialized]
+        private object _rightClickArgument;
+
+        [NonSerialized]
+        private float _secondsFromLastTick;
+
+        #endregion NonSerialized fields
+
         private ContentRef<Script> _onLeftClick;
         private ContentRef<Script> _onRightClick;
         private float _repeatLeftClickEvery;
         private FormattedText _text;
         private ColorRgba _textColor;
-
-        [NonSerialized]
-        protected bool _leftButtonDown;
-        [NonSerialized]
-        private float _secondsFromLastTick;
-
-        [NonSerialized]
-        private object _leftClickArgument;
-        [NonSerialized]
-        private object _rightClickArgument;
 
         [EditorHintFlags(MemberFlags.Invisible)]
         public object LeftClickArgument
@@ -41,42 +41,37 @@ namespace FrozenCore.Widgets
             set { _leftClickArgument = value; }
         }
 
-        [EditorHintFlags(MemberFlags.Invisible)]
-        public object RightClickArgument
+        public ContentRef<Script> OnLeftClick
         {
-            private get { return _rightClickArgument; }
-            set { _rightClickArgument = value; }
+            get { return _onLeftClick; }
+            set { _onLeftClick = value; }
         }
-
+        public ContentRef<Script> OnRightClick
+        {
+            get { return _onRightClick; }
+            set { _onRightClick = value; }
+        }
         [EditorHintDecimalPlaces(1)]
         public float RepeatLeftClickEvery
         {
             get { return _repeatLeftClickEvery; }
             set { _repeatLeftClickEvery = value; }
         }
-
-        public ContentRef<Script> OnLeftClick
+        [EditorHintFlags(MemberFlags.Invisible)]
+        public object RightClickArgument
         {
-            get { return _onLeftClick; }
-            set { _onLeftClick = value; }
+            private get { return _rightClickArgument; }
+            set { _rightClickArgument = value; }
         }
-
-        public ContentRef<Script> OnRightClick
-        {
-            get { return _onRightClick; }
-            set { _onRightClick = value; }
-        }
-
-        public ColorRgba TextColor
-        {
-            get { return _textColor; }
-            set { _textColor = value; }
-        }
-
         public FormattedText Text
         {
             get { return _text; }
             set { _text = value; }
+        }
+        public ColorRgba TextColor
+        {
+            get { return _textColor; }
+            set { _textColor = value; }
         }
 
         public SkinnedButton()
@@ -104,6 +99,32 @@ namespace FrozenCore.Widgets
             }
         }
 
+        internal override void MouseEnter()
+        {
+            _isMouseOver = true;
+            if (IsWidgetEnabled)
+            {
+                if (!_leftButtonDown)
+                {
+                    SetTextureTopLeft(Skin.Res.Origin.Hover);
+                }
+                else
+                {
+                    SetTextureTopLeft(Skin.Res.Origin.Active);
+                }
+            }
+        }
+
+        internal override void MouseLeave()
+        {
+            _isMouseOver = false;
+
+            if (IsWidgetEnabled && !_leftButtonDown)
+            {
+                SetTextureTopLeft(Skin.Res.Origin.Normal);
+            }
+        }
+
         internal override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
         {
             if (e.Button == OpenTK.Input.MouseButton.Left)
@@ -122,32 +143,6 @@ namespace FrozenCore.Widgets
                 else
                 {
                     SetTextureTopLeft(Skin.Res.Origin.Normal);
-                }
-            }
-        }
-
-        internal override void MouseLeave()
-        {
-            _isMouseOver = false;
-
-            if (IsWidgetEnabled && !_leftButtonDown)
-            {
-                SetTextureTopLeft(Skin.Res.Origin.Normal);
-            }
-        }
-
-        internal override void MouseEnter()
-        {
-            _isMouseOver = true;
-            if (IsWidgetEnabled)
-            {
-                if (!_leftButtonDown)
-                {
-                    SetTextureTopLeft(Skin.Res.Origin.Hover);
-                }
-                else
-                {
-                    SetTextureTopLeft(Skin.Res.Origin.Active);
                 }
             }
         }

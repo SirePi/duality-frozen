@@ -1,59 +1,63 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Duality;
-using FrozenCore.Components;
-using Duality.Components.Renderers;
-using OpenTK;
+using Duality.Components;
 using Duality.Resources;
 using FrozenCore.Widgets.Skin;
-using Duality.EditorHints;
-using Duality.Components;
+using OpenTK;
 
 namespace FrozenCore.Widgets
 {
     [Serializable]
     public class SkinnedScrollBar : SkinnedWidget<ScrollBarSkin>
     {
-        private int _min;
-        private int _max;
-        private int _value;
+        #region NonSerialized fields
 
-        [NonSerialized]
-        private GameObject _upButton;
-        [NonSerialized]
-        private GameObject _downButton;
         [NonSerialized]
         private GameObject _cursor;
 
-        public int Minimum
-        {
-            get { return _min; }
-            set 
-            { 
-                _min = value;
-                UpdateCursor();
-            }
-        }
+        [NonSerialized]
+        private GameObject _downButton;
+
+        [NonSerialized]
+        private GameObject _upButton;
+
+        #endregion NonSerialized fields
+
+        private int _max;
+        private int _min;
+        private int _scrollSpeed;
+        private int _value;
 
         public int Maximum
         {
             get { return _max; }
-            set 
-            { 
+            set
+            {
                 _max = value;
                 UpdateCursor();
             }
         }
-
+        public int Minimum
+        {
+            get { return _min; }
+            set
+            {
+                _min = value;
+                UpdateCursor();
+            }
+        }
+        public int ScrollSpeed
+        {
+            get { return _scrollSpeed; }
+            set { _scrollSpeed = value; }
+        }
         public int Value
         {
             get { return _value; }
-            set 
-            { 
+            set
+            {
                 _value = value;
                 UpdateCursor();
             }
@@ -66,6 +70,17 @@ namespace FrozenCore.Widgets
             _min = 0;
             _max = 10;
             _value = _min;
+            _scrollSpeed = 1;
+        }
+
+        internal float GetValueDelta()
+        {
+            float length = Rect.H - (Skin.Res.ButtonsSize.Y * 2) - (Skin.Res.CursorSize.Y);
+            return length / (Maximum - Minimum);
+        }
+
+        protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
+        {
         }
 
         protected override void OnInit(Component.InitContext inContext)
@@ -74,51 +89,15 @@ namespace FrozenCore.Widgets
 
             if (inContext == InitContext.Activate && !FrozenUtilities.IsDualityEditor)
             {
-                AddScrollUpButton();
-                AddScrollDownButton();
-                AddScrollCursor();
+                if (_cursor == null)
+                {
+                    AddScrollUpButton();
+                    AddScrollDownButton();
+                    AddScrollCursor();
+                }
 
                 UpdateCursor();
             }
-        }
-
-        protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
-        {
-            
-        }
-
-        private void AddScrollDownButton()
-        {
-            _downButton = new GameObject("downButton", this.GameObj);
-
-            Transform t = _downButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W / 2, Rect.H - Skin.Res.ButtonsSize.Y / 2, DELTA_Z);
-            t.RelativeAngle = MathF.Pi;
-
-            ScrollDownButton sdb = new ScrollDownButton();
-            sdb.VisibilityGroup = this.VisibilityGroup;
-            sdb.Skin = Skin.Res.ButtonsSkin;
-            sdb.Rect = Rect.AlignCenter(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
-
-            _downButton.AddComponent<ScrollDownButton>(sdb);
-            Scene.Current.AddObject(_downButton);
-        }
-
-        private void AddScrollUpButton()
-        {
-            _upButton = new GameObject("upButton", this.GameObj);
-
-            Transform t = _upButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W / 2, Skin.Res.ButtonsSize.Y / 2, DELTA_Z);
-            t.RelativeAngle = 0;
-
-            ScrollUpButton sub = new ScrollUpButton();
-            sub.VisibilityGroup = this.VisibilityGroup;
-            sub.Skin = Skin.Res.ButtonsSkin;
-            sub.Rect = Rect.AlignCenter(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
-
-            _upButton.AddComponent<ScrollUpButton>(sub);
-            Scene.Current.AddObject(_upButton);
         }
 
         private void AddScrollCursor()
@@ -138,6 +117,42 @@ namespace FrozenCore.Widgets
             Scene.Current.AddObject(_cursor);
         }
 
+        private void AddScrollDownButton()
+        {
+            _downButton = new GameObject("downButton", this.GameObj);
+
+            Transform t = _downButton.AddComponent<Transform>();
+            t.RelativePos = new Vector3(Rect.W / 2, Rect.H - Skin.Res.ButtonsSize.Y / 2, DELTA_Z);
+            t.RelativeAngle = MathF.Pi;
+
+            ScrollDownButton sdb = new ScrollDownButton();
+            sdb.VisibilityGroup = this.VisibilityGroup;
+            sdb.Skin = Skin.Res.ButtonsSkin;
+            sdb.Rect = Rect.AlignCenter(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
+            sdb.LeftClickArgument = _scrollSpeed;
+
+            _downButton.AddComponent<ScrollDownButton>(sdb);
+            Scene.Current.AddObject(_downButton);
+        }
+
+        private void AddScrollUpButton()
+        {
+            _upButton = new GameObject("upButton", this.GameObj);
+
+            Transform t = _upButton.AddComponent<Transform>();
+            t.RelativePos = new Vector3(Rect.W / 2, Skin.Res.ButtonsSize.Y / 2, DELTA_Z);
+            t.RelativeAngle = 0;
+
+            ScrollUpButton sub = new ScrollUpButton();
+            sub.VisibilityGroup = this.VisibilityGroup;
+            sub.Skin = Skin.Res.ButtonsSkin;
+            sub.Rect = Rect.AlignCenter(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
+            sub.LeftClickArgument = _scrollSpeed;
+
+            _upButton.AddComponent<ScrollUpButton>(sub);
+            Scene.Current.AddObject(_upButton);
+        }
+
         private void UpdateCursor()
         {
             if (_cursor != null)
@@ -152,12 +167,6 @@ namespace FrozenCore.Widgets
 
                 _cursor.Transform.Pos = origin + (direction.Normalized * (Value - Minimum) * length / (Maximum - Minimum));
             }
-        }
-
-        internal float GetValueDelta()
-        {
-            float length = Rect.H - (Skin.Res.ButtonsSize.Y * 2) - (Skin.Res.CursorSize.Y);
-            return length / (Maximum - Minimum);
         }
     }
 }

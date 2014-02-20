@@ -95,8 +95,10 @@
     <Compile Include="FX\Particle.cs" />
     <Compile Include="FX\ParticleMaterial.cs" />
     <Compile Include="MultiSpacePoint.cs" />
+    <Compile Include="ObservableFormattedText.cs" />
     <Compile Include="Polygon.cs" />
     <Compile Include="Widgets\ActiveArea.cs" />
+    <Compile Include="Widgets\SkinnedTextBlock.cs" />
     <Compile Include="Widgets\SkinnedTextBox.cs" />
     <Compile Include="Widgets\SkinnedButton.cs" />
     <Compile Include="Widgets\SkinnedCheckButton.cs" />

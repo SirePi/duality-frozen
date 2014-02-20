@@ -1,15 +1,9 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Duality.Resources;
 using Duality;
-using Duality.ColorFormat;
-using OpenTK;
-using Duality.VertexFormat;
 using Duality.EditorHints;
+using OpenTK;
 
 namespace FrozenCore.Widgets.Skin
 {
@@ -18,20 +12,20 @@ namespace FrozenCore.Widgets.Skin
     {
         [NonSerialized]
         private ContentRef<BaseSkin> _closeButtonSkin;
-        [NonSerialized]
-        private ContentRef<BaseSkin> _minimizeButtonSkin;
+
         [NonSerialized]
         private ContentRef<BaseSkin> _maximizeButtonSkin;
+
+        [NonSerialized]
+        private ContentRef<BaseSkin> _minimizeButtonSkin;
+
         [NonSerialized]
         private ContentRef<BaseSkin> _restoreButtonSkin;
 
+        public Vector4 ButtonsBorder { get; set; }
         public Vector2 ButtonsSize { get; set; }
-        public Vector4 ButtonsBorder { get; set; } // X, Y, Z, W = Left, Top, Right, Bottom
+        // X, Y, Z, W = Left, Top, Right, Bottom
         public SkinOrigin CloseButtonOrigin { get; set; }
-        public SkinOrigin MinimizeButtonOrigin { get; set; }
-        public SkinOrigin MaximizeButtonOrigin { get; set; }
-        public SkinOrigin RestoreButtonOrigin { get; set; }
-
         [EditorHintFlags(MemberFlags.Invisible)]
         public ContentRef<BaseSkin> CloseButtonSkin
         {
@@ -50,26 +44,7 @@ namespace FrozenCore.Widgets.Skin
                 return _closeButtonSkin;
             }
         }
-
-        [EditorHintFlags(MemberFlags.Invisible)]
-        public ContentRef<BaseSkin> MinimizeButtonSkin
-        {
-            get
-            {
-                if (_minimizeButtonSkin == null)
-                {
-                    _minimizeButtonSkin = new ContentRef<BaseSkin>(new BaseSkin()
-                    {
-                        Border = ButtonsBorder,
-                        Size = ButtonsSize,
-                        Texture = Texture,
-                        Origin = MinimizeButtonOrigin
-                    });
-                }
-                return _minimizeButtonSkin;
-            }
-        }
-
+        public SkinOrigin MaximizeButtonOrigin { get; set; }
         [EditorHintFlags(MemberFlags.Invisible)]
         public ContentRef<BaseSkin> MaximizeButtonSkin
         {
@@ -88,7 +63,26 @@ namespace FrozenCore.Widgets.Skin
                 return _maximizeButtonSkin;
             }
         }
-
+        public SkinOrigin MinimizeButtonOrigin { get; set; }
+        [EditorHintFlags(MemberFlags.Invisible)]
+        public ContentRef<BaseSkin> MinimizeButtonSkin
+        {
+            get
+            {
+                if (_minimizeButtonSkin == null)
+                {
+                    _minimizeButtonSkin = new ContentRef<BaseSkin>(new BaseSkin()
+                    {
+                        Border = ButtonsBorder,
+                        Size = ButtonsSize,
+                        Texture = Texture,
+                        Origin = MinimizeButtonOrigin
+                    });
+                }
+                return _minimizeButtonSkin;
+            }
+        }
+        public SkinOrigin RestoreButtonOrigin { get; set; }
         [EditorHintFlags(MemberFlags.Invisible)]
         public ContentRef<BaseSkin> RestoreButtonSkin
         {

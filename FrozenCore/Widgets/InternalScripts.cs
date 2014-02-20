@@ -2,14 +2,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Duality;
 
 namespace FrozenCore.Widgets
 {
     internal class InternalScripts
     {
+        internal abstract class InternalScript : Script
+        { }
+
         private static Dictionary<string, Duality.ContentRef<Script>> _scriptsCache;
 
         internal static Duality.ContentRef<Script> GetScript<T>() where T : InternalScript, new()
@@ -30,28 +31,13 @@ namespace FrozenCore.Widgets
             return _scriptsCache[scriptType.FullName];
         }
 
-        internal abstract class InternalScript : Script
-        { }
-
         #region Internal Scripts
+
         internal class CloseButtonLeftMouseDown : InternalScript
         {
             public override void Execute(Duality.GameObject inSource, object inParameter)
             {
                 inSource.Parent.GetComponent<Widget>().Close();
-            }
-        }
-
-        internal class MinimizeButtonLeftMouseDown : InternalScript
-        {
-            public override void Execute(Duality.GameObject inSource, object inParameter)
-            {
-                SkinnedWindow window = inSource.Parent.GetComponent<Widget>() as SkinnedWindow;
-
-                if (window != null)
-                {
-                    
-                }
             }
         }
 
@@ -71,23 +57,23 @@ namespace FrozenCore.Widgets
             }
         }
 
+        internal class MinimizeButtonLeftMouseDown : InternalScript
+        {
+            public override void Execute(Duality.GameObject inSource, object inParameter)
+            {
+                SkinnedWindow window = inSource.Parent.GetComponent<Widget>() as SkinnedWindow;
+
+                if (window != null)
+                {
+                }
+            }
+        }
+
         internal class RestoreButtonLeftMouseDown : InternalScript
         {
             public override void Execute(Duality.GameObject inSource, object inParameter)
             {
                 throw new NotImplementedException();
-            }
-        }
-
-        internal class ScrollUpButtonLeftMouseDown : InternalScript
-        {
-            public override void Execute(Duality.GameObject inSource, object inParameter)
-            {
-                SkinnedScrollBar scrollBar = inSource.Parent.GetComponent<Widget>() as SkinnedScrollBar;
-                if (scrollBar != null)
-                {
-                    scrollBar.Value = Math.Max(scrollBar.Minimum, scrollBar.Value - (int)inParameter);                    
-                }
             }
         }
 
@@ -103,6 +89,18 @@ namespace FrozenCore.Widgets
             }
         }
 
-        #endregion
+        internal class ScrollUpButtonLeftMouseDown : InternalScript
+        {
+            public override void Execute(Duality.GameObject inSource, object inParameter)
+            {
+                SkinnedScrollBar scrollBar = inSource.Parent.GetComponent<Widget>() as SkinnedScrollBar;
+                if (scrollBar != null)
+                {
+                    scrollBar.Value = Math.Max(scrollBar.Minimum, scrollBar.Value - (int)inParameter);
+                }
+            }
+        }
+
+        #endregion Internal Scripts
     }
 }

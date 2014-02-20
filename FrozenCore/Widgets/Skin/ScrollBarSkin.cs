@@ -1,15 +1,8 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Duality.Resources;
-using Duality;
-using Duality.ColorFormat;
-using OpenTK;
-using Duality.VertexFormat;
 using Duality.EditorHints;
+using OpenTK;
 
 namespace FrozenCore.Widgets.Skin
 {
@@ -18,15 +11,13 @@ namespace FrozenCore.Widgets.Skin
     {
         [NonSerialized]
         private BaseSkin _buttonsSkin;
+
         [NonSerialized]
         private BaseSkin _cursorSkin;
 
-        public Vector2 ButtonsSize { get; set; }
-        public Vector4 ButtonsBorder { get; set; } // X, Y, Z, W = Left, Top, Right, Bottom
         public SkinOrigin ButtonOrigin { get; set; }
-        public Vector2 CursorSize { get; set; }
-        public Vector4 CursorBorder { get; set; } // X, Y, Z, W = Left, Top, Right, Bottom
-        public SkinOrigin CursorOrigin { get; set; }
+        public Vector4 ButtonsBorder { get; set; }
+        public Vector2 ButtonsSize { get; set; }
 
         [EditorHintFlags(MemberFlags.Invisible)]
         public BaseSkin ButtonsSkin
@@ -46,7 +37,11 @@ namespace FrozenCore.Widgets.Skin
                 return _buttonsSkin;
             }
         }
-
+        public Vector4 CursorBorder { get; set; }
+        // X, Y, Z, W = Left, Top, Right, Bottom
+        public SkinOrigin CursorOrigin { get; set; }
+        // X, Y, Z, W = Left, Top, Right, Bottom
+        public Vector2 CursorSize { get; set; }
         [EditorHintFlags(MemberFlags.Invisible)]
         public BaseSkin CursorSkin
         {
@@ -64,6 +59,11 @@ namespace FrozenCore.Widgets.Skin
                 }
                 return _cursorSkin;
             }
+        }
+
+        public float GetSkinWidth()
+        {
+            return Math.Max(ButtonsSize.X, CursorSize.X);
         }
     }
 }

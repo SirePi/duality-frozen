@@ -1,44 +1,31 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Duality;
-using FrozenCore.Components;
-using Duality.Components.Renderers;
-using OpenTK;
-using Duality.Resources;
-using FrozenCore.Widgets.Skin;
-using Duality.EditorHints;
 using Duality.ColorFormat;
+using Duality.EditorHints;
+using FrozenCore.Widgets.Skin;
+using OpenTK;
 
 namespace FrozenCore.Widgets
 {
     [Serializable]
     public class SkinnedCheckButton : SkinnedWidget<BaseSkin>
     {
+        private object _checkedArgument;
+        private bool _isChecked;
         private ContentRef<Script> _onChecked;
         private ContentRef<Script> _onUnchecked;
         private FormattedText _text;
         private ColorRgba _textColor;
-        private bool _isChecked;
-
-        private object _checkedArgument;
         private object _uncheckedArgument;
 
-        public ContentRef<Script> OnChecked
+        [EditorHintFlags(MemberFlags.Invisible)]
+        public object CheckedArgument
         {
-            get { return _onChecked; }
-            set { _onChecked = value; }
+            private get { return _checkedArgument; }
+            set { _checkedArgument = value; }
         }
-
-        public ContentRef<Script> OnUnchecked
-        {
-            get { return _onUnchecked; }
-            set { _onUnchecked = value; }
-        }
-
         public bool IsChecked
         {
             get { return _isChecked; }
@@ -48,26 +35,26 @@ namespace FrozenCore.Widgets
                 OnCheckUncheck();
             }
         }
-
+        public ContentRef<Script> OnChecked
+        {
+            get { return _onChecked; }
+            set { _onChecked = value; }
+        }
+        public ContentRef<Script> OnUnchecked
+        {
+            get { return _onUnchecked; }
+            set { _onUnchecked = value; }
+        }
         public FormattedText Text
         {
             get { return _text; }
             set { _text = value; }
         }
-
         public ColorRgba TextColor
         {
             get { return _textColor; }
             set { _textColor = value; }
         }
-
-        [EditorHintFlags(MemberFlags.Invisible)]
-        public object CheckedArgument
-        {
-            private get { return _checkedArgument; }
-            set { _checkedArgument = value; }
-        }
-
         [EditorHintFlags(MemberFlags.Invisible)]
         public object UncheckedArgument
         {
@@ -81,6 +68,23 @@ namespace FrozenCore.Widgets
 
             _text = new FormattedText();
             _textColor = Colors.White;
+        }
+
+        internal override void MouseLeave()
+        {
+            _isMouseOver = false;
+
+            if (IsWidgetEnabled)
+            {
+                if (IsChecked)
+                {
+                    SetTextureTopLeft(Skin.Res.Origin.Active);
+                }
+                else
+                {
+                    SetTextureTopLeft(Skin.Res.Origin.Normal);
+                }
+            }
         }
 
         internal override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
@@ -114,26 +118,9 @@ namespace FrozenCore.Widgets
             }
         }
 
-        internal override void MouseLeave()
-        {
-            _isMouseOver = false;
-
-            if (IsWidgetEnabled)
-            {
-                if (IsChecked)
-                {
-                    SetTextureTopLeft(Skin.Res.Origin.Active);
-                }
-                else
-                {
-                    SetTextureTopLeft(Skin.Res.Origin.Normal);
-                }
-            }
-        }
-
         protected override void OnInit(Component.InitContext context)
         {
-            if(Skin.Res != null)
+            if (Skin.Res != null)
             {
                 SetTextureTopLeft(IsChecked ? Skin.Res.Origin.Active : Skin.Res.Origin.Normal);
             }

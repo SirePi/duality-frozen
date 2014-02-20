@@ -168,6 +168,20 @@ namespace FrozenCore.Components
             }
         }
 
+        protected void Drag(int inX, int inY)
+        {
+            if (_draggedElement != null)
+            {
+                _currentMousePosition.X = inX;
+                _currentMousePosition.Y = inY;
+
+                _draggedElement.Dragged(_currentMousePosition - _lastMousePosition);
+
+                _lastMousePosition.X = inX;
+                _lastMousePosition.Y = inY;
+            }
+        }
+
         protected virtual void Keyboard_KeyDown(object sender, OpenTK.Input.KeyboardKeyEventArgs e)
         {
             if (e.Key == OpenTK.Input.Key.LShift)
@@ -351,20 +365,6 @@ namespace FrozenCore.Components
         protected bool ShouldNotifyReceiver()
         {
             return (FocusedElement == null || (FocusedElement != null && AlwaysNotifyReceiver));
-        }
-
-        protected void Drag(int inX, int inY)
-        {
-            if (_draggedElement != null)
-            {
-                _currentMousePosition.X = inX;
-                _currentMousePosition.Y = inY;
-
-                _draggedElement.Dragged(_currentMousePosition - _lastMousePosition);
-
-                _lastMousePosition.X = inX;
-                _lastMousePosition.Y = inY;
-            }
         }
     }
 }

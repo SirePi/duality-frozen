@@ -4,10 +4,8 @@ using System;
 using Duality;
 using Duality.Components;
 using Duality.Resources;
-using Duality.VertexFormat;
 using FrozenCore.Widgets.Skin;
 using OpenTK;
-using Duality.EditorHints;
 
 namespace FrozenCore.Widgets
 {
@@ -15,7 +13,10 @@ namespace FrozenCore.Widgets
     [RequiredComponent(typeof(Transform))]
     public abstract class SkinnedWidget<T> : Widget where T : BaseSkin
     {
-        private ContentRef<T> _skin;
+        #region NonSerialized fields
+
+        [NonSerialized]
+        protected bool _isMouseOver;
 
         [NonSerialized]
         private BatchInfo _batchInfo;
@@ -32,8 +33,9 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         private Vector2 _uvDelta;
 
-        [NonSerialized]
-        protected bool _isMouseOver;
+        #endregion NonSerialized fields
+
+        private ContentRef<T> _skin;
 
         public ContentRef<T> Skin
         {
@@ -46,6 +48,50 @@ namespace FrozenCore.Widgets
                     _uvCalculated = false;
                 }
             }
+        }
+
+        internal override void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
+        {
+        }
+
+        internal override void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
+        {
+        }
+
+        internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        {
+        }
+
+        internal override void MouseEnter()
+        {
+            _isMouseOver = true;
+
+            if (IsWidgetEnabled)
+            {
+                SetTextureTopLeft(Skin.Res.Origin.Hover);
+            }
+        }
+
+        internal override void MouseLeave()
+        {
+            _isMouseOver = false;
+
+            if (IsWidgetEnabled)
+            {
+                SetTextureTopLeft(Skin.Res.Origin.Normal);
+            }
+        }
+
+        internal override void MouseMove(OpenTK.Input.MouseMoveEventArgs e)
+        {
+        }
+
+        internal override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
+        {
+        }
+
+        internal override void MouseWheel(OpenTK.Input.MouseWheelEventArgs e)
+        {
         }
 
         protected override void Draw(IDrawDevice inDevice)
@@ -296,6 +342,60 @@ namespace FrozenCore.Widgets
             }
         }
 
+        protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
+        {
+        }
+
+        protected override Polygon GetDefaultActiveAreaOnScreen(Camera inCamera)
+        {
+            switch (ActiveArea)
+            {
+                case Widgets.ActiveArea.LeftBorder:
+                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
+                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[1].WorldCoords).Xy;
+                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[13].WorldCoords).Xy;
+                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
+                    break;
+
+                case Widgets.ActiveArea.TopBorder:
+                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
+                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
+                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[7].WorldCoords).Xy;
+                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[4].WorldCoords).Xy;
+                    break;
+
+                case Widgets.ActiveArea.RightBorder:
+                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[2].WorldCoords).Xy;
+                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
+                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
+                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[14].WorldCoords).Xy;
+                    break;
+
+                case Widgets.ActiveArea.BottomBorder:
+                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[8].WorldCoords).Xy;
+                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[11].WorldCoords).Xy;
+                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
+                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
+                    break;
+
+                case Widgets.ActiveArea.Center:
+                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[5].WorldCoords).Xy;
+                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[6].WorldCoords).Xy;
+                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[10].WorldCoords).Xy;
+                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[9].WorldCoords).Xy;
+                    break;
+
+                default: //All or others.. but it should never happen
+                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
+                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
+                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
+                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
+                    break;
+            }
+
+            return _activeAreaOnScreen;
+        }
+
         protected override void OnEnabledChanged()
         {
             if (!IsWidgetEnabled && _skin.Res != null)
@@ -310,6 +410,10 @@ namespace FrozenCore.Widgets
             {
                 SetTextureTopLeft(_skin.Res.Origin.Normal);
             }
+        }
+
+        protected override void OnUpdate(float inSecondsPast)
+        {
         }
 
         protected void SetTextureTopLeft(Vector2 inTopLeft)
@@ -390,116 +494,6 @@ namespace FrozenCore.Widgets
                 _points[15].UVCoords.X = uvTopLeft.X + _uvDelta.X;
                 _points[15].UVCoords.Y = uvTopLeft.Y + _uvDelta.Y;
             }
-        }
-
-        internal override void MouseEnter()
-        {
-            _isMouseOver = true;
-
-            if (IsWidgetEnabled)
-            {
-                SetTextureTopLeft(Skin.Res.Origin.Hover);
-            }
-        }
-
-        internal override void MouseLeave()
-        {
-            _isMouseOver = false;
-
-            if (IsWidgetEnabled)
-            {
-                SetTextureTopLeft(Skin.Res.Origin.Normal);
-            }
-        }
-
-        internal override void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
-        {
-            
-        }
-
-        internal override void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
-        {
-            
-        }
-
-        internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
-        {
-            
-        }
-
-        internal override void MouseMove(OpenTK.Input.MouseMoveEventArgs e)
-        {
-            
-        }
-
-        internal override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
-        {
-            
-        }
-
-        internal override void MouseWheel(OpenTK.Input.MouseWheelEventArgs e)
-        {
-            
-        }
-
-        protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
-        {
-            
-        }
-
-        protected override void OnUpdate(float inSecondsPast)
-        {
-            
-        }
-
-        protected override Polygon GetDefaultActiveAreaOnScreen(Camera inCamera)
-        {
-            switch (ActiveArea)
-            {
-                case Widgets.ActiveArea.LeftBorder:
-                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
-                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[1].WorldCoords).Xy;
-                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[13].WorldCoords).Xy;
-                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
-                    break;
-
-                case Widgets.ActiveArea.TopBorder:
-                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
-                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
-                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[7].WorldCoords).Xy;
-                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[4].WorldCoords).Xy;
-                    break;
-
-                case Widgets.ActiveArea.RightBorder:
-                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[2].WorldCoords).Xy;
-                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
-                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
-                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[14].WorldCoords).Xy;
-                    break;
-
-                case Widgets.ActiveArea.BottomBorder:
-                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[8].WorldCoords).Xy;
-                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[11].WorldCoords).Xy;
-                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
-                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
-                    break;
-
-                case Widgets.ActiveArea.Center:
-                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[5].WorldCoords).Xy;
-                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[6].WorldCoords).Xy;
-                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[10].WorldCoords).Xy;
-                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[9].WorldCoords).Xy;
-                    break;
-
-                default: //All or others.. but it should never happen
-                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
-                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
-                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
-                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
-                    break;
-            }
-
-            return _activeAreaOnScreen;
         }
     }
 }

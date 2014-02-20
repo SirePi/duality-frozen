@@ -1,11 +1,8 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Duality;
 using System.Threading;
+using Duality;
 
 namespace FrozenCore.Components
 {
@@ -59,6 +56,7 @@ namespace FrozenCore.Components
         }
 
         public abstract void LoaderOnUpdate();
+
         public abstract void LoadingComplete();
     }
 }
