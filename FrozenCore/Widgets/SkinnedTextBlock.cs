@@ -13,6 +13,47 @@ using OpenTK.Graphics.OpenGL;
 namespace FrozenCore.Widgets
 {
     [Serializable]
+    public class SkinnedTextBlock : SkinnedMultiLineWidget<BaseSkin>
+    {
+        public ObservableFormattedText Text
+        {
+            get { return _text as ObservableFormattedText; }
+            set { _text = value; }
+        }
+
+        public SkinnedTextBlock() : base()
+        {
+            ActiveArea = Widgets.ActiveArea.None;
+
+            _text = new ObservableFormattedText();
+        }
+
+        protected override void OnUpdate(float inSecondsPast)
+        {
+            if (Text.TextChanged)
+            {
+                Text.TextChanged = false; 
+                UpdateWidget(true);
+            }
+        }
+    }
+}
+
+/// BACKUP ONLY
+/*
+using System;
+using Duality;
+using Duality.ColorFormat;
+using Duality.Components;
+using Duality.Resources;
+using Duality.VertexFormat;
+using FrozenCore.Widgets.Skin;
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
+
+namespace FrozenCore.Widgets
+{
+    [Serializable]
     public class SkinnedTextBlock : SkinnedWidget<BaseSkin>
     {
         #region NonSerialized fields
@@ -82,11 +123,11 @@ namespace FrozenCore.Widgets
                     new ContentRef<Texture>(
                         new Texture(new ContentRef<Pixmap>(new Pixmap()))
                         {
-                            FilterMin = TextureMinFilter.Nearest,
-                            FilterMag = TextureMagFilter.Nearest,
+                            FilterMin = TextureMinFilter.LinearMipmapLinear,
+                            FilterMag = TextureMagFilter.LinearSharpenSgis,
                             WrapX = TextureWrapMode.ClampToEdge,
                             WrapY = TextureWrapMode.ClampToEdge,
-                            TexSizeMode = Texture.SizeMode.Stretch
+                            TexSizeMode = Texture.SizeMode.Enlarge
                         }));
         }
 
@@ -112,6 +153,13 @@ namespace FrozenCore.Widgets
                 _textVertices[3].TexCoord.X = 0;
                 _textVertices[3].TexCoord.Y = _textVertices[2].TexCoord.Y;
             }
+
+            Vector2 uvRatio = _batchInfo.MainTexture.Res.UVRatio;
+
+            _textVertices[0].TexCoord *= uvRatio;
+            _textVertices[1].TexCoord *= uvRatio;
+            _textVertices[2].TexCoord *= uvRatio;
+            _textVertices[3].TexCoord *= uvRatio;
 
             _textVertices[0].Color = _textColor;
             _textVertices[0].Pos = _points[5].SceneCoords;
@@ -216,3 +264,4 @@ namespace FrozenCore.Widgets
         }
     }
 }
+*/

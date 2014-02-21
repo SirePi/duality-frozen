@@ -78,6 +78,8 @@ namespace FrozenCore.FX
                     new ContentRef<Texture>(
                         new Texture(new ContentRef<Pixmap>(new Pixmap()))
                         {
+                            FilterMin = TextureMinFilter.LinearMipmapLinear,
+                            FilterMag = TextureMagFilter.LinearSharpenSgis,
                             WrapX = TextureWrapMode.ClampToEdge,
                             WrapY = TextureWrapMode.ClampToEdge,
                             TexSizeMode = Texture.SizeMode.Stretch

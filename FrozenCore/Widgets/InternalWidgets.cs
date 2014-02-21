@@ -97,4 +97,8 @@ namespace FrozenCore.Widgets
             LeftClickArgument = 1;
         }
     }
+
+    internal class ListBoxSelector : SkinnedWidget<Skin.BaseSkin>
+    {
+    }
 }

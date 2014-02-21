@@ -430,6 +430,7 @@ namespace FrozenCore.Widgets
                         _batchInfo = new BatchInfo(DrawTechnique.Mask, Colors.White, bSkin.Texture);
                         _textureSize = bSkin.Texture.Res.Size;
                         _uvDelta = _skinSize / _textureSize;
+                        _uvDelta = _uvDelta * bSkin.Texture.Res.UVRatio;
                     }
                     _uvCalculated = true;
                 }
@@ -444,7 +445,7 @@ namespace FrozenCore.Widgets
                 float uvTopBorder = bSkin.Border.Y * k.Y;
                 float uvBottomBorder = (bSkin.Size.Y - bSkin.Border.W) * k.Y;
 
-                Vector2 uvTopLeft = inTopLeft / _textureSize;
+                Vector2 uvTopLeft = inTopLeft / _textureSize * bSkin.Texture.Res.UVRatio;
 
                 _points[0].UVCoords.X = uvTopLeft.X;
                 _points[0].UVCoords.Y = uvTopLeft.Y;

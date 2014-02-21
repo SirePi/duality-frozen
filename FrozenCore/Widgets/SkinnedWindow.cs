@@ -30,6 +30,12 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         private GameObject _restoreButton;
 
+        [NonSerialized]
+        private bool _isMinimized;
+
+        [NonSerialized]
+        private Rect _normalRect;
+
         #endregion NonSerialized fields
 
         private bool _canClose;
@@ -38,6 +44,7 @@ namespace FrozenCore.Widgets
         private bool _isDraggable;
         private FormattedText _title;
         private ColorRgba _titleColor;
+        private Vector2 _maximizedSize;
 
         public bool CanClose
         {
@@ -68,6 +75,11 @@ namespace FrozenCore.Widgets
         {
             get { return _titleColor; }
             set { _titleColor = value; }
+        }
+        public Vector2 MaximizedSize
+        {
+            get { return _maximizedSize; }
+            set { _maximizedSize = value; }
         }
 
         public SkinnedWindow()
@@ -144,6 +156,7 @@ namespace FrozenCore.Widgets
         protected override void OnInit(Component.InitContext inContext)
         {
             base.OnInit(inContext);
+            _normalRect = Rect;
 
             if (inContext == InitContext.Activate && !FrozenUtilities.IsDualityEditor)
             {
@@ -151,7 +164,7 @@ namespace FrozenCore.Widgets
                 {
                     AddCloseButton();
                 }
-                if (CanMaximize && _maximizeButton == null)
+                if (CanMaximize && _maximizeButton == null && _maximizedSize.X >= Rect.W && _maximizedSize.Y >= Rect.H)
                 {
                     AddMaximizeButton();
                 }
@@ -222,17 +235,135 @@ namespace FrozenCore.Widgets
             _restoreButton = new GameObject("restoreButton", this.GameObj);
 
             Transform t = _restoreButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (Skin.Res.ButtonsSize.X * 2), 0, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - (Skin.Res.ButtonsSize.X * 4), 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             RestoreButton rb = new RestoreButton();
             rb.VisibilityGroup = this.VisibilityGroup;
             rb.Skin = Skin.Res.RestoreButtonSkin;
             rb.Rect = Rect.AlignTopLeft(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
-            rb.Active = false;
 
+            _restoreButton.Active = false;
             _restoreButton.AddComponent<RestoreButton>(rb);
             Scene.Current.AddObject(_restoreButton);
+        }
+
+        internal void Minimize()
+        {
+            _isMinimized = true;
+
+            Rect newRect = _normalRect;
+            newRect.H = Skin.Res.Border.Y + Skin.Res.Border.W;
+            Rect = newRect;
+
+            _minimizeButton.Active = false;
+            _restoreButton.Active = true;
+            if (_maximizeButton != null)
+            {
+                _maximizeButton.Active = true;
+            }
+
+            _restoreButton.Transform.Pos = _minimizeButton.Transform.Pos;
+
+            EnableChildren(false);
+            OnResize();
+        }
+
+        internal void Maximize()
+        {
+            _isMinimized = false;
+
+            Rect newRect = Rect;
+            newRect.W = _maximizedSize.X;
+            newRect.H = _maximizedSize.Y;
+            Rect = newRect;
+
+            _maximizeButton.Active = false;
+            _restoreButton.Active = true;
+            if (_minimizeButton != null)
+            {
+                _minimizeButton.Active = true;
+            }
+
+            _restoreButton.Transform.Pos = _maximizeButton.Transform.Pos;
+
+            float deltaX = _maximizedSize.X - Rect.W;
+            LayoutButtons(deltaX);
+
+            EnableChildren(true);
+            OnResize();
+        }
+
+        internal void Restore()
+        {
+            if (!_isMinimized)
+            {
+                float deltaX = _maximizedSize.X - Rect.W;
+                LayoutButtons(-deltaX);
+            }
+
+            _isMinimized = false;
+
+            Rect = _normalRect;
+
+            _restoreButton.Active = false;
+            if (_minimizeButton != null)
+            {
+                _minimizeButton.Active = true;
+            }
+            if (_maximizeButton != null)
+            {
+                _maximizeButton.Active = true;
+            }
+
+            EnableChildren(true);
+            OnResize();
+        }
+
+        private void LayoutButtons(float inDeltaX)
+        {
+            if(CanClose && _closeButton != null) 
+            {
+                MoveButton(_closeButton, inDeltaX);
+            }
+
+            if (CanMinimize && _minimizeButton != null)
+            {
+                MoveButton(_minimizeButton, inDeltaX);
+            }
+
+            if (CanMaximize && _maximizeButton != null)
+            {
+                MoveButton(_maximizeButton, inDeltaX);
+            }
+
+            if ((CanMinimize || CanMaximize) && _restoreButton != null)
+            {
+                MoveButton(_restoreButton, inDeltaX);
+            }
+        }
+
+        private void MoveButton(GameObject inButton, float inDeltaX)
+        {
+            Vector3 pos = inButton.Transform.RelativePos;
+            pos.X += inDeltaX;
+            inButton.Transform.RelativePos = pos;
+        }
+
+        private void EnableChildren(bool inEnable)
+        {
+            foreach (GameObject go in this.GameObj.Children)
+            {
+                if (go != _closeButton && go != _minimizeButton && go != _maximizeButton && go != _restoreButton)
+                {
+                    go.Active = inEnable;
+                }
+            }
+        }
+
+        protected virtual void OnResize()
+        {
+
         }
     }
 }

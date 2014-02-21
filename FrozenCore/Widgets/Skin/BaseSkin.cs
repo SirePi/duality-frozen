@@ -26,7 +26,7 @@ namespace FrozenCore.Widgets.Skin
 
         public static readonly BaseSkin WHITE_SKIN = new BaseSkin()
         {
-            Texture = Duality.Resources.Texture.White,
+            Texture = Duality.Resources.Texture.Checkerboard,
             Size = Vector2.One,
             Border = Vector4.Zero,
             Origin = new SkinOrigin()

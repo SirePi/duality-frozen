@@ -49,10 +49,7 @@ namespace FrozenCore.Widgets
 
                 if (window != null)
                 {
-                    Rect r = window.Rect;
-                    r.W = r.W * 2;
-
-                    window.Rect = r;
+                    window.Maximize();
                 }
             }
         }
@@ -65,6 +62,7 @@ namespace FrozenCore.Widgets
 
                 if (window != null)
                 {
+                    window.Minimize();
                 }
             }
         }
@@ -73,7 +71,12 @@ namespace FrozenCore.Widgets
         {
             public override void Execute(Duality.GameObject inSource, object inParameter)
             {
-                throw new NotImplementedException();
+                SkinnedWindow window = inSource.Parent.GetComponent<Widget>() as SkinnedWindow;
+
+                if (window != null)
+                {
+                    window.Restore();
+                }
             }
         }
 
