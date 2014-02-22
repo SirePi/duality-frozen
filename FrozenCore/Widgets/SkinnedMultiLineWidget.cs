@@ -101,31 +101,31 @@ namespace FrozenCore.Widgets
                 _textVertices[3].TexCoord.Y = _textVertices[2].TexCoord.Y;
             }
 
-            Vector2 uvRatio = _batchInfo.MainTexture.Res.UVRatio;
-
-            _textVertices[0].TexCoord *= _uvUnit * uvRatio;
-            _textVertices[1].TexCoord *= _uvUnit * uvRatio;
-            _textVertices[2].TexCoord *= _uvUnit * uvRatio;
-            _textVertices[3].TexCoord *= _uvUnit * uvRatio;
-
-            _textVertices[0].Color = _textColor;
-            _textVertices[0].Pos = _points[5].SceneCoords;
-            _textVertices[0].Pos.Z += DELTA_Z;
-
-            _textVertices[1].Color = _textColor;
-            _textVertices[1].Pos = _points[6].SceneCoords;
-            _textVertices[1].Pos.Z += DELTA_Z;
-
-            _textVertices[2].Color = _textColor;
-            _textVertices[2].Pos = _points[10].SceneCoords;
-            _textVertices[2].Pos.Z += DELTA_Z;
-
-            _textVertices[3].Color = _textColor;
-            _textVertices[3].Pos = _points[9].SceneCoords;
-            _textVertices[3].Pos.Z += DELTA_Z;
-
             if (_batchInfo != null)
             {
+                Vector2 uvRatio = _batchInfo.MainTexture.Res.UVRatio;
+
+                _textVertices[0].TexCoord *= _uvUnit * uvRatio;
+                _textVertices[1].TexCoord *= _uvUnit * uvRatio;
+                _textVertices[2].TexCoord *= _uvUnit * uvRatio;
+                _textVertices[3].TexCoord *= _uvUnit * uvRatio;
+
+                _textVertices[0].Color = _textColor;
+                _textVertices[0].Pos = _points[5].SceneCoords;
+                _textVertices[0].Pos.Z += DELTA_Z;
+
+                _textVertices[1].Color = _textColor;
+                _textVertices[1].Pos = _points[6].SceneCoords;
+                _textVertices[1].Pos.Z += DELTA_Z;
+
+                _textVertices[2].Color = _textColor;
+                _textVertices[2].Pos = _points[10].SceneCoords;
+                _textVertices[2].Pos.Z += DELTA_Z;
+
+                _textVertices[3].Color = _textColor;
+                _textVertices[3].Pos = _points[9].SceneCoords;
+                _textVertices[3].Pos.Z += DELTA_Z;
+           
                 inDevice.AddVertices(_batchInfo, VertexMode.Quads, _textVertices);
             }
         }

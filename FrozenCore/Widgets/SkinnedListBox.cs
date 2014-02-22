@@ -20,10 +20,16 @@ namespace FrozenCore.Widgets
         #region NonSerialized fields
 
         [NonSerialized]
-        private Polygon _areaOnScreen;
+        private Polygon _listArea;
+
+        [NonSerialized]
+        private Polygon _testPolygon;
 
         [NonSerialized]
         private bool _itemsAccessed;
+
+        [NonSerialized]
+        private object _selectedItem;
 
         #endregion NonSerialized fields
 
@@ -43,11 +49,41 @@ namespace FrozenCore.Widgets
             }
         }
 
+        public object SelectedItem
+        {
+            get { return _selectedItem; }
+            set
+            {
+                if (_items.Contains(value) && _selectedItem != value)
+                {
+                    _selectedItem = value;
+                    UpdateHighlight();
+                }
+                else
+                {
+                    _selectedItem = null;
+                }
+            }
+        }
+
+        public int SelectedIndex
+        {
+            get { return (_selectedItem == null ? _items.IndexOf(_selectedItem) : -1); }
+            set
+            {
+                if (value >= 0 && value < _items.Count)
+                {
+                    SelectedItem = _items[value];
+                }
+            }
+        }
+
         public SkinnedListBox()
         {
             _items = new List<object>();
             _text = new FormattedText();
-            _areaOnScreen = new Polygon(4);
+            _listArea = new Polygon(4);
+            _testPolygon = new Polygon(4);
         }
 
         bool x;
@@ -82,10 +118,10 @@ namespace FrozenCore.Widgets
         {
             base.Draw(inDevice);
 
-            _areaOnScreen[0] = inDevice.GetScreenCoord(_points[5].WorldCoords).Xy;
-            _areaOnScreen[1] = inDevice.GetScreenCoord(_points[6].WorldCoords).Xy;
-            _areaOnScreen[2] = inDevice.GetScreenCoord(_points[10].WorldCoords).Xy;
-            _areaOnScreen[3] = inDevice.GetScreenCoord(_points[9].WorldCoords).Xy;
+            _listArea[0] = inDevice.GetScreenCoord(_points[5].WorldCoords).Xy;
+            _listArea[1] = inDevice.GetScreenCoord(_points[6].WorldCoords).Xy;
+            _listArea[2] = inDevice.GetScreenCoord(_points[10].WorldCoords).Xy;
+            _listArea[3] = inDevice.GetScreenCoord(_points[9].WorldCoords).Xy;
         }
 
         internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
@@ -96,20 +132,49 @@ namespace FrozenCore.Widgets
             {
                 float top = 0;
                 float bottom = _visibleHeight;
+                Vector2 point = new Vector2(e.X, e.Y);
 
-                if (!_isScrollbarRequired)
+                if (_isScrollbarRequired)
                 {
                     top = _scrollComponent.Value;
                     bottom = _scrollComponent.Value + _visibleHeight;
                 }
 
-                foreach (Rect r in _text.TextMetrics.LineBounds)
+                float delta = bottom - top;
+                Vector2 deltaLeft = (_activeAreaOnScreen[3] - _activeAreaOnScreen[0]) / delta;
+                Vector2 deltaRight = (_activeAreaOnScreen[2] - _activeAreaOnScreen[1]) / delta;
+
+                for(int i = 0; i < _text.TextMetrics.LineBounds.Count; i++)
                 {
+                    Rect r = _text.TextMetrics.LineBounds[i];
+
                     if (!(r.Bottom.Y < top || r.Top.Y > bottom))
                     {
-                        int a = 0;
+                        float realTop = Math.Max(r.Top.Y, top) - top;
+                        float realBottom = Math.Min(r.Bottom.Y, bottom) - top;
+
+                        _testPolygon[0] = _activeAreaOnScreen[0] + (deltaLeft * realTop);
+                        _testPolygon[1] = _activeAreaOnScreen[1] + (deltaRight * realTop);
+                        _testPolygon[2] = _activeAreaOnScreen[1] + (deltaRight * realBottom);
+                        _testPolygon[3] = _activeAreaOnScreen[0] + (deltaLeft * realBottom);
+
+                        if (_testPolygon.Contains(point))
+                        {
+                            SelectedItem = _items[i];
+                            break;
+                        }
                     }
                 }
+            }
+        }
+
+        private void UpdateHighlight()
+        {
+            if (_selectedItem == null)
+            {
+            }
+            else
+            {
             }
         }
     }
