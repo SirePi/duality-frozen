@@ -50,6 +50,11 @@ namespace FrozenCore.Widgets
             }
         }
 
+        public SkinnedWidget()
+        {
+            Skin = BaseSkin.GetWhiteSkin<T>();
+        }
+
         internal override void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
         {
         }

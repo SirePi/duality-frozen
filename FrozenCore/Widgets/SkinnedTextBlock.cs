@@ -21,7 +21,7 @@ namespace FrozenCore.Widgets
             set { _text = value; }
         }
 
-        public SkinnedTextBlock() : base()
+        public SkinnedTextBlock()
         {
             ActiveArea = Widgets.ActiveArea.None;
 

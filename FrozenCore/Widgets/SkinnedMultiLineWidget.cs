@@ -71,6 +71,8 @@ namespace FrozenCore.Widgets
         {
             ActiveArea = Widgets.ActiveArea.Center;
 
+            ScrollBarSkin = BaseSkin.GetWhiteSkin<ScrollBarSkin>();
+
             _textColor = Colors.White;
             _textVertices = new VertexC1P3T2[4];
             _scrollSpeed = 5;

@@ -31,6 +31,9 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         private object _selectedItem;
 
+        [NonSerialized]
+        private GameObject _highlight;
+
         #endregion NonSerialized fields
 
         private List<object> _items;
@@ -168,14 +171,40 @@ namespace FrozenCore.Widgets
             }
         }
 
+        protected override void OnInit(Component.InitContext inContext)
+        {
+            base.OnInit(inContext);
+
+            if (inContext == InitContext.Activate && !FrozenUtilities.IsDualityEditor)
+            {
+                if (_highlight == null)
+                {
+                    AddHighlight();
+                }
+
+                UpdateHighlight();
+            }
+        }
+
+        private void AddHighlight()
+        {
+            _highlight = new GameObject("highlight", this.GameObj);
+
+            Transform t = _highlight.AddComponent<Transform>();
+            t.RelativePos = new Vector3(Rect.W / 2, Rect.H / 2, DELTA_Z);
+            t.RelativeAngle = 0;
+
+            ScrollCursor sc = new ScrollCursor();
+            sc.VisibilityGroup = this.VisibilityGroup;
+            sc.Skin = Skin.Res.SelectorSkin;
+            sc.Rect = Rect.AlignCenter(0, 0, Rect.W, 0);
+
+            _highlight.AddComponent<ScrollCursor>(sc);
+            Scene.Current.AddObject(_highlight);
+        }
+
         private void UpdateHighlight()
         {
-            if (_selectedItem == null)
-            {
-            }
-            else
-            {
-            }
         }
     }
 }
