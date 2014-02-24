@@ -2,8 +2,7 @@
 
 using System;
 using Duality;
-using Duality.ColorFormat;
-using Duality.VertexFormat;
+using Duality.Drawing;
 using FrozenCore.Data;
 using OpenTK;
 

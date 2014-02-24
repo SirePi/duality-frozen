@@ -3,9 +3,9 @@
 using System;
 using Duality;
 using Duality.Components;
-using Duality.EditorHints;
 using Duality.Resources;
-using Duality.VertexFormat;
+using Duality.Editor;
+using Duality.Drawing;
 
 namespace FrozenCore.Widgets
 {

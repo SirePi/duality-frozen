@@ -3,6 +3,7 @@
 using System;
 using Duality;
 using OpenTK;
+using Duality.Drawing;
 
 namespace FrozenCore.FX
 {

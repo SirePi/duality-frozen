@@ -4,7 +4,7 @@ using System;
 using Duality;
 using Duality.Resources;
 using OpenTK;
-using Duality.EditorHints;
+using Duality.Editor;
 
 namespace FrozenCore.Widgets.Skin
 {

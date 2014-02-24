@@ -2,10 +2,9 @@
 
 using System;
 using Duality;
-using Duality.ColorFormat;
+using Duality.Drawing;
 using Duality.Components;
 using Duality.Resources;
-using Duality.VertexFormat;
 using FrozenCore.Widgets.Skin;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;

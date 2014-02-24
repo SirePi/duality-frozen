@@ -2,7 +2,7 @@
 
 using System;
 using Duality;
-using Duality.ColorFormat;
+using Duality.Drawing;
 using Duality.Components;
 using Duality.Components.Renderers;
 using Duality.Resources;

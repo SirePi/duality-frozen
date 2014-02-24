@@ -6,6 +6,7 @@ using Duality.Components;
 using Duality.Resources;
 using FrozenCore.Widgets.Skin;
 using OpenTK;
+using Duality.Drawing;
 
 namespace FrozenCore.Widgets
 {

@@ -1,6 +1,6 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using Duality.ColorFormat;
+using Duality.Drawing;
 using OpenTK;
 using System;
 

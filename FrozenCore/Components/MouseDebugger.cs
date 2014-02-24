@@ -4,6 +4,7 @@ using System;
 using Duality;
 using Duality.Components;
 using OpenTK;
+using Duality.Drawing;
 
 namespace FrozenCore.Components
 {

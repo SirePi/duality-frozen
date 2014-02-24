@@ -2,10 +2,10 @@
 
 using System;
 using Duality;
-using Duality.ColorFormat;
-using Duality.EditorHints;
 using FrozenCore.Widgets.Skin;
 using OpenTK;
+using Duality.Drawing;
+using Duality.Editor;
 
 namespace FrozenCore.Widgets
 {

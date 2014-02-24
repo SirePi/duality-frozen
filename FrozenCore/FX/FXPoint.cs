@@ -2,13 +2,14 @@
 
 using System;
 using OpenTK;
+using Duality.Drawing;
 
 namespace FrozenCore.FX
 {
     [Serializable]
     public class FXPoint : FXArea
     {
-        protected override void _DrawInEditor(Duality.Canvas inCanvas, Vector3 inPosition)
+        protected override void _DrawInEditor(Canvas inCanvas, Vector3 inPosition)
         {
             // nothing else to draw
         }

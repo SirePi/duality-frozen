@@ -3,9 +3,8 @@
 using System;
 using System.Linq;
 using Duality;
-using Duality.ColorFormat;
+using Duality.Drawing;
 using Duality.Resources;
-using Duality.VertexFormat;
 using FrozenCore.Data;
 using OpenTK;
 

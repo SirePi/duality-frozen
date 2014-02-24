@@ -7,6 +7,7 @@ using System.Text;
 using Duality;
 using OpenTK;
 using OpenTK.Input;
+using Duality.Drawing;
 
 namespace FrozenCore
 {

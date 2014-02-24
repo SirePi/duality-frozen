@@ -1,8 +1,8 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using System;
-using Duality.EditorHints;
 using OpenTK;
+using Duality.Editor;
 
 namespace FrozenCore.Widgets.Skin
 {

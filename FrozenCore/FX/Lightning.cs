@@ -4,8 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Duality;
-using Duality.ColorFormat;
-using Duality.VertexFormat;
+using Duality.Drawing;
 using OpenTK;
 
 namespace FrozenCore.FX

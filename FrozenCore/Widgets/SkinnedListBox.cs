@@ -2,15 +2,14 @@
 
 using System;
 using Duality;
-using Duality.ColorFormat;
 using Duality.Components;
 using Duality.Components.Renderers;
 using Duality.Resources;
 using FrozenCore.Widgets.Skin;
 using OpenTK;
 using System.Collections.Generic;
-using Duality.VertexFormat;
 using OpenTK.Graphics.OpenGL;
+using Duality.Drawing;
 
 namespace FrozenCore.Widgets
 {
