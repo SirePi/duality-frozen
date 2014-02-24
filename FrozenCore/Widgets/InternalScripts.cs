@@ -104,6 +104,14 @@ namespace FrozenCore.Widgets
             }
         }
 
+        internal class MultiLineScrollbarValueChanged : InternalScript
+        {
+            public override void Execute(GameObject inSource, object inParameter)
+            {
+                (inSource.Parent as SkinnedMultiLineWidget).ScrollChanged();
+            }
+        }
+
         #endregion Internal Scripts
     }
 }

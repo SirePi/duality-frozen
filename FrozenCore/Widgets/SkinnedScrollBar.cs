@@ -7,6 +7,7 @@ using Duality.Resources;
 using FrozenCore.Widgets.Skin;
 using OpenTK;
 using Duality.Drawing;
+using Duality.Editor;
 
 namespace FrozenCore.Widgets
 {
@@ -14,6 +15,9 @@ namespace FrozenCore.Widgets
     public class SkinnedScrollBar : SkinnedWidget<ScrollBarSkin>
     {
         #region NonSerialized fields
+
+        [NonSerialized]
+        private object _valueChangedArgument;
 
         [NonSerialized]
         private GameObject _cursor;
@@ -25,6 +29,8 @@ namespace FrozenCore.Widgets
         private GameObject _upButton;
 
         #endregion NonSerialized fields
+
+        private ContentRef<Script> _onValueChanged;
 
         private int _max;
         private int _min;
@@ -49,6 +55,12 @@ namespace FrozenCore.Widgets
                 UpdateCursor();
             }
         }
+        public ContentRef<Script> OnValueChanged
+        {
+            get { return _onValueChanged; }
+            set { _onValueChanged = value; }
+        }
+
         public int ScrollSpeed
         {
             get { return _scrollSpeed; }
@@ -59,9 +71,23 @@ namespace FrozenCore.Widgets
             get { return _value; }
             set
             {
-                _value = value;
-                UpdateCursor();
+                if (_value != value)
+                {
+                    _value = value;
+                    UpdateCursor();
+
+                    if (_onValueChanged.Res != null)
+                    {
+                        _onValueChanged.Res.Execute(GameObj, _valueChangedArgument);
+                    }
+                }
             }
+        }
+        [EditorHintFlags(MemberFlags.Invisible)]
+        public object ValueChangedArgument
+        {
+            private get { return _valueChangedArgument; }
+            set { _valueChangedArgument = value; }
         }
 
         public SkinnedScrollBar()
@@ -78,10 +104,6 @@ namespace FrozenCore.Widgets
         {
             float length = Rect.H - (Skin.Res.ButtonsSize.Y * 2) - (Skin.Res.CursorSize.Y);
             return length / (Maximum - Minimum);
-        }
-
-        protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
-        {
         }
 
         protected override void OnInit(Component.InitContext inContext)

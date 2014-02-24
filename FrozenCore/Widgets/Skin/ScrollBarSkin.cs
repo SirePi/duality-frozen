@@ -60,10 +60,5 @@ namespace FrozenCore.Widgets.Skin
                 return _cursorSkin;
             }
         }
-
-        public float GetSkinWidth()
-        {
-            return Math.Max(ButtonsSize.X, CursorSize.X);
-        }
     }
 }

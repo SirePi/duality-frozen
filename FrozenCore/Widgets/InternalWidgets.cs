@@ -98,7 +98,11 @@ namespace FrozenCore.Widgets
         }
     }
 
-    internal class ListBoxSelector : SkinnedWidget<Skin.BaseSkin>
+    internal class MultiLineScrollbar : SkinnedScrollBar
     {
+        public MultiLineScrollbar()
+        {
+            OnValueChanged = InternalScripts.GetScript<InternalScripts.MultiLineScrollbarValueChanged>();
+        }
     }
 }

@@ -29,9 +29,6 @@ namespace FrozenCore.Widgets
         private GameObject _scrollbar;
 
         [NonSerialized]
-        private float _scrollbarWidth;
-
-        [NonSerialized]
         protected SkinnedScrollBar _scrollComponent;
 
         [NonSerialized]
@@ -141,13 +138,13 @@ namespace FrozenCore.Widgets
 
             if (inContext == InitContext.Activate && !FrozenUtilities.IsDualityEditor)
             {
-                _scrollbarWidth = 0;
-
                 if (_scrollBarSkin.Res != null && _scrollbar == null)
                 {
-                    _scrollbarWidth = _scrollBarSkin.Res.GetSkinWidth();
                     AddScrollBar();
                 }
+
+                _visibleWidth = (int)Math.Floor(Rect.W - Skin.Res.Border.X - Skin.Res.Border.W);
+                _visibleHeight = (int)Math.Floor(Rect.H - Skin.Res.Border.Y - Skin.Res.Border.Z);
 
                 UpdateWidget(false);
             }
@@ -157,13 +154,13 @@ namespace FrozenCore.Widgets
         {
             _scrollbar = new GameObject("scrollbar", this.GameObj);
 
-            float scrollbarWidth = _scrollBarSkin.Res.GetSkinWidth();
+            float scrollbarWidth = Math.Max(ScrollBarSkin.Res.ButtonsSize.X, ScrollBarSkin.Res.CursorSize.X);
 
             Transform t = _scrollbar.AddComponent<Transform>();
             t.RelativePos = new Vector3(Rect.W - scrollbarWidth, 0, DELTA_Z);
             t.RelativeAngle = 0;
 
-            _scrollComponent = new SkinnedScrollBar();
+            _scrollComponent = new MultiLineScrollbar();
             _scrollComponent.VisibilityGroup = this.VisibilityGroup;
             _scrollComponent.Skin = ScrollBarSkin;
             _scrollComponent.Rect = Rect.AlignTopLeft(0, 0, scrollbarWidth, Rect.H);
@@ -171,6 +168,11 @@ namespace FrozenCore.Widgets
 
             _scrollbar.AddComponent<SkinnedScrollBar>(_scrollComponent);
             Scene.Current.AddObject(_scrollbar);
+        }
+
+        internal void ScrollChanged()
+        {
+
         }
 
         protected void UpdateWidget(bool inLimitTextWidth)
@@ -191,9 +193,6 @@ namespace FrozenCore.Widgets
                         }));
             }
             
-            _visibleWidth = (int)Math.Floor(Rect.W - Skin.Res.Border.X - Skin.Res.Border.W - _scrollbarWidth);
-            _visibleHeight = (int)Math.Floor(Rect.H - Skin.Res.Border.Y - Skin.Res.Border.Z);
-
             if (!inLimitTextWidth)
             {
                 _text.MaxWidth = ushort.MaxValue;

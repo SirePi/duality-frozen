@@ -59,7 +59,6 @@ namespace FrozenCore.Widgets
                 if (_items.Contains(value) && _selectedItem != value)
                 {
                     _selectedItem = value;
-                    UpdateHighlight();
                 }
                 else
                 {
@@ -70,7 +69,7 @@ namespace FrozenCore.Widgets
 
         public int SelectedIndex
         {
-            get { return (_selectedItem == null ? _items.IndexOf(_selectedItem) : -1); }
+            get { return (_selectedItem != null ? _items.IndexOf(_selectedItem) : -1); }
             set
             {
                 if (value >= 0 && value < _items.Count)
@@ -114,6 +113,8 @@ namespace FrozenCore.Widgets
 
                 UpdateWidget(false);
             }
+
+            UpdateHighlight();
         }
 
         protected override void Draw(IDrawDevice inDevice)
@@ -180,8 +181,6 @@ namespace FrozenCore.Widgets
                 {
                     AddHighlight();
                 }
-
-                UpdateHighlight();
             }
         }
 
@@ -190,7 +189,7 @@ namespace FrozenCore.Widgets
             _highlight = new GameObject("highlight", this.GameObj);
 
             Transform t = _highlight.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W / 2, Rect.H / 2, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W / 2, Rect.H / 2, DELTA_Z / 2);
             t.RelativeAngle = 0;
 
             ScrollCursor sc = new ScrollCursor();
@@ -204,6 +203,34 @@ namespace FrozenCore.Widgets
 
         private void UpdateHighlight()
         {
+            if (SelectedIndex >= 0)
+            {
+                Rect selectionRect = _text.TextMetrics.LineBounds[SelectedIndex];
+
+                if (_isScrollbarRequired)
+                {
+                    float top = _scrollComponent.Value;
+                    float bottom = _scrollComponent.Value + _visibleHeight;
+
+                    if (selectionRect.Top.Y >= top && selectionRect.Bottom.Y <= bottom)
+                    {
+                        Vector3 relativePos = _highlight.Transform.RelativePos;
+                        relativePos.Y = selectionRect.Y - top;
+                    }
+                    else if (selectionRect.Top.Y < top && selectionRect.Bottom.Y >= top)
+                    {
+                        //some part outside
+                    }
+                    else if (selectionRect.Bottom.Y > bottom && selectionRect.Top.Y <= bottom)
+                    {
+                        //some part outside
+                    }
+                }
+                else
+                {
+
+                }
+            }
         }
     }
 }
