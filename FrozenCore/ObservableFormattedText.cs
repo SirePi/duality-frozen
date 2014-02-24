@@ -1,4 +1,6 @@
-﻿using Duality;
+﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
+
+using Duality;
 using Duality.Drawing;
 
 namespace FrozenCore

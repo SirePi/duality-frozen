@@ -87,23 +87,15 @@ namespace FrozenCore.Widgets
             _testPolygon = new Polygon(4);
         }
 
-        bool x;
+        float s;
 
         protected override void OnUpdate(float inSecondsPast)
         {
-            if (!x)
+            s += inSecondsPast;
+            if (s > 1)
             {
                 Items.Add(new List<int>());
-                Items.Add(new List<int>());
-                Items.Add(new List<int>());
-                Items.Add(new List<int>());
-                Items.Add(new List<int>());
-                Items.Add(new List<int>());
-                Items.Add(new List<int>());
-                Items.Add(new List<int>());
-                Items.Add(new List<int>());
-                Items.Add(new List<int>());
-                x = true;
+                s = 0;
             }
 
             if (_itemsAccessed)

@@ -108,7 +108,18 @@ namespace FrozenCore.Widgets
         {
             public override void Execute(GameObject inSource, object inParameter)
             {
-                (inSource.Parent as SkinnedMultiLineWidget).ScrollChanged();
+                SkinnedListBox slb = inSource.Parent.GetComponent<SkinnedListBox>();
+                SkinnedTextBlock stb = inSource.Parent.GetComponent<SkinnedTextBlock>();
+
+                if(slb != null)
+                {
+                    slb.ScrollChanged();
+                }
+
+                if (stb != null)
+                {
+                    stb.ScrollChanged();
+                }
             }
         }
 
