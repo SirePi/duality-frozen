@@ -78,35 +78,35 @@ namespace FrozenCore.Widgets
         {
             base.Draw(inDevice);
 
-            _textVertices[0].TexCoord.X = 0;
-            _textVertices[1].TexCoord.X = _visibleWidth;
-            _textVertices[2].TexCoord.X = _visibleWidth;
-            _textVertices[3].TexCoord.X = 0;
+            if (!String.IsNullOrWhiteSpace(_text.SourceText) && _batchInfo != null)
+            {
+                _textVertices[0].TexCoord.X = 0;
+                _textVertices[1].TexCoord.X = _visibleWidth;
+                _textVertices[2].TexCoord.X = _visibleWidth;
+                _textVertices[3].TexCoord.X = 0;
 
-            //if (_scrollbar == null || !_scrollbar.Active)
-            if (!_isScrollbarRequired)
-            {
-                _textVertices[0].TexCoord.Y = 0;
-                _textVertices[1].TexCoord.Y = 0;
-                _textVertices[2].TexCoord.Y = 1;
-                _textVertices[3].TexCoord.Y = 1;
-            }
-            else
-            {
-                _textVertices[0].TexCoord.Y = _scrollComponent.Value;
-                _textVertices[1].TexCoord.Y = _textVertices[0].TexCoord.Y;
-                _textVertices[2].TexCoord.Y = (_scrollComponent.Value + _visibleHeight);
-                _textVertices[3].TexCoord.Y = _textVertices[2].TexCoord.Y;
-            }
+                //if (_scrollbar == null || !_scrollbar.Active)
+                if (!_isScrollbarRequired)
+                {
+                    _textVertices[0].TexCoord.Y = 0;
+                    _textVertices[1].TexCoord.Y = 0;
+                    _textVertices[2].TexCoord.Y = 1;
+                    _textVertices[3].TexCoord.Y = 1;
+                }
+                else
+                {
+                    _textVertices[0].TexCoord.Y = _scrollComponent.Value;
+                    _textVertices[1].TexCoord.Y = _textVertices[0].TexCoord.Y;
+                    _textVertices[2].TexCoord.Y = (_scrollComponent.Value + _visibleHeight);
+                    _textVertices[3].TexCoord.Y = _textVertices[2].TexCoord.Y;
+                }
 
-            if (_batchInfo != null)
-            {
                 Vector2 uvRatio = _batchInfo.MainTexture.Res.UVRatio;
 
-                _textVertices[0].TexCoord *= _uvUnit * uvRatio;
-                _textVertices[1].TexCoord *= _uvUnit * uvRatio;
-                _textVertices[2].TexCoord *= _uvUnit * uvRatio;
-                _textVertices[3].TexCoord *= _uvUnit * uvRatio;
+                _textVertices[0].TexCoord *= uvRatio * _uvUnit;
+                _textVertices[1].TexCoord *= uvRatio * _uvUnit;
+                _textVertices[2].TexCoord *= uvRatio * _uvUnit;
+                _textVertices[3].TexCoord *= uvRatio * _uvUnit;
 
                 _textVertices[0].Color = _textColor;
                 _textVertices[0].Pos = _points[5].SceneCoords;
@@ -173,6 +173,7 @@ namespace FrozenCore.Widgets
 
         internal void ScrollChanged()
         {
+            
         }
 
         protected void UpdateWidget(bool inLimitTextWidth)
@@ -203,17 +204,10 @@ namespace FrozenCore.Widgets
                 _text.MaxWidth = _visibleWidth;
             }
 
-
             _isScrollbarRequired = _text.Size.Y > _visibleHeight;
 
-            _uvUnit.X = 1f / _visibleWidth;
-            _uvUnit.Y = 1f / _visibleHeight;
-
-            if (_text.Size.X == 0 || _text.Size.Y == 0)
-            {
-                _uvUnit = Vector2.One;
-            }
-
+            _uvUnit.X = 1f / _text.Size.X;
+            _uvUnit.Y = 1;
 
             if (_scrollbar != null)
             {

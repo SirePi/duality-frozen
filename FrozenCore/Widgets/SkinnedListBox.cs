@@ -85,6 +85,8 @@ namespace FrozenCore.Widgets
             _text = new FormattedText();
             _listArea = new Polygon(4);
             _testPolygon = new Polygon(4);
+
+            _text.SourceText = " ";
         }
 
         float s;
@@ -208,6 +210,8 @@ namespace FrozenCore.Widgets
                     {
                         Vector3 relativePos = _highlight.Transform.RelativePos;
                         relativePos.Y = selectionRect.Y - top;
+
+                        _highlight.Transform.Pos = relativePos;
                     }
                     else if (selectionRect.Top.Y < top && selectionRect.Bottom.Y >= top)
                     {
