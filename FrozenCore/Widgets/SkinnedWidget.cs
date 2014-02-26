@@ -117,20 +117,6 @@ namespace FrozenCore.Widgets
              * 12   13   14   15
              ********************/
 
-            /*****************************
-             *  0     3| 4     7| 8    11
-             *
-             *  1     2| 5     6| 9    10
-             * --    --+--    --+--    --
-             * 12    15|16    19|20    23
-             *
-             * 13    14|17    18|21    22
-             * --    --+--    --+--    --
-             * 24    27|28    31|32    35
-             *
-             * 25    26|29    30|33    34
-             *****************************/
-
             if (_uvCalculated)
             {
                 BaseSkin bSkin = _skin.Res;
@@ -200,6 +186,21 @@ namespace FrozenCore.Widgets
                 /**
                  * Repositioning the pieces
                  **/
+
+                /*****************************
+                 *  0     3| 4     7| 8    11
+                 *
+                 *  1     2| 5     6| 9    10
+                 * --    --+--    --+--    --
+                 * 12    15|16    19|20    23
+                 *
+                 * 13    14|17    18|21    22
+                 * --    --+--    --+--    --
+                 * 24    27|28    31|32    35
+                 *
+                 * 25    26|29    30|33    34
+                 *****************************/
+
                 _vertices[0].Pos = _points[0].SceneCoords;
                 _vertices[0].TexCoord = _points[0].UVCoords;
                 _vertices[0].Color = Colors.White;
@@ -344,7 +345,215 @@ namespace FrozenCore.Widgets
                 _vertices[35].TexCoord = _points[11].UVCoords;
                 _vertices[35].Color = Colors.White;
 
+                if (VisibleRect != Rect.Empty)
+                {
+                    ApplyVisibilityRectangle();
+                }
+
                 inDevice.AddVertices(_batchInfo, VertexMode.Quads, _vertices);
+            }
+        }
+
+        private void ApplyVisibilityRectangle()
+        {
+            BaseSkin bSkin = _skin.Res;
+
+            Vector2 topLeft = Vector2.Zero;
+            Vector2 bottomRight = Rect.Size;
+
+            Vector2 innerTopLeft = topLeft + (new Vector2(bSkin.Border.X, bSkin.Border.Y));
+            Vector2 innerBottomRight = bottomRight - (new Vector2(bSkin.Border.Z, bSkin.Border.W));
+
+            if (VisibleRect.Left.X > innerTopLeft.X)
+            {
+                _vertices[0].Color = Colors.Transparent;
+                _vertices[1].Color = Colors.Transparent;
+                _vertices[2].Color = Colors.Transparent;
+                _vertices[3].Color = Colors.Transparent;
+                _vertices[12].Color = Colors.Transparent;
+                _vertices[13].Color = Colors.Transparent;
+                _vertices[14].Color = Colors.Transparent;
+                _vertices[15].Color = Colors.Transparent;
+                _vertices[24].Color = Colors.Transparent;
+                _vertices[25].Color = Colors.Transparent;
+                _vertices[26].Color = Colors.Transparent;
+                _vertices[27].Color = Colors.Transparent;
+            }
+
+            if (VisibleRect.Right.X < innerBottomRight.X)
+            {
+                _vertices[8].Color = Colors.Transparent;
+                _vertices[9].Color = Colors.Transparent;
+                _vertices[10].Color = Colors.Transparent;
+                _vertices[11].Color = Colors.Transparent;
+                _vertices[20].Color = Colors.Transparent;
+                _vertices[21].Color = Colors.Transparent;
+                _vertices[22].Color = Colors.Transparent;
+                _vertices[23].Color = Colors.Transparent;
+                _vertices[32].Color = Colors.Transparent;
+                _vertices[33].Color = Colors.Transparent;
+                _vertices[34].Color = Colors.Transparent;
+                _vertices[35].Color = Colors.Transparent;
+            }
+
+            if ((VisibleRect.Left.X > innerBottomRight.X) || (VisibleRect.Right.X < innerTopLeft.X))
+            {
+                _vertices[4].Color = Colors.Transparent;
+                _vertices[5].Color = Colors.Transparent;
+                _vertices[6].Color = Colors.Transparent;
+                _vertices[7].Color = Colors.Transparent;
+                _vertices[16].Color = Colors.Transparent;
+                _vertices[17].Color = Colors.Transparent;
+                _vertices[18].Color = Colors.Transparent;
+                _vertices[19].Color = Colors.Transparent;
+                _vertices[28].Color = Colors.Transparent;
+                _vertices[29].Color = Colors.Transparent;
+                _vertices[30].Color = Colors.Transparent;
+                _vertices[31].Color = Colors.Transparent;
+            }
+
+
+            if (VisibleRect.Top.Y > innerTopLeft.Y)
+            {
+                _vertices[0].Color = Colors.Transparent;
+                _vertices[1].Color = Colors.Transparent;
+                _vertices[2].Color = Colors.Transparent;
+                _vertices[3].Color = Colors.Transparent;
+                _vertices[4].Color = Colors.Transparent;
+                _vertices[5].Color = Colors.Transparent;
+                _vertices[6].Color = Colors.Transparent;
+                _vertices[7].Color = Colors.Transparent;
+                _vertices[8].Color = Colors.Transparent;
+                _vertices[9].Color = Colors.Transparent;
+                _vertices[10].Color = Colors.Transparent;
+                _vertices[11].Color = Colors.Transparent;
+            }
+
+            if (VisibleRect.Bottom.Y < innerBottomRight.Y)
+            {
+                _vertices[24].Color = Colors.Transparent;
+                _vertices[25].Color = Colors.Transparent;
+                _vertices[26].Color = Colors.Transparent;
+                _vertices[27].Color = Colors.Transparent;
+                _vertices[28].Color = Colors.Transparent;
+                _vertices[29].Color = Colors.Transparent;
+                _vertices[30].Color = Colors.Transparent;
+                _vertices[31].Color = Colors.Transparent;
+                _vertices[32].Color = Colors.Transparent;
+                _vertices[33].Color = Colors.Transparent;
+                _vertices[34].Color = Colors.Transparent;
+                _vertices[35].Color = Colors.Transparent;
+            }
+
+            if ((VisibleRect.Top.Y > innerBottomRight.Y) || (VisibleRect.Bottom.Y < innerTopLeft.Y))
+            {
+                _vertices[12].Color = Colors.Transparent;
+                _vertices[13].Color = Colors.Transparent;
+                _vertices[14].Color = Colors.Transparent;
+                _vertices[15].Color = Colors.Transparent;
+                _vertices[16].Color = Colors.Transparent;
+                _vertices[17].Color = Colors.Transparent;
+                _vertices[18].Color = Colors.Transparent;
+                _vertices[19].Color = Colors.Transparent;
+                _vertices[20].Color = Colors.Transparent;
+                _vertices[21].Color = Colors.Transparent;
+                _vertices[22].Color = Colors.Transparent;
+                _vertices[23].Color = Colors.Transparent;
+            }
+
+            Vector2 centerSize = innerBottomRight - innerTopLeft;
+
+            // Checking Left side
+            if (VisibleRect.Left.X < innerTopLeft.X)
+            {
+                float k = VisibleRect.Left.X / bSkin.Border.X;
+                FixVertices(COLUMN_1, 3, k);
+            }
+            else if (VisibleRect.Left.X < innerBottomRight.X)
+            {
+                float k = (VisibleRect.Left.X - innerTopLeft.X) / (centerSize.X);
+                FixVertices(COLUMN_3, 7, k);
+            }
+            else
+            {
+                float k = (VisibleRect.Left.X - innerBottomRight.X) / bSkin.Border.W;
+                FixVertices(COLUMN_5, 11, k);
+            }
+
+            // Checking Right side
+            if (VisibleRect.Right.X > innerBottomRight.X)
+            {
+                float k = (bottomRight.X - VisibleRect.Right.X)  / bSkin.Border.W;
+                FixVertices(COLUMN_6, 8, k);
+            }
+            else if (VisibleRect.Right.X > innerTopLeft.X)
+            {
+                float k = (innerBottomRight.X - VisibleRect.Right.X) / (centerSize.X);
+                FixVertices(COLUMN_4, 4, k);
+            }
+            else
+            {
+                float k = (topLeft.X - VisibleRect.Right.X) / bSkin.Border.X;
+                FixVertices(COLUMN_2, 0, k);
+            }
+
+            // Checking Top side
+            if (VisibleRect.Top.Y < innerTopLeft.Y)
+            {
+                float k = VisibleRect.Top.Y / bSkin.Border.Y;
+                FixVertices(ROW_1, 1, k);
+            }
+            else if (VisibleRect.Top.Y < innerBottomRight.Y)
+            {
+                float k = (VisibleRect.Left.X - innerTopLeft.X) / (centerSize.X);
+                FixVertices(ROW_3, 13, k);
+            }
+            else
+            {
+                float k = (VisibleRect.Top.Y - innerBottomRight.Y) / bSkin.Border.Z;
+                FixVertices(ROW_5, 25, k);
+            }
+
+            // Checking Bottom side
+            if (VisibleRect.Bottom.Y > innerBottomRight.Y)
+            {
+                float k = (bottomRight.Y - VisibleRect.Bottom.Y) / bSkin.Border.Z;
+                FixVertices(ROW_6, 14, k);
+            }
+            else if (VisibleRect.Bottom.X > innerTopLeft.X)
+            {
+                float k = (innerBottomRight.Y - VisibleRect.Bottom.Y) / (centerSize.Y);
+                FixVertices(ROW_4, 12, k);
+            }
+            else
+            {
+                float k = (topLeft.Y - VisibleRect.Bottom.Y) / bSkin.Border.Y;
+                FixVertices(ROW_2, 0, k);
+            }
+        }
+
+        private static readonly int[] COLUMN_1 = new int[] { 0, 1, 12, 13, 24, 25 };
+        private static readonly int[] COLUMN_2 = new int[] { 3, 2 ,15, 14, 27, 26 };
+        private static readonly int[] COLUMN_3 = new int[] { 4, 5, 16, 17, 28, 29 };
+        private static readonly int[] COLUMN_4 = new int[] { 7, 6, 19, 18, 31, 30 };
+        private static readonly int[] COLUMN_5 = new int[] { 8, 9, 20, 21, 32, 33 };
+        private static readonly int[] COLUMN_6 = new int[] { 11, 10, 23, 22, 35, 34 };
+        private static readonly int[] ROW_1 = new int[] { 0, 3, 4, 7, 8, 11 };
+        private static readonly int[] ROW_2 = new int[] { 1, 2, 5, 6, 9, 10 };
+        private static readonly int[] ROW_3 = new int[] { 12, 15, 16, 19, 20, 23 };
+        private static readonly int[] ROW_4 = new int[] { 13, 14, 17, 18, 21, 22 };
+        private static readonly int[] ROW_5 = new int[] { 24, 27, 28, 31, 32, 35 };
+        private static readonly int[] ROW_6 = new int[] { 25, 26, 29, 30, 33, 34 };
+
+        private void FixVertices(int[] inVertexIndexes, int inVertexComparator, float inK)
+        {
+            Vector3 deltaPos = (_vertices[inVertexComparator].Pos - _vertices[inVertexIndexes[0]].Pos) * inK;
+            Vector2 deltaTex = (_vertices[inVertexComparator].TexCoord - _vertices[inVertexIndexes[0]].TexCoord) * inK;
+
+            foreach (int i in inVertexIndexes)
+            {
+                _vertices[i].Pos += deltaPos;
+                _vertices[i].TexCoord += deltaTex;
             }
         }
 

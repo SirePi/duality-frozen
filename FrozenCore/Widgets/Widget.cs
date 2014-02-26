@@ -39,6 +39,8 @@ namespace FrozenCore.Widgets
 
         private Rect _rect;
 
+        private Rect _visibleRect;
+
         private VisibilityFlag _visiblityFlag;
 
         public ActiveArea ActiveArea
@@ -75,6 +77,12 @@ namespace FrozenCore.Widgets
             get { return _visiblityFlag; }
             set { _visiblityFlag = value; }
         }
+        [EditorHintDecimalPlaces(1)]
+        public Rect VisibleRect
+        {
+            get { return _visibleRect; }
+            set { _visibleRect = value; }
+        }
 
         public Widget()
         {
@@ -82,6 +90,7 @@ namespace FrozenCore.Widgets
 
             _activeAreaOnScreen = new Polygon(4);
             _widgetEnabled = true;
+            _visibleRect = Rect.Empty;
 
             _vertices = new VertexC1P3T2[36];
             _points = new MultiSpacePoint[16];

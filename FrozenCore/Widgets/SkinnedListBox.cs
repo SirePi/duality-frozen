@@ -33,6 +33,9 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         private GameObject _highlight;
 
+        [NonSerialized]
+        private SkinnedPanel _highlightPanel;
+
         #endregion NonSerialized fields
 
         private List<object> _items;
@@ -186,12 +189,12 @@ namespace FrozenCore.Widgets
             t.RelativePos = new Vector3(Rect.W / 2, Rect.H / 2, DELTA_Z / 2);
             t.RelativeAngle = 0;
 
-            ScrollCursor sc = new ScrollCursor();
-            sc.VisibilityGroup = this.VisibilityGroup;
-            sc.Skin = Skin.Res.SelectorSkin;
-            sc.Rect = Rect.AlignCenter(0, 0, Rect.W, 0);
+            _highlightPanel = new SkinnedPanel();
+            _highlightPanel.VisibilityGroup = this.VisibilityGroup;
+            _highlightPanel.Skin = Skin.Res.SelectorSkin;
+            _highlightPanel.Rect = Rect.AlignCenter(0, 0, Rect.W, 0);
 
-            _highlight.AddComponent<ScrollCursor>(sc);
+            _highlight.AddComponent<SkinnedPanel>(_highlightPanel);
             Scene.Current.AddObject(_highlight);
         }
 
@@ -211,7 +214,11 @@ namespace FrozenCore.Widgets
                         Vector3 relativePos = _highlight.Transform.RelativePos;
                         relativePos.Y = selectionRect.Y - top;
 
+                        Rect highlightRect = _highlightPanel.Rect;
+                        highlightRect.H = selectionRect.H;
+
                         _highlight.Transform.Pos = relativePos;
+                        _highlightPanel.Rect = highlightRect;
                     }
                     else if (selectionRect.Top.Y < top && selectionRect.Bottom.Y >= top)
                     {
