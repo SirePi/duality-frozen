@@ -345,7 +345,7 @@ namespace FrozenCore.Widgets
                 _vertices[35].TexCoord = _points[11].UVCoords;
                 _vertices[35].Color = Colors.White;
 
-                if (VisibleRect != Rect.Empty)
+                if (VisibleRect != Rect.Empty && VisibleRect != Rect)
                 {
                     ApplyVisibilityRectangle();
                 }
@@ -364,7 +364,7 @@ namespace FrozenCore.Widgets
             Vector2 innerTopLeft = topLeft + (new Vector2(bSkin.Border.X, bSkin.Border.Y));
             Vector2 innerBottomRight = bottomRight - (new Vector2(bSkin.Border.Z, bSkin.Border.W));
 
-            if (VisibleRect.Left.X > innerTopLeft.X)
+            if (VisibleRect.Left.X >= innerTopLeft.X)
             {
                 _vertices[0].Color = Colors.Transparent;
                 _vertices[1].Color = Colors.Transparent;
@@ -380,7 +380,7 @@ namespace FrozenCore.Widgets
                 _vertices[27].Color = Colors.Transparent;
             }
 
-            if (VisibleRect.Right.X < innerBottomRight.X)
+            if (VisibleRect.Right.X <= innerBottomRight.X)
             {
                 _vertices[8].Color = Colors.Transparent;
                 _vertices[9].Color = Colors.Transparent;
@@ -396,7 +396,7 @@ namespace FrozenCore.Widgets
                 _vertices[35].Color = Colors.Transparent;
             }
 
-            if ((VisibleRect.Left.X > innerBottomRight.X) || (VisibleRect.Right.X < innerTopLeft.X))
+            if ((VisibleRect.Left.X >= innerBottomRight.X) || (VisibleRect.Right.X <= innerTopLeft.X))
             {
                 _vertices[4].Color = Colors.Transparent;
                 _vertices[5].Color = Colors.Transparent;
@@ -413,7 +413,7 @@ namespace FrozenCore.Widgets
             }
 
 
-            if (VisibleRect.Top.Y > innerTopLeft.Y)
+            if (VisibleRect.Top.Y >= innerTopLeft.Y)
             {
                 _vertices[0].Color = Colors.Transparent;
                 _vertices[1].Color = Colors.Transparent;
@@ -429,7 +429,7 @@ namespace FrozenCore.Widgets
                 _vertices[11].Color = Colors.Transparent;
             }
 
-            if (VisibleRect.Bottom.Y < innerBottomRight.Y)
+            if (VisibleRect.Bottom.Y <= innerBottomRight.Y)
             {
                 _vertices[24].Color = Colors.Transparent;
                 _vertices[25].Color = Colors.Transparent;
@@ -445,7 +445,7 @@ namespace FrozenCore.Widgets
                 _vertices[35].Color = Colors.Transparent;
             }
 
-            if ((VisibleRect.Top.Y > innerBottomRight.Y) || (VisibleRect.Bottom.Y < innerTopLeft.Y))
+            if ((VisibleRect.Top.Y >= innerBottomRight.Y) || (VisibleRect.Bottom.Y <= innerTopLeft.Y))
             {
                 _vertices[12].Color = Colors.Transparent;
                 _vertices[13].Color = Colors.Transparent;
@@ -464,70 +464,70 @@ namespace FrozenCore.Widgets
             Vector2 centerSize = innerBottomRight - innerTopLeft;
 
             // Checking Left side
-            if (VisibleRect.Left.X < innerTopLeft.X)
+            if (VisibleRect.TopLeft.X < innerTopLeft.X)
             {
-                float k = VisibleRect.Left.X / bSkin.Border.X;
+                float k = VisibleRect.TopLeft.X / bSkin.Border.X;
                 FixVertices(COLUMN_1, 3, k);
             }
-            else if (VisibleRect.Left.X < innerBottomRight.X)
+            else if (VisibleRect.TopLeft.X < innerBottomRight.X)
             {
-                float k = (VisibleRect.Left.X - innerTopLeft.X) / (centerSize.X);
+                float k = (VisibleRect.TopLeft.X - innerTopLeft.X) / (centerSize.X);
                 FixVertices(COLUMN_3, 7, k);
             }
             else
             {
-                float k = (VisibleRect.Left.X - innerBottomRight.X) / bSkin.Border.W;
+                float k = (VisibleRect.TopLeft.X - innerBottomRight.X) / bSkin.Border.W;
                 FixVertices(COLUMN_5, 11, k);
             }
 
             // Checking Right side
-            if (VisibleRect.Right.X > innerBottomRight.X)
+            if (VisibleRect.BottomRight.X > innerBottomRight.X)
             {
-                float k = (bottomRight.X - VisibleRect.Right.X)  / bSkin.Border.W;
+                float k = (bottomRight.X - VisibleRect.BottomRight.X) / bSkin.Border.W;
                 FixVertices(COLUMN_6, 8, k);
             }
-            else if (VisibleRect.Right.X > innerTopLeft.X)
+            else if (VisibleRect.BottomRight.X > innerTopLeft.X)
             {
-                float k = (innerBottomRight.X - VisibleRect.Right.X) / (centerSize.X);
+                float k = (innerBottomRight.X - VisibleRect.BottomRight.X) / (centerSize.X);
                 FixVertices(COLUMN_4, 4, k);
             }
             else
             {
-                float k = (topLeft.X - VisibleRect.Right.X) / bSkin.Border.X;
+                float k = (topLeft.X - VisibleRect.BottomRight.X) / bSkin.Border.X;
                 FixVertices(COLUMN_2, 0, k);
             }
 
             // Checking Top side
-            if (VisibleRect.Top.Y < innerTopLeft.Y)
+            if (VisibleRect.TopLeft.Y < innerTopLeft.Y)
             {
-                float k = VisibleRect.Top.Y / bSkin.Border.Y;
+                float k = VisibleRect.TopLeft.Y / bSkin.Border.Y;
                 FixVertices(ROW_1, 1, k);
             }
-            else if (VisibleRect.Top.Y < innerBottomRight.Y)
+            else if (VisibleRect.TopLeft.Y < innerBottomRight.Y)
             {
-                float k = (VisibleRect.Left.X - innerTopLeft.X) / (centerSize.X);
+                float k = (VisibleRect.TopLeft.Y - innerTopLeft.Y) / (centerSize.Y);
                 FixVertices(ROW_3, 13, k);
             }
             else
             {
-                float k = (VisibleRect.Top.Y - innerBottomRight.Y) / bSkin.Border.Z;
+                float k = (VisibleRect.TopLeft.Y - innerBottomRight.Y) / bSkin.Border.Z;
                 FixVertices(ROW_5, 25, k);
             }
 
             // Checking Bottom side
-            if (VisibleRect.Bottom.Y > innerBottomRight.Y)
+            if (VisibleRect.BottomRight.Y > innerBottomRight.Y)
             {
-                float k = (bottomRight.Y - VisibleRect.Bottom.Y) / bSkin.Border.Z;
-                FixVertices(ROW_6, 14, k);
+                float k = (bottomRight.Y - VisibleRect.BottomRight.Y) / bSkin.Border.Z;
+                FixVertices(ROW_6, 24, k);
             }
-            else if (VisibleRect.Bottom.X > innerTopLeft.X)
+            else if (VisibleRect.BottomRight.Y > innerTopLeft.Y)
             {
-                float k = (innerBottomRight.Y - VisibleRect.Bottom.Y) / (centerSize.Y);
+                float k = (innerBottomRight.Y - VisibleRect.BottomRight.Y) / (centerSize.Y);
                 FixVertices(ROW_4, 12, k);
             }
             else
             {
-                float k = (topLeft.Y - VisibleRect.Bottom.Y) / bSkin.Border.Y;
+                float k = (topLeft.Y - VisibleRect.BottomRight.Y) / bSkin.Border.Y;
                 FixVertices(ROW_2, 0, k);
             }
         }

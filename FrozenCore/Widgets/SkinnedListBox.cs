@@ -92,17 +92,8 @@ namespace FrozenCore.Widgets
             _text.SourceText = " ";
         }
 
-        float s;
-
         protected override void OnUpdate(float inSecondsPast)
         {
-            s += inSecondsPast;
-            if (s > 1)
-            {
-                Items.Add(new List<int>());
-                s = 0;
-            }
-
             if (_itemsAccessed)
             {
                 _text.SourceText = String.Join("/n", _items);
@@ -192,7 +183,7 @@ namespace FrozenCore.Widgets
             _highlightPanel = new SkinnedPanel();
             _highlightPanel.VisibilityGroup = this.VisibilityGroup;
             _highlightPanel.Skin = Skin.Res.SelectorSkin;
-            _highlightPanel.Rect = Rect.AlignCenter(0, 0, Rect.W, 0);
+            _highlightPanel.Rect = Rect.AlignTopLeft(0, 0, 0, 0);
 
             _highlight.AddComponent<SkinnedPanel>(_highlightPanel);
             Scene.Current.AddObject(_highlight);
@@ -209,24 +200,32 @@ namespace FrozenCore.Widgets
                     float top = _scrollComponent.Value;
                     float bottom = _scrollComponent.Value + _visibleHeight;
 
-                    if (selectionRect.Top.Y >= top && selectionRect.Bottom.Y <= bottom)
-                    {
-                        Vector3 relativePos = _highlight.Transform.RelativePos;
-                        relativePos.Y = selectionRect.Y - top;
+                    Vector3 relativePos = _highlight.Transform.RelativePos;
+                    relativePos.X = Skin.Res.Border.X;
+                    relativePos.Y = Skin.Res.Border.Y + selectionRect.Y - top;
 
-                        Rect highlightRect = _highlightPanel.Rect;
-                        highlightRect.H = selectionRect.H;
+                    Rect highlightRect = _highlightPanel.Rect;
+                    highlightRect.H = selectionRect.H;
+                    highlightRect.W = Rect.W - Skin.Res.Border.X - Skin.Res.Border.W;
 
-                        _highlight.Transform.Pos = relativePos;
-                        _highlightPanel.Rect = highlightRect;
-                    }
-                    else if (selectionRect.Top.Y < top && selectionRect.Bottom.Y >= top)
+                    _highlight.Transform.RelativePos = relativePos;
+                    _highlightPanel.Rect = highlightRect;
+                    _highlightPanel.VisibleRect = highlightRect;
+
+                    if (selectionRect.Top.Y < top && selectionRect.Bottom.Y >= top)
                     {
-                        //some part outside
+                        Rect highlightVisibleRect = _highlightPanel.VisibleRect;
+                        highlightVisibleRect.Y = top - selectionRect.Top.Y;
+
+                        _highlightPanel.VisibleRect = highlightVisibleRect;
                     }
-                    else if (selectionRect.Bottom.Y > bottom && selectionRect.Top.Y <= bottom)
+
+                    if (selectionRect.Bottom.Y > bottom && selectionRect.Top.Y <= bottom)
                     {
-                        //some part outside
+                        Rect highlightVisibleRect = _highlightPanel.VisibleRect;
+                        highlightVisibleRect.H = highlightRect.H - (selectionRect.Bottom.Y - bottom);
+
+                        _highlightPanel.VisibleRect = highlightVisibleRect;
                     }
                 }
                 else
