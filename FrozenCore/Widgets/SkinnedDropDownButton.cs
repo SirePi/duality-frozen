@@ -110,6 +110,16 @@ namespace FrozenCore.Widgets
             }
         }
 
+        internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        {
+            base.MouseDown(e);
+
+            if (e.Button == OpenTK.Input.MouseButton.Left)
+            {
+                //_listBox
+            }
+        }
+
         private void AddListBox()
         {
             _listBox = new GameObject("listBox", this.GameObj);

@@ -43,7 +43,7 @@ namespace FrozenCore.Widgets
             get { return _skin; }
             set
             {
-                if (_skin.Res != value.Res)
+                if (_skin != value)
                 {
                     _skin = value;
                     _uvCalculated = false;
