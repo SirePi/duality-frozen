@@ -5,13 +5,13 @@ using Duality;
 using Duality.Drawing;
 using Duality.Components;
 using Duality.Resources;
-using FrozenCore.Widgets.Skin;
+using FrozenCore.Widgets.Resources;
 using OpenTK;
 
 namespace FrozenCore.Widgets
 {
     [Serializable]
-    public class SkinnedWindow : SkinnedWidget<WindowSkin>
+    public class SkinnedWindow : SkinnedWidget
     {
         #region NonSerialized fields
 
@@ -45,6 +45,14 @@ namespace FrozenCore.Widgets
         private FormattedText _title;
         private ColorRgba _titleColor;
         private Vector2 _maximizedSize;
+
+        private ContentRef<WidgetSkin> _closeButtonSkin;
+        private ContentRef<WidgetSkin> _minimizeButtonSkin;
+        private ContentRef<WidgetSkin> _maximizeButtonSkin;
+        private ContentRef<WidgetSkin> _restoreButtonSkin;
+
+        private Vector2 _closeButtonSize;
+        private Vector2 _buttonsSize;
 
         public bool CanClose
         {
@@ -82,6 +90,39 @@ namespace FrozenCore.Widgets
             set { _maximizedSize = value; }
         }
 
+        public Vector2 CloseButtonSize
+        {
+            get { return _closeButtonSize; }
+            set { _closeButtonSize = value; }
+        }
+
+        public Vector2 ButtonsSize
+        {
+            get { return _buttonsSize; }
+            set { _buttonsSize = value; }
+        }
+
+        public ContentRef<WidgetSkin> CloseButtonSkin
+        {
+            get { return _closeButtonSkin; }
+            set { _closeButtonSkin = value; }
+        }
+        public ContentRef<WidgetSkin> MinimizeButtonSkin
+        {
+            get { return _minimizeButtonSkin; }
+            set { _minimizeButtonSkin = value; }
+        }
+        public ContentRef<WidgetSkin> MaximizeButtonSkin
+        {
+            get { return _maximizeButtonSkin; }
+            set { _maximizeButtonSkin = value; }
+        }
+        public ContentRef<WidgetSkin> RestoreButtonSkin
+        {
+            get { return _restoreButtonSkin; }
+            set { _restoreButtonSkin = value; }
+        }
+
         public SkinnedWindow()
         {
             ActiveArea = Widgets.ActiveArea.TopBorder;
@@ -97,7 +138,7 @@ namespace FrozenCore.Widgets
 
             if (IsWidgetEnabled && IsDraggable)
             {
-                SetTextureTopLeft(Skin.Res.Origin.Active);
+                Status = WidgetStatus.Active;
                 _isDragged = true;
             }
         }
@@ -106,7 +147,7 @@ namespace FrozenCore.Widgets
         {
             if (IsWidgetEnabled && Skin.Res != null && !_isDragged)
             {
-                SetTextureTopLeft(Skin.Res.Origin.Hover);
+                Status = WidgetStatus.Hover;
             }
         }
 
@@ -114,7 +155,7 @@ namespace FrozenCore.Widgets
         {
             if (IsWidgetEnabled && Skin.Res != null && !_isDragged)
             {
-                SetTextureTopLeft(Skin.Res.Origin.Normal);
+                Status = WidgetStatus.Normal;
             }
         }
 
@@ -134,7 +175,7 @@ namespace FrozenCore.Widgets
 
             if (IsWidgetEnabled && IsDraggable)
             {
-                SetTextureTopLeft(Skin.Res.Origin.Hover);
+                Status = WidgetStatus.Hover;
                 _isDragged = false;
             }
         }
@@ -184,13 +225,13 @@ namespace FrozenCore.Widgets
             _closeButton = new GameObject("closeButton", this.GameObj);
 
             Transform t = _closeButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - Skin.Res.ButtonsSize.X, 0, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - CloseButtonSize.X, 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             CloseButton cb = new CloseButton();
             cb.VisibilityGroup = this.VisibilityGroup;
-            cb.Skin = Skin.Res.CloseButtonSkin;
-            cb.Rect = Rect.AlignTopLeft(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
+            cb.Skin = CloseButtonSkin;
+            cb.Rect = Rect.AlignTopLeft(0, 0, CloseButtonSize.X, CloseButtonSize.Y);
 
             _closeButton.AddComponent<CloseButton>(cb);
             Scene.Current.AddObject(_closeButton);
@@ -201,13 +242,13 @@ namespace FrozenCore.Widgets
             _maximizeButton = new GameObject("maximizeButton", this.GameObj);
 
             Transform t = _maximizeButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (Skin.Res.ButtonsSize.X * 2), 0, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - (ButtonsSize.X * 2), 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             MaximizeButton mb = new MaximizeButton();
             mb.VisibilityGroup = this.VisibilityGroup;
-            mb.Skin = Skin.Res.MaximizeButtonSkin;
-            mb.Rect = Rect.AlignTopLeft(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
+            mb.Skin = MaximizeButtonSkin;
+            mb.Rect = Rect.AlignTopLeft(0, 0, ButtonsSize.X, ButtonsSize.Y);
 
             _maximizeButton.AddComponent<MaximizeButton>(mb);
             Scene.Current.AddObject(_maximizeButton);
@@ -218,13 +259,13 @@ namespace FrozenCore.Widgets
             _minimizeButton = new GameObject("minimizeButton", this.GameObj);
 
             Transform t = _minimizeButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (Skin.Res.ButtonsSize.X * 3), 0, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - (ButtonsSize.X * 3), 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             MinimizeButton mb = new MinimizeButton();
             mb.VisibilityGroup = this.VisibilityGroup;
-            mb.Skin = Skin.Res.MinimizeButtonSkin;
-            mb.Rect = Rect.AlignTopLeft(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
+            mb.Skin = MinimizeButtonSkin;
+            mb.Rect = Rect.AlignTopLeft(0, 0, ButtonsSize.X, ButtonsSize.Y);
 
             _minimizeButton.AddComponent<MinimizeButton>(mb);
             Scene.Current.AddObject(_minimizeButton);
@@ -235,13 +276,13 @@ namespace FrozenCore.Widgets
             _restoreButton = new GameObject("restoreButton", this.GameObj);
 
             Transform t = _restoreButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (Skin.Res.ButtonsSize.X * 4), 0, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - (ButtonsSize.X * 4), 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             RestoreButton rb = new RestoreButton();
             rb.VisibilityGroup = this.VisibilityGroup;
-            rb.Skin = Skin.Res.RestoreButtonSkin;
-            rb.Rect = Rect.AlignTopLeft(0, 0, Skin.Res.ButtonsSize.X, Skin.Res.ButtonsSize.Y);
+            rb.Skin = RestoreButtonSkin;
+            rb.Rect = Rect.AlignTopLeft(0, 0, ButtonsSize.X, ButtonsSize.Y);
 
             _restoreButton.Active = false;
             _restoreButton.AddComponent<RestoreButton>(rb);

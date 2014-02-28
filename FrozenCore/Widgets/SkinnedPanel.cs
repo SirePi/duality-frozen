@@ -2,7 +2,6 @@
 
 using System;
 using Duality;
-using FrozenCore.Widgets.Skin;
 using OpenTK;
 using Duality.Drawing;
 using Duality.Editor;
@@ -10,7 +9,7 @@ using Duality.Editor;
 namespace FrozenCore.Widgets
 {
     [Serializable]
-    public class SkinnedPanel : SkinnedWidget<BaseSkin>
+    public class SkinnedPanel : SkinnedWidget
     {
         public SkinnedPanel()
         {

@@ -5,16 +5,15 @@ using Duality;
 using Duality.Components;
 using Duality.Components.Renderers;
 using Duality.Resources;
-using FrozenCore.Widgets.Skin;
 using OpenTK;
 using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL;
 using Duality.Drawing;
 
 namespace FrozenCore.Widgets
-{
+{/*
     [Serializable]
-    public class SkinnedListBox : SkinnedMultiLineWidget<ListBoxSkin>
+    public class SkinnedListBox : SkinnedMultiLineWidget
     {
         #region NonSerialized fields
 
@@ -234,5 +233,5 @@ namespace FrozenCore.Widgets
                 }
             }
         }
-    }
+    }*/
 }

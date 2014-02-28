@@ -79,7 +79,7 @@ namespace FrozenCore.Widgets
                 }
             }
         }
-
+        
         internal class ScrollDownButtonLeftMouseDown : InternalScript
         {
             public override void Execute(Duality.GameObject inSource, object inParameter)
@@ -103,7 +103,7 @@ namespace FrozenCore.Widgets
                 }
             }
         }
-
+        /*
         internal class MultiLineScrollbarValueChanged : InternalScript
         {
             public override void Execute(GameObject inSource, object inParameter)
@@ -121,7 +121,7 @@ namespace FrozenCore.Widgets
                     stb.ScrollChanged();
                 }
             }
-        }
+        }*/
 
         #endregion Internal Scripts
     }

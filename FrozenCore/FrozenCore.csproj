@@ -112,14 +112,11 @@
     <Compile Include="Widgets\SkinnedRadioButton.cs" />
     <Compile Include="Widgets\InternalScripts.cs" />
     <Compile Include="Widgets\InternalWidgets.cs" />
-    <Compile Include="Widgets\Skin\ListBoxSkin.cs" />
-    <Compile Include="Widgets\Skin\ScrollBarSkin.cs" />
-    <Compile Include="Widgets\Skin\WindowSkin.cs" />
-    <Compile Include="Widgets\Skin\SkinOrigin.cs" />
+    <Compile Include="Resources\SkinOrigin.cs" />
     <Compile Include="Widgets\SkinnedWindow.cs" />
     <Compile Include="Widgets\Widget.cs" />
     <Compile Include="Widgets\WidgetController.cs" />
-    <Compile Include="Widgets\Skin\BaseSkin.cs" />
+    <Compile Include="Resources\WidgetSkin.cs" />
     <Compile Include="Resources\Script.cs" />
     <Compile Include="Resources\LoadableResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

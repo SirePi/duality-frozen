@@ -5,12 +5,11 @@ using Duality;
 using Duality.Drawing;
 using Duality.Components;
 using Duality.Resources;
-using FrozenCore.Widgets.Skin;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace FrozenCore.Widgets
-{
+{/*
     [Serializable]
     public class SkinnedTextBlock : SkinnedMultiLineWidget<BaseSkin>
     {
@@ -35,7 +34,7 @@ namespace FrozenCore.Widgets
                 UpdateWidget(true);
             }
         }
-    }
+    }*/
 }
 
 /// BACKUP ONLY

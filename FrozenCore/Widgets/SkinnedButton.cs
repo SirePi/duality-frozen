@@ -2,7 +2,6 @@
 
 using System;
 using Duality;
-using FrozenCore.Widgets.Skin;
 using OpenTK;
 using Duality.Drawing;
 using Duality.Editor;
@@ -10,7 +9,7 @@ using Duality.Editor;
 namespace FrozenCore.Widgets
 {
     [Serializable]
-    public class SkinnedButton : SkinnedWidget<BaseSkin>
+    public class SkinnedButton : SkinnedWidget
     {
         #region NonSerialized fields
 
@@ -90,7 +89,7 @@ namespace FrozenCore.Widgets
             }
             if (e.Button == OpenTK.Input.MouseButton.Left)
             {
-                SetTextureTopLeft(Skin.Res.Origin.Active);
+                Status = WidgetStatus.Active;
 
                 if (OnLeftClick.Res != null && RepeatLeftClickEvery > 0)
                 {
@@ -104,14 +103,7 @@ namespace FrozenCore.Widgets
             _isMouseOver = true;
             if (IsWidgetEnabled)
             {
-                if (!_leftButtonDown)
-                {
-                    SetTextureTopLeft(Skin.Res.Origin.Hover);
-                }
-                else
-                {
-                    SetTextureTopLeft(Skin.Res.Origin.Active);
-                }
+                Status = _leftButtonDown ? WidgetStatus.Active : WidgetStatus.Hover;
             }
         }
 
@@ -121,7 +113,7 @@ namespace FrozenCore.Widgets
 
             if (IsWidgetEnabled && !_leftButtonDown)
             {
-                SetTextureTopLeft(Skin.Res.Origin.Normal);
+                Status = WidgetStatus.Normal;
             }
         }
 
@@ -133,7 +125,7 @@ namespace FrozenCore.Widgets
 
                 if (_isMouseOver)
                 {
-                    SetTextureTopLeft(Skin.Res.Origin.Hover);
+                    Status = WidgetStatus.Hover;
 
                     if (OnLeftClick.Res != null && RepeatLeftClickEvery == 0)
                     {
@@ -142,7 +134,7 @@ namespace FrozenCore.Widgets
                 }
                 else
                 {
-                    SetTextureTopLeft(Skin.Res.Origin.Normal);
+                    Status = WidgetStatus.Normal;
                 }
             }
         }

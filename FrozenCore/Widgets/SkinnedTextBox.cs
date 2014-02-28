@@ -6,13 +6,12 @@ using Duality.Drawing;
 using Duality.Components;
 using Duality.Components.Renderers;
 using Duality.Resources;
-using FrozenCore.Widgets.Skin;
 using OpenTK;
 
 namespace FrozenCore.Widgets
 {
     [Serializable]
-    public class SkinnedTextBox : SkinnedWidget<BaseSkin>
+    public class SkinnedTextBox : SkinnedWidget
     {
         #region NonSerialized fields
 
@@ -86,22 +85,6 @@ namespace FrozenCore.Widgets
                             _text.SourceText = _text.SourceText.Substring(0, _text.SourceText.Length - 1);
                         }
                         break;
-
-                    /*
-                    case OpenTK.Input.Key.Plus:
-                    case OpenTK.Input.Key.KeypadPlus:
-                        _text.SourceText += "+";
-                        break;
-
-                    case OpenTK.Input.Key.Minus:
-                    case OpenTK.Input.Key.KeypadMinus:
-                        _text.SourceText += "-";
-                        break;
-
-                    case OpenTK.Input.Key.KeypadMultiply:
-                        _text.SourceText += "*";
-                        break;
-                    */
 
                     case OpenTK.Input.Key.Space:
                         _text.SourceText += " ";

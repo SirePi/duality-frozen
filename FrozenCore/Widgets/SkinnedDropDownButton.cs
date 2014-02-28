@@ -2,7 +2,6 @@
 
 using System;
 using Duality;
-using FrozenCore.Widgets.Skin;
 using OpenTK;
 using Duality.Drawing;
 using Duality.Editor;
@@ -11,7 +10,7 @@ using Duality.Resources;
 using System.Collections.Generic;
 
 namespace FrozenCore.Widgets
-{
+{/*
     [Serializable]
     public class SkinnedDropDownButton : SkinnedWidget<BaseSkin>
     {
@@ -138,5 +137,5 @@ namespace FrozenCore.Widgets
             _listBox.AddComponent<SkinnedListBox>(_listBoxComponent);
             Scene.Current.AddObject(_listBox);
         }
-    }
+    }*/
 }

@@ -2,7 +2,6 @@
 
 using System;
 using Duality;
-using FrozenCore.Widgets.Skin;
 using OpenTK;
 using Duality.Editor;
 using Duality.Drawing;
@@ -10,7 +9,7 @@ using Duality.Drawing;
 namespace FrozenCore.Widgets
 {
     [Serializable]
-    public class SkinnedCheckButton : SkinnedWidget<BaseSkin>
+    public class SkinnedCheckButton : SkinnedWidget
     {
         private object _checkedArgument;
         private bool _isChecked;
@@ -76,14 +75,7 @@ namespace FrozenCore.Widgets
 
             if (IsWidgetEnabled)
             {
-                if (IsChecked)
-                {
-                    SetTextureTopLeft(Skin.Res.Origin.Active);
-                }
-                else
-                {
-                    SetTextureTopLeft(Skin.Res.Origin.Normal);
-                }
+                Status = IsChecked ? WidgetStatus.Active : WidgetStatus.Normal;
             }
         }
 
@@ -120,10 +112,9 @@ namespace FrozenCore.Widgets
 
         protected override void OnInit(Component.InitContext context)
         {
-            if (Skin.Res != null)
-            {
-                SetTextureTopLeft(IsChecked ? Skin.Res.Origin.Active : Skin.Res.Origin.Normal);
-            }
+            base.OnInit(context);
+
+            Status = IsChecked ? WidgetStatus.Active : WidgetStatus.Normal;
         }
 
         private void OnCheckUncheck()

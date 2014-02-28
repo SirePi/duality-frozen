@@ -5,14 +5,14 @@ using Duality;
 using Duality.Drawing;
 using Duality.Components;
 using Duality.Resources;
-using FrozenCore.Widgets.Skin;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using FrozenCore.Widgets.Resources;
 
 namespace FrozenCore.Widgets
-{
+{/*
     [Serializable]
-    public abstract class SkinnedMultiLineWidget<T> : SkinnedWidget<T> where T : BaseSkin
+    public abstract class SkinnedMultiLineWidget : SkinnedWidget
     {
         #region NonSerialized fields
 
@@ -42,7 +42,7 @@ namespace FrozenCore.Widgets
 
         #endregion NonSerialized fields
 
-        private ContentRef<ScrollBarSkin> _scrollBarSkin;
+        private ContentRef<WidgetSkin> _scrollBarSkin;
         private int _scrollSpeed;
         protected FormattedText _text;
         private ColorRgba _textColor;
@@ -229,5 +229,5 @@ namespace FrozenCore.Widgets
             tx.BasePixmap.Res.MainLayer = textLayer;
             tx.ReloadData();
         }
-    }
+    }*/
 }

@@ -35,7 +35,7 @@ namespace FrozenCore.Widgets
             OnLeftClick = InternalScripts.GetScript<InternalScripts.RestoreButtonLeftMouseDown>();
         }
     }
-
+    
     internal class ScrollCursor : SkinnedButton
     {
         private float _currentDelta;
@@ -45,7 +45,7 @@ namespace FrozenCore.Widgets
         {
             if (e.Button == OpenTK.Input.MouseButton.Left)
             {
-                SetTextureTopLeft(Skin.Res.Origin.Active);
+                Status = WidgetStatus.Active;
 
                 _leftButtonDown = true;
                 _currentDelta = 0;
@@ -68,11 +68,11 @@ namespace FrozenCore.Widgets
                     _parent = this.GameObj.Parent.GetComponent<SkinnedScrollBar>();
                 }
 
-                int valueChange = (int)(_currentDelta / _parent.GetValueDelta());
+                int valueChange = (int)(_currentDelta / _parent.ValueDelta);
                 if (valueChange != 0)
                 {
                     _parent.Value += valueChange;
-                    _currentDelta -= (valueChange * _parent.GetValueDelta());
+                    _currentDelta -= (valueChange * _parent.ValueDelta);
                 }
             }
         }
@@ -97,12 +97,12 @@ namespace FrozenCore.Widgets
             LeftClickArgument = 1;
         }
     }
-
+    /*
     internal class MultiLineScrollbar : SkinnedScrollBar
     {
         public MultiLineScrollbar()
         {
             OnValueChanged = InternalScripts.GetScript<InternalScripts.MultiLineScrollbarValueChanged>();
         }
-    }
+    }*/
 }

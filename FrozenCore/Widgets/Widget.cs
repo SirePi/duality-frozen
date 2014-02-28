@@ -13,6 +13,14 @@ namespace FrozenCore.Widgets
     [RequiredComponent(typeof(Transform))]
     public abstract class Widget : Component, ICmpRenderer, ICmpUpdatable, ICmpInitializable
     {
+        public enum WidgetStatus
+        {
+            Normal,
+            Hover,
+            Active,
+            Disabled
+        }
+
         #region NonSerialized fields
 
         [NonSerialized]
@@ -31,7 +39,10 @@ namespace FrozenCore.Widgets
         private bool _widgetActive;
 
         [NonSerialized]
-        private bool _widgetEnabled;
+        protected bool _resized;
+
+        [NonSerialized]
+        private WidgetStatus _status;
 
         #endregion NonSerialized fields
 
@@ -63,14 +74,18 @@ namespace FrozenCore.Widgets
         [EditorHintFlags(MemberFlags.Invisible)]
         public bool IsWidgetEnabled
         {
-            get { return _widgetEnabled; }
-            set { _widgetEnabled = value; }
+            get { return Status != WidgetStatus.Disabled; }
+            set { Status = (value ? WidgetStatus.Normal : WidgetStatus.Disabled); }
         }
         [EditorHintDecimalPlaces(1)]
         public Rect Rect
         {
             get { return _rect; }
-            set { _rect = value; }
+            set
+            { 
+                _rect = value;
+                _resized = true;
+            }
         }
         public VisibilityFlag VisibilityGroup
         {
@@ -84,12 +99,24 @@ namespace FrozenCore.Widgets
             set { _visibleRect = value; }
         }
 
+        [EditorHintFlags(MemberFlags.Invisible)]
+        public WidgetStatus Status
+        {
+            get { return _status; }
+            set
+            {
+                _status = value;
+                OnStatusChange();
+            }
+        }
+
         public Widget()
         {
             VisibilityGroup = VisibilityFlag.Group0;
 
             _activeAreaOnScreen = new Polygon(4);
-            _widgetEnabled = true;
+            
+            _rect = new Duality.Rect(0, 0, 50, 50);
             _visibleRect = Rect.Empty;
 
             _vertices = new VertexC1P3T2[36];
@@ -144,12 +171,6 @@ namespace FrozenCore.Widgets
             OnUpdate(Time.LastDelta / 1000f);
         }
 
-        public void SetEnabled(bool inEnabled)
-        {
-            _widgetEnabled = inEnabled;
-            OnEnabledChanged();
-        }
-
         internal virtual void Activate()
         {
             _widgetActive = true;
@@ -202,10 +223,10 @@ namespace FrozenCore.Widgets
 
         protected abstract Polygon GetDefaultActiveAreaOnScreen(Camera inCamera);
 
-        protected abstract void OnEnabledChanged();
-
         protected abstract void OnInit(Component.InitContext inContext);
 
         protected abstract void OnUpdate(float inSecondsPast);
+
+        protected abstract void OnStatusChange();
     }
 }
