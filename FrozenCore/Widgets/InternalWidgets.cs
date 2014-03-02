@@ -78,21 +78,21 @@ namespace FrozenCore.Widgets
         }
     }
 
-    internal class ScrollDownButton : SkinnedButton
+    internal class ScrollIncreaseButton : SkinnedButton
     {
-        public ScrollDownButton()
+        public ScrollIncreaseButton()
         {
-            OnLeftClick = InternalScripts.GetScript<InternalScripts.ScrollDownButtonLeftMouseDown>();
+            OnLeftClick = InternalScripts.GetScript<InternalScripts.ScrollIncreaseButtonLeftMouseDown>();
             RepeatLeftClickEvery = 0.1f;
             LeftClickArgument = 1;
         }
     }
 
-    internal class ScrollUpButton : SkinnedButton
+    internal class ScrollDecreaseButton : SkinnedButton
     {
-        public ScrollUpButton()
+        public ScrollDecreaseButton()
         {
-            OnLeftClick = InternalScripts.GetScript<InternalScripts.ScrollUpButtonLeftMouseDown>();
+            OnLeftClick = InternalScripts.GetScript<InternalScripts.ScrollDecreaseButtonLeftMouseDown>();
             RepeatLeftClickEvery = 0.1f;
             LeftClickArgument = 1;
         }

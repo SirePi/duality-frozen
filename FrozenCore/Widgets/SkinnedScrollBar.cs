@@ -23,18 +23,18 @@ namespace FrozenCore.Widgets
         private GameObject _cursor;
 
         [NonSerialized]
-        private GameObject _downButton;
+        private GameObject _decreaseButton;
 
         [NonSerialized]
-        private GameObject _upButton;
+        private GameObject _increaseButton;
 
         #endregion NonSerialized fields
 
         private ContentRef<Script> _onValueChanged;
 
         private ContentRef<WidgetSkin> _cursorSkin;
-        private ContentRef<WidgetSkin> _upButtonSkin;
-        private ContentRef<WidgetSkin> _downButtonSkin;
+        private ContentRef<WidgetSkin> _decreaseButtonSkin;
+        private ContentRef<WidgetSkin> _increaseButtonSkin;
 
         private Vector2 _cursorSize;
         private Vector2 _buttonsSize;
@@ -56,15 +56,15 @@ namespace FrozenCore.Widgets
             get { return _cursorSkin; }
             set { _cursorSkin = value; }
         }
-        public ContentRef<WidgetSkin> UpButtonSkin
+        public ContentRef<WidgetSkin> DecreaseButtonSkin
         {
-            get { return _upButtonSkin; }
-            set { _upButtonSkin = value; }
+            get { return _decreaseButtonSkin; }
+            set { _decreaseButtonSkin = value; }
         }
-        public ContentRef<WidgetSkin> DownButtonSkin
+        public ContentRef<WidgetSkin> IncreaseButtonSkin
         {
-            get { return _downButtonSkin; }
-            set { _downButtonSkin = value; }
+            get { return _increaseButtonSkin; }
+            set { _increaseButtonSkin = value; }
         }
 
         private int _max;
@@ -153,8 +153,8 @@ namespace FrozenCore.Widgets
             {
                 if (_cursor == null)
                 {
-                    AddScrollUpButton();
-                    AddScrollDownButton();
+                    AddScrollIncreaseButton();
+                    AddScrollDecreaseButton();
                     AddScrollCursor();
                 }
 
@@ -179,40 +179,40 @@ namespace FrozenCore.Widgets
             Scene.Current.AddObject(_cursor);
         }
 
-        private void AddScrollDownButton()
+        private void AddScrollIncreaseButton()
         {
-            _downButton = new GameObject("downButton", this.GameObj);
+            _increaseButton = new GameObject("increaseButton", this.GameObj);
 
-            Transform t = _downButton.AddComponent<Transform>();
+            Transform t = _increaseButton.AddComponent<Transform>();
             t.RelativePos = new Vector3(Rect.W / 2, Rect.H - ButtonsSize.Y / 2, DELTA_Z);
             t.RelativeAngle = 0;
 
-            ScrollDownButton sdb = new ScrollDownButton();
-            sdb.VisibilityGroup = this.VisibilityGroup;
-            sdb.Skin = DownButtonSkin;
-            sdb.Rect = Rect.AlignCenter(0, 0, ButtonsSize.X, ButtonsSize.Y);
-            sdb.LeftClickArgument = _scrollSpeed;
+            ScrollIncreaseButton sib = new ScrollIncreaseButton();
+            sib.VisibilityGroup = this.VisibilityGroup;
+            sib.Skin = IncreaseButtonSkin;
+            sib.Rect = Rect.AlignCenter(0, 0, ButtonsSize.X, ButtonsSize.Y);
+            sib.LeftClickArgument = _scrollSpeed;
 
-            _downButton.AddComponent<ScrollDownButton>(sdb);
-            Scene.Current.AddObject(_downButton);
+            _increaseButton.AddComponent<ScrollIncreaseButton>(sib);
+            Scene.Current.AddObject(_increaseButton);
         }
 
-        private void AddScrollUpButton()
+        private void AddScrollDecreaseButton()
         {
-            _upButton = new GameObject("upButton", this.GameObj);
+            _decreaseButton = new GameObject("decreaseButton", this.GameObj);
 
-            Transform t = _upButton.AddComponent<Transform>();
+            Transform t = _decreaseButton.AddComponent<Transform>();
             t.RelativePos = new Vector3(Rect.W / 2, ButtonsSize.Y / 2, DELTA_Z);
             t.RelativeAngle = 0;
 
-            ScrollUpButton sub = new ScrollUpButton();
-            sub.VisibilityGroup = this.VisibilityGroup;
-            sub.Skin = UpButtonSkin;
-            sub.Rect = Rect.AlignCenter(0, 0, ButtonsSize.X, ButtonsSize.Y);
-            sub.LeftClickArgument = _scrollSpeed;
+            ScrollDecreaseButton sdb = new ScrollDecreaseButton();
+            sdb.VisibilityGroup = this.VisibilityGroup;
+            sdb.Skin = DecreaseButtonSkin;
+            sdb.Rect = Rect.AlignCenter(0, 0, ButtonsSize.X, ButtonsSize.Y);
+            sdb.LeftClickArgument = _scrollSpeed;
 
-            _upButton.AddComponent<ScrollUpButton>(sub);
-            Scene.Current.AddObject(_upButton);
+            _decreaseButton.AddComponent<ScrollDecreaseButton>(sdb);
+            Scene.Current.AddObject(_decreaseButton);
         }
 
         private void UpdateCursor()
@@ -223,9 +223,9 @@ namespace FrozenCore.Widgets
                 _value = Math.Max(Value, _min);
 
                 float length = Rect.H - (ButtonsSize.Y * 2) - (CursorSize.Y);
-                Vector3 direction = _downButton.Transform.Pos - _upButton.Transform.Pos;
+                Vector3 direction = _increaseButton.Transform.Pos - _decreaseButton.Transform.Pos;
 
-                Vector3 origin = _upButton.Transform.Pos + (direction / 2) - (direction.Normalized * length / 2);
+                Vector3 origin = _decreaseButton.Transform.Pos + (direction / 2) - (direction.Normalized * length / 2);
 
                 _cursor.Transform.Pos = origin + (direction.Normalized * (Value - Minimum) * length / (Maximum - Minimum));
             }

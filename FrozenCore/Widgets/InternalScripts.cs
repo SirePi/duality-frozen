@@ -80,7 +80,7 @@ namespace FrozenCore.Widgets
             }
         }
         
-        internal class ScrollDownButtonLeftMouseDown : InternalScript
+        internal class ScrollIncreaseButtonLeftMouseDown : InternalScript
         {
             public override void Execute(Duality.GameObject inSource, object inParameter)
             {
@@ -92,7 +92,7 @@ namespace FrozenCore.Widgets
             }
         }
 
-        internal class ScrollUpButtonLeftMouseDown : InternalScript
+        internal class ScrollDecreaseButtonLeftMouseDown : InternalScript
         {
             public override void Execute(Duality.GameObject inSource, object inParameter)
             {
