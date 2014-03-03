@@ -290,10 +290,8 @@ namespace FrozenCore.Widgets
             _currentMousePosition.X = e.X;
             _currentMousePosition.Y = e.Y;
 
-            //_currentMousePosition = GameObj.Camera.GetSpaceCoord(_currentMousePosition).Xy;
-
             IEnumerable<Widget> activeGUIComponents = Scene.Current.ActiveObjects.GetComponents<Widget>();
-            IEnumerable<Widget> hoveredGUIComponents = activeGUIComponents.Where(gc => gc.GetActiveAreaOnScreen(GameObj.Camera).Contains(_currentMousePosition));
+            IEnumerable<Widget> hoveredGUIComponents = activeGUIComponents.Where(gc => gc.GetAreaOnScreen(GameObj.Camera).Contains(_currentMousePosition));
 
             Widget hgc = null;
 
@@ -301,6 +299,11 @@ namespace FrozenCore.Widgets
             {
                 float closestZ = hoveredGUIComponents.Min(gc => gc.GameObj.Transform.Pos.Z);
                 hgc = hoveredGUIComponents.Where(gc => gc.GameObj.Transform.Pos.Z == closestZ).FirstOrDefault();
+
+                if (hgc != null && !hgc.GetActiveAreaOnScreen(GameObj.Camera).Contains(_currentMousePosition))
+                {
+                    hgc = null;
+                }
             }
 
             if (HoveredElement != hgc)

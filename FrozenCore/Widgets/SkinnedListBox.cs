@@ -1,33 +1,20 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using System;
+using System.Collections.Generic;
 using Duality;
 using Duality.Components;
-using Duality.Components.Renderers;
-using Duality.Resources;
-using OpenTK;
-using System.Collections.Generic;
-using OpenTK.Graphics.OpenGL;
 using Duality.Drawing;
+using Duality.Resources;
+using FrozenCore.Widgets.Resources;
+using OpenTK;
 
 namespace FrozenCore.Widgets
-{/*
+{
     [Serializable]
     public class SkinnedListBox : SkinnedMultiLineWidget
     {
         #region NonSerialized fields
-
-        [NonSerialized]
-        private Polygon _listArea;
-
-        [NonSerialized]
-        private Polygon _testPolygon;
-
-        [NonSerialized]
-        private bool _itemsAccessed;
-
-        [NonSerialized]
-        private object _selectedItem;
 
         [NonSerialized]
         private GameObject _highlight;
@@ -35,24 +22,53 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         private SkinnedPanel _highlightPanel;
 
+        [NonSerialized]
+        private bool _itemsAccessed;
+
+        [NonSerialized]
+        private Polygon _listArea;
+
+        [NonSerialized]
+        private object _selectedItem;
+
+        [NonSerialized]
+        private Polygon _testPolygon;
+
         #endregion NonSerialized fields
 
-        private List<object> _items;
+        private ContentRef<WidgetSkin> _highlightSkin;
 
+        private List<object> _items;
+        public ContentRef<WidgetSkin> HighlightSkin
+        {
+            get { return _highlightSkin; }
+            set { _highlightSkin = value; }
+        }
         public List<object> Items
         {
-            get 
+            get
             {
                 _itemsAccessed = true;
-                return _items; 
+                return _items;
             }
-            set 
+            set
             {
                 _itemsAccessed = true;
                 _items = value;
             }
         }
 
+        public int SelectedIndex
+        {
+            get { return (_selectedItem != null ? _items.IndexOf(_selectedItem) : -1); }
+            set
+            {
+                if (value >= 0 && value < _items.Count)
+                {
+                    SelectedItem = _items[value];
+                }
+            }
+        }
         public object SelectedItem
         {
             get { return _selectedItem; }
@@ -69,18 +85,6 @@ namespace FrozenCore.Widgets
             }
         }
 
-        public int SelectedIndex
-        {
-            get { return (_selectedItem != null ? _items.IndexOf(_selectedItem) : -1); }
-            set
-            {
-                if (value >= 0 && value < _items.Count)
-                {
-                    SelectedItem = _items[value];
-                }
-            }
-        }
-
         public SkinnedListBox()
         {
             _items = new List<object>();
@@ -89,29 +93,6 @@ namespace FrozenCore.Widgets
             _testPolygon = new Polygon(4);
 
             _text.SourceText = " ";
-        }
-
-        protected override void OnUpdate(float inSecondsPast)
-        {
-            if (_itemsAccessed)
-            {
-                _text.SourceText = String.Join("/n", _items);
-                _itemsAccessed = false;
-
-                UpdateWidget(false);
-            }
-
-            UpdateHighlight();
-        }
-
-        protected override void Draw(IDrawDevice inDevice)
-        {
-            base.Draw(inDevice);
-
-            _listArea[0] = inDevice.GetScreenCoord(_points[5].WorldCoords).Xy;
-            _listArea[1] = inDevice.GetScreenCoord(_points[6].WorldCoords).Xy;
-            _listArea[2] = inDevice.GetScreenCoord(_points[10].WorldCoords).Xy;
-            _listArea[3] = inDevice.GetScreenCoord(_points[9].WorldCoords).Xy;
         }
 
         internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
@@ -134,7 +115,7 @@ namespace FrozenCore.Widgets
                 Vector2 deltaLeft = (_activeAreaOnScreen[3] - _activeAreaOnScreen[0]) / delta;
                 Vector2 deltaRight = (_activeAreaOnScreen[2] - _activeAreaOnScreen[1]) / delta;
 
-                for(int i = 0; i < _text.TextMetrics.LineBounds.Count; i++)
+                for (int i = 0; i < _text.TextMetrics.LineBounds.Count; i++)
                 {
                     Rect r = _text.TextMetrics.LineBounds[i];
 
@@ -158,6 +139,16 @@ namespace FrozenCore.Widgets
             }
         }
 
+        protected override void Draw(IDrawDevice inDevice)
+        {
+            base.Draw(inDevice);
+
+            _listArea[0] = inDevice.GetScreenCoord(_points[5].WorldCoords).Xy;
+            _listArea[1] = inDevice.GetScreenCoord(_points[6].WorldCoords).Xy;
+            _listArea[2] = inDevice.GetScreenCoord(_points[10].WorldCoords).Xy;
+            _listArea[3] = inDevice.GetScreenCoord(_points[9].WorldCoords).Xy;
+        }
+
         protected override void OnInit(Component.InitContext inContext)
         {
             base.OnInit(inContext);
@@ -168,7 +159,22 @@ namespace FrozenCore.Widgets
                 {
                     AddHighlight();
                 }
+
+                _itemsAccessed = true;
             }
+        }
+
+        protected override void OnUpdate(float inSecondsPast)
+        {
+            if (_itemsAccessed)
+            {
+                _text.SourceText = String.Join("/n", _items);
+                _itemsAccessed = false;
+
+                UpdateWidget(false);
+            }
+
+            UpdateHighlight();
         }
 
         private void AddHighlight()
@@ -181,7 +187,7 @@ namespace FrozenCore.Widgets
 
             _highlightPanel = new SkinnedPanel();
             _highlightPanel.VisibilityGroup = this.VisibilityGroup;
-            _highlightPanel.Skin = Skin.Res.SelectorSkin;
+            _highlightPanel.Skin = HighlightSkin;
             _highlightPanel.Rect = Rect.AlignTopLeft(0, 0, 0, 0);
 
             _highlight.AddComponent<SkinnedPanel>(_highlightPanel);
@@ -194,23 +200,23 @@ namespace FrozenCore.Widgets
             {
                 Rect selectionRect = _text.TextMetrics.LineBounds[SelectedIndex];
 
+                float top = _scrollComponent.Value;
+                float bottom = _scrollComponent.Value + _visibleHeight;
+
+                Vector3 relativePos = _highlight.Transform.RelativePos;
+                relativePos.X = Skin.Res.Border.X;
+                relativePos.Y = Skin.Res.Border.Y + selectionRect.Y - top;
+
+                Rect highlightRect = _highlightPanel.Rect;
+                highlightRect.H = selectionRect.H;
+                highlightRect.W = Rect.W - Skin.Res.Border.X - Skin.Res.Border.W;
+
+                _highlight.Transform.RelativePos = relativePos;
+                _highlightPanel.Rect = highlightRect;
+                _highlightPanel.VisibleRect = highlightRect;
+
                 if (_isScrollbarRequired)
                 {
-                    float top = _scrollComponent.Value;
-                    float bottom = _scrollComponent.Value + _visibleHeight;
-
-                    Vector3 relativePos = _highlight.Transform.RelativePos;
-                    relativePos.X = Skin.Res.Border.X;
-                    relativePos.Y = Skin.Res.Border.Y + selectionRect.Y - top;
-
-                    Rect highlightRect = _highlightPanel.Rect;
-                    highlightRect.H = selectionRect.H;
-                    highlightRect.W = Rect.W - Skin.Res.Border.X - Skin.Res.Border.W;
-
-                    _highlight.Transform.RelativePos = relativePos;
-                    _highlightPanel.Rect = highlightRect;
-                    _highlightPanel.VisibleRect = highlightRect;
-
                     if (selectionRect.Top.Y < top && selectionRect.Bottom.Y >= top)
                     {
                         Rect highlightVisibleRect = _highlightPanel.VisibleRect;
@@ -227,11 +233,7 @@ namespace FrozenCore.Widgets
                         _highlightPanel.VisibleRect = highlightVisibleRect;
                     }
                 }
-                else
-                {
-
-                }
             }
         }
-    }*/
+    }
 }

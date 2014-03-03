@@ -9,9 +9,9 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace FrozenCore.Widgets
-{/*
+{
     [Serializable]
-    public class SkinnedTextBlock : SkinnedMultiLineWidget<BaseSkin>
+    public class SkinnedTextBlock : SkinnedMultiLineWidget
     {
         public ObservableFormattedText Text
         {
@@ -34,7 +34,7 @@ namespace FrozenCore.Widgets
                 UpdateWidget(true);
             }
         }
-    }*/
+    }
 }
 
 /// BACKUP ONLY

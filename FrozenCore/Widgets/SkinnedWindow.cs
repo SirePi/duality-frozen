@@ -2,8 +2,8 @@
 
 using System;
 using Duality;
-using Duality.Drawing;
 using Duality.Components;
+using Duality.Drawing;
 using Duality.Resources;
 using FrozenCore.Widgets.Resources;
 using OpenTK;
@@ -22,38 +22,40 @@ namespace FrozenCore.Widgets
         private bool _isDragged;
 
         [NonSerialized]
+        private bool _isMinimized;
+
+        [NonSerialized]
         private GameObject _maximizeButton;
 
         [NonSerialized]
         private GameObject _minimizeButton;
 
         [NonSerialized]
-        private GameObject _restoreButton;
-
-        [NonSerialized]
-        private bool _isMinimized;
-
-        [NonSerialized]
         private Rect _normalRect;
+
+        [NonSerialized]
+        private GameObject _restoreButton;
 
         #endregion NonSerialized fields
 
+        private Vector2 _buttonsSize;
         private bool _canClose;
         private bool _canMaximize;
         private bool _canMinimize;
+        private Vector2 _closeButtonSize;
+        private ContentRef<WidgetSkin> _closeButtonSkin;
         private bool _isDraggable;
+        private ContentRef<WidgetSkin> _maximizeButtonSkin;
+        private Vector2 _maximizedSize;
+        private ContentRef<WidgetSkin> _minimizeButtonSkin;
+        private ContentRef<WidgetSkin> _restoreButtonSkin;
         private FormattedText _title;
         private ColorRgba _titleColor;
-        private Vector2 _maximizedSize;
-
-        private ContentRef<WidgetSkin> _closeButtonSkin;
-        private ContentRef<WidgetSkin> _minimizeButtonSkin;
-        private ContentRef<WidgetSkin> _maximizeButtonSkin;
-        private ContentRef<WidgetSkin> _restoreButtonSkin;
-
-        private Vector2 _closeButtonSize;
-        private Vector2 _buttonsSize;
-
+        public Vector2 ButtonsSize
+        {
+            get { return _buttonsSize; }
+            set { _buttonsSize = value; }
+        }
         public bool CanClose
         {
             get { return _canClose; }
@@ -69,10 +71,40 @@ namespace FrozenCore.Widgets
             get { return _canMinimize; }
             set { _canMinimize = value; }
         }
+        public Vector2 CloseButtonSize
+        {
+            get { return _closeButtonSize; }
+            set { _closeButtonSize = value; }
+        }
+        public ContentRef<WidgetSkin> CloseButtonSkin
+        {
+            get { return _closeButtonSkin; }
+            set { _closeButtonSkin = value; }
+        }
         public bool IsDraggable
         {
             get { return _isDraggable; }
             set { _isDraggable = value; }
+        }
+        public ContentRef<WidgetSkin> MaximizeButtonSkin
+        {
+            get { return _maximizeButtonSkin; }
+            set { _maximizeButtonSkin = value; }
+        }
+        public Vector2 MaximizedSize
+        {
+            get { return _maximizedSize; }
+            set { _maximizedSize = value; }
+        }
+        public ContentRef<WidgetSkin> MinimizeButtonSkin
+        {
+            get { return _minimizeButtonSkin; }
+            set { _minimizeButtonSkin = value; }
+        }
+        public ContentRef<WidgetSkin> RestoreButtonSkin
+        {
+            get { return _restoreButtonSkin; }
+            set { _restoreButtonSkin = value; }
         }
         public FormattedText Title
         {
@@ -84,44 +116,6 @@ namespace FrozenCore.Widgets
             get { return _titleColor; }
             set { _titleColor = value; }
         }
-        public Vector2 MaximizedSize
-        {
-            get { return _maximizedSize; }
-            set { _maximizedSize = value; }
-        }
-
-        public Vector2 CloseButtonSize
-        {
-            get { return _closeButtonSize; }
-            set { _closeButtonSize = value; }
-        }
-
-        public Vector2 ButtonsSize
-        {
-            get { return _buttonsSize; }
-            set { _buttonsSize = value; }
-        }
-
-        public ContentRef<WidgetSkin> CloseButtonSkin
-        {
-            get { return _closeButtonSkin; }
-            set { _closeButtonSkin = value; }
-        }
-        public ContentRef<WidgetSkin> MinimizeButtonSkin
-        {
-            get { return _minimizeButtonSkin; }
-            set { _minimizeButtonSkin = value; }
-        }
-        public ContentRef<WidgetSkin> MaximizeButtonSkin
-        {
-            get { return _maximizeButtonSkin; }
-            set { _maximizeButtonSkin = value; }
-        }
-        public ContentRef<WidgetSkin> RestoreButtonSkin
-        {
-            get { return _restoreButtonSkin; }
-            set { _restoreButtonSkin = value; }
-        }
 
         public SkinnedWindow()
         {
@@ -132,11 +126,57 @@ namespace FrozenCore.Widgets
             _isDragged = false;
         }
 
+        internal void Maximize()
+        {
+            _isMinimized = false;
+
+            Rect newRect = Rect;
+            newRect.W = _maximizedSize.X;
+            newRect.H = _maximizedSize.Y;
+            Rect = newRect;
+
+            _maximizeButton.Active = false;
+            _restoreButton.Active = true;
+            if (_minimizeButton != null)
+            {
+                _minimizeButton.Active = true;
+            }
+
+            _restoreButton.Transform.Pos = _maximizeButton.Transform.Pos;
+
+            float deltaX = _maximizedSize.X - Rect.W;
+            LayoutButtons(deltaX);
+
+            EnableChildren(true);
+            OnResize();
+        }
+
+        internal void Minimize()
+        {
+            _isMinimized = true;
+
+            Rect newRect = _normalRect;
+            newRect.H = Skin.Res.Border.Y + Skin.Res.Border.W;
+            Rect = newRect;
+
+            _minimizeButton.Active = false;
+            _restoreButton.Active = true;
+            if (_maximizeButton != null)
+            {
+                _maximizeButton.Active = true;
+            }
+
+            _restoreButton.Transform.Pos = _minimizeButton.Transform.Pos;
+
+            EnableChildren(false);
+            OnResize();
+        }
+
         internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
         {
             base.MouseDown(e);
 
-            if (IsWidgetEnabled && IsDraggable)
+            if (Status != WidgetStatus.Disabled && IsDraggable)
             {
                 Status = WidgetStatus.Active;
                 _isDragged = true;
@@ -145,7 +185,7 @@ namespace FrozenCore.Widgets
 
         internal override void MouseEnter()
         {
-            if (IsWidgetEnabled && Skin.Res != null && !_isDragged)
+            if (Status != WidgetStatus.Disabled && Skin.Res != null && !_isDragged)
             {
                 Status = WidgetStatus.Hover;
             }
@@ -153,7 +193,7 @@ namespace FrozenCore.Widgets
 
         internal override void MouseLeave()
         {
-            if (IsWidgetEnabled && Skin.Res != null && !_isDragged)
+            if (Status != WidgetStatus.Disabled && Skin.Res != null && !_isDragged)
             {
                 Status = WidgetStatus.Normal;
             }
@@ -173,11 +213,37 @@ namespace FrozenCore.Widgets
         {
             base.MouseUp(e);
 
-            if (IsWidgetEnabled && IsDraggable)
+            if (Status != WidgetStatus.Disabled && IsDraggable)
             {
                 Status = WidgetStatus.Hover;
                 _isDragged = false;
             }
+        }
+
+        internal void Restore()
+        {
+            if (!_isMinimized)
+            {
+                float deltaX = _maximizedSize.X - Rect.W;
+                LayoutButtons(-deltaX);
+            }
+
+            _isMinimized = false;
+
+            Rect = _normalRect;
+
+            _restoreButton.Active = false;
+            if (_minimizeButton != null)
+            {
+                _minimizeButton.Active = true;
+            }
+            if (_maximizeButton != null)
+            {
+                _maximizeButton.Active = true;
+            }
+
+            EnableChildren(true);
+            OnResize();
         }
 
         protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
@@ -218,6 +284,10 @@ namespace FrozenCore.Widgets
                     AddRestoreButton();
                 }
             }
+        }
+
+        protected virtual void OnResize()
+        {
         }
 
         private void AddCloseButton()
@@ -289,81 +359,20 @@ namespace FrozenCore.Widgets
             Scene.Current.AddObject(_restoreButton);
         }
 
-        internal void Minimize()
+        private void EnableChildren(bool inEnable)
         {
-            _isMinimized = true;
-
-            Rect newRect = _normalRect;
-            newRect.H = Skin.Res.Border.Y + Skin.Res.Border.W;
-            Rect = newRect;
-
-            _minimizeButton.Active = false;
-            _restoreButton.Active = true;
-            if (_maximizeButton != null)
+            foreach (GameObject go in this.GameObj.Children)
             {
-                _maximizeButton.Active = true;
+                if (go != _closeButton && go != _minimizeButton && go != _maximizeButton && go != _restoreButton)
+                {
+                    go.Active = inEnable;
+                }
             }
-
-            _restoreButton.Transform.Pos = _minimizeButton.Transform.Pos;
-
-            EnableChildren(false);
-            OnResize();
-        }
-
-        internal void Maximize()
-        {
-            _isMinimized = false;
-
-            Rect newRect = Rect;
-            newRect.W = _maximizedSize.X;
-            newRect.H = _maximizedSize.Y;
-            Rect = newRect;
-
-            _maximizeButton.Active = false;
-            _restoreButton.Active = true;
-            if (_minimizeButton != null)
-            {
-                _minimizeButton.Active = true;
-            }
-
-            _restoreButton.Transform.Pos = _maximizeButton.Transform.Pos;
-
-            float deltaX = _maximizedSize.X - Rect.W;
-            LayoutButtons(deltaX);
-
-            EnableChildren(true);
-            OnResize();
-        }
-
-        internal void Restore()
-        {
-            if (!_isMinimized)
-            {
-                float deltaX = _maximizedSize.X - Rect.W;
-                LayoutButtons(-deltaX);
-            }
-
-            _isMinimized = false;
-
-            Rect = _normalRect;
-
-            _restoreButton.Active = false;
-            if (_minimizeButton != null)
-            {
-                _minimizeButton.Active = true;
-            }
-            if (_maximizeButton != null)
-            {
-                _maximizeButton.Active = true;
-            }
-
-            EnableChildren(true);
-            OnResize();
         }
 
         private void LayoutButtons(float inDeltaX)
         {
-            if(CanClose && _closeButton != null) 
+            if (CanClose && _closeButton != null)
             {
                 MoveButton(_closeButton, inDeltaX);
             }
@@ -389,22 +398,6 @@ namespace FrozenCore.Widgets
             Vector3 pos = inButton.Transform.RelativePos;
             pos.X += inDeltaX;
             inButton.Transform.RelativePos = pos;
-        }
-
-        private void EnableChildren(bool inEnable)
-        {
-            foreach (GameObject go in this.GameObj.Children)
-            {
-                if (go != _closeButton && go != _minimizeButton && go != _maximizeButton && go != _restoreButton)
-                {
-                    go.Active = inEnable;
-                }
-            }
-        }
-
-        protected virtual void OnResize()
-        {
-
         }
     }
 }

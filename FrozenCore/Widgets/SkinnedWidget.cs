@@ -3,10 +3,9 @@
 using System;
 using Duality;
 using Duality.Components;
-using Duality.Resources;
-using OpenTK;
 using Duality.Drawing;
 using FrozenCore.Widgets.Resources;
+using OpenTK;
 
 namespace FrozenCore.Widgets
 {
@@ -30,6 +29,18 @@ namespace FrozenCore.Widgets
 
         #endregion NonSerialized fields
 
+        private static readonly int[] COLUMN_1 = new int[] { 0, 1, 12, 13, 24, 25 };
+        private static readonly int[] COLUMN_2 = new int[] { 3, 2, 15, 14, 27, 26 };
+        private static readonly int[] COLUMN_3 = new int[] { 4, 5, 16, 17, 28, 29 };
+        private static readonly int[] COLUMN_4 = new int[] { 7, 6, 19, 18, 31, 30 };
+        private static readonly int[] COLUMN_5 = new int[] { 8, 9, 20, 21, 32, 33 };
+        private static readonly int[] COLUMN_6 = new int[] { 11, 10, 23, 22, 35, 34 };
+        private static readonly int[] ROW_1 = new int[] { 0, 3, 4, 7, 8, 11 };
+        private static readonly int[] ROW_2 = new int[] { 1, 2, 5, 6, 9, 10 };
+        private static readonly int[] ROW_3 = new int[] { 12, 15, 16, 19, 20, 23 };
+        private static readonly int[] ROW_4 = new int[] { 13, 14, 17, 18, 21, 22 };
+        private static readonly int[] ROW_5 = new int[] { 24, 27, 28, 31, 32, 35 };
+        private static readonly int[] ROW_6 = new int[] { 25, 26, 29, 30, 33, 34 };
         private ContentRef<WidgetSkin> _skin;
 
         public ContentRef<WidgetSkin> Skin
@@ -64,23 +75,11 @@ namespace FrozenCore.Widgets
         {
         }
 
-        private void SkinChanged()
-        {
-            if (_skin.Res != null)
-            {
-                _textureSize = _skin.Res.Texture.Res.Size;
-                _uvDelta = _skinSize / _textureSize;
-                _uvDelta = _uvDelta * _skin.Res.Texture.Res.UVRatio;
-
-                OnStatusChange();
-            }
-        }
-
         internal override void MouseEnter()
         {
             _isMouseOver = true;
 
-            if (IsWidgetEnabled)
+            if (Status != WidgetStatus.Disabled)
             {
                 Status = WidgetStatus.Hover;
             }
@@ -90,7 +89,7 @@ namespace FrozenCore.Widgets
         {
             _isMouseOver = false;
 
-            if (IsWidgetEnabled)
+            if (Status != WidgetStatus.Disabled)
             {
                 Status = WidgetStatus.Normal;
             }
@@ -353,6 +352,45 @@ namespace FrozenCore.Widgets
             }
         }
 
+        protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
+        {
+        }
+
+        protected override void OnInit(Component.InitContext inContext)
+        {
+            SkinChanged();
+        }
+
+        protected override void OnStatusChange()
+        {
+            switch (Status)
+            {
+                case WidgetStatus.Normal:
+                    SetTextureTopLeft(_skin.Res.Origin.Normal);
+                    break;
+
+                case WidgetStatus.Hover:
+                    SetTextureTopLeft(_skin.Res.Origin.Hover);
+                    break;
+
+                case WidgetStatus.Active:
+                    SetTextureTopLeft(_skin.Res.Origin.Active);
+                    break;
+
+                case WidgetStatus.Disabled:
+                    SetTextureTopLeft(_skin.Res.Origin.Disabled);
+                    break;
+            }
+        }
+
+        protected override void OnUpdate(float inSecondsPast)
+        {
+            if (_skin == null || _skin.Res == null)
+            {
+                Skin = WidgetSkin.DEFAULT;
+            }
+        }
+
         private void ApplyVisibilityRectangle()
         {
             WidgetSkin skin = _skin.Res;
@@ -410,7 +448,6 @@ namespace FrozenCore.Widgets
                 _vertices[30].Color = Colors.Transparent;
                 _vertices[31].Color = Colors.Transparent;
             }
-
 
             if (VisibleRect.Top.Y >= innerTopLeft.Y)
             {
@@ -531,19 +568,6 @@ namespace FrozenCore.Widgets
             }
         }
 
-        private static readonly int[] COLUMN_1 = new int[] { 0, 1, 12, 13, 24, 25 };
-        private static readonly int[] COLUMN_2 = new int[] { 3, 2, 15, 14, 27, 26 };
-        private static readonly int[] COLUMN_3 = new int[] { 4, 5, 16, 17, 28, 29 };
-        private static readonly int[] COLUMN_4 = new int[] { 7, 6, 19, 18, 31, 30 };
-        private static readonly int[] COLUMN_5 = new int[] { 8, 9, 20, 21, 32, 33 };
-        private static readonly int[] COLUMN_6 = new int[] { 11, 10, 23, 22, 35, 34 };
-        private static readonly int[] ROW_1 = new int[] { 0, 3, 4, 7, 8, 11 };
-        private static readonly int[] ROW_2 = new int[] { 1, 2, 5, 6, 9, 10 };
-        private static readonly int[] ROW_3 = new int[] { 12, 15, 16, 19, 20, 23 };
-        private static readonly int[] ROW_4 = new int[] { 13, 14, 17, 18, 21, 22 };
-        private static readonly int[] ROW_5 = new int[] { 24, 27, 28, 31, 32, 35 };
-        private static readonly int[] ROW_6 = new int[] { 25, 26, 29, 30, 33, 34 };
-
         private void FixVertices(int[] inVertexIndexes, int inVertexComparator, float inK)
         {
             Vector3 deltaPos = (_vertices[inVertexComparator].Pos - _vertices[inVertexIndexes[0]].Pos) * inK;
@@ -553,103 +577,6 @@ namespace FrozenCore.Widgets
             {
                 _vertices[i].Pos += deltaPos;
                 _vertices[i].TexCoord += deltaTex;
-            }
-        }
-
-        protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
-        {
-        }
-
-        protected override Polygon GetDefaultActiveAreaOnScreen(Camera inCamera)
-        {
-            switch (ActiveArea)
-            {
-                case Widgets.ActiveArea.LeftBorder:
-                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
-                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[1].WorldCoords).Xy;
-                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[13].WorldCoords).Xy;
-                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
-                    break;
-
-                case Widgets.ActiveArea.TopBorder:
-                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
-                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
-                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[7].WorldCoords).Xy;
-                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[4].WorldCoords).Xy;
-                    break;
-
-                case Widgets.ActiveArea.RightBorder:
-                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[2].WorldCoords).Xy;
-                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
-                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
-                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[14].WorldCoords).Xy;
-                    break;
-
-                case Widgets.ActiveArea.BottomBorder:
-                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[8].WorldCoords).Xy;
-                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[11].WorldCoords).Xy;
-                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
-                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
-                    break;
-
-                case Widgets.ActiveArea.Center:
-                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[5].WorldCoords).Xy;
-                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[6].WorldCoords).Xy;
-                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[10].WorldCoords).Xy;
-                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[9].WorldCoords).Xy;
-                    break;
-
-                default: //All or others.. but it should never happen
-                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
-                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
-                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
-                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
-                    break;
-            }
-
-            return _activeAreaOnScreen;
-        }
-        /*
-        protected override void OnEnabledChanged()
-        {
-            if (!IsWidgetEnabled && _skin.Res != null)
-            {
-                SetTextureTopLeft(_skin.Res.Origin.Disabled);
-            }
-        }
-        */
-        protected override void OnInit(Component.InitContext inContext)
-        {
-            SkinChanged();
-        }
-
-        protected override void  OnStatusChange()
-        {
-            switch (Status)
-            {
-                case WidgetStatus.Normal:
-                    SetTextureTopLeft(_skin.Res.Origin.Normal);
-                    break;
-
-                case WidgetStatus.Hover:
-                    SetTextureTopLeft(_skin.Res.Origin.Hover);
-                    break;
-
-                case WidgetStatus.Active:
-                    SetTextureTopLeft(_skin.Res.Origin.Active);
-                    break;
-
-                case WidgetStatus.Disabled:
-                    SetTextureTopLeft(_skin.Res.Origin.Disabled);
-                    break;
-            }
-        }
-
-        protected override void OnUpdate(float inSecondsPast)
-        {
-            if (_skin == null || _skin.Res == null)
-            {
-                Skin = WidgetSkin.DEFAULT;
             }
         }
 
@@ -717,6 +644,18 @@ namespace FrozenCore.Widgets
 
             _points[15].UVCoords.X = uvTopLeft.X + _uvDelta.X;
             _points[15].UVCoords.Y = uvTopLeft.Y + _uvDelta.Y;
+        }
+
+        private void SkinChanged()
+        {
+            if (_skin.Res != null)
+            {
+                _textureSize = _skin.Res.Texture.Res.Size;
+                _uvDelta = _skinSize / _textureSize;
+                _uvDelta = _uvDelta * _skin.Res.Texture.Res.UVRatio;
+
+                OnStatusChange();
+            }
         }
     }
 }

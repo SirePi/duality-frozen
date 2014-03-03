@@ -2,9 +2,9 @@
 
 using System;
 using Duality;
+using Duality.Editor;
 using Duality.Resources;
 using OpenTK;
-using Duality.Editor;
 
 namespace FrozenCore.Widgets.Resources
 {
@@ -33,6 +33,19 @@ namespace FrozenCore.Widgets.Resources
         private Vector2 _size;
         private ContentRef<Texture> _texture;
 
+        [EditorHintFlags(MemberFlags.Invisible)]
+        public BatchInfo BatchInfo
+        {
+            get
+            {
+                if (_batchInfo == null)
+                {
+                    _batchInfo = new BatchInfo(DrawTechnique.Mask, Colors.White, Texture);
+                }
+
+                return _batchInfo;
+            }
+        }
         public Vector4 Border
         {
             get { return _border; }
@@ -52,20 +65,6 @@ namespace FrozenCore.Widgets.Resources
         {
             get { return _texture; }
             set { _texture = value; }
-        }
-        
-        [EditorHintFlags(MemberFlags.Invisible)]
-        public BatchInfo BatchInfo
-        {
-            get 
-            {
-                if (_batchInfo == null)
-                {
-                    _batchInfo = new BatchInfo(DrawTechnique.Mask, Colors.White, Texture);
-                }
-
-                return _batchInfo;
-            }
         }
     }
 }

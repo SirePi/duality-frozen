@@ -35,7 +35,7 @@ namespace FrozenCore.Widgets
             OnLeftClick = InternalScripts.GetScript<InternalScripts.RestoreButtonLeftMouseDown>();
         }
     }
-    
+
     internal class ScrollCursor : SkinnedButton
     {
         private float _currentDelta;
@@ -43,12 +43,15 @@ namespace FrozenCore.Widgets
 
         internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
         {
-            if (e.Button == OpenTK.Input.MouseButton.Left)
+            if (Status != WidgetStatus.Disabled)
             {
-                Status = WidgetStatus.Active;
+                if (e.Button == OpenTK.Input.MouseButton.Left)
+                {
+                    Status = WidgetStatus.Active;
 
-                _leftButtonDown = true;
-                _currentDelta = 0;
+                    _leftButtonDown = true;
+                    _currentDelta = 0;
+                }
             }
         }
 
@@ -78,6 +81,16 @@ namespace FrozenCore.Widgets
         }
     }
 
+    internal class ScrollDecreaseButton : SkinnedButton
+    {
+        public ScrollDecreaseButton()
+        {
+            OnLeftClick = InternalScripts.GetScript<InternalScripts.ScrollDecreaseButtonLeftMouseDown>();
+            RepeatLeftClickEvery = 0.1f;
+            LeftClickArgument = 1;
+        }
+    }
+
     internal class ScrollIncreaseButton : SkinnedButton
     {
         public ScrollIncreaseButton()
@@ -88,15 +101,6 @@ namespace FrozenCore.Widgets
         }
     }
 
-    internal class ScrollDecreaseButton : SkinnedButton
-    {
-        public ScrollDecreaseButton()
-        {
-            OnLeftClick = InternalScripts.GetScript<InternalScripts.ScrollDecreaseButtonLeftMouseDown>();
-            RepeatLeftClickEvery = 0.1f;
-            LeftClickArgument = 1;
-        }
-    }
     /*
     internal class MultiLineScrollbar : SkinnedScrollBar
     {

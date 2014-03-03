@@ -2,9 +2,9 @@
 
 using System;
 using Duality;
-using OpenTK;
 using Duality.Drawing;
 using Duality.Editor;
+using OpenTK;
 
 namespace FrozenCore.Widgets
 {
@@ -83,17 +83,20 @@ namespace FrozenCore.Widgets
 
         internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
         {
-            if (e.Button == OpenTK.Input.MouseButton.Right && OnRightClick.Res != null)
+            if (Status != WidgetStatus.Disabled)
             {
-                OnRightClick.Res.Execute(this.GameObj, RightClickArgument);
-            }
-            if (e.Button == OpenTK.Input.MouseButton.Left)
-            {
-                Status = WidgetStatus.Active;
-
-                if (OnLeftClick.Res != null && RepeatLeftClickEvery > 0)
+                if (e.Button == OpenTK.Input.MouseButton.Right && OnRightClick.Res != null)
                 {
-                    _leftButtonDown = true;
+                    OnRightClick.Res.Execute(this.GameObj, RightClickArgument);
+                }
+                if (e.Button == OpenTK.Input.MouseButton.Left)
+                {
+                    Status = WidgetStatus.Active;
+
+                    if (OnLeftClick.Res != null && RepeatLeftClickEvery > 0)
+                    {
+                        _leftButtonDown = true;
+                    }
                 }
             }
         }
@@ -101,7 +104,7 @@ namespace FrozenCore.Widgets
         internal override void MouseEnter()
         {
             _isMouseOver = true;
-            if (IsWidgetEnabled)
+            if (Status != WidgetStatus.Disabled)
             {
                 Status = _leftButtonDown ? WidgetStatus.Active : WidgetStatus.Hover;
             }
@@ -111,7 +114,7 @@ namespace FrozenCore.Widgets
         {
             _isMouseOver = false;
 
-            if (IsWidgetEnabled && !_leftButtonDown)
+            if (Status != WidgetStatus.Disabled && !_leftButtonDown)
             {
                 Status = WidgetStatus.Normal;
             }
@@ -119,22 +122,25 @@ namespace FrozenCore.Widgets
 
         internal override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
         {
-            if (e.Button == OpenTK.Input.MouseButton.Left)
+            if (Status != WidgetStatus.Disabled)
             {
-                _leftButtonDown = false;
-
-                if (_isMouseOver)
+                if (e.Button == OpenTK.Input.MouseButton.Left)
                 {
-                    Status = WidgetStatus.Hover;
+                    _leftButtonDown = false;
 
-                    if (OnLeftClick.Res != null && RepeatLeftClickEvery == 0)
+                    if (_isMouseOver)
                     {
-                        OnLeftClick.Res.Execute(this.GameObj, LeftClickArgument);
+                        Status = WidgetStatus.Hover;
+
+                        if (OnLeftClick.Res != null && RepeatLeftClickEvery == 0)
+                        {
+                            OnLeftClick.Res.Execute(this.GameObj, LeftClickArgument);
+                        }
                     }
-                }
-                else
-                {
-                    Status = WidgetStatus.Normal;
+                    else
+                    {
+                        Status = WidgetStatus.Normal;
+                    }
                 }
             }
         }

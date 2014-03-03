@@ -2,9 +2,9 @@
 
 using System;
 using Duality;
-using OpenTK;
-using Duality.Editor;
 using Duality.Drawing;
+using Duality.Editor;
+using OpenTK;
 
 namespace FrozenCore.Widgets
 {
@@ -73,7 +73,7 @@ namespace FrozenCore.Widgets
         {
             _isMouseOver = false;
 
-            if (IsWidgetEnabled)
+            if (Status != WidgetStatus.Disabled)
             {
                 Status = IsChecked ? WidgetStatus.Active : WidgetStatus.Normal;
             }
@@ -114,7 +114,10 @@ namespace FrozenCore.Widgets
         {
             base.OnInit(context);
 
-            Status = IsChecked ? WidgetStatus.Active : WidgetStatus.Normal;
+            if (Status != WidgetStatus.Disabled)
+            {
+                Status = IsChecked ? WidgetStatus.Active : WidgetStatus.Normal;
+            }
         }
 
         private void OnCheckUncheck()

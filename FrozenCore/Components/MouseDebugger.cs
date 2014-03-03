@@ -3,8 +3,8 @@
 using System;
 using Duality;
 using Duality.Components;
-using OpenTK;
 using Duality.Drawing;
+using OpenTK;
 
 namespace FrozenCore.Components
 {

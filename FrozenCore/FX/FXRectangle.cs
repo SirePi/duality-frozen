@@ -1,9 +1,8 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using System;
-using Duality;
-using OpenTK;
 using Duality.Drawing;
+using OpenTK;
 
 namespace FrozenCore.FX
 {

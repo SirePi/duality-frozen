@@ -14,13 +14,6 @@ namespace FrozenCore.FX
     public class ParticleEmitter : Component, IDisposable, ICmpUpdatable, ICmpRenderer, ICmpInitializable
     {
         [NonSerialized]
-        private static readonly Vector2 DEFAULT_PARTICLES = new Vector2(50, 100);
-        [NonSerialized]
-        private static readonly int DEFAULT_PARTICLES_PER_SECOND = 10;
-        [NonSerialized]
-        private static readonly Vector2 DEFAULT_TTL = new Vector2(1, 2);
-
-        [NonSerialized]
         protected ColorRange _colorRange;
 
         [NonSerialized]
@@ -52,6 +45,15 @@ namespace FrozenCore.FX
 
         [NonSerialized]
         protected FloatRange _timeToLiveRange;
+
+        [NonSerialized]
+        private static readonly Vector2 DEFAULT_PARTICLES = new Vector2(50, 100);
+
+        [NonSerialized]
+        private static readonly int DEFAULT_PARTICLES_PER_SECOND = 10;
+
+        [NonSerialized]
+        private static readonly Vector2 DEFAULT_TTL = new Vector2(1, 2);
 
         [NonSerialized]
         private bool _inEditor;
@@ -241,12 +243,12 @@ namespace FrozenCore.FX
                     if (_particlesAlive < _particlesNumberRange.Max)
                     {
                         int particlesLimit = (int)Math.Ceiling(NewParticlesPerSecond * secondsPast);
-                        
+
                         if (_particlesAlive < _particlesNumberRange.Min)
                         {
                             particlesLimit = _particlesNumberRange.Min - _particlesAlive;
                         }
-                        
+
                         int createdParticles = 0;
                         while (_particlesAlive < _particlesNumberRange.Max && createdParticles < particlesLimit)
                         {

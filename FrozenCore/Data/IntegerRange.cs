@@ -1,6 +1,7 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using System;
+
 namespace FrozenCore.Data
 {
     /// <summary>

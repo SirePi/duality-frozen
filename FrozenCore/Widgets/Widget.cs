@@ -3,9 +3,9 @@
 using System;
 using Duality;
 using Duality.Components;
-using Duality.Resources;
-using Duality.Editor;
 using Duality.Drawing;
+using Duality.Editor;
+using Duality.Resources;
 
 namespace FrozenCore.Widgets
 {
@@ -30,19 +30,21 @@ namespace FrozenCore.Widgets
         protected Polygon _activeAreaOnScreen;
 
         [NonSerialized]
+        protected Polygon _areaOnScreen;
+
+        [NonSerialized]
         protected MultiSpacePoint[] _points;
-
-        [NonSerialized]
-        protected VertexC1P3T2[] _vertices;
-
-        [NonSerialized]
-        private bool _widgetActive;
 
         [NonSerialized]
         protected bool _resized;
 
         [NonSerialized]
+        protected VertexC1P3T2[] _vertices;
+
         private WidgetStatus _status;
+
+        [NonSerialized]
+        private bool _widgetActive;
 
         #endregion NonSerialized fields
 
@@ -54,6 +56,10 @@ namespace FrozenCore.Widgets
 
         private VisibilityFlag _visiblityFlag;
 
+        /// <summary>
+        /// [GET / SET] The ActiveArea of the Widget that can react to mouse input such as
+        /// Hover, Click, etc..
+        /// </summary>
         public ActiveArea ActiveArea
         {
             get { return _activeArea; }
@@ -69,22 +75,26 @@ namespace FrozenCore.Widgets
         public bool IsWidgetActive
         {
             get { return _widgetActive; }
-            set { _widgetActive = value; }
         }
-        [EditorHintFlags(MemberFlags.Invisible)]
-        public bool IsWidgetEnabled
-        {
-            get { return Status != WidgetStatus.Disabled; }
-            set { Status = (value ? WidgetStatus.Normal : WidgetStatus.Disabled); }
-        }
+
         [EditorHintDecimalPlaces(1)]
         public Rect Rect
         {
             get { return _rect; }
             set
-            { 
+            {
                 _rect = value;
                 _resized = true;
+            }
+        }
+        //[EditorHintFlags(MemberFlags.Invisible)]
+        public WidgetStatus Status
+        {
+            get { return _status; }
+            set
+            {
+                _status = value;
+                OnStatusChange();
             }
         }
         public VisibilityFlag VisibilityGroup
@@ -99,23 +109,13 @@ namespace FrozenCore.Widgets
             set { _visibleRect = value; }
         }
 
-        [EditorHintFlags(MemberFlags.Invisible)]
-        public WidgetStatus Status
-        {
-            get { return _status; }
-            set
-            {
-                _status = value;
-                OnStatusChange();
-            }
-        }
-
         public Widget()
         {
             VisibilityGroup = VisibilityFlag.Group0;
 
+            _areaOnScreen = new Polygon(4);
             _activeAreaOnScreen = new Polygon(4);
-            
+
             _rect = new Duality.Rect(0, 0, 50, 50);
             _visibleRect = Rect.Empty;
 
@@ -136,6 +136,11 @@ namespace FrozenCore.Widgets
         void ICmpInitializable.OnInit(Component.InitContext context)
         {
             OnInit(context);
+
+            if (Status != WidgetStatus.Disabled)
+            {
+                Status = WidgetStatus.Normal;
+            }
         }
 
         void ICmpInitializable.OnShutdown(Component.ShutdownContext context)
@@ -196,6 +201,16 @@ namespace FrozenCore.Widgets
             }
         }
 
+        internal Polygon GetAreaOnScreen(Camera inCamera)
+        {
+            _areaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
+            _areaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
+            _areaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
+            _areaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
+
+            return _areaOnScreen;
+        }
+
         internal virtual Polygon GetCustomAreaOnScreen(Camera inCamera)
         {
             return Polygon.NO_POLYGON;
@@ -221,12 +236,60 @@ namespace FrozenCore.Widgets
 
         protected abstract void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas);
 
-        protected abstract Polygon GetDefaultActiveAreaOnScreen(Camera inCamera);
-
         protected abstract void OnInit(Component.InitContext inContext);
+
+        protected abstract void OnStatusChange();
 
         protected abstract void OnUpdate(float inSecondsPast);
 
-        protected abstract void OnStatusChange();
+        private Polygon GetDefaultActiveAreaOnScreen(Camera inCamera)
+        {
+            switch (ActiveArea)
+            {
+                case Widgets.ActiveArea.LeftBorder:
+                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
+                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[1].WorldCoords).Xy;
+                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[13].WorldCoords).Xy;
+                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
+                    break;
+
+                case Widgets.ActiveArea.TopBorder:
+                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
+                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
+                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[7].WorldCoords).Xy;
+                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[4].WorldCoords).Xy;
+                    break;
+
+                case Widgets.ActiveArea.RightBorder:
+                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[2].WorldCoords).Xy;
+                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
+                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
+                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[14].WorldCoords).Xy;
+                    break;
+
+                case Widgets.ActiveArea.BottomBorder:
+                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[8].WorldCoords).Xy;
+                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[11].WorldCoords).Xy;
+                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
+                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
+                    break;
+
+                case Widgets.ActiveArea.Center:
+                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[5].WorldCoords).Xy;
+                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[6].WorldCoords).Xy;
+                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[10].WorldCoords).Xy;
+                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[9].WorldCoords).Xy;
+                    break;
+
+                default: //All or others.. but it should never happen
+                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
+                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
+                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
+                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
+                    break;
+            }
+
+            return _activeAreaOnScreen;
+        }
     }
 }

@@ -3,11 +3,10 @@
 using System;
 using Duality;
 using Duality.Components;
-using Duality.Resources;
-using OpenTK;
-using Duality.Drawing;
 using Duality.Editor;
+using Duality.Resources;
 using FrozenCore.Widgets.Resources;
+using OpenTK;
 
 namespace FrozenCore.Widgets
 {
@@ -15,9 +14,6 @@ namespace FrozenCore.Widgets
     public class SkinnedScrollBar : SkinnedWidget
     {
         #region NonSerialized fields
-
-        [NonSerialized]
-        private object _valueChangedArgument;
 
         [NonSerialized]
         private GameObject _cursor;
@@ -28,29 +24,31 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         private GameObject _increaseButton;
 
+        [NonSerialized]
+        private object _valueChangedArgument;
+
         #endregion NonSerialized fields
 
-        private ContentRef<Script> _onValueChanged;
-
+        private Vector2 _buttonsSize;
+        private Vector2 _cursorSize;
         private ContentRef<WidgetSkin> _cursorSkin;
         private ContentRef<WidgetSkin> _decreaseButtonSkin;
         private ContentRef<WidgetSkin> _increaseButtonSkin;
-
-        private Vector2 _cursorSize;
-        private Vector2 _buttonsSize;
-
-        public Vector2 CursorSize
-        {
-            get { return _cursorSize; }
-            set { _cursorSize = value; }
-        }
-
+        private int _max;
+        private int _min;
+        private ContentRef<Script> _onValueChanged;
+        private int _scrollSpeed;
+        private int _value;
         public Vector2 ButtonsSize
         {
             get { return _buttonsSize; }
             set { _buttonsSize = value; }
         }
-
+        public Vector2 CursorSize
+        {
+            get { return _cursorSize; }
+            set { _cursorSize = value; }
+        }
         public ContentRef<WidgetSkin> CursorSkin
         {
             get { return _cursorSkin; }
@@ -66,12 +64,6 @@ namespace FrozenCore.Widgets
             get { return _increaseButtonSkin; }
             set { _increaseButtonSkin = value; }
         }
-
-        private int _max;
-        private int _min;
-        private int _scrollSpeed;
-        private int _value;
-
         public int Maximum
         {
             get { return _max; }
@@ -125,16 +117,6 @@ namespace FrozenCore.Widgets
             set { _valueChangedArgument = value; }
         }
 
-        public SkinnedScrollBar()
-        {
-            ActiveArea = Widgets.ActiveArea.LeftBorder;
-
-            _min = 0;
-            _max = 10;
-            _value = _min;
-            _scrollSpeed = 1;
-        }
-
         [EditorHintFlags(MemberFlags.Invisible)]
         internal float ValueDelta
         {
@@ -143,6 +125,16 @@ namespace FrozenCore.Widgets
                 float length = Rect.H - (ButtonsSize.Y * 2) - (CursorSize.Y);
                 return length / (Maximum - Minimum);
             }
+        }
+
+        public SkinnedScrollBar()
+        {
+            ActiveArea = Widgets.ActiveArea.LeftBorder;
+
+            _min = 0;
+            _max = 10;
+            _value = _min;
+            _scrollSpeed = 1;
         }
 
         protected override void OnInit(Component.InitContext inContext)
@@ -159,6 +151,24 @@ namespace FrozenCore.Widgets
                 }
 
                 UpdateCursor();
+            }
+        }
+
+        protected override void OnStatusChange()
+        {
+            base.OnStatusChange();
+
+            if (_cursor != null)
+            {
+                _cursor.GetComponent<Widget>().Status = Status;
+            }
+            if (_decreaseButton != null)
+            {
+                _decreaseButton.GetComponent<Widget>().Status = Status;
+            }
+            if (_increaseButton != null)
+            {
+                _increaseButton.GetComponent<Widget>().Status = Status;
             }
         }
 
@@ -179,24 +189,6 @@ namespace FrozenCore.Widgets
             Scene.Current.AddObject(_cursor);
         }
 
-        private void AddScrollIncreaseButton()
-        {
-            _increaseButton = new GameObject("increaseButton", this.GameObj);
-
-            Transform t = _increaseButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W / 2, Rect.H - ButtonsSize.Y / 2, DELTA_Z);
-            t.RelativeAngle = 0;
-
-            ScrollIncreaseButton sib = new ScrollIncreaseButton();
-            sib.VisibilityGroup = this.VisibilityGroup;
-            sib.Skin = IncreaseButtonSkin;
-            sib.Rect = Rect.AlignCenter(0, 0, ButtonsSize.X, ButtonsSize.Y);
-            sib.LeftClickArgument = _scrollSpeed;
-
-            _increaseButton.AddComponent<ScrollIncreaseButton>(sib);
-            Scene.Current.AddObject(_increaseButton);
-        }
-
         private void AddScrollDecreaseButton()
         {
             _decreaseButton = new GameObject("decreaseButton", this.GameObj);
@@ -213,6 +205,24 @@ namespace FrozenCore.Widgets
 
             _decreaseButton.AddComponent<ScrollDecreaseButton>(sdb);
             Scene.Current.AddObject(_decreaseButton);
+        }
+
+        private void AddScrollIncreaseButton()
+        {
+            _increaseButton = new GameObject("increaseButton", this.GameObj);
+
+            Transform t = _increaseButton.AddComponent<Transform>();
+            t.RelativePos = new Vector3(Rect.W / 2, Rect.H - ButtonsSize.Y / 2, DELTA_Z);
+            t.RelativeAngle = 0;
+
+            ScrollIncreaseButton sib = new ScrollIncreaseButton();
+            sib.VisibilityGroup = this.VisibilityGroup;
+            sib.Skin = IncreaseButtonSkin;
+            sib.Rect = Rect.AlignCenter(0, 0, ButtonsSize.X, ButtonsSize.Y);
+            sib.LeftClickArgument = _scrollSpeed;
+
+            _increaseButton.AddComponent<ScrollIncreaseButton>(sib);
+            Scene.Current.AddObject(_increaseButton);
         }
 
         private void UpdateCursor()

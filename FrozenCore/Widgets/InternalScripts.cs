@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using Duality;
 
 namespace FrozenCore.Widgets
 {
@@ -79,18 +78,6 @@ namespace FrozenCore.Widgets
                 }
             }
         }
-        
-        internal class ScrollIncreaseButtonLeftMouseDown : InternalScript
-        {
-            public override void Execute(Duality.GameObject inSource, object inParameter)
-            {
-                SkinnedScrollBar scrollBar = inSource.Parent.GetComponent<Widget>() as SkinnedScrollBar;
-                if (scrollBar != null)
-                {
-                    scrollBar.Value = Math.Min(scrollBar.Maximum, scrollBar.Value + (int)inParameter);
-                }
-            }
-        }
 
         internal class ScrollDecreaseButtonLeftMouseDown : InternalScript
         {
@@ -103,6 +90,19 @@ namespace FrozenCore.Widgets
                 }
             }
         }
+
+        internal class ScrollIncreaseButtonLeftMouseDown : InternalScript
+        {
+            public override void Execute(Duality.GameObject inSource, object inParameter)
+            {
+                SkinnedScrollBar scrollBar = inSource.Parent.GetComponent<Widget>() as SkinnedScrollBar;
+                if (scrollBar != null)
+                {
+                    scrollBar.Value = Math.Min(scrollBar.Maximum, scrollBar.Value + (int)inParameter);
+                }
+            }
+        }
+
         /*
         internal class MultiLineScrollbarValueChanged : InternalScript
         {

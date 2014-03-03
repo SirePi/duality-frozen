@@ -1,14 +1,5 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using Duality;
-using OpenTK;
-using Duality.Drawing;
-using Duality.Editor;
-using Duality.Components;
-using Duality.Resources;
-using System.Collections.Generic;
-
 namespace FrozenCore.Widgets
 {/*
     [Serializable]

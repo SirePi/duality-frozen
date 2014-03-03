@@ -1,8 +1,8 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
+using System;
 using Duality.Drawing;
 using OpenTK;
-using System;
 
 namespace FrozenCore.Data
 {

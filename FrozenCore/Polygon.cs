@@ -1,9 +1,5 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using OpenTK;
 
 namespace FrozenCore
@@ -19,18 +15,18 @@ namespace FrozenCore
             Vertices = new Vector2[inNumVertices];
         }
 
-        public Vector2 this [int i]
+        public Vector2 this[int i]
         {
             get { return Vertices[i]; }
-            set 
-            { 
+            set
+            {
                 Vertices[i].X = value.X;
                 Vertices[i].Y = value.Y;
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <see cref="http://alienryderflex.com/polygon/"/>
         /// <param name="inPoint"></param>
