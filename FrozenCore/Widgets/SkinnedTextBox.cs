@@ -157,6 +157,9 @@ namespace FrozenCore.Widgets
 
         private void AddCaret()
         {
+            string textBackup = _text.SourceText;
+            _text.SourceText = "Wq";
+
             _caret = new GameObject("caret", this.GameObj);
 
             Transform t = _caret.AddComponent<Transform>();
@@ -165,16 +168,18 @@ namespace FrozenCore.Widgets
 
             SpriteRenderer sr = new SpriteRenderer();
             sr.VisibilityGroup = this.VisibilityGroup;
-            sr.Rect = Rect.AlignCenter(0, 0, 3, Text.TextMetrics.Size.Y);
+            sr.Rect = Rect.AlignCenter(0, 0, 3, _text.TextMetrics.Size.Y);
             sr.SharedMaterial = Material.InvertWhite;
 
             _caret.AddComponent<SpriteRenderer>(sr);
             Scene.Current.AddObject(_caret);
+
+            _text.SourceText = textBackup;
         }
 
         private void UpdateCaret()
         {
-            if (_caret != null)
+            if (_caret != null && Skin.Res != null)
             {
                 Vector3 caretPosition = _caret.Transform.RelativePos;
                 caretPosition.X = Skin.Res.Border.X + _text.Size.X;

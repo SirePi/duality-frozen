@@ -19,15 +19,18 @@ namespace FrozenCore.Widgets
 
         internal override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
         {
-            if (e.Button == OpenTK.Input.MouseButton.Left && _isMouseOver && !IsChecked)
+            if (Status != WidgetStatus.Disabled)
             {
-                IsChecked = true;
-
-                if (!String.IsNullOrWhiteSpace(RadioGroup))
+                if (e.Button == OpenTK.Input.MouseButton.Left && _isMouseOver && !IsChecked)
                 {
-                    foreach (SkinnedRadioButton button in Scene.Current.FindComponents<SkinnedRadioButton>().Where(rb => rb.RadioGroup == this.RadioGroup && rb != this))
+                    IsChecked = true;
+
+                    if (!String.IsNullOrWhiteSpace(RadioGroup))
                     {
-                        button.IsChecked = false;
+                        foreach (SkinnedRadioButton button in Scene.Current.FindComponents<SkinnedRadioButton>().Where(rb => rb.RadioGroup == this.RadioGroup && rb != this))
+                        {
+                            button.IsChecked = false;
+                        }
                     }
                 }
             }

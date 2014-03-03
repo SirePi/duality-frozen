@@ -217,6 +217,8 @@ namespace FrozenCore.Widgets
 
                 if (_isScrollbarRequired)
                 {
+                    _highlightPanel.Active = !(selectionRect.Bottom.Y <= top || selectionRect.Top.Y >= bottom);
+
                     if (selectionRect.Top.Y < top && selectionRect.Bottom.Y >= top)
                     {
                         Rect highlightVisibleRect = _highlightPanel.VisibleRect;

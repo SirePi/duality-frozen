@@ -135,12 +135,12 @@ namespace FrozenCore.Widgets
 
         void ICmpInitializable.OnInit(Component.InitContext context)
         {
-            OnInit(context);
-
             if (Status != WidgetStatus.Disabled)
             {
                 Status = WidgetStatus.Normal;
             }
+
+            OnInit(context);
         }
 
         void ICmpInitializable.OnShutdown(Component.ShutdownContext context)

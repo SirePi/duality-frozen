@@ -363,23 +363,26 @@ namespace FrozenCore.Widgets
 
         protected override void OnStatusChange()
         {
-            switch (Status)
+            if (_skin.Res != null)
             {
-                case WidgetStatus.Normal:
-                    SetTextureTopLeft(_skin.Res.Origin.Normal);
-                    break;
+                switch (Status)
+                {
+                    case WidgetStatus.Normal:
+                        SetTextureTopLeft(_skin.Res.Origin.Normal);
+                        break;
 
-                case WidgetStatus.Hover:
-                    SetTextureTopLeft(_skin.Res.Origin.Hover);
-                    break;
+                    case WidgetStatus.Hover:
+                        SetTextureTopLeft(_skin.Res.Origin.Hover);
+                        break;
 
-                case WidgetStatus.Active:
-                    SetTextureTopLeft(_skin.Res.Origin.Active);
-                    break;
+                    case WidgetStatus.Active:
+                        SetTextureTopLeft(_skin.Res.Origin.Active);
+                        break;
 
-                case WidgetStatus.Disabled:
-                    SetTextureTopLeft(_skin.Res.Origin.Disabled);
-                    break;
+                    case WidgetStatus.Disabled:
+                        SetTextureTopLeft(_skin.Res.Origin.Disabled);
+                        break;
+                }
             }
         }
 
