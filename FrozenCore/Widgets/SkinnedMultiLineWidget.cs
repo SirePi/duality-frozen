@@ -173,7 +173,7 @@ namespace FrozenCore.Widgets
                 _visibleWidth = (int)Math.Floor(Rect.W - Skin.Res.Border.X - Skin.Res.Border.W);
                 _visibleHeight = (int)Math.Floor(Rect.H - Skin.Res.Border.Y - Skin.Res.Border.Z);
 
-                UpdateWidget(false);
+                UpdateWidget(true);
             }
         }
 

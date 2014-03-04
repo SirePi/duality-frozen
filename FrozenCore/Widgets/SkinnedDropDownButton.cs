@@ -112,7 +112,7 @@ namespace FrozenCore.Widgets
 
         public SkinnedDropDownButton()
         {
-            ActiveArea = Widgets.ActiveArea.LeftBorder;
+            ActiveArea = Widgets.ActiveArea.RightBorder;
 
             _items = new List<object>();
             _text = new FormattedText();

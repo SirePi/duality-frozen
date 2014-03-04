@@ -172,6 +172,8 @@ namespace FrozenCore.Widgets
             sr.SharedMaterial = Material.InvertWhite;
 
             _caret.AddComponent<SpriteRenderer>(sr);
+            _caret.Active = false;
+
             Scene.Current.AddObject(_caret);
 
             _text.SourceText = textBackup;

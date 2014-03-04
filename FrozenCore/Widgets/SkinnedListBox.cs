@@ -151,6 +151,8 @@ namespace FrozenCore.Widgets
 
         protected override void OnInit(Component.InitContext inContext)
         {
+            _text.SourceText = String.Join("/n", _items);
+
             base.OnInit(inContext);
 
             if (inContext == InitContext.Activate && !FrozenUtilities.IsDualityEditor)
@@ -160,7 +162,7 @@ namespace FrozenCore.Widgets
                     AddHighlight();
                 }
 
-                _itemsAccessed = true;
+                UpdateWidget(false);
             }
         }
 
