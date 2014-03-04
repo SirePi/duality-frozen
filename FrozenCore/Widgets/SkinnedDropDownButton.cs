@@ -1,13 +1,25 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
+using System;
+using System.Collections.Generic;
+using Duality;
+using Duality.Components;
+using Duality.Drawing;
+using Duality.Resources;
+using FrozenCore.Widgets.Resources;
+using OpenTK;
+
 namespace FrozenCore.Widgets
-{/*
+{
     [Serializable]
-    public class SkinnedDropDownButton : SkinnedWidget<BaseSkin>
+    public class SkinnedDropDownButton : SkinnedWidget
     {
-        private static readonly List<object> EMPTY_LIST = new List<object>();
+        protected FormattedText _text;
 
         #region NonSerialized fields
+
+        [NonSerialized]
+        private bool _itemsAccessed;
 
         [NonSerialized]
         private GameObject _listBox;
@@ -15,60 +27,128 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         private SkinnedListBox _listBoxComponent;
 
-        [NonSerialized]
-        private FormattedText _text;
-
         #endregion NonSerialized fields
 
-        private ContentRef<ScrollBarSkin> _scrollBarSkin;
-
-        private ContentRef<ListBoxSkin> _dropDownPanelSkin;
-
-        private ColorRgba _textColor;
         private int _dropDownHeight;
-
+        private ContentRef<WidgetSkin> _dropdownSkin;
+        private ContentRef<WidgetSkin> _highlightSkin;
+        private List<object> _items;
+        private Vector2 _scrollbarButtonsSize;
+        private Vector2 _scrollbarCursorSize;
+        private ContentRef<WidgetSkin> _scrollbarCursorSkin;
+        private ContentRef<WidgetSkin> _scrollbarDecreaseButtonSkin;
+        private ContentRef<WidgetSkin> _scrollbarIncreaseButtonSkin;
+        private ContentRef<WidgetSkin> _scrollbarSkin;
+        private int _scrollSpeed;
+        private ColorRgba _textColor;
+        public int DropDownHeight
+        {
+            get { return _dropDownHeight; }
+            set { _dropDownHeight = value; }
+        }
+        public ContentRef<WidgetSkin> DropdownSkin
+        {
+            get { return _dropdownSkin; }
+            set { _dropdownSkin = value; }
+        }
+        public ContentRef<WidgetSkin> HighlightSkin
+        {
+            get { return _highlightSkin; }
+            set { _highlightSkin = value; }
+        }
         public List<object> Items
         {
-            get { return _listBoxComponent != null ? _listBoxComponent.Items : EMPTY_LIST; }
+            get
+            {
+                _itemsAccessed = true;
+                return _items;
+            }
             set
             {
-                if (_listBoxComponent != null)
-                {
-                    _listBoxComponent.Items = value;
-                }
+                _itemsAccessed = true;
+                _items = value;
             }
         }
-
-        public ContentRef<ScrollBarSkin> ScrollBarSkin
+        public Vector2 ScrollbarButtonsSize
         {
-            get { return _scrollBarSkin; }
-            set { _scrollBarSkin = value; }
+            get { return _scrollbarButtonsSize; }
+            set { _scrollbarButtonsSize = value; }
         }
-
+        public Vector2 ScrollbarCursorSize
+        {
+            get { return _scrollbarCursorSize; }
+            set { _scrollbarCursorSize = value; }
+        }
+        public ContentRef<WidgetSkin> ScrollbarCursorSkin
+        {
+            get { return _scrollbarCursorSkin; }
+            set { _scrollbarCursorSkin = value; }
+        }
+        public ContentRef<WidgetSkin> ScrollbarDecreaseButtonSkin
+        {
+            get { return _scrollbarDecreaseButtonSkin; }
+            set { _scrollbarDecreaseButtonSkin = value; }
+        }
+        public ContentRef<WidgetSkin> ScrollbarIncreaseButtonSkin
+        {
+            get { return _scrollbarIncreaseButtonSkin; }
+            set { _scrollbarIncreaseButtonSkin = value; }
+        }
+        public ContentRef<WidgetSkin> ScrollbarSkin
+        {
+            get { return _scrollbarSkin; }
+            set { _scrollbarSkin = value; }
+        }
+        public int ScrollSpeed
+        {
+            get { return _scrollSpeed; }
+            set { _scrollSpeed = value; }
+        }
         public ColorRgba TextColor
         {
             get { return _textColor; }
             set { _textColor = value; }
         }
 
-        public ContentRef<ListBoxSkin> DropDownPanelSkin
-        {
-            get { return _dropDownPanelSkin; }
-            set { _dropDownPanelSkin = value; }
-        }
-
-        public int DropDownHeight
-        {
-            get { return _dropDownHeight; }
-            set { _dropDownHeight = value; }
-        }
-
         public SkinnedDropDownButton()
         {
             ActiveArea = Widgets.ActiveArea.LeftBorder;
 
+            _items = new List<object>();
             _text = new FormattedText();
             _dropDownHeight = 100;
+            _scrollSpeed = 5;
+        }
+
+        internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        {
+            base.MouseDown(e);
+
+            if (e.Button == OpenTK.Input.MouseButton.Left)
+            {
+                _listBox.Active = !_listBox.Active;
+            }
+        }
+
+        protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
+        {
+            if (_listBoxComponent != null)
+            {
+                Vector3 buttonLeft = (_points[5].WorldCoords + _points[9].WorldCoords) / 2;
+
+                _text.SourceText = String.Empty;
+
+                if (_listBoxComponent.SelectedItem != null)
+                {
+                    _text.SourceText = _listBoxComponent.SelectedItem.ToString();
+                }
+
+                inCanvas.PushState();
+                inCanvas.State.ColorTint = _textColor;
+                inCanvas.State.TransformAngle = GameObj.Transform.Angle;
+                inCanvas.DrawText(_text, buttonLeft.X, buttonLeft.Y, buttonLeft.Z + DELTA_Z, null, Alignment.Left);
+                inCanvas.PopState();
+            }
         }
 
         protected override void OnInit(Component.InitContext inContext)
@@ -81,32 +161,18 @@ namespace FrozenCore.Widgets
                 {
                     AddListBox();
                 }
+
+                _itemsAccessed = true;
             }
         }
 
-        protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
+        protected override void OnUpdate(float inSecondsPast)
         {
-            if (_listBoxComponent != null)
+            base.OnUpdate(inSecondsPast);
+            if (_itemsAccessed)
             {
-                Vector3 buttonLeft = (_points[5].WorldCoords + _points[9].WorldCoords) / 2;
-
-                _text.SourceText = _listBoxComponent.SelectedItem.ToString();
-
-                inCanvas.PushState();
-                inCanvas.State.ColorTint = _textColor;
-                inCanvas.State.TransformAngle = GameObj.Transform.Angle;
-                inCanvas.DrawText(_text, buttonLeft.X, buttonLeft.Y, buttonLeft.Z + DELTA_Z, null, Alignment.Left);
-                inCanvas.PopState();
-            }
-        }
-
-        internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
-        {
-            base.MouseDown(e);
-
-            if (e.Button == OpenTK.Input.MouseButton.Left)
-            {
-                //_listBox
+                _listBoxComponent.Items = Items;
+                _itemsAccessed = false;
             }
         }
 
@@ -120,13 +186,22 @@ namespace FrozenCore.Widgets
 
             _listBoxComponent = new SkinnedListBox();
             _listBoxComponent.VisibilityGroup = this.VisibilityGroup;
-            _listBoxComponent.Skin = DropDownPanelSkin;
-            _listBoxComponent.ScrollBarSkin = ScrollBarSkin;
+            _listBoxComponent.Skin = DropdownSkin;
+            _listBoxComponent.HighlightSkin = HighlightSkin;
+            _listBoxComponent.ScrollbarSkin = ScrollbarSkin;
+            _listBoxComponent.ScrollbarCursorSkin = ScrollbarCursorSkin;
+            _listBoxComponent.ScrollbarDecreaseButtonSkin = ScrollbarDecreaseButtonSkin;
+            _listBoxComponent.ScrollbarIncreaseButtonSkin = ScrollbarIncreaseButtonSkin;
+            _listBoxComponent.ScrollbarButtonsSize = ScrollbarButtonsSize;
+            _listBoxComponent.ScrollbarCursorSize = ScrollbarCursorSize;
             _listBoxComponent.Rect = Rect.AlignTopLeft(0, 0, Rect.W, _dropDownHeight);
-            _listBoxComponent.Active = false;
 
             _listBox.AddComponent<SkinnedListBox>(_listBoxComponent);
+            _listBox.Active = false;
+
+            _listBoxComponent.SelectedItem = null;
+
             Scene.Current.AddObject(_listBox);
         }
-    }*/
+    }
 }
