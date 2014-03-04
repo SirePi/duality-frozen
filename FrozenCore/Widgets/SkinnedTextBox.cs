@@ -7,6 +7,7 @@ using Duality.Components.Renderers;
 using Duality.Drawing;
 using Duality.Resources;
 using OpenTK;
+using Duality.Editor;
 
 namespace FrozenCore.Widgets
 {
@@ -14,6 +15,9 @@ namespace FrozenCore.Widgets
     public class SkinnedTextBox : SkinnedWidget
     {
         #region NonSerialized fields
+
+        [NonSerialized]
+        private static readonly float DEFAULT_KEY_REPEAT = .2f;
 
         [NonSerialized]
         private static readonly float CARET_TICK = .5f;
@@ -27,10 +31,20 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         private float _secondsFromLastTick;
 
+        [NonSerialized]
+        private float _secondsFromLastKey;
+
+        [NonSerialized]
+        private OpenTK.Input.Key? _keyDown;
+
+        [NonSerialized]
+        private WidgetController.ModifierKeys _modifierKeys;
+
         #endregion NonSerialized fields
 
         private FormattedText _text;
         private ColorRgba _textColor;
+        private float _keyRepeatSpeed;
 
         public FormattedText Text
         {
@@ -42,6 +56,12 @@ namespace FrozenCore.Widgets
             get { return _textColor; }
             set { _textColor = value; }
         }
+        [EditorHintRange(0.1f, 1)]
+        public float KeyRepeatSpeed
+        {
+            get { return _keyRepeatSpeed; }
+            set { _keyRepeatSpeed = value; }
+        }
 
         public SkinnedTextBox()
         {
@@ -49,55 +69,78 @@ namespace FrozenCore.Widgets
 
             _text = new FormattedText();
             _textColor = Colors.White;
+            _keyRepeatSpeed = DEFAULT_KEY_REPEAT;
         }
 
         internal override void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
         {
             base.KeyDown(e, k);
 
-            if (e.Key >= OpenTK.Input.Key.A && e.Key <= OpenTK.Input.Key.Z)
+            _keyDown = e.Key;
+            _modifierKeys = k;
+            _secondsFromLastKey = 0;
+
+            ManageKey();
+        }
+
+        internal override void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
+        {
+            base.KeyUp(e, k);
+
+            _keyDown = null;
+            _modifierKeys = k;
+        }
+
+        private void ManageKey()
+        {
+            if (_keyDown.HasValue)
             {
-                string c = e.Key.ToString();
-                if ((k & WidgetController.ModifierKeys.Shift) == 0)
+                OpenTK.Input.Key key = _keyDown.Value;
+
+                if (key >= OpenTK.Input.Key.A && key <= OpenTK.Input.Key.Z)
                 {
-                    c = c.ToLower();
+                    string c = key.ToString();
+                    if ((_modifierKeys & WidgetController.ModifierKeys.Shift) == 0)
+                    {
+                        c = c.ToLower();
+                    }
+
+                    _text.SourceText += c;
                 }
-
-                _text.SourceText += c;
-            }
-            else if (e.Key >= OpenTK.Input.Key.Number0 && e.Key <= OpenTK.Input.Key.Number9)
-            {
-                int digit = e.Key - OpenTK.Input.Key.Number0;
-                _text.SourceText += digit.ToString();
-            }
-            else if (e.Key >= OpenTK.Input.Key.Keypad0 && e.Key <= OpenTK.Input.Key.Keypad9)
-            {
-                int digit = e.Key - OpenTK.Input.Key.Keypad0;
-                _text.SourceText += digit.ToString();
-            }
-            else
-            {
-                switch (e.Key)
+                else if (key >= OpenTK.Input.Key.Number0 && key <= OpenTK.Input.Key.Number9)
                 {
-                    case OpenTK.Input.Key.BackSpace:
-                        if (_text.SourceText.Length > 0)
-                        {
-                            _text.SourceText = _text.SourceText.Substring(0, _text.SourceText.Length - 1);
-                        }
-                        break;
+                    int digit = key - OpenTK.Input.Key.Number0;
+                    _text.SourceText += digit.ToString();
+                }
+                else if (key >= OpenTK.Input.Key.Keypad0 && key <= OpenTK.Input.Key.Keypad9)
+                {
+                    int digit = key - OpenTK.Input.Key.Keypad0;
+                    _text.SourceText += digit.ToString();
+                }
+                else
+                {
+                    switch (key)
+                    {
+                        case OpenTK.Input.Key.BackSpace:
+                            if (_text.SourceText.Length > 0)
+                            {
+                                _text.SourceText = _text.SourceText.Substring(0, _text.SourceText.Length - 1);
+                            }
+                            break;
 
-                    case OpenTK.Input.Key.Space:
-                        _text.SourceText += " ";
-                        break;
+                        case OpenTK.Input.Key.Space:
+                            _text.SourceText += " ";
+                            break;
 
-                    case OpenTK.Input.Key.Comma:
-                        _text.SourceText += ",";
-                        break;
+                        case OpenTK.Input.Key.Comma:
+                            _text.SourceText += ",";
+                            break;
 
-                    case OpenTK.Input.Key.Period:
-                    case OpenTK.Input.Key.KeypadPeriod:
-                        _text.SourceText += ".";
-                        break;
+                        case OpenTK.Input.Key.Period:
+                        case OpenTK.Input.Key.KeypadPeriod:
+                            _text.SourceText += ".";
+                            break;
+                    }
                 }
             }
         }
@@ -123,6 +166,11 @@ namespace FrozenCore.Widgets
 
             if (inContext == InitContext.Activate && !FrozenUtilities.IsDualityEditor)
             {
+                if (_keyRepeatSpeed <= 0)
+                {
+                    _keyRepeatSpeed = DEFAULT_KEY_REPEAT;
+                }
+
                 if (_caret == null)
                 {
                     AddCaret();
@@ -143,10 +191,17 @@ namespace FrozenCore.Widgets
                 }
 
                 _secondsFromLastTick += inSecondsPast;
+                _secondsFromLastKey += inSecondsPast;
+
                 if (_secondsFromLastTick > CARET_TICK)
                 {
                     _secondsFromLastTick = 0;
                     _caret.Active = !_caret.Active;
+                }
+                if (_secondsFromLastKey > _keyRepeatSpeed && _keyDown != null)
+                {
+                    _secondsFromLastKey = 0;
+                    ManageKey();
                 }
             }
             else
