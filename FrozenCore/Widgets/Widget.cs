@@ -256,7 +256,7 @@ namespace FrozenCore.Widgets
 
         private void FixRelativeZ()
         {
-            if (this.GameObj.Parent != null)
+            if (this.GameObj.Parent != null && this.GameObj.Parent.Transform != null)
             {
                 Vector3 pos = this.GameObj.Transform.Pos;
                 pos.Z = this.GameObj.Parent.Transform.Pos.Z + DELTA_Z;

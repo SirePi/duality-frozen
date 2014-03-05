@@ -131,9 +131,22 @@ namespace FrozenCore.Widgets
         {
             base.MouseDown(e);
 
-            if (e.Button == OpenTK.Input.MouseButton.Left)
+            if (Status != WidgetStatus.Disabled)
             {
-                _listBox.Active = !_listBox.Active;
+                if (e.Button == OpenTK.Input.MouseButton.Left)
+                {
+                    _listBox.Active = !_listBox.Active;
+                }
+            }
+        }
+
+        protected override void OnStatusChange()
+        {
+            base.OnStatusChange();
+
+            if (Status == WidgetStatus.Disabled)
+            {
+                _listBox.Active = false;
             }
         }
 
