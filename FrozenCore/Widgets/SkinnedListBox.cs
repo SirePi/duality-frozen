@@ -191,6 +191,7 @@ namespace FrozenCore.Widgets
             _highlightPanel.VisibilityGroup = this.VisibilityGroup;
             _highlightPanel.Skin = HighlightSkin;
             _highlightPanel.Rect = Rect.AlignTopLeft(0, 0, 0, 0);
+            _highlightPanel.OverrideAutomaticZ = true;
 
             _highlight.AddComponent<SkinnedPanel>(_highlightPanel);
             Scene.Current.AddObject(_highlight);

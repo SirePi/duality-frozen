@@ -44,7 +44,14 @@ namespace FrozenCore.Widgets
         public int DropDownHeight
         {
             get { return _dropDownHeight; }
-            set { _dropDownHeight = value; }
+            set 
+            { 
+                _dropDownHeight = value;
+                if (_listBoxComponent != null)
+                {
+                    _listBoxComponent.Rect = Rect.AlignTopLeft(0, 0, Rect.W, _dropDownHeight);
+                }
+            }
         }
         public ContentRef<WidgetSkin> DropdownSkin
         {

@@ -177,7 +177,7 @@ namespace FrozenCore.Widgets
             _cursor = new GameObject("cursor", this.GameObj);
 
             Transform t = _cursor.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W / 2, Rect.H / 2, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W / 2, Rect.H / 2, 0);
             t.RelativeAngle = 0;
 
             ScrollCursor sc = new ScrollCursor();
@@ -194,7 +194,7 @@ namespace FrozenCore.Widgets
             _decreaseButton = new GameObject("decreaseButton", this.GameObj);
 
             Transform t = _decreaseButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W / 2, ButtonsSize.Y / 2, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W / 2, ButtonsSize.Y / 2, 0);
             t.RelativeAngle = 0;
 
             ScrollDecreaseButton sdb = new ScrollDecreaseButton();
@@ -212,7 +212,7 @@ namespace FrozenCore.Widgets
             _increaseButton = new GameObject("increaseButton", this.GameObj);
 
             Transform t = _increaseButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W / 2, Rect.H - ButtonsSize.Y / 2, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W / 2, Rect.H - ButtonsSize.Y / 2, 0);
             t.RelativeAngle = 0;
 
             ScrollIncreaseButton sib = new ScrollIncreaseButton();

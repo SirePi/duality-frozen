@@ -295,7 +295,7 @@ namespace FrozenCore.Widgets
             _closeButton = new GameObject("closeButton", this.GameObj);
 
             Transform t = _closeButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - CloseButtonSize.X, 0, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - CloseButtonSize.X, 0, 0);
             t.RelativeAngle = 0;
 
             CloseButton cb = new CloseButton();
@@ -312,7 +312,7 @@ namespace FrozenCore.Widgets
             _maximizeButton = new GameObject("maximizeButton", this.GameObj);
 
             Transform t = _maximizeButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (ButtonsSize.X * 2), 0, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - (ButtonsSize.X * 2), 0, 0);
             t.RelativeAngle = 0;
 
             MaximizeButton mb = new MaximizeButton();
@@ -329,7 +329,7 @@ namespace FrozenCore.Widgets
             _minimizeButton = new GameObject("minimizeButton", this.GameObj);
 
             Transform t = _minimizeButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (ButtonsSize.X * 3), 0, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - (ButtonsSize.X * 3), 0, 0);
             t.RelativeAngle = 0;
 
             MinimizeButton mb = new MinimizeButton();
@@ -346,7 +346,7 @@ namespace FrozenCore.Widgets
             _restoreButton = new GameObject("restoreButton", this.GameObj);
 
             Transform t = _restoreButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (ButtonsSize.X * 4), 0, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - (ButtonsSize.X * 4), 0, 0);
             t.RelativeAngle = 0;
 
             RestoreButton rb = new RestoreButton();

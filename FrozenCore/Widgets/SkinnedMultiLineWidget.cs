@@ -254,7 +254,7 @@ namespace FrozenCore.Widgets
             float scrollbarWidth = Math.Max(ScrollbarButtonsSize.X, ScrollbarCursorSize.X);
 
             Transform t = _scrollbar.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - scrollbarWidth, 0, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - scrollbarWidth, 0, 0);
             t.RelativeAngle = 0;
 
             _scrollComponent = new SkinnedScrollBar();

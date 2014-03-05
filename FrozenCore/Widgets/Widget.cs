@@ -6,6 +6,7 @@ using Duality.Components;
 using Duality.Drawing;
 using Duality.Editor;
 using Duality.Resources;
+using OpenTK;
 
 namespace FrozenCore.Widgets
 {
@@ -55,6 +56,8 @@ namespace FrozenCore.Widgets
         private Rect _visibleRect;
 
         private VisibilityFlag _visiblityFlag;
+
+        private bool _overrideAutoZ;
 
         /// <summary>
         /// [GET / SET] The ActiveArea of the Widget that can react to mouse input such as
@@ -109,6 +112,12 @@ namespace FrozenCore.Widgets
             set { _visibleRect = value; }
         }
 
+        public bool OverrideAutomaticZ
+        {
+            get { return _overrideAutoZ; }
+            set { _overrideAutoZ = value; }
+        }
+
         public Widget()
         {
             VisibilityGroup = VisibilityFlag.Group0;
@@ -128,6 +137,25 @@ namespace FrozenCore.Widgets
             }
         }
 
+        void GameObj_EventParentChanged(object sender, GameObjectParentChangedEventArgs e)
+        {
+            if (!_overrideAutoZ)
+            {
+                FixRelativeZ();
+            }
+        }
+
+        private void FixRelativeZ()
+        {
+            if (this.GameObj.Parent != null)
+            {
+                Vector3 pos = this.GameObj.Transform.Pos;
+                pos.Z = this.GameObj.Parent.Transform.Pos.Z + DELTA_Z;
+
+                this.GameObj.Transform.Pos = pos;
+            }
+        }
+
         public void Close()
         {
             Scene.Current.RemoveObject(this.GameObj);
@@ -135,6 +163,12 @@ namespace FrozenCore.Widgets
 
         void ICmpInitializable.OnInit(Component.InitContext context)
         {
+            if (context == InitContext.AddToGameObject)
+            {
+                this.GameObj.EventParentChanged += new EventHandler<GameObjectParentChangedEventArgs>(GameObj_EventParentChanged);
+                FixRelativeZ();
+            }
+
             if (Status != WidgetStatus.Disabled)
             {
                 Status = WidgetStatus.Normal;

@@ -61,10 +61,9 @@ namespace FrozenCore.Widgets
 
             if (_leftButtonDown)
             {
-                float angle = MathF.DegToRad(this.GameObj.Transform.Angle);
+                float angle = -this.GameObj.Transform.Angle;
 
-                _currentDelta += (e.XDelta * MathF.Sin(angle));
-                _currentDelta += (e.YDelta * MathF.Cos(angle));
+                _currentDelta += (e.YDelta * MathF.Cos(angle)) + (e.XDelta * MathF.Sin(angle));
 
                 if (_parent == null)
                 {
