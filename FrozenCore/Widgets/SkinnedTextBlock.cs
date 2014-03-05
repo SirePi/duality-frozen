@@ -1,12 +1,6 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using System;
-using Duality;
-using Duality.Drawing;
-using Duality.Components;
-using Duality.Resources;
-using OpenTK;
-using OpenTK.Graphics.OpenGL;
 
 namespace FrozenCore.Widgets
 {
@@ -30,7 +24,7 @@ namespace FrozenCore.Widgets
         {
             if (Text.TextChanged)
             {
-                Text.TextChanged = false; 
+                Text.TextChanged = false;
                 UpdateWidget(true);
             }
         }

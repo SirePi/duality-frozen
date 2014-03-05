@@ -5,9 +5,9 @@ using Duality;
 using Duality.Components;
 using Duality.Components.Renderers;
 using Duality.Drawing;
+using Duality.Editor;
 using Duality.Resources;
 using OpenTK;
-using Duality.Editor;
 
 namespace FrozenCore.Widgets
 {
@@ -17,35 +17,40 @@ namespace FrozenCore.Widgets
         #region NonSerialized fields
 
         [NonSerialized]
-        private static readonly float DEFAULT_KEY_REPEAT = .2f;
+        private static readonly float CARET_TICK = .5f;
 
         [NonSerialized]
-        private static readonly float CARET_TICK = .5f;
+        private static readonly float DEFAULT_KEY_REPEAT = .2f;
 
         [NonSerialized]
         private GameObject _caret;
 
         [NonSerialized]
+        private OpenTK.Input.Key? _keyDown;
+
+        [NonSerialized]
         private string _lastText;
 
         [NonSerialized]
-        private float _secondsFromLastTick;
+        private WidgetController.ModifierKeys _modifierKeys;
 
         [NonSerialized]
         private float _secondsFromLastKey;
 
         [NonSerialized]
-        private OpenTK.Input.Key? _keyDown;
-
-        [NonSerialized]
-        private WidgetController.ModifierKeys _modifierKeys;
+        private float _secondsFromLastTick;
 
         #endregion NonSerialized fields
 
+        private float _keyRepeatSpeed;
         private FormattedText _text;
         private ColorRgba _textColor;
-        private float _keyRepeatSpeed;
-
+        [EditorHintRange(0.1f, 1)]
+        public float KeyRepeatSpeed
+        {
+            get { return _keyRepeatSpeed; }
+            set { _keyRepeatSpeed = value; }
+        }
         public FormattedText Text
         {
             get { return _text; }
@@ -55,12 +60,6 @@ namespace FrozenCore.Widgets
         {
             get { return _textColor; }
             set { _textColor = value; }
-        }
-        [EditorHintRange(0.1f, 1)]
-        public float KeyRepeatSpeed
-        {
-            get { return _keyRepeatSpeed; }
-            set { _keyRepeatSpeed = value; }
         }
 
         public SkinnedTextBox()
@@ -89,60 +88,6 @@ namespace FrozenCore.Widgets
 
             _keyDown = null;
             _modifierKeys = k;
-        }
-
-        private void ManageKey()
-        {
-            if (_keyDown.HasValue)
-            {
-                OpenTK.Input.Key key = _keyDown.Value;
-
-                if (key >= OpenTK.Input.Key.A && key <= OpenTK.Input.Key.Z)
-                {
-                    string c = key.ToString();
-                    if ((_modifierKeys & WidgetController.ModifierKeys.Shift) == 0)
-                    {
-                        c = c.ToLower();
-                    }
-
-                    _text.SourceText += c;
-                }
-                else if (key >= OpenTK.Input.Key.Number0 && key <= OpenTK.Input.Key.Number9)
-                {
-                    int digit = key - OpenTK.Input.Key.Number0;
-                    _text.SourceText += digit.ToString();
-                }
-                else if (key >= OpenTK.Input.Key.Keypad0 && key <= OpenTK.Input.Key.Keypad9)
-                {
-                    int digit = key - OpenTK.Input.Key.Keypad0;
-                    _text.SourceText += digit.ToString();
-                }
-                else
-                {
-                    switch (key)
-                    {
-                        case OpenTK.Input.Key.BackSpace:
-                            if (_text.SourceText.Length > 0)
-                            {
-                                _text.SourceText = _text.SourceText.Substring(0, _text.SourceText.Length - 1);
-                            }
-                            break;
-
-                        case OpenTK.Input.Key.Space:
-                            _text.SourceText += " ";
-                            break;
-
-                        case OpenTK.Input.Key.Comma:
-                            _text.SourceText += ",";
-                            break;
-
-                        case OpenTK.Input.Key.Period:
-                        case OpenTK.Input.Key.KeypadPeriod:
-                            _text.SourceText += ".";
-                            break;
-                    }
-                }
-            }
         }
 
         protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
@@ -232,6 +177,60 @@ namespace FrozenCore.Widgets
             Scene.Current.AddObject(_caret);
 
             _text.SourceText = textBackup;
+        }
+
+        private void ManageKey()
+        {
+            if (_keyDown.HasValue)
+            {
+                OpenTK.Input.Key key = _keyDown.Value;
+
+                if (key >= OpenTK.Input.Key.A && key <= OpenTK.Input.Key.Z)
+                {
+                    string c = key.ToString();
+                    if ((_modifierKeys & WidgetController.ModifierKeys.Shift) == 0)
+                    {
+                        c = c.ToLower();
+                    }
+
+                    _text.SourceText += c;
+                }
+                else if (key >= OpenTK.Input.Key.Number0 && key <= OpenTK.Input.Key.Number9)
+                {
+                    int digit = key - OpenTK.Input.Key.Number0;
+                    _text.SourceText += digit.ToString();
+                }
+                else if (key >= OpenTK.Input.Key.Keypad0 && key <= OpenTK.Input.Key.Keypad9)
+                {
+                    int digit = key - OpenTK.Input.Key.Keypad0;
+                    _text.SourceText += digit.ToString();
+                }
+                else
+                {
+                    switch (key)
+                    {
+                        case OpenTK.Input.Key.BackSpace:
+                            if (_text.SourceText.Length > 0)
+                            {
+                                _text.SourceText = _text.SourceText.Substring(0, _text.SourceText.Length - 1);
+                            }
+                            break;
+
+                        case OpenTK.Input.Key.Space:
+                            _text.SourceText += " ";
+                            break;
+
+                        case OpenTK.Input.Key.Comma:
+                            _text.SourceText += ",";
+                            break;
+
+                        case OpenTK.Input.Key.Period:
+                        case OpenTK.Input.Key.KeypadPeriod:
+                            _text.SourceText += ".";
+                            break;
+                    }
+                }
+            }
         }
 
         private void UpdateCaret()

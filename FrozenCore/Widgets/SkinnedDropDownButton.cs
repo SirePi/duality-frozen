@@ -44,8 +44,8 @@ namespace FrozenCore.Widgets
         public int DropDownHeight
         {
             get { return _dropDownHeight; }
-            set 
-            { 
+            set
+            {
                 _dropDownHeight = value;
                 if (_listBoxComponent != null)
                 {

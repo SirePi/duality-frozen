@@ -51,14 +51,12 @@ namespace FrozenCore.Widgets
 
         private ActiveArea _activeArea;
 
+        private bool _overrideAutoZ;
         private Rect _rect;
 
         private Rect _visibleRect;
 
         private VisibilityFlag _visiblityFlag;
-
-        private bool _overrideAutoZ;
-
         /// <summary>
         /// [GET / SET] The ActiveArea of the Widget that can react to mouse input such as
         /// Hover, Click, etc..
@@ -80,6 +78,11 @@ namespace FrozenCore.Widgets
             get { return _widgetActive; }
         }
 
+        public bool OverrideAutomaticZ
+        {
+            get { return _overrideAutoZ; }
+            set { _overrideAutoZ = value; }
+        }
         [EditorHintDecimalPlaces(1)]
         public Rect Rect
         {
@@ -112,12 +115,6 @@ namespace FrozenCore.Widgets
             set { _visibleRect = value; }
         }
 
-        public bool OverrideAutomaticZ
-        {
-            get { return _overrideAutoZ; }
-            set { _overrideAutoZ = value; }
-        }
-
         public Widget()
         {
             VisibilityGroup = VisibilityFlag.Group0;
@@ -134,25 +131,6 @@ namespace FrozenCore.Widgets
             for (int i = 0; i < _vertices.Length; i++)
             {
                 _vertices[i] = new VertexC1P3T2();
-            }
-        }
-
-        void GameObj_EventParentChanged(object sender, GameObjectParentChangedEventArgs e)
-        {
-            if (!_overrideAutoZ)
-            {
-                FixRelativeZ();
-            }
-        }
-
-        private void FixRelativeZ()
-        {
-            if (this.GameObj.Parent != null)
-            {
-                Vector3 pos = this.GameObj.Transform.Pos;
-                pos.Z = this.GameObj.Parent.Transform.Pos.Z + DELTA_Z;
-
-                this.GameObj.Transform.Pos = pos;
             }
         }
 
@@ -275,6 +253,25 @@ namespace FrozenCore.Widgets
         protected abstract void OnStatusChange();
 
         protected abstract void OnUpdate(float inSecondsPast);
+
+        private void FixRelativeZ()
+        {
+            if (this.GameObj.Parent != null)
+            {
+                Vector3 pos = this.GameObj.Transform.Pos;
+                pos.Z = this.GameObj.Parent.Transform.Pos.Z + DELTA_Z;
+
+                this.GameObj.Transform.Pos = pos;
+            }
+        }
+
+        private void GameObj_EventParentChanged(object sender, GameObjectParentChangedEventArgs e)
+        {
+            if (!_overrideAutoZ)
+            {
+                FixRelativeZ();
+            }
+        }
 
         private Polygon GetDefaultActiveAreaOnScreen(Camera inCamera)
         {
