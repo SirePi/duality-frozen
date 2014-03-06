@@ -12,5 +12,10 @@ namespace FrozenCore
         }
 
         public abstract void Execute(GameObject inSource, object inParameter);
+
+        public ContentRef<Script> ToScriptContentRef()
+        {
+            return new ContentRef<Script>(this);
+        }
     }
 }

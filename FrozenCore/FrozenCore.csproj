@@ -72,6 +72,7 @@
     <Compile Include="Components\MouseDebugger.cs" />
     <Compile Include="Components\ThreadedLoader.cs" />
     <Compile Include="Components\VisualTreeHider.cs" />
+    <Compile Include="GameObjectExtensions.cs" />
     <Compile Include="FrozenCorePlugin.cs" />
     <Compile Include="Data\Graph\Graph.cs" />
     <Compile Include="Data\Graph\Link.cs" />
@@ -155,6 +156,7 @@
       <Name>Duality</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(TargetDir)FrozenCore*" "$(SolutionDir)..\..\Plugins\*"

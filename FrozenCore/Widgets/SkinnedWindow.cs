@@ -1,6 +1,8 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Duality;
 using Duality.Components;
 using Duality.Drawing;
@@ -17,6 +19,9 @@ namespace FrozenCore.Widgets
 
         [NonSerialized]
         private GameObject _closeButton;
+
+        [NonSerialized]
+        private Dictionary<Widget, WidgetStatus> _childrenStatus;
 
         [NonSerialized]
         private bool _isDragged;
@@ -121,6 +126,7 @@ namespace FrozenCore.Widgets
         {
             ActiveArea = Widgets.ActiveArea.TopBorder;
 
+            _childrenStatus = new Dictionary<Widget, WidgetStatus>();
             _title = new FormattedText();
             _titleColor = Colors.White;
             _isDragged = false;
@@ -390,6 +396,32 @@ namespace FrozenCore.Widgets
             if ((CanMinimize || CanMaximize) && _restoreButton != null)
             {
                 MoveButton(_restoreButton, inDeltaX);
+            }
+        }
+
+        protected override void OnStatusChange()
+        {
+            base.OnStatusChange();
+
+            if (Status == WidgetStatus.Disabled)
+            {
+                _childrenStatus.Clear();
+
+                foreach (Widget w in this.GameObj.GetComponentsInChildren<Widget>())
+                {
+                    _childrenStatus.Add(w, w.Status);
+                    w.Status = WidgetStatus.Disabled;
+                }
+            }
+            else if(Status == WidgetStatus.Normal)
+            {
+                foreach (Widget w in this.GameObj.GetComponentsInChildren<Widget>())
+                {
+                    if (_childrenStatus.ContainsKey(w))
+                    {
+                        w.Status = _childrenStatus[w];
+                    }
+                }
             }
         }
 
