@@ -95,6 +95,7 @@
     <Compile Include="MultiSpacePoint.cs" />
     <Compile Include="ObservableFormattedText.cs" />
     <Compile Include="Polygon.cs" />
+    <Compile Include="Resources\DefaultScripts\Quit.cs" />
     <Compile Include="Widgets\ActiveArea.cs" />
     <Compile Include="Widgets\SkinnedDropDownButton.cs" />
     <Compile Include="Widgets\SkinnedPanel.cs" />

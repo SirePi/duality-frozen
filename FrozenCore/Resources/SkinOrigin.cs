@@ -3,7 +3,7 @@
 using System;
 using OpenTK;
 
-namespace FrozenCore.Widgets.Resources
+namespace FrozenCore.Resources
 {
     [Serializable]
     public struct SkinOrigin

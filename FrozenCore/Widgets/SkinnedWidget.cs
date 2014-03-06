@@ -4,7 +4,7 @@ using System;
 using Duality;
 using Duality.Components;
 using Duality.Drawing;
-using FrozenCore.Widgets.Resources;
+using FrozenCore.Resources.Widgets;
 using OpenTK;
 using Duality.Resources;
 

@@ -5,7 +5,7 @@ using Duality;
 using Duality.Components;
 using Duality.Drawing;
 using Duality.Resources;
-using FrozenCore.Widgets.Resources;
+using FrozenCore.Resources.Widgets;
 using OpenTK;
 
 namespace FrozenCore.Widgets

@@ -6,7 +6,7 @@ using Duality.Editor;
 using Duality.Resources;
 using OpenTK;
 
-namespace FrozenCore.Widgets.Resources
+namespace FrozenCore.Resources.Widgets
 {
     [Serializable]
     public class WidgetSkin : Resource
