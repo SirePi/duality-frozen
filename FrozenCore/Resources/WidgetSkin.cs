@@ -13,7 +13,7 @@ namespace FrozenCore.Widgets.Resources
     {
         public static readonly ContentRef<WidgetSkin> DEFAULT = new ContentRef<WidgetSkin>(new WidgetSkin()
         {
-            Texture = Duality.Resources.Texture.Checkerboard,
+            Material = Duality.Resources.Material.Checkerboard,
             Size = new Vector2(64, 64),
             Border = Vector4.Zero,
             Origin = new SkinOrigin()
@@ -31,8 +31,8 @@ namespace FrozenCore.Widgets.Resources
         private Vector4 _border;
         private SkinOrigin _origin;
         private Vector2 _size;
-        private ContentRef<Texture> _texture;
-
+        private ContentRef<Material> _material;
+        /*
         [EditorHintFlags(MemberFlags.Invisible)]
         public BatchInfo BatchInfo
         {
@@ -45,7 +45,7 @@ namespace FrozenCore.Widgets.Resources
 
                 return _batchInfo;
             }
-        }
+        }*/
         public Vector4 Border
         {
             get { return _border; }
@@ -61,10 +61,10 @@ namespace FrozenCore.Widgets.Resources
             get { return _size; }
             set { _size = value; }
         }
-        public ContentRef<Texture> Texture
+        public ContentRef<Material> Material
         {
-            get { return _texture; }
-            set { _texture = value; }
+            get { return _material; }
+            set { _material = value; }
         }
     }
 }

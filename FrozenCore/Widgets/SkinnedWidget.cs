@@ -6,6 +6,7 @@ using Duality.Components;
 using Duality.Drawing;
 using FrozenCore.Widgets.Resources;
 using OpenTK;
+using Duality.Resources;
 
 namespace FrozenCore.Widgets
 {
@@ -48,7 +49,7 @@ namespace FrozenCore.Widgets
             get { return _skin; }
             set
             {
-                if (value == null || value.Res.Texture == null)
+                if (value == null || value.Res.Material == null)
                 {
                     _skin = WidgetSkin.DEFAULT;
                 }
@@ -348,7 +349,7 @@ namespace FrozenCore.Widgets
                     ApplyVisibilityRectangle();
                 }
 
-                inDevice.AddVertices(skin.BatchInfo, VertexMode.Quads, _vertices);
+                inDevice.AddVertices(skin.Material, VertexMode.Quads, _vertices);
             }
         }
 
@@ -598,7 +599,7 @@ namespace FrozenCore.Widgets
             float uvTopBorder = skin.Border.Y * k.Y;
             float uvBottomBorder = (skin.Size.Y - skin.Border.W) * k.Y;
 
-            Vector2 uvTopLeft = inTopLeft / _textureSize * skin.Texture.Res.UVRatio;
+            Vector2 uvTopLeft = inTopLeft / _textureSize * skin.Material.Res.MainTexture.Res.UVRatio;
 
             _points[0].UVCoords.X = uvTopLeft.X;
             _points[0].UVCoords.Y = uvTopLeft.Y;
@@ -653,9 +654,11 @@ namespace FrozenCore.Widgets
         {
             if (_skin.Res != null)
             {
-                _textureSize = _skin.Res.Texture.Res.Size;
+                Texture tx = _skin.Res.Material.Res.MainTexture.Res;
+
+                _textureSize = tx.Size;
                 _uvDelta = _skinSize / _textureSize;
-                _uvDelta = _uvDelta * _skin.Res.Texture.Res.UVRatio;
+                _uvDelta = _uvDelta * tx.UVRatio;
 
                 OnStatusChange();
             }
