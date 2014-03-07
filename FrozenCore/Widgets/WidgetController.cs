@@ -56,6 +56,9 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         protected ModifierKeys _modifierKeys;
 
+        [NonSerialized]
+        protected Widget _currentDialog;
+
         /// <summary>
         /// [GET] The currently Focused InputVisualReceiver
         /// </summary>
@@ -150,6 +153,16 @@ namespace FrozenCore.Widgets
 
                     DualityApp.Keyboard.KeyRepeat = false;
                 }
+            }
+        }
+
+        public void SetDialogWindow(Widget inWindow)
+        {
+            _currentDialog = null;
+
+            if (inWindow is SkinnedWindow)
+            {
+                _currentDialog = inWindow;
             }
         }
 
@@ -303,6 +316,14 @@ namespace FrozenCore.Widgets
                 if (hgc != null && !hgc.GetActiveAreaOnScreen(GameObj.Camera).Contains(_currentMousePosition))
                 {
                     hgc = null;
+                }
+
+                if (hgc != null && _currentDialog != null)
+                {
+                    if (hgc.GameObj.FindAncestorWithComponent<SkinnedWindow>() != _currentDialog.GameObj)
+                    {
+                        hgc = null;
+                    }
                 }
             }
 
