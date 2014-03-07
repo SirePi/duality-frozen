@@ -3,7 +3,6 @@
 using System;
 using Duality;
 using Duality.Drawing;
-using Duality.Editor;
 using OpenTK;
 
 namespace FrozenCore.Widgets
@@ -19,12 +18,12 @@ namespace FrozenCore.Widgets
         private ColorRgba _textColor;
         private object _uncheckedArgument;
 
-        [EditorHintFlags(MemberFlags.Invisible)]
         public object CheckedArgument
         {
-            private get { return _checkedArgument; }
+            get { return _checkedArgument; }
             set { _checkedArgument = value; }
         }
+
         public bool IsChecked
         {
             get { return _isChecked; }
@@ -34,30 +33,34 @@ namespace FrozenCore.Widgets
                 OnCheckUncheck();
             }
         }
+
         public ContentRef<Script> OnChecked
         {
             get { return _onChecked; }
             set { _onChecked = value; }
         }
+
         public ContentRef<Script> OnUnchecked
         {
             get { return _onUnchecked; }
             set { _onUnchecked = value; }
         }
+
         public FormattedText Text
         {
             get { return _text; }
             set { _text = value; }
         }
+
         public ColorRgba TextColor
         {
             get { return _textColor; }
             set { _textColor = value; }
         }
-        [EditorHintFlags(MemberFlags.Invisible)]
+
         public object UncheckedArgument
         {
-            private get { return _uncheckedArgument; }
+            get { return _uncheckedArgument; }
             set { _uncheckedArgument = value; }
         }
 

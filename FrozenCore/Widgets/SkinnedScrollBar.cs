@@ -39,31 +39,37 @@ namespace FrozenCore.Widgets
         private ContentRef<Script> _onValueChanged;
         private int _scrollSpeed;
         private int _value;
+
         public Vector2 ButtonsSize
         {
             get { return _buttonsSize; }
             set { _buttonsSize = value; }
         }
+
         public Vector2 CursorSize
         {
             get { return _cursorSize; }
             set { _cursorSize = value; }
         }
+
         public ContentRef<WidgetSkin> CursorSkin
         {
             get { return _cursorSkin; }
             set { _cursorSkin = value; }
         }
+
         public ContentRef<WidgetSkin> DecreaseButtonSkin
         {
             get { return _decreaseButtonSkin; }
             set { _decreaseButtonSkin = value; }
         }
+
         public ContentRef<WidgetSkin> IncreaseButtonSkin
         {
             get { return _increaseButtonSkin; }
             set { _increaseButtonSkin = value; }
         }
+
         public int Maximum
         {
             get { return _max; }
@@ -73,6 +79,7 @@ namespace FrozenCore.Widgets
                 UpdateCursor();
             }
         }
+
         public int Minimum
         {
             get { return _min; }
@@ -82,6 +89,7 @@ namespace FrozenCore.Widgets
                 UpdateCursor();
             }
         }
+
         public ContentRef<Script> OnValueChanged
         {
             get { return _onValueChanged; }
@@ -93,6 +101,7 @@ namespace FrozenCore.Widgets
             get { return _scrollSpeed; }
             set { _scrollSpeed = value; }
         }
+
         public int Value
         {
             get { return _value; }
@@ -110,6 +119,7 @@ namespace FrozenCore.Widgets
                 }
             }
         }
+
         [EditorHintFlags(MemberFlags.Invisible)]
         public object ValueChangedArgument
         {

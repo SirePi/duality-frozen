@@ -45,17 +45,20 @@ namespace FrozenCore.Widgets
         private float _keyRepeatSpeed;
         private FormattedText _text;
         private ColorRgba _textColor;
+
         [EditorHintRange(0.1f, 1)]
         public float KeyRepeatSpeed
         {
             get { return _keyRepeatSpeed; }
             set { _keyRepeatSpeed = value; }
         }
+
         public FormattedText Text
         {
             get { return _text; }
             set { _text = value; }
         }
+
         public ColorRgba TextColor
         {
             get { return _textColor; }

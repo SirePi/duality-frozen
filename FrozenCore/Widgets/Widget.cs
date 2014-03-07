@@ -57,6 +57,7 @@ namespace FrozenCore.Widgets
         private Rect _visibleRect;
 
         private VisibilityFlag _visiblityFlag;
+
         /// <summary>
         /// [GET / SET] The ActiveArea of the Widget that can react to mouse input such as
         /// Hover, Click, etc..
@@ -66,6 +67,7 @@ namespace FrozenCore.Widgets
             get { return _activeArea; }
             set { _activeArea = value; }
         }
+
         [EditorHintFlags(MemberFlags.Invisible)]
         float ICmpRenderer.BoundRadius
         {
@@ -83,6 +85,7 @@ namespace FrozenCore.Widgets
             get { return _overrideAutoZ; }
             set { _overrideAutoZ = value; }
         }
+
         [EditorHintDecimalPlaces(1)]
         public Rect Rect
         {
@@ -93,6 +96,7 @@ namespace FrozenCore.Widgets
                 _resized = true;
             }
         }
+
         //[EditorHintFlags(MemberFlags.Invisible)]
         public WidgetStatus Status
         {
@@ -103,11 +107,13 @@ namespace FrozenCore.Widgets
                 OnStatusChange();
             }
         }
+
         public VisibilityFlag VisibilityGroup
         {
             get { return _visiblityFlag; }
             set { _visiblityFlag = value; }
         }
+
         [EditorHintDecimalPlaces(1)]
         public Rect VisibleRect
         {

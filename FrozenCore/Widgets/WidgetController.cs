@@ -63,26 +63,32 @@ namespace FrozenCore.Widgets
         /// [GET] The currently Focused InputVisualReceiver
         /// </summary>
         public Widget FocusedElement { get; private set; }
+
         /// <summary>
         /// [GET] The currently Hovered InputVisualReceiver
         /// </summary>
         public Widget HoveredElement { get; private set; }
+
         /// <summary>
         /// [GET/SET] If the Controller should register for Keyboard events
         /// </summary>
         public bool KeyboardEnabled { get; set; }
+
         /// <summary>
         /// [GET/SET] The Keyboard key that will be treated as a Left Mouse click
         /// </summary>
         public OpenTK.Input.Key LeftMouseKey { get; set; }
+
         /// <summary>
         /// [GET/SET] The Keyboard key that will be treated as a Middle Mouse click
         /// </summary>
         public OpenTK.Input.Key MiddleMouseKey { get; set; }
+
         /// <summary>
         /// [GET/SET] If the Controller should register for Mouse events
         /// </summary>
         public bool MouseEnabled { get; set; }
+
         /// <summary>
         /// [GET/SET] The Keyboard key that will be treated as a Right Mouse click
         /// </summary>

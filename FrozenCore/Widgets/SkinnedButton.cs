@@ -17,12 +17,6 @@ namespace FrozenCore.Widgets
         protected bool _leftButtonDown;
 
         [NonSerialized]
-        private object _leftClickArgument;
-
-        [NonSerialized]
-        private object _rightClickArgument;
-
-        [NonSerialized]
         private float _secondsFromLastTick;
 
         #endregion NonSerialized fields
@@ -32,11 +26,13 @@ namespace FrozenCore.Widgets
         private float _repeatLeftClickEvery;
         private FormattedText _text;
         private ColorRgba _textColor;
+        private object _leftClickArgument;
 
-        [EditorHintFlags(MemberFlags.Invisible)]
+        private object _rightClickArgument;
+
         public object LeftClickArgument
         {
-            private get { return _leftClickArgument; }
+            get { return _leftClickArgument; }
             set { _leftClickArgument = value; }
         }
 
@@ -45,28 +41,32 @@ namespace FrozenCore.Widgets
             get { return _onLeftClick; }
             set { _onLeftClick = value; }
         }
+
         public ContentRef<Script> OnRightClick
         {
             get { return _onRightClick; }
             set { _onRightClick = value; }
         }
+
         [EditorHintDecimalPlaces(1)]
         public float RepeatLeftClickEvery
         {
             get { return _repeatLeftClickEvery; }
             set { _repeatLeftClickEvery = value; }
         }
-        [EditorHintFlags(MemberFlags.Invisible)]
+
         public object RightClickArgument
         {
-            private get { return _rightClickArgument; }
+            get { return _rightClickArgument; }
             set { _rightClickArgument = value; }
         }
+
         public FormattedText Text
         {
             get { return _text; }
             set { _text = value; }
         }
+
         public ColorRgba TextColor
         {
             get { return _textColor; }

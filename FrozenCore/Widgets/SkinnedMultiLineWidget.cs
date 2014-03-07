@@ -51,41 +51,49 @@ namespace FrozenCore.Widgets
         private ContentRef<WidgetSkin> _scrollbarSkin;
         private int _scrollSpeed;
         private ColorRgba _textColor;
+
         public Vector2 ScrollbarButtonsSize
         {
             get { return _scrollbarButtonsSize; }
             set { _scrollbarButtonsSize = value; }
         }
+
         public Vector2 ScrollbarCursorSize
         {
             get { return _scrollbarCursorSize; }
             set { _scrollbarCursorSize = value; }
         }
+
         public ContentRef<WidgetSkin> ScrollbarCursorSkin
         {
             get { return _scrollbarCursorSkin; }
             set { _scrollbarCursorSkin = value; }
         }
+
         public ContentRef<WidgetSkin> ScrollbarDecreaseButtonSkin
         {
             get { return _scrollbarDecreaseButtonSkin; }
             set { _scrollbarDecreaseButtonSkin = value; }
         }
+
         public ContentRef<WidgetSkin> ScrollbarIncreaseButtonSkin
         {
             get { return _scrollbarIncreaseButtonSkin; }
             set { _scrollbarIncreaseButtonSkin = value; }
         }
+
         public ContentRef<WidgetSkin> ScrollbarSkin
         {
             get { return _scrollbarSkin; }
             set { _scrollbarSkin = value; }
         }
+
         public int ScrollSpeed
         {
             get { return _scrollSpeed; }
             set { _scrollSpeed = value; }
         }
+
         public ColorRgba TextColor
         {
             get { return _textColor; }

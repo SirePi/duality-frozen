@@ -39,11 +39,13 @@ namespace FrozenCore.Widgets
         private ContentRef<WidgetSkin> _highlightSkin;
 
         private List<object> _items;
+
         public ContentRef<WidgetSkin> HighlightSkin
         {
             get { return _highlightSkin; }
             set { _highlightSkin = value; }
         }
+
         public List<object> Items
         {
             get
@@ -69,6 +71,7 @@ namespace FrozenCore.Widgets
                 }
             }
         }
+
         public object SelectedItem
         {
             get { return _selectedItem; }

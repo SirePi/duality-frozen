@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Duality;
 using Duality.Components;
 using Duality.Drawing;
@@ -56,66 +55,79 @@ namespace FrozenCore.Widgets
         private ContentRef<WidgetSkin> _restoreButtonSkin;
         private FormattedText _title;
         private ColorRgba _titleColor;
+
         public Vector2 ButtonsSize
         {
             get { return _buttonsSize; }
             set { _buttonsSize = value; }
         }
+
         public bool CanClose
         {
             get { return _canClose; }
             set { _canClose = value; }
         }
+
         public bool CanMaximize
         {
             get { return _canMaximize; }
             set { _canMaximize = value; }
         }
+
         public bool CanMinimize
         {
             get { return _canMinimize; }
             set { _canMinimize = value; }
         }
+
         public Vector2 CloseButtonSize
         {
             get { return _closeButtonSize; }
             set { _closeButtonSize = value; }
         }
+
         public ContentRef<WidgetSkin> CloseButtonSkin
         {
             get { return _closeButtonSkin; }
             set { _closeButtonSkin = value; }
         }
+
         public bool IsDraggable
         {
             get { return _isDraggable; }
             set { _isDraggable = value; }
         }
+
         public ContentRef<WidgetSkin> MaximizeButtonSkin
         {
             get { return _maximizeButtonSkin; }
             set { _maximizeButtonSkin = value; }
         }
+
         public Vector2 MaximizedSize
         {
             get { return _maximizedSize; }
             set { _maximizedSize = value; }
         }
+
         public ContentRef<WidgetSkin> MinimizeButtonSkin
         {
             get { return _minimizeButtonSkin; }
             set { _minimizeButtonSkin = value; }
         }
+
         public ContentRef<WidgetSkin> RestoreButtonSkin
         {
             get { return _restoreButtonSkin; }
             set { _restoreButtonSkin = value; }
         }
+
         public FormattedText Title
         {
             get { return _title; }
             set { _title = value; }
         }
+
         public ColorRgba TitleColor
         {
             get { return _titleColor; }
@@ -413,7 +425,7 @@ namespace FrozenCore.Widgets
                     w.Status = WidgetStatus.Disabled;
                 }
             }
-            else if(Status == WidgetStatus.Normal)
+            else if (Status == WidgetStatus.Normal)
             {
                 foreach (Widget w in this.GameObj.GetComponentsInChildren<Widget>())
                 {

@@ -4,9 +4,9 @@ using System;
 using Duality;
 using Duality.Components;
 using Duality.Drawing;
+using Duality.Resources;
 using FrozenCore.Resources.Widgets;
 using OpenTK;
-using Duality.Resources;
 
 namespace FrozenCore.Widgets
 {
