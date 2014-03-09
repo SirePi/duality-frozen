@@ -1,4 +1,5 @@
 ﻿using Duality;
+using OpenTK.Graphics.OpenGL;
 
 namespace FrozenCore
 {
@@ -23,6 +24,5 @@ namespace FrozenCore
                 return _fastRandomInstance;
             }
         }
-        // Override methods here for global logic
     }
 }
