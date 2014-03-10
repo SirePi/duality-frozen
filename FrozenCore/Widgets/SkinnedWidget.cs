@@ -30,18 +30,32 @@ namespace FrozenCore.Widgets
 
         #endregion NonSerialized fields
 
+        [NonSerialized]
         private static readonly int[] COLUMN_1 = new int[] { 0, 1, 12, 13, 24, 25 };
+        [NonSerialized]
         private static readonly int[] COLUMN_2 = new int[] { 3, 2, 15, 14, 27, 26 };
+        [NonSerialized]
         private static readonly int[] COLUMN_3 = new int[] { 4, 5, 16, 17, 28, 29 };
+        [NonSerialized]
         private static readonly int[] COLUMN_4 = new int[] { 7, 6, 19, 18, 31, 30 };
+        [NonSerialized]
         private static readonly int[] COLUMN_5 = new int[] { 8, 9, 20, 21, 32, 33 };
+        [NonSerialized]
         private static readonly int[] COLUMN_6 = new int[] { 11, 10, 23, 22, 35, 34 };
+        [NonSerialized]
         private static readonly int[] ROW_1 = new int[] { 0, 3, 4, 7, 8, 11 };
+        [NonSerialized]
         private static readonly int[] ROW_2 = new int[] { 1, 2, 5, 6, 9, 10 };
+        [NonSerialized]
         private static readonly int[] ROW_3 = new int[] { 12, 15, 16, 19, 20, 23 };
+        [NonSerialized]
         private static readonly int[] ROW_4 = new int[] { 13, 14, 17, 18, 21, 22 };
+        [NonSerialized]
         private static readonly int[] ROW_5 = new int[] { 24, 27, 28, 31, 32, 35 };
+        [NonSerialized]
         private static readonly int[] ROW_6 = new int[] { 25, 26, 29, 30, 33, 34 };
+
+        private ColorRgba _tint;
         private ContentRef<WidgetSkin> _skin;
 
         public ContentRef<WidgetSkin> Skin
@@ -59,9 +73,16 @@ namespace FrozenCore.Widgets
             }
         }
 
+        public ColorRgba Tint
+        {
+            get { return _tint; }
+            set { _tint = value; }
+        }
+
         public SkinnedWidget()
         {
             _skin = WidgetSkin.DEFAULT;
+            _tint = Colors.White;
         }
 
         internal override void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
@@ -202,147 +223,147 @@ namespace FrozenCore.Widgets
 
                 _vertices[0].Pos = _points[0].SceneCoords;
                 _vertices[0].TexCoord = _points[0].UVCoords;
-                _vertices[0].Color = Colors.White;
+                _vertices[0].Color = _tint;
 
                 _vertices[1].Pos = _points[4].SceneCoords;
                 _vertices[1].TexCoord = _points[4].UVCoords;
-                _vertices[1].Color = Colors.White;
+                _vertices[1].Color = _tint;
 
                 _vertices[2].Pos = _points[5].SceneCoords;
                 _vertices[2].TexCoord = _points[5].UVCoords;
-                _vertices[2].Color = Colors.White;
+                _vertices[2].Color = _tint;
 
                 _vertices[3].Pos = _points[1].SceneCoords;
                 _vertices[3].TexCoord = _points[1].UVCoords;
-                _vertices[3].Color = Colors.White;
+                _vertices[3].Color = _tint;
 
                 _vertices[4].Pos = _points[1].SceneCoords;
                 _vertices[4].TexCoord = _points[1].UVCoords;
-                _vertices[4].Color = Colors.White;
+                _vertices[4].Color = _tint;
 
                 _vertices[5].Pos = _points[5].SceneCoords;
                 _vertices[5].TexCoord = _points[5].UVCoords;
-                _vertices[5].Color = Colors.White;
+                _vertices[5].Color = _tint;
 
                 _vertices[6].Pos = _points[6].SceneCoords;
                 _vertices[6].TexCoord = _points[6].UVCoords;
-                _vertices[6].Color = Colors.White;
+                _vertices[6].Color = _tint;
 
                 _vertices[7].Pos = _points[2].SceneCoords;
                 _vertices[7].TexCoord = _points[2].UVCoords;
-                _vertices[7].Color = Colors.White;
+                _vertices[7].Color = _tint;
 
                 _vertices[8].Pos = _points[2].SceneCoords;
                 _vertices[8].TexCoord = _points[2].UVCoords;
-                _vertices[8].Color = Colors.White;
+                _vertices[8].Color = _tint;
 
                 _vertices[9].Pos = _points[6].SceneCoords;
                 _vertices[9].TexCoord = _points[6].UVCoords;
-                _vertices[9].Color = Colors.White;
+                _vertices[9].Color = _tint;
 
                 _vertices[10].Pos = _points[7].SceneCoords;
                 _vertices[10].TexCoord = _points[7].UVCoords;
-                _vertices[10].Color = Colors.White;
+                _vertices[10].Color = _tint;
 
                 _vertices[11].Pos = _points[3].SceneCoords;
                 _vertices[11].TexCoord = _points[3].UVCoords;
-                _vertices[11].Color = Colors.White;
+                _vertices[11].Color = _tint;
 
                 _vertices[12].Pos = _points[4].SceneCoords;
                 _vertices[12].TexCoord = _points[4].UVCoords;
-                _vertices[12].Color = Colors.White;
+                _vertices[12].Color = _tint;
 
                 _vertices[13].Pos = _points[8].SceneCoords;
                 _vertices[13].TexCoord = _points[8].UVCoords;
-                _vertices[13].Color = Colors.White;
+                _vertices[13].Color = _tint;
 
                 _vertices[14].Pos = _points[9].SceneCoords;
                 _vertices[14].TexCoord = _points[9].UVCoords;
-                _vertices[14].Color = Colors.White;
+                _vertices[14].Color = _tint;
 
                 _vertices[15].Pos = _points[5].SceneCoords;
                 _vertices[15].TexCoord = _points[5].UVCoords;
-                _vertices[15].Color = Colors.White;
+                _vertices[15].Color = _tint;
 
                 _vertices[16].Pos = _points[5].SceneCoords;
                 _vertices[16].TexCoord = _points[5].UVCoords;
-                _vertices[16].Color = Colors.White;
+                _vertices[16].Color = _tint;
 
                 _vertices[17].Pos = _points[9].SceneCoords;
                 _vertices[17].TexCoord = _points[9].UVCoords;
-                _vertices[17].Color = Colors.White;
+                _vertices[17].Color = _tint;
 
                 _vertices[18].Pos = _points[10].SceneCoords;
                 _vertices[18].TexCoord = _points[10].UVCoords;
-                _vertices[18].Color = Colors.White;
+                _vertices[18].Color = _tint;
 
                 _vertices[19].Pos = _points[6].SceneCoords;
                 _vertices[19].TexCoord = _points[6].UVCoords;
-                _vertices[19].Color = Colors.White;
+                _vertices[19].Color = _tint;
 
                 _vertices[20].Pos = _points[6].SceneCoords;
                 _vertices[20].TexCoord = _points[6].UVCoords;
-                _vertices[20].Color = Colors.White;
+                _vertices[20].Color = _tint;
 
                 _vertices[21].Pos = _points[10].SceneCoords;
                 _vertices[21].TexCoord = _points[10].UVCoords;
-                _vertices[21].Color = Colors.White;
+                _vertices[21].Color = _tint;
 
                 _vertices[22].Pos = _points[11].SceneCoords;
                 _vertices[22].TexCoord = _points[11].UVCoords;
-                _vertices[22].Color = Colors.White;
+                _vertices[22].Color = _tint;
 
                 _vertices[23].Pos = _points[7].SceneCoords;
                 _vertices[23].TexCoord = _points[7].UVCoords;
-                _vertices[23].Color = Colors.White;
+                _vertices[23].Color = _tint;
 
                 _vertices[24].Pos = _points[8].SceneCoords;
                 _vertices[24].TexCoord = _points[8].UVCoords;
-                _vertices[24].Color = Colors.White;
+                _vertices[24].Color = _tint;
 
                 _vertices[25].Pos = _points[12].SceneCoords;
                 _vertices[25].TexCoord = _points[12].UVCoords;
-                _vertices[25].Color = Colors.White;
+                _vertices[25].Color = _tint;
 
                 _vertices[26].Pos = _points[13].SceneCoords;
                 _vertices[26].TexCoord = _points[13].UVCoords;
-                _vertices[26].Color = Colors.White;
+                _vertices[26].Color = _tint;
 
                 _vertices[27].Pos = _points[9].SceneCoords;
                 _vertices[27].TexCoord = _points[9].UVCoords;
-                _vertices[27].Color = Colors.White;
+                _vertices[27].Color = _tint;
 
                 _vertices[28].Pos = _points[9].SceneCoords;
                 _vertices[28].TexCoord = _points[9].UVCoords;
-                _vertices[28].Color = Colors.White;
+                _vertices[28].Color = _tint;
 
                 _vertices[29].Pos = _points[13].SceneCoords;
                 _vertices[29].TexCoord = _points[13].UVCoords;
-                _vertices[29].Color = Colors.White;
+                _vertices[29].Color = _tint;
 
                 _vertices[30].Pos = _points[14].SceneCoords;
                 _vertices[30].TexCoord = _points[14].UVCoords;
-                _vertices[30].Color = Colors.White;
+                _vertices[30].Color = _tint;
 
                 _vertices[31].Pos = _points[10].SceneCoords;
                 _vertices[31].TexCoord = _points[10].UVCoords;
-                _vertices[31].Color = Colors.White;
+                _vertices[31].Color = _tint;
 
                 _vertices[32].Pos = _points[10].SceneCoords;
                 _vertices[32].TexCoord = _points[10].UVCoords;
-                _vertices[32].Color = Colors.White;
+                _vertices[32].Color = _tint;
 
                 _vertices[33].Pos = _points[14].SceneCoords;
                 _vertices[33].TexCoord = _points[14].UVCoords;
-                _vertices[33].Color = Colors.White;
+                _vertices[33].Color = _tint;
 
                 _vertices[34].Pos = _points[15].SceneCoords;
                 _vertices[34].TexCoord = _points[15].UVCoords;
-                _vertices[34].Color = Colors.White;
+                _vertices[34].Color = _tint;
 
                 _vertices[35].Pos = _points[11].SceneCoords;
                 _vertices[35].TexCoord = _points[11].UVCoords;
-                _vertices[35].Color = Colors.White;
+                _vertices[35].Color = _tint;
 
                 if (VisibleRect != Rect.Empty && VisibleRect != Rect)
                 {
