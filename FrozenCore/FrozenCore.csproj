@@ -70,6 +70,7 @@
     <Compile Include="Components\InputReceiverVisual.cs" />
     <Compile Include="Components\InputController.cs" />
     <Compile Include="Components\MouseDebugger.cs" />
+    <Compile Include="Components\Mover.cs" />
     <Compile Include="Components\ThreadedLoader.cs" />
     <Compile Include="Components\VisualTreeHider.cs" />
     <Compile Include="GameObjectExtensions.cs" />
