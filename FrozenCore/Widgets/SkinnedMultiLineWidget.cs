@@ -163,7 +163,7 @@ namespace FrozenCore.Widgets
             }
         }
 
-        protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
+        protected override void DrawCanvas(Canvas inCanvas)
         {
         }
 

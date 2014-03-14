@@ -175,7 +175,7 @@ namespace FrozenCore.Widgets
         void ICmpRenderer.Draw(IDrawDevice device)
         {
             Draw(device);
-            DrawCanvas(device, new Canvas(device));
+            DrawCanvas(new Canvas(device));
         }
 
         bool ICmpRenderer.IsVisible(IDrawDevice device)
@@ -271,7 +271,7 @@ namespace FrozenCore.Widgets
 
         protected abstract void Draw(IDrawDevice inDevice);
 
-        protected abstract void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas);
+        protected abstract void DrawCanvas(Canvas inCanvas);
 
         protected abstract void OnInit(Component.InitContext inContext);
 

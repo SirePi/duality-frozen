@@ -264,7 +264,7 @@ namespace FrozenCore.Widgets
             OnResize();
         }
 
-        protected override void DrawCanvas(IDrawDevice inDevice, Canvas inCanvas)
+        protected override void DrawCanvas(Canvas inCanvas)
         {
             if (Title != null)
             {
