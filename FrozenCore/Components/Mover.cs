@@ -133,7 +133,7 @@ namespace FrozenCore.Components
 
         public void MoveTo(Vector2 inTarget, float inSpeed)
         {
-            _operations.Add(new Move(inSpeed, new Vector3(inTarget, 0)));
+            _operations.Add(new Move(inSpeed, new Vector3(inTarget, this.GameObj.Transform.Pos.Z)));
         }
 
         public void MoveTo(Vector3 inTarget, float inSpeed)
