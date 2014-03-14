@@ -28,6 +28,9 @@ namespace FrozenCore.Widgets
         protected static readonly float DELTA_Z = -.001f;
 
         [NonSerialized]
+        protected Vector3[] _tempActiveAreaOnScreen;
+
+        [NonSerialized]
         protected Polygon _activeAreaOnScreen;
 
         [NonSerialized]
@@ -42,16 +45,20 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         protected VertexC1P3T2[] _vertices;
 
-        private WidgetStatus _status;
+        [NonSerialized]
+        protected bool _isInOverlay;
 
         [NonSerialized]
         private bool _widgetActive;
 
         #endregion NonSerialized fields
 
+        private WidgetStatus _status;
+
         private ActiveArea _activeArea;
 
         private bool _overrideAutoZ;
+
         private Rect _rect;
 
         private Rect _visibleRect;
@@ -97,7 +104,6 @@ namespace FrozenCore.Widgets
             }
         }
 
-        //[EditorHintFlags(MemberFlags.Invisible)]
         public WidgetStatus Status
         {
             get { return _status; }
@@ -127,6 +133,7 @@ namespace FrozenCore.Widgets
 
             _areaOnScreen = new Polygon(4);
             _activeAreaOnScreen = new Polygon(4);
+            _tempActiveAreaOnScreen = new Vector3[4];
 
             _rect = new Duality.Rect(0, 0, 50, 50);
             _visibleRect = Rect.Empty;
@@ -191,6 +198,8 @@ namespace FrozenCore.Widgets
 
         void ICmpUpdatable.OnUpdate()
         {
+            _isInOverlay = (this.VisibilityGroup & VisibilityFlag.ScreenOverlay) != VisibilityFlag.None;
+
             OnUpdate(Time.LastDelta / 1000f);
         }
 
@@ -221,10 +230,20 @@ namespace FrozenCore.Widgets
 
         internal Polygon GetAreaOnScreen(Camera inCamera)
         {
-            _areaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
-            _areaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
-            _areaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
-            _areaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
+            if (_isInOverlay)
+            {
+                _areaOnScreen[0] = _points[0].WorldCoords.Xy;
+                _areaOnScreen[1] = _points[3].WorldCoords.Xy;
+                _areaOnScreen[2] = _points[15].WorldCoords.Xy;
+                _areaOnScreen[3] = _points[12].WorldCoords.Xy;
+            }
+            else
+            {
+                _areaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
+                _areaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
+                _areaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
+                _areaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
+            }
 
             return _areaOnScreen;
         }
@@ -284,46 +303,61 @@ namespace FrozenCore.Widgets
             switch (ActiveArea)
             {
                 case Widgets.ActiveArea.LeftBorder:
-                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
-                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[1].WorldCoords).Xy;
-                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[13].WorldCoords).Xy;
-                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
+                    _tempActiveAreaOnScreen[0] = _points[0].WorldCoords;
+                    _tempActiveAreaOnScreen[1] = _points[1].WorldCoords;
+                    _tempActiveAreaOnScreen[2] = _points[13].WorldCoords;
+                    _tempActiveAreaOnScreen[3] = _points[12].WorldCoords;
                     break;
 
                 case Widgets.ActiveArea.TopBorder:
-                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
-                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
-                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[7].WorldCoords).Xy;
-                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[4].WorldCoords).Xy;
+                    _tempActiveAreaOnScreen[0] = _points[0].WorldCoords;
+                    _tempActiveAreaOnScreen[1] = _points[3].WorldCoords;
+                    _tempActiveAreaOnScreen[2] = _points[7].WorldCoords;
+                    _tempActiveAreaOnScreen[3] = _points[4].WorldCoords;
                     break;
 
                 case Widgets.ActiveArea.RightBorder:
-                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[2].WorldCoords).Xy;
-                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
-                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
-                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[14].WorldCoords).Xy;
+                    _tempActiveAreaOnScreen[0] = _points[2].WorldCoords;
+                    _tempActiveAreaOnScreen[1] = _points[3].WorldCoords;
+                    _tempActiveAreaOnScreen[2] = _points[15].WorldCoords;
+                    _tempActiveAreaOnScreen[3] = _points[14].WorldCoords;
                     break;
 
                 case Widgets.ActiveArea.BottomBorder:
-                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[8].WorldCoords).Xy;
-                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[11].WorldCoords).Xy;
-                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
-                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
+                    _tempActiveAreaOnScreen[0] = _points[8].WorldCoords;
+                    _tempActiveAreaOnScreen[1] = _points[11].WorldCoords;
+                    _tempActiveAreaOnScreen[2] = _points[15].WorldCoords;
+                    _tempActiveAreaOnScreen[3] = _points[12].WorldCoords;
                     break;
 
                 case Widgets.ActiveArea.Center:
-                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[5].WorldCoords).Xy;
-                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[6].WorldCoords).Xy;
-                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[10].WorldCoords).Xy;
-                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[9].WorldCoords).Xy;
+                    _tempActiveAreaOnScreen[0] = _points[5].WorldCoords;
+                    _tempActiveAreaOnScreen[1] = _points[6].WorldCoords;
+                    _tempActiveAreaOnScreen[2] = _points[10].WorldCoords;
+                    _tempActiveAreaOnScreen[3] = _points[9].WorldCoords;
                     break;
 
                 default: //All or others.. but it should never happen
-                    _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_points[0].WorldCoords).Xy;
-                    _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_points[3].WorldCoords).Xy;
-                    _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_points[15].WorldCoords).Xy;
-                    _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_points[12].WorldCoords).Xy;
+                    _tempActiveAreaOnScreen[0] = _points[0].WorldCoords;
+                    _tempActiveAreaOnScreen[1] = _points[3].WorldCoords;
+                    _tempActiveAreaOnScreen[2] = _points[15].WorldCoords;
+                    _tempActiveAreaOnScreen[3] = _points[12].WorldCoords;
                     break;
+            }
+
+            if (_isInOverlay)
+            {
+                _activeAreaOnScreen[0] = _tempActiveAreaOnScreen[0].Xy;
+                _activeAreaOnScreen[1] = _tempActiveAreaOnScreen[1].Xy;
+                _activeAreaOnScreen[2] = _tempActiveAreaOnScreen[2].Xy;
+                _activeAreaOnScreen[3] = _tempActiveAreaOnScreen[3].Xy;
+            }
+            else
+            {
+                _activeAreaOnScreen[0] = inCamera.GetScreenCoord(_tempActiveAreaOnScreen[0]).Xy;
+                _activeAreaOnScreen[1] = inCamera.GetScreenCoord(_tempActiveAreaOnScreen[1]).Xy;
+                _activeAreaOnScreen[2] = inCamera.GetScreenCoord(_tempActiveAreaOnScreen[2]).Xy;
+                _activeAreaOnScreen[3] = inCamera.GetScreenCoord(_tempActiveAreaOnScreen[3]).Xy;
             }
 
             return _activeAreaOnScreen;

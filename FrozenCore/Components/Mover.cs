@@ -22,40 +22,82 @@ namespace FrozenCore.Components
                 _rotationSpeed = inRotationSpeed;
             }
 
-            internal abstract void DoTransform(float inSecondsPast, Transform inTransform);
+            internal abstract bool DoTransform(float inSecondsPast, Transform inTransform);
         }
 
         private class Rotate : Operation
         {
-            private float _origin { get; set; }
             private float _target { get; set; }
 
-            internal Rotate(float inRotationSpeed, float inOriginAngle, float inTargetAngle)
+            internal Rotate(float inRotationSpeed, float inTargetAngle)
                 : base(0, inRotationSpeed)
             {
-                _origin = inOriginAngle;
                 _target = inTargetAngle;
             }
 
-            internal override void DoTransform(float inSecondsPast, Transform inTransform)
+            internal override bool DoTransform(float inSecondsPast, Transform inTransform)
             {
-                
+                bool transformComplete = false;
+
+                if (_rotationSpeed == 0)
+                {
+                    transformComplete = true;
+                }
+                else
+                {
+                    float delta = _target - inTransform.Angle;
+                    float maxRotation = inSecondsPast * _rotationSpeed;
+
+                    if (delta <= maxRotation)
+                    {
+                        inTransform.Angle = _target;
+                        transformComplete = true;
+                    }
+                    else
+                    {
+                        inTransform.Angle = inTransform.Angle + (delta * maxRotation);
+                    }
+                }
+
+                return transformComplete;
             }
         }
 
         private class Move : Operation
         {
-            internal Vector3 Target { get; set; }
+            private Vector3 _target;
 
             internal Move(float inMovingSpeed, Vector3 inTargetPosition)
                 : base(inMovingSpeed, 0)
             {
-                Target = inTargetPosition;
+                _target = inTargetPosition;
             }
 
-            internal override void DoTransform(float inSecondsPast, Transform inTransform)
+            internal override bool DoTransform(float inSecondsPast, Transform inTransform)
             {
-                
+                bool transformComplete = false;
+
+                if (_movingSpeed == 0)
+                {
+                    transformComplete = true;
+                }
+                else
+                {
+                    Vector3 delta = _target - inTransform.Pos;
+                    float maxDistanceTraveled = inSecondsPast * _movingSpeed;
+
+                    if (delta.Length <= maxDistanceTraveled)
+                    {
+                        inTransform.Pos = _target;
+                        transformComplete = true;
+                    }
+                    else
+                    {
+                        inTransform.Pos = inTransform.Pos + (delta.Normalized * maxDistanceTraveled);
+                    }
+                }
+
+                return transformComplete;
             }
         }
 
@@ -74,7 +116,7 @@ namespace FrozenCore.Components
         {
             float secondsPast = Time.LastDelta / 1000;
 
-            if (_operations.Count > 0)
+            if (_currentOperation == null && _operations.Count > 0)
             {
                 _currentOperation = _operations[0];
                 _operations.RemoveAt(0);
@@ -82,7 +124,10 @@ namespace FrozenCore.Components
 
             if (_currentOperation != null)
             {
-                _currentOperation.DoTransform(secondsPast, this.GameObj.Transform);
+                if (_currentOperation.DoTransform(secondsPast, this.GameObj.Transform))
+                {
+                    _currentOperation = null;
+                }
             }
         }
 
