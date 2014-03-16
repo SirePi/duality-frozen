@@ -1,6 +1,7 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using Duality.Drawing;
+using OpenTK;
 
 namespace FrozenCore
 {
@@ -147,5 +148,19 @@ namespace FrozenCore
         public static readonly ColorRgba WhiteSmoke = new ColorRgba(245, 245, 245, 255);
         public static readonly ColorRgba Yellow = new ColorRgba(255, 255, 0, 255);
         public static readonly ColorRgba YellowGreen = new ColorRgba(154, 205, 50, 255);
+    }
+
+    public static class ColorRgbaExtensions
+    {
+        public static Vector4 ToVector4(this ColorRgba value)
+        {
+            return new Vector4(value.R, value.G, value.B, value.A);
+        }
+
+        public static void FromVector4(this ColorRgba color, Vector4 value)
+        {
+            color = ColorRgba.
+            color.G = value.Y;
+        }
     }
 }
