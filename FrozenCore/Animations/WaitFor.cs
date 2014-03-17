@@ -12,34 +12,36 @@ namespace FrozenCore.Animations
     public sealed class WaitFor : Animation<Animator>
     {
         private Animator _targetAnimator;
-        private float _timeToWait;
-        private float _elapsedTime;
+        private string _targetSignal;
 
-        internal WaitFor(GameObject inTargetGameObject)
+        internal WaitFor(GameObject inGameObject, string inSignal)
         {
             try
             {
-                _targetAnimator = GetComponent(inTargetGameObject);
+                _targetAnimator = GetComponent(inGameObject);
+                _targetSignal = inSignal;
             }
             catch
             {
                 // if I get an exception is because the target doesn't have an Animator component. 
                 // That's ok, it just means I can't wait for it.
             }
-            _timeToWait = float.PositiveInfinity;
         }
 
         internal override void Animate(float inSecondsPast, GameObject inGameObject)
         {
-            if (_timeToWait <= 0 || _targetAnimator == null)
+            if (_targetAnimator == null)
             {
                 IsComplete = true;
             }
             else
             {
-                _elapsedTime += inSecondsPast;
+                if (_targetSignal != null)
+                {
+                    IsComplete = _targetAnimator.CurrentSignal == _targetSignal;
+                }
 
-                if (_elapsedTime >= _timeToWait)
+                if (_targetAnimator.IsIdle)
                 {
                     IsComplete = true;
                 }

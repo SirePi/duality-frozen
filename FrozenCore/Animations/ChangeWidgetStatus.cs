@@ -15,7 +15,9 @@ namespace FrozenCore.Animations
         Widget.WidgetStatus _target;
 
         internal ChangeWidgetStatus(GameObject inGameObject, Widget.WidgetStatus inStatus)
-        { }
+        {
+            _target = inStatus;
+        }
 
         internal override void Animate(float inSecondsPast, GameObject inGameObject)
         {

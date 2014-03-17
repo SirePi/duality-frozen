@@ -19,21 +19,29 @@ namespace FrozenCore.Components
         [NonSerialized]
         private Animation _currentOperation;
 
+        [NonSerialized]
+        private string _currentSignal;
+
         public Animator()
         {
             _operations = new List<Animation>();
         }
 
+        public string CurrentSignal
+        {
+            get { return _currentSignal; }
+        }
+
         public bool IsIdle
         {
-            get { return _operations.Count == 0; }
+            get { return (_currentOperation == null && _operations.Count == 0); }
         }
 
         void ICmpUpdatable.OnUpdate()
         {
             float secondsPast = Time.LastDelta / 1000;
 
-            if (_currentOperation == null && !IsIdle)
+            if (_currentOperation == null && _operations.Count > 0)
             {
                 _currentOperation = _operations[0];
                 _operations.RemoveAt(0);
@@ -45,6 +53,13 @@ namespace FrozenCore.Components
 
                 if (_currentOperation.IsComplete)
                 {
+                    _currentSignal = null;
+
+                    if (_currentOperation is Signal)
+                    {
+                        _currentSignal = (_currentOperation as Signal).Value;
+                    }
+
                     _currentOperation = null;
                 }
             }
@@ -132,6 +147,31 @@ namespace FrozenCore.Components
         public ColorizeSprite ColorizeSprite(ColorRgba inColor)
         {
             return Add(new ColorizeSprite(this.GameObj, inColor));
+        }
+
+        public Signal Signal(string inSignal)
+        {
+            return Add(new Signal(inSignal));
+        }
+
+        public Wait Wait(float inTimeToWait)
+        {
+            return Add(new Wait(inTimeToWait));
+        }
+
+        public WaitFor WaitFor(GameObject inGameObject)
+        {
+            return Add(new WaitFor(inGameObject, null));
+        }
+
+        public WaitFor WaitFor(GameObject inGameObject, string inSignal)
+        {
+            return Add(new WaitFor(inGameObject, inSignal));
+        }
+
+        public ChangeWidgetStatus ChangeWidgetStatus(Widgets.Widget.WidgetStatus inStatus)
+        {
+            return Add(new ChangeWidgetStatus(this.GameObj, inStatus));
         }
 
         public T Add<T>(T inAnimation) where T : Animation

@@ -67,6 +67,7 @@
     <Compile Include="Animations\ColorizeSprite.cs" />
     <Compile Include="Animations\ChangeWidgetStatus.cs" />
     <Compile Include="Animations\ColorizeSkinnedWidget.cs" />
+    <Compile Include="Animations\Signal.cs" />
     <Compile Include="Animations\WaitFor.cs" />
     <Compile Include="Animations\Wait.cs" />
     <Compile Include="Animations\Move.cs" />
