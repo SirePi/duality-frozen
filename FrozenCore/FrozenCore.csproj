@@ -63,6 +63,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Animations\Animation.cs" />
+    <Compile Include="Animations\ColorizeSprite.cs" />
+    <Compile Include="Animations\ChangeWidgetStatus.cs" />
+    <Compile Include="Animations\ColorizeSkinnedWidget.cs" />
+    <Compile Include="Animations\WaitFor.cs" />
+    <Compile Include="Animations\Wait.cs" />
+    <Compile Include="Animations\Move.cs" />
+    <Compile Include="Animations\Rotate.cs" />
     <Compile Include="Collections\Map.cs" />
     <Compile Include="Colors.cs" />
     <Compile Include="Components\BaseInputReceiver.cs" />
@@ -73,6 +81,7 @@
     <Compile Include="Components\Animator.cs" />
     <Compile Include="Components\ThreadedLoader.cs" />
     <Compile Include="Components\VisualTreeHider.cs" />
+    <Compile Include="Data\Vector3Range.cs" />
     <Compile Include="GameObjectExtensions.cs" />
     <Compile Include="FrozenCorePlugin.cs" />
     <Compile Include="Data\Graph\Graph.cs" />
@@ -159,6 +168,7 @@
       <Name>Duality</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(TargetDir)FrozenCore*" "$(SolutionDir)..\..\Plugins\*"

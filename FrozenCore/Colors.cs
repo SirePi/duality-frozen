@@ -159,8 +159,10 @@ namespace FrozenCore
 
         public static void FromVector4(this ColorRgba color, Vector4 value)
         {
-            color = ColorRgba.
-            color.G = value.Y;
+            color.R = (byte)value.X;
+            color.G = (byte)value.Y;
+            color.B = (byte)value.Z;
+            color.A = (byte)value.W;
         }
     }
 }
