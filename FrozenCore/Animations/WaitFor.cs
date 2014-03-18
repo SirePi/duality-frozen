@@ -28,7 +28,7 @@ namespace FrozenCore.Animations
             }
         }
 
-        internal override void Animate(float inSecondsPast, GameObject inGameObject)
+        public override void Animate(float inSecondsPast, GameObject inGameObject)
         {
             if (_targetAnimator == null)
             {

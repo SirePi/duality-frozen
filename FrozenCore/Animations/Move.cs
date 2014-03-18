@@ -19,7 +19,7 @@ namespace FrozenCore.Animations
             _range = new Vector3Range(t.Pos, inTargetPosition);
         }
 
-        internal override void Animate(float inSecondsPast, GameObject inGameObject)
+        public override void Animate(float inSecondsPast, GameObject inGameObject)
         {
             Transform t = GetComponent(inGameObject);
 

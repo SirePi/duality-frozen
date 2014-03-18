@@ -19,7 +19,7 @@ namespace FrozenCore.Animations
             _range = new ColorRange(sr.ColorTint, inTargetColor);
         }
 
-        internal override void Animate(float inSecondsPast, GameObject inGameObject)
+        public override void Animate(float inSecondsPast, GameObject inGameObject)
         {
             SpriteRenderer sr = GetComponent(inGameObject);
 

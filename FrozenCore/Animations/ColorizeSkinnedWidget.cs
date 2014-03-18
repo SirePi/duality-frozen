@@ -20,7 +20,7 @@ namespace FrozenCore.Animations
             _range = new ColorRange(sw.Tint, inTargetColor);
         }
 
-        internal override void Animate(float inSecondsPast, GameObject inGameObject)
+        public override void Animate(float inSecondsPast, GameObject inGameObject)
         {
             SkinnedWidget sw = GetComponent(inGameObject);
 

@@ -14,9 +14,10 @@ namespace FrozenCore.Widgets
     [Serializable]
     public class SkinnedDropDownButton : SkinnedWidget
     {
-        protected FormattedText _text;
-
         #region NonSerialized fields
+
+        [NonSerialized]
+        private FormattedText _text;
 
         [NonSerialized]
         private bool _itemsAccessed;
@@ -39,6 +40,7 @@ namespace FrozenCore.Widgets
         private ContentRef<WidgetSkin> _scrollbarDecreaseButtonSkin;
         private ContentRef<WidgetSkin> _scrollbarIncreaseButtonSkin;
         private ContentRef<WidgetSkin> _scrollbarSkin;
+        private ContentRef<Font> _font;
         private int _scrollSpeed;
         private ColorRgba _textColor;
 
@@ -129,6 +131,12 @@ namespace FrozenCore.Widgets
             set { _textColor = value; }
         }
 
+        public ContentRef<Font> TextFont
+        {
+            get { return _font; }
+            set { _font = value; }
+        }
+
         public SkinnedDropDownButton()
         {
             ActiveArea = Widgets.ActiveArea.RightBorder;
@@ -169,6 +177,11 @@ namespace FrozenCore.Widgets
                 Vector3 buttonLeft = (_points[5].WorldCoords + _points[9].WorldCoords) / 2;
 
                 _text.SourceText = String.Empty;
+
+                if (_font != null && _text.Fonts[0] != _font)
+                {
+                    _text.Fonts[0] = _font;
+                }
 
                 if (_listBoxComponent.SelectedItem != null)
                 {
@@ -227,6 +240,7 @@ namespace FrozenCore.Widgets
             _listBoxComponent.ScrollbarButtonsSize = ScrollbarButtonsSize;
             _listBoxComponent.ScrollbarCursorSize = ScrollbarCursorSize;
             _listBoxComponent.Rect = Rect.AlignTopLeft(0, 0, Rect.W, _dropDownHeight);
+            _listBoxComponent.TextFont = TextFont;
 
             _listBox.AddComponent<SkinnedListBox>(_listBoxComponent);
             _listBox.Active = false;

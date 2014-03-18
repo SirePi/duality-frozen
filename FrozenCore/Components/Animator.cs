@@ -11,6 +11,7 @@ using FrozenCore.Animations;
 
 namespace FrozenCore.Components
 {
+    [Serializable]
     public class Animator : Component, ICmpUpdatable
     {
         [NonSerialized]
@@ -171,7 +172,7 @@ namespace FrozenCore.Components
 
         public ChangeWidgetStatus ChangeWidgetStatus(Widgets.Widget.WidgetStatus inStatus)
         {
-            return Add(new ChangeWidgetStatus(this.GameObj, inStatus));
+            return Add(new ChangeWidgetStatus(inStatus));
         }
 
         public T Add<T>(T inAnimation) where T : Animation

@@ -49,6 +49,7 @@ namespace FrozenCore.Widgets
         private ContentRef<WidgetSkin> _scrollbarDecreaseButtonSkin;
         private ContentRef<WidgetSkin> _scrollbarIncreaseButtonSkin;
         private ContentRef<WidgetSkin> _scrollbarSkin;
+        private ContentRef<Font> _font;
         private int _scrollSpeed;
         private ColorRgba _textColor;
 
@@ -98,6 +99,12 @@ namespace FrozenCore.Widgets
         {
             get { return _textColor; }
             set { _textColor = value; }
+        }
+
+        public ContentRef<Font> TextFont
+        {
+            get { return _font; }
+            set { _font = value; }
         }
 
         public SkinnedMultiLineWidget()
@@ -218,19 +225,25 @@ namespace FrozenCore.Widgets
 
             if (!isTextEmpty)
             {
+                if (_font != null && _text.Fonts[0] != _font)
+                {
+                    _text.Fonts[0] = _font;
+                }
+
+                int textWidth = _visibleWidth;
+
                 if (!inLimitTextWidth)
                 {
                     _text.MaxWidth = ushort.MaxValue;
-                    _text.MaxWidth = (int)Math.Ceiling(_text.Size.X);
+
+                    textWidth = (int)Math.Ceiling(_text.Size.X) + 10;
                 }
-                else
-                {
-                    _text.MaxWidth = _visibleWidth;
-                }
+
+                _text.MaxWidth = textWidth;
 
                 _isScrollbarRequired = _text.Size.Y > _visibleHeight;
 
-                _uvUnit.X = 1f / _text.Size.X;
+                _uvUnit.X = 1f / textWidth;
                 _uvUnit.Y = 1;
 
                 if (_scrollbar != null)
@@ -240,7 +253,7 @@ namespace FrozenCore.Widgets
                     {
                         _scrollComponent.Maximum = (int)Math.Ceiling(_text.Size.Y - _visibleHeight);
 
-                        _uvUnit.X = 1f / _text.Size.X;
+                        _uvUnit.X = 1f / textWidth;
                         _uvUnit.Y = 1f / _text.Size.Y;
                     }
                 }

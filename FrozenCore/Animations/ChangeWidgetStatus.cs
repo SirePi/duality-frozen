@@ -10,39 +10,21 @@ using FrozenCore.Widgets;
 
 namespace FrozenCore.Animations
 {
-    public sealed class ChangeWidgetStatus : ActiveAnimation<Widget>
+    public sealed class ChangeWidgetStatus : Animation<Widget>
     {
         Widget.WidgetStatus _target;
 
-        internal ChangeWidgetStatus(GameObject inGameObject, Widget.WidgetStatus inStatus)
+        internal ChangeWidgetStatus(Widget.WidgetStatus inStatus)
         {
             _target = inStatus;
         }
 
-        internal override void Animate(float inSecondsPast, GameObject inGameObject)
+        public override void Animate(float inSecondsPast, GameObject inGameObject)
         {
             Widget w = GetComponent(inGameObject);
 
-            if (_timeToComplete <= 0)
-            {
-                w.Status = _target;
-                IsComplete = true;
-            }
-            else
-            {
-                _timePast += inSecondsPast;
-
-                if (_timePast >= _timeToComplete)
-                {
-                    w.Status = _target;
-                    IsComplete = true;
-                }
-            }
-        }
-
-        protected override float GetAnimationLength()
-        {
-            return 1;
+            w.Status = _target;
+            IsComplete = true;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace FrozenCore.Animations
             _range = new FloatRange(t.Angle, inTargetAngle);
         }
 
-        internal override void Animate(float inSecondsPast, GameObject inGameObject)
+        public override void Animate(float inSecondsPast, GameObject inGameObject)
         {
             Transform t = GetComponent(inGameObject);
 

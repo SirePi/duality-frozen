@@ -17,7 +17,7 @@ namespace FrozenCore.Animations
             Value = inSignal;
         }
 
-        internal override void Animate(float inSecondsPast, GameObject inGameObject)
+        public override void Animate(float inSecondsPast, GameObject inGameObject)
         {
             IsComplete = true;
         }

@@ -9,7 +9,7 @@ namespace FrozenCore.Animations
     public abstract class Animation
     {
         public bool IsComplete { get; protected set; }
-        internal abstract void Animate(float inSecondsPast, GameObject inGameObject);
+        public abstract void Animate(float inSecondsPast, GameObject inGameObject);
     }
 
     public abstract class Animation<T> : Animation where T : Component

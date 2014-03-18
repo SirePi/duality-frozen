@@ -18,7 +18,7 @@ namespace FrozenCore.Animations
             _timeToWait = inTimeToWait;
         }
 
-        internal override void Animate(float inSecondsPast, GameObject inGameObject)
+        public override void Animate(float inSecondsPast, GameObject inGameObject)
         {
             if (_timeToWait <= 0)
             {
