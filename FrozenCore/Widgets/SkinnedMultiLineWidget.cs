@@ -185,6 +185,8 @@ namespace FrozenCore.Widgets
                     AddScrollBar();
                 }
 
+                _scrollbar.GetComponent<Widget>().Status = Status;
+
                 _visibleWidth = (int)Math.Floor(Rect.W - Skin.Res.Border.X - Skin.Res.Border.W);
                 _visibleHeight = (int)Math.Floor(Rect.H - Skin.Res.Border.Y - Skin.Res.Border.Z);
 

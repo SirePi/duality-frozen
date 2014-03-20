@@ -24,9 +24,6 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         private GameObject _increaseButton;
 
-        [NonSerialized]
-        private object _valueChangedArgument;
-
         #endregion NonSerialized fields
 
         private Vector2 _buttonsSize;
@@ -39,6 +36,7 @@ namespace FrozenCore.Widgets
         private ContentRef<Script> _onValueChanged;
         private int _scrollSpeed;
         private int _value;
+        private object _valueChangedArgument;
 
         public Vector2 ButtonsSize
         {
@@ -120,7 +118,6 @@ namespace FrozenCore.Widgets
             }
         }
 
-        [EditorHintFlags(MemberFlags.Invisible)]
         public object ValueChangedArgument
         {
             private get { return _valueChangedArgument; }
@@ -158,6 +155,10 @@ namespace FrozenCore.Widgets
                     AddScrollIncreaseButton();
                     AddScrollDecreaseButton();
                     AddScrollCursor();
+
+                    _cursor.GetComponent<Widget>().Status = Status;
+                    _increaseButton.GetComponent<Widget>().Status = Status;
+                    _decreaseButton.GetComponent<Widget>().Status = Status;
                 }
 
                 UpdateCursor();
