@@ -78,35 +78,30 @@ namespace FrozenCore.Components
 
         public Move MoveToRelative(Vector2 inTarget)
         {
-            Vector3 target = new Vector3(inTarget, this.GameObj.Transform.Pos.Z);
-            Move movement = null;
+            Vector3 target = new Vector3(inTarget, 0);
 
             if (this.GameObj.Parent == null || this.GameObj.Parent.Transform == null)
             {
-                movement = new Move(this.GameObj, target);
+                target.Z = this.GameObj.Transform.Pos.Z;
             }
             else
             {
-                movement = new Move(this.GameObj, target + this.GameObj.Parent.Transform.Pos);
+                target += this.GameObj.Parent.Transform.Pos;
             }
 
-            return Add(movement);
+            return Add(new Move(this.GameObj, target));
         }
 
         public Move MoveToRelative(Vector3 inTarget)
         {
-            Move movement = null;
+            Vector3 target = inTarget;
 
-            if (this.GameObj.Parent == null || this.GameObj.Parent.Transform == null)
+            if (this.GameObj.Parent != null && this.GameObj.Parent.Transform != null)
             {
-                movement = new Move(this.GameObj, inTarget);
-            }
-            else
-            {
-                movement = new Move(this.GameObj, inTarget + this.GameObj.Parent.Transform.Pos);
+                target += this.GameObj.Parent.Transform.Pos;
             }
 
-            return Add(movement);
+            return Add(new Move(this.GameObj, target));
         }
 
         public Rotate RotateTo(float inTarget)
