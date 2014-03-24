@@ -12,35 +12,40 @@ namespace FrozenCore.Animations
     public sealed class Move : ActiveAnimation<Transform>
     {
         private Vector3Range _range;
+        private bool _isRelative;
 
-        internal Move(GameObject inGameObject, Vector3 inTargetPosition)
+        internal Move(GameObject inGameObject, Vector3 inTargetPosition, bool inIsRelative)
         {
             Transform t = GetComponent(inGameObject);
-            _range = new Vector3Range(t.Pos, inTargetPosition);
+            _range = new Vector3Range(inIsRelative ? t.RelativePos : t.Pos, inTargetPosition);
+            _isRelative = inIsRelative;
         }
 
         public override void Animate(float inSecondsPast, GameObject inGameObject)
         {
             Transform t = GetComponent(inGameObject);
+            _timePast += inSecondsPast;
 
-            if (_timeToComplete <= 0)
+            if (_timeToComplete <= 0 || _timePast >= _timeToComplete)
             {
-                t.Pos = _range.Max;
+                SetPosition(t, _range.Max);
                 IsComplete = true;
             }
             else
             {
-                _timePast += inSecondsPast;
+                SetPosition(t, _range.Lerp(_timePast / _timeToComplete));
+            }
+        }
 
-                if (_timePast >= _timeToComplete)
-                {
-                    t.Pos = _range.Max;
-                    IsComplete = true;
-                }
-                else
-                {
-                    t.Pos = _range.Lerp(_timePast / _timeToComplete);
-                }
+        private void SetPosition(Transform inTransform, Vector3 inPosition)
+        {
+            if (_isRelative)
+            {
+                inTransform.RelativePos = inPosition;
+            }
+            else
+            {
+                inTransform.Pos = inPosition;
             }
         }
 

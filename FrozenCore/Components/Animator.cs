@@ -68,76 +68,47 @@ namespace FrozenCore.Components
 
         public Move MoveTo(Vector2 inTarget)
         {
-            return Add(new Move(this.GameObj, new Vector3(inTarget, this.GameObj.Transform.Pos.Z)));
+            return Add(new Move(this.GameObj, new Vector3(inTarget, this.GameObj.Transform.Pos.Z), false));
         }
 
         public Move MoveTo(Vector3 inTarget)
         {
-            return Add(new Move(this.GameObj, inTarget));
+            return Add(new Move(this.GameObj, inTarget, false));
         }
 
         public Move MoveToRelative(Vector2 inTarget)
         {
-            Vector3 target = new Vector3(inTarget, 0);
-
-            if (this.GameObj.Parent == null || this.GameObj.Parent.Transform == null)
-            {
-                target.Z = this.GameObj.Transform.Pos.Z;
-            }
-            else
-            {
-                target += this.GameObj.Parent.Transform.Pos;
-            }
-
-            return Add(new Move(this.GameObj, target));
+            return Add(new Move(this.GameObj, new Vector3(inTarget, 0), true));
         }
 
         public Move MoveToRelative(Vector3 inTarget)
         {
-            Vector3 target = inTarget;
-
-            if (this.GameObj.Parent != null && this.GameObj.Parent.Transform != null)
-            {
-                target += this.GameObj.Parent.Transform.Pos;
-            }
-
-            return Add(new Move(this.GameObj, target));
+            return Add(new Move(this.GameObj, inTarget, true));
         }
 
         public Rotate RotateTo(float inTarget)
         {
-            return Add(new Rotate(this.GameObj, inTarget));
+            return Add(new Rotate(this.GameObj, inTarget, false));
         }
 
         public Rotate RotateToRelative(float inTarget)
         {
-            Rotate rotation = null;
-
-            if (this.GameObj.Parent == null || this.GameObj.Parent.Transform == null)
-            {
-                rotation = new Rotate(this.GameObj, inTarget);
-            }
-            else
-            {
-                rotation = new Rotate(this.GameObj, inTarget + this.GameObj.Parent.Transform.Angle);
-            }
-
-            return Add(rotation);
+            return Add(new Rotate(this.GameObj, inTarget, true));
         }
 
         public Move MoveBy(Vector2 inAmount)
         {
-            return Add(new Move(this.GameObj, this.GameObj.Transform.Pos + new Vector3(inAmount, 0)));
+            return Add(new Move(this.GameObj, this.GameObj.Transform.Pos + new Vector3(inAmount, 0), false));
         }
 
         public Move MoveBy(Vector3 inAmount)
         {
-            return Add(new Move(this.GameObj, this.GameObj.Transform.Pos + inAmount));
+            return Add(new Move(this.GameObj, this.GameObj.Transform.Pos + inAmount, false));
         }
 
         public Rotate RotateBy(float inAmount)
         {
-            return Add(new Rotate(this.GameObj, this.GameObj.Transform.Angle + inAmount));
+            return Add(new Rotate(this.GameObj, this.GameObj.Transform.Angle + inAmount, false));
         }
 
         public ColorizeSprite ColorizeSprite(ColorRgba inColor)
