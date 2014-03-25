@@ -63,15 +63,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Animations\Animation.cs" />
-    <Compile Include="Animations\ColorizeSprite.cs" />
-    <Compile Include="Animations\ChangeWidgetStatus.cs" />
-    <Compile Include="Animations\ColorizeSkinnedWidget.cs" />
-    <Compile Include="Animations\Signal.cs" />
-    <Compile Include="Animations\WaitFor.cs" />
-    <Compile Include="Animations\Wait.cs" />
-    <Compile Include="Animations\Move.cs" />
-    <Compile Include="Animations\Rotate.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\ColorizeSprite.cs" />
+    <Compile Include="Commands\ChangeWidgetStatus.cs" />
+    <Compile Include="Commands\ColorizeSkinnedWidget.cs" />
+    <Compile Include="Commands\Signal.cs" />
+    <Compile Include="Commands\WaitFor.cs" />
+    <Compile Include="Commands\Wait.cs" />
+    <Compile Include="Commands\Move.cs" />
+    <Compile Include="Commands\Rotate.cs" />
     <Compile Include="Collections\Map.cs" />
     <Compile Include="Colors.cs" />
     <Compile Include="Components\BaseInputReceiver.cs" />
@@ -79,7 +79,7 @@
     <Compile Include="Components\InputReceiverVisual.cs" />
     <Compile Include="Components\InputController.cs" />
     <Compile Include="Components\MouseDebugger.cs" />
-    <Compile Include="Components\Animator.cs" />
+    <Compile Include="Components\Commander.cs" />
     <Compile Include="Components\ThreadedLoader.cs" />
     <Compile Include="Components\VisualTreeHider.cs" />
     <Compile Include="Data\Vector3Range.cs" />

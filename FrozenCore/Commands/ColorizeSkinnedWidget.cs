@@ -8,9 +8,9 @@ using Duality.Components.Renderers;
 using FrozenCore.Data;
 using FrozenCore.Widgets;
 
-namespace FrozenCore.Animations
+namespace FrozenCore.Commands
 {
-    public sealed class ColorizeSkinnedWidget : ActiveAnimation<SkinnedWidget>
+    public sealed class ColorizeSkinnedWidget : TimedCommand<SkinnedWidget>
     {
         private ColorRange _range;
 
@@ -20,7 +20,7 @@ namespace FrozenCore.Animations
             _range = new ColorRange(sw.Tint, inTargetColor);
         }
 
-        public override void Animate(float inSecondsPast, GameObject inGameObject)
+        public override void Execute(float inSecondsPast, GameObject inGameObject)
         {
             SkinnedWidget sw = GetComponent(inGameObject);
 
@@ -45,7 +45,7 @@ namespace FrozenCore.Animations
             }
         }
 
-        protected override float GetAnimationLength()
+        protected override float GetCommandLength()
         {
             return (_range.Max.ToVector4() - _range.Min.ToVector4()).Length;
         }

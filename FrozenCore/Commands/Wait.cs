@@ -6,9 +6,9 @@ using Duality;
 using Duality.Components;
 using FrozenCore.Data;
 
-namespace FrozenCore.Animations
+namespace FrozenCore.Commands
 {
-    public sealed class Wait : Animation
+    public sealed class Wait : Command
     {
         private float _timeToWait;
         private float _elapsedTime;
@@ -18,7 +18,7 @@ namespace FrozenCore.Animations
             _timeToWait = inTimeToWait;
         }
 
-        public override void Animate(float inSecondsPast, GameObject inGameObject)
+        public override void Execute(float inSecondsPast, GameObject inGameObject)
         {
             if (_timeToWait <= 0)
             {

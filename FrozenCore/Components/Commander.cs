@@ -7,25 +7,25 @@ using Duality.Components;
 using OpenTK;
 using Duality.Drawing;
 using Duality.Components.Renderers;
-using FrozenCore.Animations;
+using FrozenCore.Commands;
 
 namespace FrozenCore.Components
 {
     [Serializable]
-    public class Animator : Component, ICmpUpdatable
+    public class Commander : Component, ICmpUpdatable
     {
         [NonSerialized]
-        private List<Animation> _operations;
+        private List<Command> _operations;
 
         [NonSerialized]
-        private Animation _currentOperation;
+        private Command _currentOperation;
 
         [NonSerialized]
         private string _currentSignal;
 
-        public Animator()
+        public Commander()
         {
-            _operations = new List<Animation>();
+            _operations = new List<Command>();
         }
 
         public string CurrentSignal
@@ -50,7 +50,7 @@ namespace FrozenCore.Components
 
             if (_currentOperation != null)
             {
-                _currentOperation.Animate(secondsPast, this.GameObj);
+                _currentOperation.Execute(secondsPast, this.GameObj);
 
                 if (_currentOperation.IsComplete)
                 {
@@ -141,11 +141,11 @@ namespace FrozenCore.Components
             return Add(new ChangeWidgetStatus(inStatus));
         }
 
-        public T Add<T>(T inAnimation) where T : Animation
+        public T Add<T>(T inCommand) where T : Command
         {
-            _operations.Add(inAnimation);
+            _operations.Add(inCommand);
 
-            return inAnimation;
+            return inCommand;
         }
     }
 }

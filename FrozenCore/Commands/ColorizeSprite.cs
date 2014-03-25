@@ -7,9 +7,9 @@ using Duality;
 using Duality.Components.Renderers;
 using FrozenCore.Data;
 
-namespace FrozenCore.Animations
+namespace FrozenCore.Commands
 {
-    public sealed class ColorizeSprite : ActiveAnimation<SpriteRenderer>
+    public sealed class ColorizeSprite : TimedCommand<SpriteRenderer>
     {
         private ColorRange _range;
 
@@ -19,7 +19,7 @@ namespace FrozenCore.Animations
             _range = new ColorRange(sr.ColorTint, inTargetColor);
         }
 
-        public override void Animate(float inSecondsPast, GameObject inGameObject)
+        public override void Execute(float inSecondsPast, GameObject inGameObject)
         {
             SpriteRenderer sr = GetComponent(inGameObject);
 
@@ -44,7 +44,7 @@ namespace FrozenCore.Animations
             }
         }
 
-        protected override float GetAnimationLength()
+        protected override float GetCommandLength()
         {
             return (_range.Max.ToVector4() - _range.Min.ToVector4()).Length;
         }

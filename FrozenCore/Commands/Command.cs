@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using Duality;
 
-namespace FrozenCore.Animations
+namespace FrozenCore.Commands
 {
-    public abstract class Animation
+    public abstract class Command
     {
         public bool IsComplete { get; protected set; }
-        public abstract void Animate(float inSecondsPast, GameObject inGameObject);
+        public abstract void Execute(float inSecondsPast, GameObject inGameObject);
     }
 
-    public abstract class Animation<T> : Animation where T : Component
+    public abstract class Command<T> : Command where T : Component
     {
         protected T GetComponent(GameObject inGameObject)
         {
@@ -27,23 +27,23 @@ namespace FrozenCore.Animations
         }
     }
 
-    public abstract class ActiveAnimation<T> : Animation<T> where T : Component
+    public abstract class TimedCommand<T> : Command<T> where T : Component
     {
         protected float _timePast;
         protected float _timeToComplete;
 
-        public Animation<T> FixedSpeed(float inSpeed)
+        public Command<T> FixedSpeed(float inSpeed)
         {
-            _timeToComplete = GetAnimationLength() / inSpeed;
+            _timeToComplete = GetCommandLength() / inSpeed;
             return this;
         }
 
-        public Animation<T> Timed(float inTime)
+        public Command<T> Timed(float inTime)
         {
             _timeToComplete = inTime;
             return this;
         }
 
-        protected abstract float GetAnimationLength();
+        protected abstract float GetCommandLength();
     }
 }

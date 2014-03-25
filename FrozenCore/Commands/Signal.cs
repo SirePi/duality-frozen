@@ -6,9 +6,9 @@ using Duality;
 using Duality.Components;
 using FrozenCore.Data;
 
-namespace FrozenCore.Animations
+namespace FrozenCore.Commands
 {
-    public sealed class Signal : Animation
+    public sealed class Signal : Command
     {
         public string Value { get; private set; }
 
@@ -17,7 +17,7 @@ namespace FrozenCore.Animations
             Value = inSignal;
         }
 
-        public override void Animate(float inSecondsPast, GameObject inGameObject)
+        public override void Execute(float inSecondsPast, GameObject inGameObject)
         {
             IsComplete = true;
         }

@@ -7,11 +7,11 @@ using Duality.Components;
 using FrozenCore.Data;
 using FrozenCore.Components;
 
-namespace FrozenCore.Animations
+namespace FrozenCore.Commands
 {
-    public sealed class WaitFor : Animation<Animator>
+    public sealed class WaitFor : Command<Commander>
     {
-        private Animator _targetAnimator;
+        private Commander _targetAnimator;
         private string _targetSignal;
 
         internal WaitFor(GameObject inGameObject, string inSignal)
@@ -28,7 +28,7 @@ namespace FrozenCore.Animations
             }
         }
 
-        public override void Animate(float inSecondsPast, GameObject inGameObject)
+        public override void Execute(float inSecondsPast, GameObject inGameObject)
         {
             if (_targetAnimator == null)
             {

@@ -8,9 +8,9 @@ using Duality.Components.Renderers;
 using FrozenCore.Data;
 using FrozenCore.Widgets;
 
-namespace FrozenCore.Animations
+namespace FrozenCore.Commands
 {
-    public sealed class ChangeWidgetStatus : Animation<Widget>
+    public sealed class ChangeWidgetStatus : Command<Widget>
     {
         Widget.WidgetStatus _target;
 
@@ -19,7 +19,7 @@ namespace FrozenCore.Animations
             _target = inStatus;
         }
 
-        public override void Animate(float inSecondsPast, GameObject inGameObject)
+        public override void Execute(float inSecondsPast, GameObject inGameObject)
         {
             Widget w = GetComponent(inGameObject);
 

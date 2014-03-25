@@ -7,9 +7,9 @@ using Duality.Components;
 using Duality;
 using FrozenCore.Data;
 
-namespace FrozenCore.Animations
+namespace FrozenCore.Commands
 {
-    public sealed class Move : ActiveAnimation<Transform>
+    public sealed class Move : TimedCommand<Transform>
     {
         private Vector3Range _range;
         private bool _isRelative;
@@ -21,7 +21,7 @@ namespace FrozenCore.Animations
             _isRelative = inIsRelative;
         }
 
-        public override void Animate(float inSecondsPast, GameObject inGameObject)
+        public override void Execute(float inSecondsPast, GameObject inGameObject)
         {
             Transform t = GetComponent(inGameObject);
             _timePast += inSecondsPast;
@@ -49,7 +49,7 @@ namespace FrozenCore.Animations
             }
         }
 
-        protected override float GetAnimationLength()
+        protected override float GetCommandLength()
         {
             return (_range.Max - _range.Min).Length;
         }
