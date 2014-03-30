@@ -207,8 +207,8 @@ namespace FrozenCore.FX
 
         internal virtual void InitializeBolt(LightningBolt inBolt)
         {
-            Vector3 source = FXSource.GetPoint(FrozenCore.FastRandom);
-            Vector3 target = FXTarget.GetPoint(FrozenCore.FastRandom);
+            Vector3 source = FXSource.GameObj.Transform.Pos + FXSource.GetPoint(FrozenCore.FastRandom);
+            Vector3 target = FXTarget.GameObj.Transform.Pos + FXTarget.GetPoint(FrozenCore.FastRandom);
 
             inBolt.SetData(Sway, _jaggedness, source, target, Color, Thickness, BoltLifeTime);
         }
