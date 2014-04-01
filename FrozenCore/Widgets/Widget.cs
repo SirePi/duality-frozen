@@ -65,6 +65,10 @@ namespace FrozenCore.Widgets
 
         private VisibilityFlag _visiblityFlag;
 
+        private Widget _previous;
+
+        private Widget _next;
+
         /// <summary>
         /// [GET / SET] The ActiveArea of the Widget that can react to mouse input such as
         /// Hover, Click, etc..
@@ -125,6 +129,18 @@ namespace FrozenCore.Widgets
         {
             get { return _visibleRect; }
             set { _visibleRect = value; }
+        }
+
+        public Widget NextWidget
+        {
+            get { return _next; }
+            set { _next = value; }
+        }
+
+        public Widget PreviousWidget
+        {
+            get { return _previous; }
+            set { _previous = value; }
         }
 
         public Widget()

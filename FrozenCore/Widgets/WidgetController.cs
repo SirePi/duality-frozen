@@ -33,7 +33,7 @@ namespace FrozenCore.Widgets
             LShift = 0x10,
             RShift = 0x20,
             Alt = LAlt | RAlt,
-            Conttrol = LControl | RControl,
+            Control = LControl | RControl,
             Shift = RShift | LShift,
         }
 
@@ -78,11 +78,13 @@ namespace FrozenCore.Widgets
         /// [GET/SET] The Keyboard key that will be treated as a Left Mouse click
         /// </summary>
         public OpenTK.Input.Key LeftMouseKey { get; set; }
+        public ModifierKeys LeftMouseKeyModifier { get; set; }
 
         /// <summary>
         /// [GET/SET] The Keyboard key that will be treated as a Middle Mouse click
         /// </summary>
         public OpenTK.Input.Key MiddleMouseKey { get; set; }
+        public ModifierKeys MiddleMouseKeyModifier { get; set; }
 
         /// <summary>
         /// [GET/SET] If the Controller should register for Mouse events
@@ -93,6 +95,13 @@ namespace FrozenCore.Widgets
         /// [GET/SET] The Keyboard key that will be treated as a Right Mouse click
         /// </summary>
         public OpenTK.Input.Key RightMouseKey { get; set; }
+        public ModifierKeys RightMouseKeyModifier { get; set; }
+
+        public OpenTK.Input.Key PreviousWidgetKey { get; set; }
+        public ModifierKeys PreviousWidgetKeyModifier { get; set; }
+
+        public OpenTK.Input.Key NextWidgetKey { get; set; }
+        public ModifierKeys NextWidgetKeyModifier { get; set; }
 
         #region EventHandlers
 
@@ -124,6 +133,10 @@ namespace FrozenCore.Widgets
             LeftMouseKey = OpenTK.Input.Key.Enter;
             RightMouseKey = OpenTK.Input.Key.Unknown;
             MiddleMouseKey = OpenTK.Input.Key.Unknown;
+
+            PreviousWidgetKey = OpenTK.Input.Key.Tab;
+            PreviousWidgetKeyModifier = ModifierKeys.Shift;
+            NextWidgetKey = OpenTK.Input.Key.Tab;
 
             MouseEnabled = true;
             KeyboardEnabled = true;
@@ -212,23 +225,64 @@ namespace FrozenCore.Widgets
             {
                 _modifierKeys |= ModifierKeys.RAlt;
             }
+            /**
+             * Modifiers ok, testing keys
+             **/
+            if (e.Key == NextWidgetKey && IsModifierOk(NextWidgetKeyModifier))
+            {
+                if (FocusedElement == null)
+                {
+                    GameObject firstObject = FindFirstGameObject();
+
+                    if (firstObject != null)
+                    {
+                        FocusedElement = firstObject.GetComponent<Widget>();
+                        FocusedElement.MouseEnter();
+                    }
+                }
+                else if(FocusedElement.NextWidget != null)
+                {
+                    FocusedElement.MouseLeave();
+                    FocusedElement = FocusedElement.NextWidget;
+                    FocusedElement.MouseEnter();
+                }
+            }
+            if (e.Key == PreviousWidgetKey && IsModifierOk(PreviousWidgetKeyModifier))
+            {
+                if (FocusedElement == null)
+                {
+                    GameObject firstObject = FindFirstGameObject();
+
+                    if (firstObject != null)
+                    {
+                        FocusedElement = firstObject.GetComponent<Widget>();
+                        FocusedElement.MouseEnter();
+                    }
+                }
+                else if (FocusedElement.PreviousWidget != null)
+                {
+                    FocusedElement.MouseLeave();
+                    FocusedElement = FocusedElement.PreviousWidget;
+                    FocusedElement.MouseEnter();
+                }
+            }
 
             if (FocusedElement != null)
             {
-                if (e.Key == LeftMouseKey)
+                if (e.Key == LeftMouseKey && IsModifierOk(LeftMouseKeyModifier))
                 {
                     FocusedElement.MouseDown(LEFT_CLICK_DOWN);
-                    FocusedElement.MouseDown(LEFT_CLICK_UP);
+                    FocusedElement.MouseUp(LEFT_CLICK_UP);
                 }
-                else if (e.Key == RightMouseKey)
+                else if (e.Key == RightMouseKey && IsModifierOk(RightMouseKeyModifier))
                 {
                     FocusedElement.MouseDown(RIGHT_CLICK_DOWN);
-                    FocusedElement.MouseDown(RIGHT_CLICK_UP);
+                    FocusedElement.MouseUp(RIGHT_CLICK_UP);
                 }
-                else if (e.Key == MiddleMouseKey)
+                else if (e.Key == MiddleMouseKey && IsModifierOk(MiddleMouseKeyModifier))
                 {
                     FocusedElement.MouseDown(MIDDLE_CLICK_DOWN);
-                    FocusedElement.MouseDown(MIDDLE_CLICK_UP);
+                    FocusedElement.MouseUp(MIDDLE_CLICK_UP);
                 }
 
                 FocusedElement.KeyDown(e, _modifierKeys);
@@ -355,6 +409,27 @@ namespace FrozenCore.Widgets
             {
                 FocusedElement.MouseWheel(e);
             }
+        }
+
+        private bool IsModifierOk(ModifierKeys inModifierKeys)
+        {
+            return (_modifierKeys == inModifierKeys || (_modifierKeys & inModifierKeys) > ModifierKeys.None);
+        }
+
+        private GameObject FindFirstGameObject()
+        {
+            return Scene.Current.AllObjects.FirstOrDefault(go =>
+            {
+                bool result = false;
+                Widget w = go.GetComponent<Widget>();
+
+                if (w != null)
+                {
+                    result = (w.PreviousWidget == null && w.NextWidget != null);
+                }
+
+                return result;
+            });
         }
     }
 }
