@@ -85,19 +85,19 @@ namespace FrozenCore.Widgets
             _tint = Colors.White;
         }
 
-        internal override void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
+        public override void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
         {
         }
 
-        internal override void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
+        public override void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
         {
         }
 
-        internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
         {
         }
 
-        internal override void MouseEnter()
+        public override void MouseEnter()
         {
             _isMouseOver = true;
 
@@ -107,7 +107,7 @@ namespace FrozenCore.Widgets
             }
         }
 
-        internal override void MouseLeave()
+        public override void MouseLeave()
         {
             _isMouseOver = false;
 
@@ -117,15 +117,15 @@ namespace FrozenCore.Widgets
             }
         }
 
-        internal override void MouseMove(OpenTK.Input.MouseMoveEventArgs e)
+        public override void MouseMove(OpenTK.Input.MouseMoveEventArgs e)
         {
         }
 
-        internal override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
         {
         }
 
-        internal override void MouseWheel(OpenTK.Input.MouseWheelEventArgs e)
+        public override void MouseWheel(OpenTK.Input.MouseWheelEventArgs e)
         {
         }
 

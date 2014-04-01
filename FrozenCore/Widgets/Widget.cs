@@ -269,21 +269,21 @@ namespace FrozenCore.Widgets
             return Polygon.NO_POLYGON;
         }
 
-        internal abstract void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k);
+        public abstract void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k);
 
-        internal abstract void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k);
+        public abstract void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k);
 
-        internal abstract void MouseDown(OpenTK.Input.MouseButtonEventArgs e);
+        public abstract void MouseDown(OpenTK.Input.MouseButtonEventArgs e);
 
-        internal abstract void MouseEnter();
+        public abstract void MouseEnter();
 
-        internal abstract void MouseLeave();
+        public abstract void MouseLeave();
 
-        internal abstract void MouseMove(OpenTK.Input.MouseMoveEventArgs e);
+        public abstract void MouseMove(OpenTK.Input.MouseMoveEventArgs e);
 
-        internal abstract void MouseUp(OpenTK.Input.MouseButtonEventArgs e);
+        public abstract void MouseUp(OpenTK.Input.MouseButtonEventArgs e);
 
-        internal abstract void MouseWheel(OpenTK.Input.MouseWheelEventArgs e);
+        public abstract void MouseWheel(OpenTK.Input.MouseWheelEventArgs e);
 
         protected abstract void Draw(IDrawDevice inDevice);
 

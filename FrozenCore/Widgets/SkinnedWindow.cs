@@ -190,7 +190,7 @@ namespace FrozenCore.Widgets
             OnResize();
         }
 
-        internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
         {
             base.MouseDown(e);
 
@@ -201,7 +201,7 @@ namespace FrozenCore.Widgets
             }
         }
 
-        internal override void MouseEnter()
+        public override void MouseEnter()
         {
             if (Status != WidgetStatus.Disabled && Skin.Res != null && !_isDragged)
             {
@@ -209,7 +209,7 @@ namespace FrozenCore.Widgets
             }
         }
 
-        internal override void MouseLeave()
+        public override void MouseLeave()
         {
             if (Status != WidgetStatus.Disabled && Skin.Res != null && !_isDragged)
             {
@@ -217,7 +217,7 @@ namespace FrozenCore.Widgets
             }
         }
 
-        internal override void MouseMove(OpenTK.Input.MouseMoveEventArgs e)
+        public override void MouseMove(OpenTK.Input.MouseMoveEventArgs e)
         {
             base.MouseMove(e);
 
@@ -227,7 +227,7 @@ namespace FrozenCore.Widgets
             }
         }
 
-        internal override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
         {
             base.MouseUp(e);
 

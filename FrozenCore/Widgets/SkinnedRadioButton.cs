@@ -17,7 +17,7 @@ namespace FrozenCore.Widgets
             set { _radioGroup = value; }
         }
 
-        internal override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
         {
             if (Status != WidgetStatus.Disabled)
             {

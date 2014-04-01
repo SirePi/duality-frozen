@@ -74,7 +74,7 @@ namespace FrozenCore.Widgets
             _keyRepeatSpeed = DEFAULT_KEY_REPEAT;
         }
 
-        internal override void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
+        public override void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
         {
             base.KeyDown(e, k);
 
@@ -85,7 +85,7 @@ namespace FrozenCore.Widgets
             ManageKey();
         }
 
-        internal override void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
+        public override void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
         {
             base.KeyUp(e, k);
 

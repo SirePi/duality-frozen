@@ -81,7 +81,7 @@ namespace FrozenCore.Widgets
             _textColor = Colors.White;
         }
 
-        internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
         {
             if (Status != WidgetStatus.Disabled)
             {
@@ -101,7 +101,7 @@ namespace FrozenCore.Widgets
             }
         }
 
-        internal override void MouseEnter()
+        public override void MouseEnter()
         {
             _isMouseOver = true;
             if (Status != WidgetStatus.Disabled)
@@ -110,7 +110,7 @@ namespace FrozenCore.Widgets
             }
         }
 
-        internal override void MouseLeave()
+        public override void MouseLeave()
         {
             _isMouseOver = false;
 
@@ -120,7 +120,7 @@ namespace FrozenCore.Widgets
             }
         }
 
-        internal override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
         {
             if (Status != WidgetStatus.Disabled)
             {

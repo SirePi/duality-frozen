@@ -41,7 +41,7 @@ namespace FrozenCore.Widgets
         private float _currentDelta;
         private SkinnedScrollBar _parent;
 
-        internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
         {
             if (Status != WidgetStatus.Disabled)
             {
@@ -55,7 +55,7 @@ namespace FrozenCore.Widgets
             }
         }
 
-        internal override void MouseMove(OpenTK.Input.MouseMoveEventArgs e)
+        public override void MouseMove(OpenTK.Input.MouseMoveEventArgs e)
         {
             base.MouseMove(e);
 

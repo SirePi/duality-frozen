@@ -98,7 +98,7 @@ namespace FrozenCore.Widgets
             _text.SourceText = " ";
         }
 
-        internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
         {
             base.MouseDown(e);
 

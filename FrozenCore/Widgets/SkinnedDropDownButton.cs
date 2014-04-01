@@ -147,7 +147,7 @@ namespace FrozenCore.Widgets
             _scrollSpeed = 5;
         }
 
-        internal override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
         {
             base.MouseDown(e);
 
