@@ -229,15 +229,18 @@ namespace FrozenCore.Widgets
 
                 foreach (object o in _items)
                 {
-                    _fText.SourceText = o.ToString();
+                    if (o != null)
+                    {
+                        _fText.SourceText = o.ToString();
 
-                    _gridCellSize.X = Math.Max(_gridCellSize.X, _fText.Size.X);
-                    _gridCellSize.Y = Math.Max(_gridCellSize.Y, _fText.Size.Y);
-
-                    //calcolo righe e colonne
-                    _rows = (ushort)MathF.Floor((_points[9].WorldCoords - _points[5].WorldCoords).Length / _gridCellSize.Y);
-                    _columns = (ushort)MathF.Ceiling(_items.Count / _rows);
+                        _gridCellSize.X = Math.Max(_gridCellSize.X, _fText.Size.X);
+                        _gridCellSize.Y = Math.Max(_gridCellSize.Y, _fText.Size.Y);
+                    }
                 }
+
+                // calculate rows and columns
+                _rows = (ushort)MathF.Floor((_points[9].WorldCoords - _points[5].WorldCoords).Length / _gridCellSize.Y);
+                _columns = (ushort)MathF.Ceiling(_items.Count / _rows);
             }
         }
 
