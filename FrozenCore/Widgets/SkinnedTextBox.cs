@@ -40,10 +40,14 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         private float _secondsFromLastTick;
 
+        [NonSerialized]
+        private FormattedText _fText;
+
         #endregion NonSerialized fields
 
         private float _keyRepeatSpeed;
-        private FormattedText _text;
+        private string _text;
+        private ContentRef<Font> _textFont;
         private ColorRgba _textColor;
 
         [EditorHintRange(0.1f, 1)]
@@ -53,10 +57,16 @@ namespace FrozenCore.Widgets
             set { _keyRepeatSpeed = value; }
         }
 
-        public FormattedText Text
+        public String Text
         {
             get { return _text; }
             set { _text = value; }
+        }
+
+        public ContentRef<Font> TextFont
+        {
+            get { return _textFont; }
+            set { _textFont = value; }
         }
 
         public ColorRgba TextColor
@@ -69,7 +79,7 @@ namespace FrozenCore.Widgets
         {
             ActiveArea = Widgets.ActiveArea.Center;
 
-            _text = new FormattedText();
+            _fText = new FormattedText();
             _textColor = Colors.White;
             _keyRepeatSpeed = DEFAULT_KEY_REPEAT;
         }
@@ -95,14 +105,20 @@ namespace FrozenCore.Widgets
 
         protected override void DrawCanvas(Canvas inCanvas)
         {
-            if (Text != null)
+            if (!String.IsNullOrWhiteSpace(_text))
             {
                 Vector3 textLeft = (_points[5].WorldCoords + _points[9].WorldCoords) / 2;
+                if (_textFont.Res != null && _fText.Fonts[0] != _textFont)
+                {
+                    _fText.Fonts[0] = _textFont;
+                }
+
+                _fText.SourceText = _text;
 
                 inCanvas.PushState();
                 inCanvas.State.ColorTint = _textColor;
                 inCanvas.State.TransformAngle = GameObj.Transform.Angle;
-                inCanvas.DrawText(Text, textLeft.X, textLeft.Y, textLeft.Z + DELTA_Z, null, Alignment.Left);
+                inCanvas.DrawText(_fText, textLeft.X, textLeft.Y, textLeft.Z + DELTA_Z, null, Alignment.Left);
 
                 inCanvas.PopState();
             }
@@ -132,9 +148,9 @@ namespace FrozenCore.Widgets
         {
             if (IsWidgetActive)
             {
-                if (_text.SourceText != _lastText)
+                if (_text != _lastText)
                 {
-                    _lastText = _text.SourceText;
+                    _lastText = _text;
                     UpdateCaret();
                 }
 
@@ -160,8 +176,7 @@ namespace FrozenCore.Widgets
 
         private void AddCaret()
         {
-            string textBackup = _text.SourceText;
-            _text.SourceText = "Wq";
+            _fText.SourceText = "Wq";
 
             _caret = new GameObject("caret", this.GameObj);
 
@@ -171,7 +186,7 @@ namespace FrozenCore.Widgets
 
             SpriteRenderer sr = new SpriteRenderer();
             sr.VisibilityGroup = this.VisibilityGroup;
-            sr.Rect = Rect.AlignCenter(0, 0, 3, _text.TextMetrics.Size.Y);
+            sr.Rect = Rect.AlignCenter(0, 0, 3, _fText.TextMetrics.Size.Y);
             sr.SharedMaterial = Material.InvertWhite;
 
             _caret.AddComponent<SpriteRenderer>(sr);
@@ -179,7 +194,7 @@ namespace FrozenCore.Widgets
 
             Scene.Current.AddObject(_caret);
 
-            _text.SourceText = textBackup;
+            _fText.SourceText = _text;
         }
 
         private void ManageKey()
@@ -196,40 +211,40 @@ namespace FrozenCore.Widgets
                         c = c.ToLower();
                     }
 
-                    _text.SourceText += c;
+                    _text += c;
                 }
                 else if (key >= OpenTK.Input.Key.Number0 && key <= OpenTK.Input.Key.Number9)
                 {
                     int digit = key - OpenTK.Input.Key.Number0;
-                    _text.SourceText += digit.ToString();
+                    _text += digit.ToString();
                 }
                 else if (key >= OpenTK.Input.Key.Keypad0 && key <= OpenTK.Input.Key.Keypad9)
                 {
                     int digit = key - OpenTK.Input.Key.Keypad0;
-                    _text.SourceText += digit.ToString();
+                    _text += digit.ToString();
                 }
                 else
                 {
                     switch (key)
                     {
                         case OpenTK.Input.Key.BackSpace:
-                            if (_text.SourceText.Length > 0)
+                            if (_text.Length > 0)
                             {
-                                _text.SourceText = _text.SourceText.Substring(0, _text.SourceText.Length - 1);
+                                _text = _text.Substring(0, _text.Length - 1);
                             }
                             break;
 
                         case OpenTK.Input.Key.Space:
-                            _text.SourceText += " ";
+                            _text += " ";
                             break;
 
                         case OpenTK.Input.Key.Comma:
-                            _text.SourceText += ",";
+                            _text += ",";
                             break;
 
                         case OpenTK.Input.Key.Period:
                         case OpenTK.Input.Key.KeypadPeriod:
-                            _text.SourceText += ".";
+                            _text += ".";
                             break;
                     }
                 }
@@ -241,7 +256,7 @@ namespace FrozenCore.Widgets
             if (_caret != null && Skin.Res != null)
             {
                 Vector3 caretPosition = _caret.Transform.RelativePos;
-                caretPosition.X = Skin.Res.Border.X + _text.Size.X;
+                caretPosition.X = Skin.Res.Border.X + _fText.Size.X;
 
                 _caret.Transform.RelativePos = caretPosition;
             }

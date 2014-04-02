@@ -91,11 +91,9 @@ namespace FrozenCore.Widgets
         public SkinnedListBox()
         {
             _items = new List<object>();
-            _text = new FormattedText();
+            _fText = new FormattedText();
             _listArea = new Polygon(4);
             _testPolygon = new Polygon(4);
-
-            _text.SourceText = " ";
         }
 
         public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
@@ -118,9 +116,9 @@ namespace FrozenCore.Widgets
                 Vector2 deltaLeft = (_activeAreaOnScreen[3] - _activeAreaOnScreen[0]) / delta;
                 Vector2 deltaRight = (_activeAreaOnScreen[2] - _activeAreaOnScreen[1]) / delta;
 
-                for (int i = 0; i < _text.TextMetrics.LineBounds.Count; i++)
+                for (int i = 0; i < _fText.TextMetrics.LineBounds.Count; i++)
                 {
-                    Rect r = _text.TextMetrics.LineBounds[i];
+                    Rect r = _fText.TextMetrics.LineBounds[i];
 
                     if (!(r.Bottom.Y < top || r.Top.Y > bottom))
                     {
@@ -154,7 +152,7 @@ namespace FrozenCore.Widgets
 
         protected override void OnInit(Component.InitContext inContext)
         {
-            _text.SourceText = String.Join("/n", _items);
+            _fText.SourceText = String.Join("/n", _items);
 
             base.OnInit(inContext);
 
@@ -173,7 +171,7 @@ namespace FrozenCore.Widgets
         {
             if (_itemsAccessed)
             {
-                _text.SourceText = String.Join("/n", _items);
+                _fText.SourceText = String.Join("/n", _items);
                 _itemsAccessed = false;
 
                 UpdateWidget(false);
@@ -204,7 +202,7 @@ namespace FrozenCore.Widgets
         {
             if (SelectedIndex >= 0)
             {
-                Rect selectionRect = _text.TextMetrics.LineBounds[SelectedIndex];
+                Rect selectionRect = _fText.TextMetrics.LineBounds[SelectedIndex];
 
                 float top = _scrollComponent.Value;
                 float bottom = _scrollComponent.Value + _visibleHeight;

@@ -40,16 +40,19 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         private Vector2 _uvUnit;
 
+        [NonSerialized]
+        protected FormattedText _fText;
+
         #endregion NonSerialized fields
 
-        protected FormattedText _text;
         private Vector2 _scrollbarButtonsSize;
         private Vector2 _scrollbarCursorSize;
         private ContentRef<WidgetSkin> _scrollbarCursorSkin;
         private ContentRef<WidgetSkin> _scrollbarDecreaseButtonSkin;
         private ContentRef<WidgetSkin> _scrollbarIncreaseButtonSkin;
         private ContentRef<WidgetSkin> _scrollbarSkin;
-        private ContentRef<Font> _font;
+        private ContentRef<Font> _textFont;
+
         private int _scrollSpeed;
         private ColorRgba _textColor;
 
@@ -103,14 +106,15 @@ namespace FrozenCore.Widgets
 
         public ContentRef<Font> TextFont
         {
-            get { return _font; }
-            set { _font = value; }
+            get { return _textFont; }
+            set { _textFont = value; }
         }
 
         public SkinnedMultiLineWidget()
         {
             ActiveArea = Widgets.ActiveArea.Center;
 
+            _fText = new FormattedText();
             _textColor = Colors.White;
             _textVertices = new VertexC1P3T2[4];
             _scrollSpeed = 5;
@@ -120,7 +124,7 @@ namespace FrozenCore.Widgets
         {
             base.Draw(inDevice);
 
-            if (!String.IsNullOrWhiteSpace(_text.SourceText) && _batchInfo != null)
+            if (!String.IsNullOrWhiteSpace(_fText.SourceText) && _batchInfo != null)
             {
                 _textVertices[0].TexCoord.X = 0;
                 _textVertices[1].TexCoord.X = _visibleWidth;
@@ -222,28 +226,27 @@ namespace FrozenCore.Widgets
                         }));
             }
 
-            bool isTextEmpty = String.IsNullOrWhiteSpace(_text.SourceText);
             _isScrollbarRequired = false;
 
-            if (!isTextEmpty)
+            if (!String.IsNullOrWhiteSpace(_fText.SourceText))
             {
-                if (_font != null && _text.Fonts[0] != _font)
+                if (_textFont.Res != null && _fText.Fonts[0] != _textFont)
                 {
-                    _text.Fonts[0] = _font;
+                    _fText.Fonts[0] = _textFont;
                 }
 
                 int textWidth = _visibleWidth;
 
                 if (!inLimitTextWidth)
                 {
-                    _text.MaxWidth = ushort.MaxValue;
+                    _fText.MaxWidth = ushort.MaxValue;
 
-                    textWidth = (int)Math.Ceiling(_text.Size.X) + 10;
+                    textWidth = (int)Math.Ceiling(_fText.Size.X) + 10;
                 }
 
-                _text.MaxWidth = textWidth;
+                _fText.MaxWidth = textWidth;
 
-                _isScrollbarRequired = _text.Size.Y > _visibleHeight;
+                _isScrollbarRequired = _fText.Size.Y > _visibleHeight;
 
                 _uvUnit.X = 1f / textWidth;
                 _uvUnit.Y = 1;
@@ -253,16 +256,16 @@ namespace FrozenCore.Widgets
                     _scrollbar.Active = _isScrollbarRequired;
                     if (_isScrollbarRequired)
                     {
-                        _scrollComponent.Maximum = (int)Math.Ceiling(_text.Size.Y - _visibleHeight);
+                        _scrollComponent.Maximum = (int)Math.Ceiling(_fText.Size.Y - _visibleHeight);
 
                         _uvUnit.X = 1f / textWidth;
-                        _uvUnit.Y = 1f / _text.Size.Y;
+                        _uvUnit.Y = 1f / _fText.Size.Y;
                     }
                 }
 
-                Pixmap.Layer textLayer = new Pixmap.Layer(_text.MaxWidth, (int)Math.Max(_visibleHeight, _text.Size.Y), Colors.Transparent);
+                Pixmap.Layer textLayer = new Pixmap.Layer(_fText.MaxWidth, (int)Math.Max(_visibleHeight, _fText.Size.Y), Colors.Transparent);
 
-                _text.RenderToBitmap(_text.SourceText, textLayer);
+                _fText.RenderToBitmap(_fText.SourceText, textLayer);
 
                 Texture tx = _batchInfo.MainTexture.Res;
                 tx.BasePixmap.Res.MainLayer = textLayer;

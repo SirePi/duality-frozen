@@ -5,6 +5,7 @@ using Duality;
 using Duality.Drawing;
 using Duality.Editor;
 using OpenTK;
+using Duality.Resources;
 
 namespace FrozenCore.Widgets
 {
@@ -19,12 +20,16 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         private float _secondsFromLastTick;
 
+        [NonSerialized]
+        private FormattedText _fText;
+
         #endregion NonSerialized fields
 
         private ContentRef<Script> _onLeftClick;
         private ContentRef<Script> _onRightClick;
         private float _repeatLeftClickEvery;
-        private FormattedText _text;
+        private ContentRef<Font> _textFont;
+        private string _text;
         private ColorRgba _textColor;
         private object _leftClickArgument;
 
@@ -61,10 +66,16 @@ namespace FrozenCore.Widgets
             set { _rightClickArgument = value; }
         }
 
-        public FormattedText Text
+        public String Text
         {
             get { return _text; }
             set { _text = value; }
+        }
+
+        public ContentRef<Font> TextFont
+        {
+            get { return _textFont; }
+            set { _textFont = value; }
         }
 
         public ColorRgba TextColor
@@ -77,7 +88,7 @@ namespace FrozenCore.Widgets
         {
             ActiveArea = Widgets.ActiveArea.All;
 
-            _text = new FormattedText();
+            _fText = new FormattedText();
             _textColor = Colors.White;
         }
 
@@ -147,14 +158,20 @@ namespace FrozenCore.Widgets
 
         protected override void DrawCanvas(Canvas inCanvas)
         {
-            if (Text != null)
+            if (!String.IsNullOrWhiteSpace(_text))
             {
                 Vector3 buttonCenter = (_points[5].WorldCoords + _points[10].WorldCoords) / 2;
+                if (_textFont.Res != null && _fText.Fonts[0] != _textFont)
+                {
+                    _fText.Fonts[0] = _textFont;
+                }
+
+                _fText.SourceText = _text;
 
                 inCanvas.PushState();
                 inCanvas.State.ColorTint = _textColor;
                 inCanvas.State.TransformAngle = GameObj.Transform.Angle;
-                inCanvas.DrawText(Text, buttonCenter.X, buttonCenter.Y, buttonCenter.Z + DELTA_Z, null, Alignment.Center);
+                inCanvas.DrawText(_fText, buttonCenter.X, buttonCenter.Y, buttonCenter.Z + DELTA_Z, null, Alignment.Center);
                 inCanvas.PopState();
             }
         }

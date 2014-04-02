@@ -7,24 +7,34 @@ namespace FrozenCore.Widgets
     [Serializable]
     public class SkinnedTextBlock : SkinnedMultiLineWidget
     {
-        public ObservableFormattedText Text
+        [NonSerialized]
+        private bool _textChanged;
+
+        private string _text;
+
+        public String Text
         {
-            get { return _text as ObservableFormattedText; }
-            set { _text = value; }
+            get { return _text; }
+            set
+            {
+                _text = value;
+                _textChanged = true;
+            }
         }
 
         public SkinnedTextBlock()
         {
             ActiveArea = Widgets.ActiveArea.None;
-
-            _text = new ObservableFormattedText();
+            _textChanged = true;
         }
 
         protected override void OnUpdate(float inSecondsPast)
         {
-            if (Text.TextChanged)
+            if (_textChanged)
             {
-                Text.TextChanged = false;
+                _textChanged = false;
+
+                _fText.SourceText = _text;
                 UpdateWidget(true);
             }
         }

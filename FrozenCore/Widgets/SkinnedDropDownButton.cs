@@ -40,7 +40,7 @@ namespace FrozenCore.Widgets
         private ContentRef<WidgetSkin> _scrollbarDecreaseButtonSkin;
         private ContentRef<WidgetSkin> _scrollbarIncreaseButtonSkin;
         private ContentRef<WidgetSkin> _scrollbarSkin;
-        private ContentRef<Font> _font;
+        private ContentRef<Font> _textFont;
         private int _scrollSpeed;
         private ColorRgba _textColor;
 
@@ -133,8 +133,8 @@ namespace FrozenCore.Widgets
 
         public ContentRef<Font> TextFont
         {
-            get { return _font; }
-            set { _font = value; }
+            get { return _textFont; }
+            set { _textFont = value; }
         }
 
         public SkinnedDropDownButton()
@@ -176,23 +176,20 @@ namespace FrozenCore.Widgets
             {
                 Vector3 buttonLeft = (_points[5].WorldCoords + _points[9].WorldCoords) / 2;
 
-                _text.SourceText = String.Empty;
-
-                if (_font != null && _text.Fonts[0] != _font)
-                {
-                    _text.Fonts[0] = _font;
-                }
-
                 if (_listBoxComponent.SelectedItem != null)
                 {
-                    _text.SourceText = _listBoxComponent.SelectedItem.ToString();
-                }
+                    if (_textFont.Res != null && _text.Fonts[0] != _textFont)
+                    {
+                        _text.Fonts[0] = _textFont;
+                    }
 
-                inCanvas.PushState();
-                inCanvas.State.ColorTint = _textColor;
-                inCanvas.State.TransformAngle = GameObj.Transform.Angle;
-                inCanvas.DrawText(_text, buttonLeft.X, buttonLeft.Y, buttonLeft.Z + DELTA_Z, null, Alignment.Left);
-                inCanvas.PopState();
+                    _text.SourceText = _listBoxComponent.SelectedItem.ToString();
+                    inCanvas.PushState();
+                    inCanvas.State.ColorTint = _textColor;
+                    inCanvas.State.TransformAngle = GameObj.Transform.Angle;
+                    inCanvas.DrawText(_text, buttonLeft.X, buttonLeft.Y, buttonLeft.Z + DELTA_Z, null, Alignment.Left);
+                    inCanvas.PopState();
+                }
             }
         }
 

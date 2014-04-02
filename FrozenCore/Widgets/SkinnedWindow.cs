@@ -40,6 +40,9 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         private GameObject _restoreButton;
 
+        [NonSerialized]
+        private FormattedText _fText;
+
         #endregion NonSerialized fields
 
         private Vector2 _buttonsSize;
@@ -53,7 +56,8 @@ namespace FrozenCore.Widgets
         private Vector2 _maximizedSize;
         private ContentRef<WidgetSkin> _minimizeButtonSkin;
         private ContentRef<WidgetSkin> _restoreButtonSkin;
-        private FormattedText _title;
+        private ContentRef<Font> _titleFont;
+        private string _title;
         private ColorRgba _titleColor;
 
         public Vector2 ButtonsSize
@@ -104,6 +108,12 @@ namespace FrozenCore.Widgets
             set { _maximizeButtonSkin = value; }
         }
 
+        public ContentRef<Font> TitleFont
+        {
+            get { return _titleFont; }
+            set { _titleFont = value; }
+        }
+
         public Vector2 MaximizedSize
         {
             get { return _maximizedSize; }
@@ -122,7 +132,7 @@ namespace FrozenCore.Widgets
             set { _restoreButtonSkin = value; }
         }
 
-        public FormattedText Title
+        public string Title
         {
             get { return _title; }
             set { _title = value; }
@@ -139,7 +149,7 @@ namespace FrozenCore.Widgets
             ActiveArea = Widgets.ActiveArea.TopBorder;
 
             _childrenStatus = new Dictionary<Widget, WidgetStatus>();
-            _title = new FormattedText();
+            _fText = new FormattedText();
             _titleColor = Colors.White;
             _isDragged = false;
         }
@@ -266,14 +276,21 @@ namespace FrozenCore.Widgets
 
         protected override void DrawCanvas(Canvas inCanvas)
         {
-            if (Title != null)
+            if (!String.IsNullOrWhiteSpace(_title))
             {
                 Vector3 titleLeft = (_points[1].WorldCoords + _points[5].WorldCoords) / 2;
+
+                if (_titleFont.Res != null && _fText.Fonts[0] != _titleFont)
+                {
+                    _fText.Fonts[0] = _titleFont;
+                }
+
+                _fText.SourceText = _title;
 
                 inCanvas.PushState();
                 inCanvas.State.ColorTint = _titleColor;
                 inCanvas.State.TransformAngle = GameObj.Transform.Angle;
-                inCanvas.DrawText(Title, titleLeft.X, titleLeft.Y, titleLeft.Z + DELTA_Z, null, Alignment.Left);
+                inCanvas.DrawText(_fText, titleLeft.X, titleLeft.Y, titleLeft.Z + DELTA_Z, null, Alignment.Left);
                 inCanvas.PopState();
             }
         }
