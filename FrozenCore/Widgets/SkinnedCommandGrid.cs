@@ -22,6 +22,12 @@ namespace FrozenCore.Widgets
         private bool _itemsAccessed;
 
         [NonSerialized]
+        protected int _visibleHeight;
+
+        [NonSerialized]
+        protected int _visibleWidth;
+
+        [NonSerialized]
         private ushort _leftmostColumn;
 
         [NonSerialized]
@@ -45,6 +51,12 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         private SkinnedPanel _highlightPanel;
 
+        [NonSerialized]
+        private GameObject _scrollbar;
+
+        [NonSerialized]
+        protected SkinnedScrollBar _scrollComponent;
+
         #endregion NonSerialized fields
 
         private ContentRef<Script> _onLeftClick;
@@ -54,6 +66,8 @@ namespace FrozenCore.Widgets
         private object _leftClickArgument;
         private object _rightClickArgument;
 
+        private Vector2 _scrollbarButtonsSize;
+        private Vector2 _scrollbarCursorSize;
         private ContentRef<WidgetSkin> _highlightSkin;
         private ContentRef<WidgetSkin> _scrollbarCursorSkin;
         private ContentRef<WidgetSkin> _scrollbarDecreaseButtonSkin;
@@ -67,6 +81,14 @@ namespace FrozenCore.Widgets
 
         private List<object> _items;
         private ContentRef<Font> _textFont;
+
+        private Vector4 _itemPadding;
+
+        public Vector4 ItemPadding
+        {
+            get { return _itemPadding; }
+            set { _itemPadding = value; }
+        }
 
         public int SelectedIndex
         {
@@ -95,7 +117,17 @@ namespace FrozenCore.Widgets
                 }
             }
         }
+        public Vector2 ScrollbarButtonsSize
+        {
+            get { return _scrollbarButtonsSize; }
+            set { _scrollbarButtonsSize = value; }
+        }
 
+        public Vector2 ScrollbarCursorSize
+        {
+            get { return _scrollbarCursorSize; }
+            set { _scrollbarCursorSize = value; }
+        }
         public List<object> Items
         {
             get
@@ -233,6 +265,32 @@ namespace FrozenCore.Widgets
             }
         }
 
+        private void AddScrollBar()
+        {
+            _scrollbar = new GameObject("scrollbar", this.GameObj);
+
+            float scrollbarWidth = Math.Max(ScrollbarButtonsSize.X, ScrollbarCursorSize.X);
+
+            Transform t = _scrollbar.AddComponent<Transform>();
+            t.RelativePos = new Vector3(0, Rect.H, 0);
+            t.RelativeAngle = - MathF.PiOver2;
+
+            _scrollComponent = new SkinnedScrollBar();
+            _scrollComponent.VisibilityGroup = this.VisibilityGroup;
+            _scrollComponent.Skin = ScrollbarSkin;
+            _scrollComponent.CursorSkin = ScrollbarCursorSkin;
+            _scrollComponent.DecreaseButtonSkin = ScrollbarDecreaseButtonSkin;
+            _scrollComponent.IncreaseButtonSkin = ScrollbarIncreaseButtonSkin;
+            _scrollComponent.ButtonsSize = ScrollbarButtonsSize;
+            _scrollComponent.CursorSize = ScrollbarCursorSize;
+
+            _scrollComponent.Rect = Rect.AlignTopLeft(0, 0, scrollbarWidth, Rect.W);
+            _scrollComponent.ScrollSpeed = 1;
+
+            _scrollbar.AddComponent<SkinnedScrollBar>(_scrollComponent);
+            Scene.Current.AddObject(_scrollbar);
+        }
+
         protected override void DrawCanvas(Canvas inCanvas)
         {
             if (_items != null && _items.Count > 0)
@@ -241,40 +299,36 @@ namespace FrozenCore.Widgets
                 inCanvas.State.ColorTint = _textColor;
                 inCanvas.State.TransformAngle = GameObj.Transform.Angle;
 
-                UpdateGrid();
-
                 Vector3 origin = _points[5].WorldCoords;
 
-                // calculate rows and columns
-                _rows = (ushort)MathF.Ceiling((_points[9].WorldCoords - _points[5].WorldCoords).Length / _gridCellSize.Y);
-                if (_rows == 0)
+                if (_rows > 0)
                 {
-                    _rows = 1;
-                }
-                _columns = (ushort)MathF.Ceiling(_items.Count / _rows);
+                    int lastColumn = 0;
+                    int itemRow = 0;
 
-                int lastColumn = 0;
-                int itemRow = 0;
-
-                for (int i = 0; i < _items.Count; i++)
-                {
-                    ushort itemColumn = (ushort)MathF.Floor(i / _rows);
-
-                    if (itemColumn != lastColumn)
+                    for (int i = 0; i < _items.Count; i++)
                     {
-                        lastColumn = itemColumn;
-                        itemRow = 0;
+                        ushort itemColumn = (ushort)MathF.Floor(i / _rows);
+
+                        if (itemColumn != lastColumn)
+                        {
+                            lastColumn = itemColumn;
+                            itemRow = 0;
+                        }
+
+                        if (itemColumn >= _leftmostColumn)
+                        {
+                            _fText.SourceText = _items[i].ToString();
+                            Vector3 topLeft = origin + new Vector3(
+                                (_gridCellSize.X * (itemColumn - _leftmostColumn)), 
+                                (_gridCellSize.Y * itemRow), 
+                                DELTA_Z);
+
+                            inCanvas.DrawText(_fText, topLeft.X + _itemPadding.X, topLeft.Y + _itemPadding.Y, topLeft.Z, null, Alignment.TopLeft);
+                        }
+
+                        itemRow++;
                     }
-
-                    if (itemColumn >= _leftmostColumn)
-                    {
-                        _fText.SourceText = _items[i].ToString();
-                        Vector3 topLeft = origin + new Vector3(_gridCellSize.X * (itemColumn - _leftmostColumn), _gridCellSize.Y * itemRow, DELTA_Z);
-
-                        inCanvas.DrawText(_fText, topLeft.X, topLeft.Y, topLeft.Z, null, Alignment.TopLeft);
-                    }
-
-                    itemRow++;
                 }
 
                 inCanvas.PopState();
@@ -289,11 +343,27 @@ namespace FrozenCore.Widgets
             {
                 UpdateGrid();
             }
+
+            UpdateHighlight();
         }
 
         protected override void OnInit(Component.InitContext inContext)
         {
             base.OnInit(inContext);
+
+            if (inContext == InitContext.Activate && !FrozenUtilities.IsDualityEditor)
+            {
+                if (_highlight == null)
+                {
+                    AddHighlight();
+                    AddScrollBar();
+                }
+
+                _visibleWidth = (int)Math.Floor(Rect.W - Skin.Res.Border.X - Skin.Res.Border.W);
+                _visibleHeight = (int)Math.Floor(Rect.H - Skin.Res.Border.Y - Skin.Res.Border.Z);
+
+                UpdateGrid();
+            }
         }
 
         private void UpdateGrid()
@@ -312,10 +382,23 @@ namespace FrozenCore.Widgets
                             _fText.Fonts[0] = _textFont;
                         }
 
-                        _gridCellSize.X = Math.Max(_gridCellSize.X, _fText.Size.X);
-                        _gridCellSize.Y = Math.Max(_gridCellSize.Y, _fText.Size.Y);
+                        _gridCellSize.X = Math.Max(_gridCellSize.X, _fText.Size.X + _itemPadding.X + _itemPadding.Z);
+                        _gridCellSize.Y = Math.Max(_gridCellSize.Y, _fText.Size.Y + _itemPadding.Y + _itemPadding.W);
                     }
                 }
+
+                _highlightPanel.Rect = new Rect(_gridCellSize);
+
+                _rows = (ushort)MathF.Floor(_visibleHeight / _gridCellSize.Y);
+                if (_rows > 0)
+                {
+                    _columns = (ushort)MathF.Ceiling(_items.Count / _rows);
+                }
+            }
+            else
+            {
+                _rows = 0;
+                _columns = 0;
             }
         }
 
@@ -325,19 +408,19 @@ namespace FrozenCore.Widgets
             {
                 if (e.Key == _keyLeft)
                 {
-
+                    SelectedIndex -= _rows;
                 }
                 if (e.Key == _keyRight)
                 {
-
+                    SelectedIndex += _rows;
                 }
                 if (e.Key == _keyUp)
                 {
-
+                    SelectedIndex--;
                 }
                 if (e.Key == _keyDown)
                 {
-
+                    SelectedIndex++;
                 }
             }
         }
@@ -364,19 +447,14 @@ namespace FrozenCore.Widgets
         {
             if (SelectedIndex >= 0)
             {
-                Rect selectionRect = _fText.TextMetrics.LineBounds[SelectedIndex];
+                int itemColumn = (int)(MathF.Floor(SelectedIndex / _rows));
+                int itemRow = SelectedIndex - (itemColumn * _rows);
 
                 Vector3 relativePos = _highlight.Transform.RelativePos;
-                relativePos.X = Skin.Res.Border.X;
-                relativePos.Y = Skin.Res.Border.Y + selectionRect.Y;
-
-                Rect highlightRect = _highlightPanel.Rect;
-                highlightRect.H = selectionRect.H;
-                highlightRect.W = Rect.W - Skin.Res.Border.X - Skin.Res.Border.W;
+                relativePos.X = Skin.Res.Border.X + (_gridCellSize.X * itemColumn);
+                relativePos.Y = Skin.Res.Border.Y + (_gridCellSize.Y * itemRow);
 
                 _highlight.Transform.RelativePos = relativePos;
-                _highlightPanel.Rect = highlightRect;
-                _highlightPanel.VisibleRect = highlightRect;
             }
         }
     }
