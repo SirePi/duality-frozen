@@ -22,13 +22,10 @@ namespace FrozenCore.Widgets
         private bool _itemsAccessed;
 
         [NonSerialized]
-        protected int _visibleHeight;
+        private int _visibleHeight;
 
         [NonSerialized]
-        protected int _visibleWidth;
-
-        [NonSerialized]
-        private ushort _leftmostColumn;
+        private int _visibleWidth;
 
         [NonSerialized]
         private Vector2 _gridCellSize;
@@ -55,7 +52,10 @@ namespace FrozenCore.Widgets
         private GameObject _scrollbar;
 
         [NonSerialized]
-        protected SkinnedScrollBar _scrollComponent;
+        private SkinnedScrollBar _scrollComponent;
+
+        [NonSerialized]
+        private ushort _visibleColumns;
 
         #endregion NonSerialized fields
 
@@ -107,7 +107,7 @@ namespace FrozenCore.Widgets
             get { return _selectedItem; }
             set
             {
-                if (_items.Contains(value) && _selectedItem != value)
+                if (_items.Contains(value))
                 {
                     _selectedItem = value;
                 }
@@ -283,6 +283,7 @@ namespace FrozenCore.Widgets
             _scrollComponent.IncreaseButtonSkin = ScrollbarIncreaseButtonSkin;
             _scrollComponent.ButtonsSize = ScrollbarButtonsSize;
             _scrollComponent.CursorSize = ScrollbarCursorSize;
+            _scrollComponent.OnValueChanged = InternalScripts.GetScript<InternalScripts.CommandGridScrollbarValueChanged>();
 
             _scrollComponent.Rect = Rect.AlignTopLeft(0, 0, scrollbarWidth, Rect.W);
             _scrollComponent.ScrollSpeed = 1;
@@ -305,6 +306,12 @@ namespace FrozenCore.Widgets
                 {
                     int lastColumn = 0;
                     int itemRow = 0;
+                    int firstColumn = 0;
+
+                    if (_scrollComponent != null)
+                    {
+                        firstColumn = _scrollComponent.Value;
+                    }
 
                     for (int i = 0; i < _items.Count; i++)
                     {
@@ -316,11 +323,11 @@ namespace FrozenCore.Widgets
                             itemRow = 0;
                         }
 
-                        if (itemColumn >= _leftmostColumn)
+                        if (itemColumn >= firstColumn && itemColumn < firstColumn + _visibleColumns)
                         {
                             _fText.SourceText = _items[i].ToString();
                             Vector3 topLeft = origin + new Vector3(
-                                (_gridCellSize.X * (itemColumn - _leftmostColumn)), 
+                                (_gridCellSize.X * (itemColumn - firstColumn)), 
                                 (_gridCellSize.Y * itemRow), 
                                 DELTA_Z);
 
@@ -387,18 +394,31 @@ namespace FrozenCore.Widgets
                     }
                 }
 
-                _highlightPanel.Rect = new Rect(_gridCellSize);
-
                 _rows = (ushort)MathF.Floor(_visibleHeight / _gridCellSize.Y);
                 if (_rows > 0)
                 {
                     _columns = (ushort)MathF.Ceiling(_items.Count / _rows);
+                    _visibleColumns = (ushort)MathF.Floor(_visibleWidth / _gridCellSize.X);
                 }
             }
             else
             {
                 _rows = 0;
                 _columns = 0;
+                _visibleColumns = 0;
+            }
+
+            _scrollbar.Active = _visibleColumns < _columns;
+            if (_scrollbar.Active)
+            {
+                _scrollComponent.Minimum = 0;
+                _scrollComponent.Maximum = _columns - _visibleColumns;
+            }
+            else
+            {
+                _scrollComponent.Minimum = 0;
+                _scrollComponent.Maximum = 1;
+                _scrollComponent.Value = 0;
             }
         }
 
@@ -408,19 +428,19 @@ namespace FrozenCore.Widgets
             {
                 if (e.Key == _keyLeft)
                 {
-                    SelectedIndex -= _rows;
+                    SelectedIndex = Math.Max(SelectedIndex - _rows, 0);
                 }
                 if (e.Key == _keyRight)
                 {
-                    SelectedIndex += _rows;
+                    SelectedIndex = Math.Min(SelectedIndex + _rows, _items.Count - 1);
                 }
                 if (e.Key == _keyUp)
                 {
-                    SelectedIndex--;
+                    SelectedIndex = Math.Max(SelectedIndex - 1, 0);
                 }
                 if (e.Key == _keyDown)
                 {
-                    SelectedIndex++;
+                    SelectedIndex = Math.Min(SelectedIndex + 1, _items.Count - 1); ;
                 }
             }
         }
@@ -445,17 +465,28 @@ namespace FrozenCore.Widgets
 
         private void UpdateHighlight()
         {
-            if (SelectedIndex >= 0)
+            if (SelectedIndex >= 0 && _scrollComponent != null)
             {
                 int itemColumn = (int)(MathF.Floor(SelectedIndex / _rows));
                 int itemRow = SelectedIndex - (itemColumn * _rows);
 
                 Vector3 relativePos = _highlight.Transform.RelativePos;
-                relativePos.X = Skin.Res.Border.X + (_gridCellSize.X * itemColumn);
+                relativePos.X = Skin.Res.Border.X + (_gridCellSize.X * (itemColumn - _scrollComponent.Value));
                 relativePos.Y = Skin.Res.Border.Y + (_gridCellSize.Y * itemRow);
 
                 _highlight.Transform.RelativePos = relativePos;
+                _highlightPanel.Rect = new Rect(_gridCellSize);
+
+                if (itemColumn < _scrollComponent.Value || itemColumn > _scrollComponent.Value + _visibleColumns - 1)
+                {
+                    _scrollComponent.Value = itemColumn - 1;
+                }
             }
+        }
+
+        internal void ScrollValueChanged()
+        {
+            int a = 0;
         }
     }
 }

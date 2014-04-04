@@ -103,6 +103,15 @@ namespace FrozenCore.Widgets
             }
         }
 
+        internal class CommandGridScrollbarValueChanged : InternalScript
+        {
+            public override void Execute(Duality.GameObject inSource, object inParameter)
+            {
+                SkinnedCommandGrid grid = inSource.Parent.GetComponent<SkinnedCommandGrid>();
+                grid.ScrollValueChanged();
+            }
+        }
+
         /*
         internal class MultiLineScrollbarValueChanged : InternalScript
         {
