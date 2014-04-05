@@ -351,7 +351,7 @@ namespace FrozenCore.Widgets
                 UpdateGrid();
             }
 
-            UpdateHighlight();
+            UpdateComponents();
         }
 
         protected override void OnInit(Component.InitContext inContext)
@@ -397,7 +397,7 @@ namespace FrozenCore.Widgets
                 _rows = (ushort)MathF.Floor(_visibleHeight / _gridCellSize.Y);
                 if (_rows > 0)
                 {
-                    _columns = (ushort)MathF.Ceiling(_items.Count / _rows);
+                    _columns = (ushort)MathF.Ceiling((float)_items.Count / _rows);
                     _visibleColumns = (ushort)MathF.Floor(_visibleWidth / _gridCellSize.X);
                 }
             }
@@ -463,12 +463,17 @@ namespace FrozenCore.Widgets
             Scene.Current.AddObject(_highlight);
         }
 
-        private void UpdateHighlight()
+        private void UpdateComponents()
         {
             if (SelectedIndex >= 0 && _scrollComponent != null)
             {
                 int itemColumn = (int)(MathF.Floor(SelectedIndex / _rows));
                 int itemRow = SelectedIndex - (itemColumn * _rows);
+
+                if (itemColumn < _scrollComponent.Value || itemColumn > _scrollComponent.Value + _visibleColumns - 1)
+                {
+                    _scrollComponent.Value = itemColumn - 1;
+                } 
 
                 Vector3 relativePos = _highlight.Transform.RelativePos;
                 relativePos.X = Skin.Res.Border.X + (_gridCellSize.X * (itemColumn - _scrollComponent.Value));
@@ -476,17 +481,12 @@ namespace FrozenCore.Widgets
 
                 _highlight.Transform.RelativePos = relativePos;
                 _highlightPanel.Rect = new Rect(_gridCellSize);
-
-                if (itemColumn < _scrollComponent.Value || itemColumn > _scrollComponent.Value + _visibleColumns - 1)
-                {
-                    _scrollComponent.Value = itemColumn - 1;
-                }
             }
         }
 
         internal void ScrollValueChanged()
         {
-            int a = 0;
+            
         }
     }
 }
