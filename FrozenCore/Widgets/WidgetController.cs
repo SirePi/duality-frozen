@@ -353,7 +353,7 @@ namespace FrozenCore.Widgets
             Mouse_Move(sender, new OpenTK.Input.MouseMoveEventArgs(e.X, e.Y, 0, 0));
         }
 
-        protected void Mouse_Move(object sender, OpenTK.Input.MouseMoveEventArgs e)
+        protected virtual void Mouse_Move(object sender, OpenTK.Input.MouseMoveEventArgs e)
         {
             if (FocusedElement != null)
             {
