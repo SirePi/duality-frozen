@@ -82,6 +82,8 @@
     <Compile Include="Components\Commander.cs" />
     <Compile Include="Components\ThreadedLoader.cs" />
     <Compile Include="Components\VisualTreeHider.cs" />
+    <Compile Include="CameraExtensions.cs" />
+    <Compile Include="OpenTKExtensions.cs" />
     <Compile Include="Data\Vector3Range.cs" />
     <Compile Include="GameObjectExtensions.cs" />
     <Compile Include="FrozenCorePlugin.cs" />
