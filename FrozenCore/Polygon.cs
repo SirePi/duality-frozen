@@ -1,6 +1,8 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using OpenTK;
+using Duality;
+using System;
 
 namespace FrozenCore
 {
@@ -12,7 +14,39 @@ namespace FrozenCore
 
         public Polygon(int inNumVertices)
         {
+            if(inNumVertices < 3)
+            {
+                throw new InvalidOperationException("A Polygon must be composed by at least 3 vertices");
+            }
+
             Vertices = new Vector2[inNumVertices];
+        }
+
+        public Polygon(Rect inRect) : this(4)
+        {
+            Vertices[0] = inRect.TopLeft;
+            Vertices[1] = inRect.TopRight;
+            Vertices[2] = inRect.BottomRight;
+            Vertices[3] = inRect.BottomLeft;
+        }
+
+        public Polygon(Vector2 inCenter, float inRadius)
+            : this(inCenter, inRadius, 12)
+        { }
+
+        public Polygon(Vector2 inCenter, float inRadius, int inSubdivisions)
+            : this(inSubdivisions)
+        {
+            float delta = MathF.TwoPi / Vertices.Length;
+
+            for (int i = 0; i < Vertices.Length; i++)
+            {
+                float angle = delta * i;
+                float x = MathF.Cos(angle) * inRadius;
+                float y = MathF.Sin(angle) * inRadius;
+
+                Vertices[i] = inCenter + new Vector2(x, y);
+            }
         }
 
         public Vector2 this[int i]
@@ -20,8 +54,22 @@ namespace FrozenCore
             get { return Vertices[i]; }
             set
             {
-                Vertices[i].X = value.X;
-                Vertices[i].Y = value.Y;
+                Vertices[i] = value;
+            }
+        }
+
+        public Vector2 Centroid
+        {
+            get
+            {
+                Vector2 result = Vector2.Zero;
+
+                for (int i = 0; i < Vertices.Length; i++)
+                {
+                    result += Vertices[i];
+                }
+
+                return result / Vertices.Length;
             }
         }
 
@@ -48,6 +96,19 @@ namespace FrozenCore
             }
 
             return oddNodes;
+        }
+
+        public void Offset(Vector2 inOffset)
+        {
+            for (int i = 0; i < Vertices.Length; i++)
+            {
+                Vertices[i] += inOffset;
+            }
+        }
+
+        public void CenterOnOrigin()
+        {
+            Offset(-Centroid);
         }
     }
 }
