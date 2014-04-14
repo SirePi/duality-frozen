@@ -141,6 +141,11 @@ namespace FrozenCore.Components
             return Add(new ChangeWidgetStatus(inStatus));
         }
 
+        public Destroy Destroy()
+        {
+            return Add(new Destroy());
+        }
+
         public T Add<T>(T inCommand) where T : Command
         {
             _operations.Add(inCommand);

@@ -1,4 +1,6 @@
-﻿using Duality;
+﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
+
+using Duality;
 using OpenTK.Graphics.OpenGL;
 
 namespace FrozenCore

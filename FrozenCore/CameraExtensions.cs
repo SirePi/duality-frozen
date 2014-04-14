@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using Duality.Components;
 using Duality;
 using OpenTK;
+using Duality.Drawing;
+using FrozenCore.Components;
+using Duality.Components.Renderers;
+using Duality.Resources;
 
 namespace FrozenCore
 {
@@ -52,7 +56,7 @@ namespace FrozenCore
             inCamera.GameObj.Transform.MoveToAbs(new Vector3(centroid, z));
         }
 
-        public void FocusOn(this Camera inCamera, Polygon inFocusArea, float inFocusZ)
+        public static void FocusOn(this Camera inCamera, Polygon inFocusArea, float inFocusZ)
         {
             float angle = inCamera.GameObj.Transform.Angle;
 
@@ -92,6 +96,27 @@ namespace FrozenCore
             }
 
             inCamera.GameObj.Transform.MoveToAbs(new Vector3(centroid, inCamera.GameObj.Transform.Pos.Z));
+        }
+
+        public static void Fade(this Camera inCamera, float inTime, ColorRgba inStartColor, ColorRgba inEndColor)
+        {
+            GameObject fader = new GameObject("Fader", inCamera.GameObj);
+
+            Transform t = new Transform();
+            t.RelativePos = new Vector3(0, 0, inCamera.GameObj.Transform.Pos.Z - inCamera.FocusDist);
+
+            SpriteRenderer sr = new SpriteRenderer();
+            sr.Rect = Rect.AlignCenter(0, 0, DualityApp.TargetResolution.X, DualityApp.TargetResolution.Y);
+            sr.SharedMaterial = Material.SolidWhite;
+            sr.ColorTint = inStartColor;
+
+            Commander cmd = new Commander();
+            cmd.ColorizeSprite(inEndColor).Timed(inTime);
+            cmd.Destroy();
+
+            fader.AddComponent<Commander>(cmd);
+
+            inCamera.GameObj.ParentScene.AddObject(fader);
         }
     }
 }

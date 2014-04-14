@@ -4,31 +4,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Duality.Drawing;
 using Duality;
-using Duality.Components.Renderers;
+using Duality.Components;
 using FrozenCore.Data;
-using FrozenCore.Widgets;
 
 namespace FrozenCore.Commands
 {
-    public sealed class ChangeWidgetStatus : Command<Widget>
+    public sealed class Destroy : Command
     {
-        Widget.WidgetStatus _target;
-
-        internal ChangeWidgetStatus(Widget.WidgetStatus inStatus)
+        internal Destroy()
         {
-            _target = inStatus;
         }
 
         public override void Execute(float inSecondsPast, GameObject inGameObject)
         {
-            Widget w = GetComponent(inGameObject);
+            inGameObject.DisposeLater();
+            inGameObject.ParentScene.RemoveObject(inGameObject);
 
-            w.Status = _target;
             IsComplete = true;
         }
     }
 }
-
-

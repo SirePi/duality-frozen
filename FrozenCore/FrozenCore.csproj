@@ -67,6 +67,7 @@
     <Compile Include="Commands\ColorizeSprite.cs" />
     <Compile Include="Commands\ChangeWidgetStatus.cs" />
     <Compile Include="Commands\ColorizeSkinnedWidget.cs" />
+    <Compile Include="Commands\Destroy.cs" />
     <Compile Include="Commands\Signal.cs" />
     <Compile Include="Commands\WaitFor.cs" />
     <Compile Include="Commands\Wait.cs" />
@@ -172,7 +173,6 @@
       <Name>Duality</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(TargetDir)FrozenCore*" "$(SolutionDir)..\..\Plugins\*"
