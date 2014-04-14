@@ -14,11 +14,6 @@ namespace FrozenCore
 
         public Polygon(int inNumVertices)
         {
-            if(inNumVertices < 3)
-            {
-                throw new InvalidOperationException("A Polygon must be composed by at least 3 vertices");
-            }
-
             Vertices = new Vector2[inNumVertices];
         }
 
