@@ -140,7 +140,8 @@ namespace FrozenCore
         public static readonly ColorRgba Teal = new ColorRgba(0, 128, 128, 255);
         public static readonly ColorRgba Thistle = new ColorRgba(216, 191, 216, 255);
         public static readonly ColorRgba Tomato = new ColorRgba(255, 99, 71, 255);
-        public static readonly ColorRgba Transparent = new ColorRgba(255, 255, 255, 0);
+        public static readonly ColorRgba Transparent = new ColorRgba(0, 0, 0, 0);
+        public static readonly ColorRgba TransparentWhite = new ColorRgba(255, 255, 255, 0);
         public static readonly ColorRgba Turquoise = new ColorRgba(64, 224, 208, 255);
         public static readonly ColorRgba Violet = new ColorRgba(238, 130, 238, 255);
         public static readonly ColorRgba Wheat = new ColorRgba(245, 222, 179, 255);

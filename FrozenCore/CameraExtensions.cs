@@ -103,18 +103,22 @@ namespace FrozenCore
             GameObject fader = new GameObject("Fader", inCamera.GameObj);
 
             Transform t = new Transform();
-            t.RelativePos = new Vector3(0, 0, inCamera.GameObj.Transform.Pos.Z - inCamera.FocusDist);
+            fader.AddComponent<Transform>(t);
 
             SpriteRenderer sr = new SpriteRenderer();
-            sr.Rect = Rect.AlignCenter(0, 0, DualityApp.TargetResolution.X, DualityApp.TargetResolution.Y);
-            sr.SharedMaterial = Material.SolidWhite;
-            sr.ColorTint = inStartColor;
+            fader.AddComponent<SpriteRenderer>(sr);
 
             Commander cmd = new Commander();
+            fader.AddComponent<Commander>(cmd);
+
+            t.RelativePos = new Vector3(0, 0, inCamera.FocusDist);
+
+            sr.Rect = Rect.AlignCenter(0, 0, DualityApp.TargetResolution.X, DualityApp.TargetResolution.Y);
+            sr.SharedMaterial = new ContentRef<Material>(new Material(DrawTechnique.Alpha, Colors.White, Texture.White));
+            sr.ColorTint = inStartColor;
+
             cmd.ColorizeSprite(inEndColor).Timed(inTime);
             cmd.Destroy();
-
-            fader.AddComponent<Commander>(cmd);
 
             inCamera.GameObj.ParentScene.AddObject(fader);
         }
