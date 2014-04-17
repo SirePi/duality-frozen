@@ -67,6 +67,7 @@
     <Compile Include="Commands\ColorizeSprite.cs" />
     <Compile Include="Commands\ChangeWidgetStatus.cs" />
     <Compile Include="Commands\ColorizeSkinnedWidget.cs" />
+    <Compile Include="Commands\Scale.cs" />
     <Compile Include="Commands\Destroy.cs" />
     <Compile Include="Commands\Signal.cs" />
     <Compile Include="Commands\WaitFor.cs" />
@@ -161,7 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Components.txt" />
-    <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="SkinConfiguration.xsd">
       <SubType>Designer</SubType>
     </None>

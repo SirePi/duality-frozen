@@ -36,7 +36,7 @@ namespace FrozenCore.Commands
 
         public Command<T> FixedSpeed(float inSpeed)
         {
-            _timeToComplete = GetCommandLength() / inSpeed;
+            _timeToComplete = MathF.Abs(GetCommandLength() / inSpeed);
             return this;
         }
 
