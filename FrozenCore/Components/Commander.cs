@@ -146,6 +146,16 @@ namespace FrozenCore.Components
             return Add(new Destroy());
         }
 
+        public Scale Scale(float inTarget)
+        {
+            return Add(new Scale(this.GameObj, inTarget, false));
+        }
+
+        public Scale ScaleRelative(float inTarget)
+        {
+            return Add(new Scale(this.GameObj, inTarget, true));
+        }
+
         public T Add<T>(T inCommand) where T : Command
         {
             _operations.Add(inCommand);

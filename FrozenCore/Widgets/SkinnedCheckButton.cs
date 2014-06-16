@@ -5,6 +5,8 @@ using Duality;
 using Duality.Drawing;
 using OpenTK;
 using Duality.Resources;
+using FrozenCore.Resources.Widgets;
+using Duality.Components;
 
 namespace FrozenCore.Widgets
 {
@@ -14,8 +16,11 @@ namespace FrozenCore.Widgets
         #region NonSerialized fields
         [NonSerialized]
         private FormattedText _fText;
+        [NonSerialized]
+        private GameObject _glyph;
         #endregion
 
+        private ContentRef<WidgetSkin> _glyphSkin;
         private object _checkedArgument;
         private bool _isChecked;
         private ContentRef<Script> _onChecked;
@@ -38,7 +43,14 @@ namespace FrozenCore.Widgets
             {
                 _isChecked = value;
                 OnCheckUncheck();
+                OnStatusChange();
             }
+        }
+
+        public ContentRef<WidgetSkin> GlyphSkin
+        {
+            get { return _glyphSkin; }
+            set { _glyphSkin = value; }
         }
 
         public ContentRef<Script> OnChecked
@@ -91,7 +103,15 @@ namespace FrozenCore.Widgets
 
             if (Status != WidgetStatus.Disabled)
             {
-                Status = IsChecked ? WidgetStatus.Active : WidgetStatus.Normal;
+                Status = WidgetStatus.Normal;
+            }
+        }
+
+        public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        {
+            if (e.Button == OpenTK.Input.MouseButton.Left)
+            {
+                Status = WidgetStatus.Active;
             }
         }
 
@@ -100,6 +120,7 @@ namespace FrozenCore.Widgets
             if (e.Button == OpenTK.Input.MouseButton.Left && _isMouseOver)
             {
                 IsChecked = !IsChecked;
+                Status = WidgetStatus.Hover;
 
                 if (IsChecked && OnChecked.Res != null)
                 {
@@ -109,6 +130,16 @@ namespace FrozenCore.Widgets
                 {
                     OnUnchecked.Res.Execute(this.GameObj, UncheckedArgument);
                 }
+            }
+        }
+
+        public override void MouseEnter()
+        {
+            _isMouseOver = true;
+
+            if (Status != WidgetStatus.Disabled)
+            {
+                Status = WidgetStatus.Hover;
             }
         }
 
@@ -132,18 +163,46 @@ namespace FrozenCore.Widgets
             }
         }
 
-        protected override void OnInit(Component.InitContext context)
+        protected override void OnInit(Component.InitContext inContext)
         {
-            base.OnInit(context);
+            base.OnInit(inContext);
 
-            if (Status != WidgetStatus.Disabled)
+            if (inContext == InitContext.Activate && !FrozenUtilities.IsDualityEditor)
             {
-                Status = IsChecked ? WidgetStatus.Active : WidgetStatus.Normal;
+                if (_glyph == null)
+                {
+                    AddGlyph();
+
+                    //_glyph.GetComponent<Widget>().Active = IsChecked;
+                }
             }
+        }
+
+        private void AddGlyph()
+        {
+            _glyph = new GameObject("glyph", this.GameObj);
+
+            Transform t = _glyph.AddComponent<Transform>();
+            t.RelativePos = new Vector3(0, 0, 0);
+            t.RelativeAngle = 0;
+
+            SkinnedPanel sp = new SkinnedPanel();
+            sp.ActiveArea = Widgets.ActiveArea.None;
+            sp.VisibilityGroup = this.VisibilityGroup;
+            sp.Skin = GlyphSkin;
+            sp.Rect = Rect.AlignTopLeft(0, 0, GlyphSkin.Res.Size.X, GlyphSkin.Res.Size.Y);
+
+            _glyph.AddComponent<SkinnedPanel>(sp);
+            Scene.Current.AddObject(_glyph);
         }
 
         private void OnCheckUncheck()
         {
+            if (_glyph != null)
+            {
+                _glyph.Active = IsChecked;
+            }
+
             if (IsChecked)
             {
                 if (OnChecked.Res != null)
@@ -158,7 +217,19 @@ namespace FrozenCore.Widgets
                     OnUnchecked.Res.Execute(this.GameObj, UncheckedArgument);
                 }
             }
-            MouseLeave();
+            //MouseLeave();
+        }
+
+        protected override void OnStatusChange()
+        {
+            base.OnStatusChange();
+            
+            if (_glyph != null)
+            {
+                _glyph.Active = IsChecked;
+
+                _glyph.GetComponent<Widget>().Status = (Status == WidgetStatus.Disabled ? WidgetStatus.Disabled : WidgetStatus.Normal);
+            }
         }
     }
 }

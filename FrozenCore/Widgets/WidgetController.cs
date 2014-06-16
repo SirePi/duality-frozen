@@ -340,7 +340,7 @@ namespace FrozenCore.Widgets
                 FocusedElement.MouseDown(e);
             }
 
-            Mouse_Move(sender, new OpenTK.Input.MouseMoveEventArgs(e.X, e.Y, 0, 0));
+            //Mouse_Move(sender, new OpenTK.Input.MouseMoveEventArgs(e.X, e.Y, 0, 0));
         }
 
         protected virtual void Mouse_ButtonUp(object sender, OpenTK.Input.MouseButtonEventArgs e)
@@ -350,7 +350,7 @@ namespace FrozenCore.Widgets
                 FocusedElement.MouseUp(e);
             }
 
-            Mouse_Move(sender, new OpenTK.Input.MouseMoveEventArgs(e.X, e.Y, 0, 0));
+            //Mouse_Move(sender, new OpenTK.Input.MouseMoveEventArgs(e.X, e.Y, 0, 0));
         }
 
         protected virtual void Mouse_Move(object sender, OpenTK.Input.MouseMoveEventArgs e)
@@ -364,7 +364,7 @@ namespace FrozenCore.Widgets
             _currentMousePosition.Y = e.Y;
 
             IEnumerable<Widget> activeGUIComponents = Scene.Current.ActiveObjects.GetComponents<Widget>();
-            IEnumerable<Widget> hoveredGUIComponents = activeGUIComponents.Where(gc => gc.GetAreaOnScreen(GameObj.Camera).Contains(_currentMousePosition));
+            IEnumerable<Widget> hoveredGUIComponents = activeGUIComponents.Where(gc => gc.ActiveArea != ActiveArea.None && gc.GetAreaOnScreen(GameObj.Camera).Contains(_currentMousePosition));
 
             Widget hgc = null;
 

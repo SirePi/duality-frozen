@@ -164,9 +164,9 @@ namespace FrozenCore.FX
         {
             if (_inEditor)
             {
-                Canvas c = new Canvas(device);
                 if (FXArea != null)
                 {
+                    Canvas c = new Canvas(device);
                     FXArea.DrawInEditor(c);
                 }
             }

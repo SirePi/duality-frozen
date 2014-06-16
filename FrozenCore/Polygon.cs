@@ -17,12 +17,12 @@ namespace FrozenCore
             Vertices = new Vector2[inNumVertices];
         }
 
-        public Polygon(Rect inRect) : this(4)
+        public Polygon(Rect inRect, Vector2 inCenter) : this(4)
         {
-            Vertices[0] = inRect.TopLeft;
-            Vertices[1] = inRect.TopRight;
-            Vertices[2] = inRect.BottomRight;
-            Vertices[3] = inRect.BottomLeft;
+            Vertices[0] = inCenter + inRect.TopLeft;
+            Vertices[1] = inCenter + inRect.TopRight;
+            Vertices[2] = inCenter + inRect.BottomRight;
+            Vertices[3] = inCenter + inRect.BottomLeft;
         }
 
         public Polygon(Vector2 inCenter, float inRadius)
