@@ -109,9 +109,12 @@ namespace FrozenCore.Widgets
 
         public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
         {
-            if (e.Button == OpenTK.Input.MouseButton.Left)
+            if (Status != WidgetStatus.Disabled)
             {
-                Status = WidgetStatus.Active;
+                if (e.Button == OpenTK.Input.MouseButton.Left)
+                {
+                    Status = WidgetStatus.Active;
+                }
             }
         }
 
@@ -120,7 +123,7 @@ namespace FrozenCore.Widgets
             if (e.Button == OpenTK.Input.MouseButton.Left && _isMouseOver)
             {
                 IsChecked = !IsChecked;
-                Status = WidgetStatus.Hover;
+                Status = _isMouseOver ? WidgetStatus.Hover : WidgetStatus.Normal;
 
                 if (IsChecked && OnChecked.Res != null)
                 {
@@ -173,7 +176,7 @@ namespace FrozenCore.Widgets
                 {
                     AddGlyph();
 
-                    //_glyph.GetComponent<Widget>().Active = IsChecked;
+                    _glyph.Active = IsChecked;
                 }
             }
         }
@@ -187,7 +190,6 @@ namespace FrozenCore.Widgets
             t.RelativeAngle = 0;
 
             SkinnedPanel sp = new SkinnedPanel();
-            sp.ActiveArea = Widgets.ActiveArea.None;
             sp.VisibilityGroup = this.VisibilityGroup;
             sp.Skin = GlyphSkin;
             sp.Rect = Rect.AlignTopLeft(0, 0, GlyphSkin.Res.Size.X, GlyphSkin.Res.Size.Y);

@@ -67,6 +67,7 @@
     <Compile Include="Commands\ColorizeSprite.cs" />
     <Compile Include="Commands\ChangeWidgetStatus.cs" />
     <Compile Include="Commands\ColorizeSkinnedWidget.cs" />
+    <Compile Include="Commands\ParallelCommand.cs" />
     <Compile Include="Commands\Scale.cs" />
     <Compile Include="Commands\Destroy.cs" />
     <Compile Include="Commands\Signal.cs" />

@@ -14,20 +14,24 @@ namespace FrozenCore.Commands
             _commands = new List<Command>();
         }
 
-        public void AddCommand(Command inCommand)
+        public ParallelCommand AddCommand(Command inCommand)
         {
             if (inCommand is Wait || inCommand is WaitFor || inCommand is ParallelCommand)
             {
                 throw new InvalidOperationException("A ParallelCommand cannot contain this kind of Command");
             }
             _commands.Add(inCommand);
+
+            return this;
         }
 
         public override void Execute(float inSecondsPast, Duality.GameObject inGameObject)
         {
+            IsComplete = false;
             foreach (Command c in _commands)
             {
                 c.Execute(inSecondsPast, inGameObject);
+                IsComplete &= c.IsComplete;
             }
         }
     }

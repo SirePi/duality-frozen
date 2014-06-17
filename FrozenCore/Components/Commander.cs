@@ -156,6 +156,11 @@ namespace FrozenCore.Components
             return Add(new Scale(this.GameObj, inTarget, true));
         }
 
+        public ParallelCommand AddParallel()
+        {
+            return Add(new ParallelCommand());
+        }
+
         public T Add<T>(T inCommand) where T : Command
         {
             _operations.Add(inCommand);
