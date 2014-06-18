@@ -171,7 +171,8 @@ namespace FrozenCore.Components
         {
             if (_currentParallel != null)
             {
-                Add(_currentParallel);
+                _operations.Add(_currentParallel);
+                _currentParallel = null;
             }
         }
 
