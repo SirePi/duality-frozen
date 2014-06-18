@@ -23,6 +23,9 @@ namespace FrozenCore.Components
         [NonSerialized]
         private string _currentSignal;
 
+        [NonSerialized]
+        ParallelCommand _currentParallel;
+
         public Commander()
         {
             _operations = new List<Command>();
@@ -156,14 +159,32 @@ namespace FrozenCore.Components
             return Add(new Scale(this.GameObj, inTarget, true));
         }
 
-        public ParallelCommand AddParallel()
+        public void BeginParallel()
         {
-            return Add(new ParallelCommand());
+            if (_currentParallel == null)
+            {
+                _currentParallel = new ParallelCommand();
+            }
+        }
+
+        public void EndParallel()
+        {
+            if (_currentParallel != null)
+            {
+                Add(_currentParallel);
+            }
         }
 
         public T Add<T>(T inCommand) where T : Command
         {
-            _operations.Add(inCommand);
+            if(_currentParallel != null)
+            {
+                _currentParallel.Add(inCommand);
+            }
+            else
+            {
+                _operations.Add(inCommand);
+            }
 
             return inCommand;
         }

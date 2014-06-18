@@ -9,12 +9,12 @@ namespace FrozenCore.Commands
     {
         private List<Command> _commands;
 
-        public ParallelCommand()
+        internal ParallelCommand()
         {
             _commands = new List<Command>();
         }
 
-        public ParallelCommand AddCommand(Command inCommand)
+        public ParallelCommand Add(Command inCommand)
         {
             if (inCommand is Wait || inCommand is WaitFor || inCommand is ParallelCommand)
             {
