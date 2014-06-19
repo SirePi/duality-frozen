@@ -30,7 +30,10 @@ namespace FrozenCore.Commands
             IsComplete = false;
             foreach (Command c in _commands)
             {
-                c.Execute(inSecondsPast, inGameObject);
+                if (!c.IsComplete)
+                {
+                    c.Execute(inSecondsPast, inGameObject);
+                }
                 IsComplete &= c.IsComplete;
             }
         }
