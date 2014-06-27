@@ -83,7 +83,7 @@ namespace FrozenCore.Widgets
             SkinnedPanel sp = new SkinnedPanel();
             sp.VisibilityGroup = this.VisibilityGroup;
             sp.Skin = BarSkin;
-            sp.Rect = Rect.AlignLeft(0, 0, 0, Rect.H);
+            sp.Rect = Rect.AlignLeft(-Rect.W / 2 + Skin.Res.Border.X, 0, 0, Rect.H - Skin.Res.Border.Y - Skin.Res.Border.W);
 
             _bar.AddComponent<SkinnedPanel>(sp);
             Scene.Current.AddObject(_bar);
@@ -133,7 +133,7 @@ namespace FrozenCore.Widgets
 
             SkinnedWidget sw = _bar.GetComponent<SkinnedWidget>();
             Rect rect = sw.Rect;
-            rect.W = 10;
+            rect.W = (_vertices[6].Pos - _vertices[5].Pos).X * _value / 100;
 
             sw.Rect = rect;
         }
