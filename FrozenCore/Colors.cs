@@ -5,6 +5,9 @@ using OpenTK;
 
 namespace FrozenCore
 {
+    /// <summary>
+    /// Utility class containing the translation of .net's default Colors to ColorRgba objects
+    /// </summary>
     public static class Colors
     {
         public static readonly ColorRgba AliceBlue = new ColorRgba(240, 248, 255, 255);
@@ -151,13 +154,26 @@ namespace FrozenCore
         public static readonly ColorRgba YellowGreen = new ColorRgba(154, 205, 50, 255);
     }
 
+    /// <summary>
+    /// ColorRgba Extensions
+    /// </summary>
     public static class ColorRgbaExtensions
     {
+        /// <summary>
+        /// Converts a ColorRgba to Vector4 (R, G, B, A) = (X, Y, Z, W)
+        /// </summary>
+        /// <param name="value">The Color</param>
+        /// <returns></returns>
         public static Vector4 ToVector4(this ColorRgba value)
         {
             return new Vector4(value.R, value.G, value.B, value.A);
         }
 
+        /// <summary>
+        /// Converts a Vector4 to ColorRgba (X, Y, Z, W) = (R, G, B, A)
+        /// </summary>
+        /// <param name="color">The Color</param>
+        /// <param name="value">The Vector4 to convert</param>
         public static void FromVector4(this ColorRgba color, Vector4 value)
         {
             color.R = (byte)value.X;

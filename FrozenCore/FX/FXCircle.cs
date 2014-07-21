@@ -7,9 +7,15 @@ using OpenTK;
 
 namespace FrozenCore.FX
 {
+    /// <summary>
+    /// Implementation of a circular FXArea
+    /// </summary>
     [Serializable]
     public class FXCircle : FXArea
     {
+        /// <summary>
+        /// [GET/SET] The radius of the Area
+        /// </summary>
         public float Radius { get; set; }
 
         protected override void _DrawInEditor(Canvas inCanvas, Vector3 inPosition)

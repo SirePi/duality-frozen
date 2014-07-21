@@ -9,13 +9,13 @@ using OpenTK;
 namespace FrozenCore.FX
 {
     /// <summary>
-    /// Component used by
+    /// Abstract Component used by FX classes to determine the area where the effect can appear
     /// </summary>
     [Serializable]
     [RequiredComponent(typeof(Transform))]
     public abstract class FXArea : Component
     {
-        public void DrawInEditor(Canvas inCanvas)
+        internal void DrawInEditor(Canvas inCanvas)
         {
             inCanvas.PushState();
 
@@ -26,7 +26,7 @@ namespace FrozenCore.FX
             inCanvas.PopState();
         }
 
-        public Vector3 GetPoint(Random inRandom)
+        internal Vector3 GetPoint(Random inRandom)
         {
             return _GetPoint(inRandom);
         }

@@ -6,6 +6,9 @@ using OpenTK;
 
 namespace FrozenCore.FX
 {
+    /// <summary>
+    /// Implementation of a puntiform FXArea
+    /// </summary>
     [Serializable]
     public class FXPoint : FXArea
     {

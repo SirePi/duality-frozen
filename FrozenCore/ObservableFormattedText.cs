@@ -5,6 +5,7 @@ using System;
 
 namespace FrozenCore
 {
+    /*
     [Serializable]
     public class ObservableFormattedText : FormattedText
     {
@@ -24,5 +25,5 @@ namespace FrozenCore
             get { return _textChanged; }
             internal set { _textChanged = value; }
         }
-    }
+    }*/
 }

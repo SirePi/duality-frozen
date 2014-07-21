@@ -8,12 +8,20 @@ using Duality;
 
 namespace FrozenCore.Commands
 {
+    /// <summary>
+    /// Abstract class acting as the base for all Commands
+    /// </summary>
     public abstract class Command
     {
         public bool IsComplete { get; protected set; }
         public abstract void Execute(float inSecondsPast, GameObject inGameObject);
     }
 
+    /// <summary>
+    /// Abstract class used in order to allow the Command to target a specific Component.
+    /// An Exception is thrown if the required Component is not present inside the Commanded GameObject.
+    /// </summary>
+    /// <typeparam name="T">The Type of the required Component</typeparam>
     public abstract class Command<T> : Command where T : Component
     {
         protected T GetComponent(GameObject inGameObject)
@@ -29,6 +37,12 @@ namespace FrozenCore.Commands
         }
     }
 
+    /// <summary>
+    /// Abstract class used in order to allow the Command to target a specific Component.
+    /// An Exception is thrown if the required Component is not present inside the Commanded GameObject.
+    /// Provides utility methods to define the duration of the Command based on a time, or a speed.
+    /// </summary>
+    /// <typeparam name="T">The Type of the required Component</typeparam>
     public abstract class TimedCommand<T> : Command<T> where T : Component
     {
         protected float _timePast;

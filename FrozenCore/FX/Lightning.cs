@@ -9,6 +9,9 @@ using OpenTK;
 
 namespace FrozenCore.FX
 {
+    /// <summary>
+    /// A Lightning emitter. Requires 2 FXAreas to work
+    /// </summary>
     [Serializable]
     public class Lightning : Component, ICmpUpdatable, ICmpRenderer, ICmpInitializable
     {
@@ -24,19 +27,48 @@ namespace FrozenCore.FX
         [NonSerialized]
         private float _timeSinceLastBolt;
 
+        /// <summary>
+        /// [GET/SET] The lifetime, in seconds, of a single Bolt on screen
+        /// </summary>
         public float BoltLifeTime { get; set; }
+        /// <summary>
+        /// [GET/SET] The color of the Bolts emitted by this instance
+        /// </summary>
         public ColorRgba Color { get; set; }
+        /// <summary>
+        /// [GET/SET] The span, in seconds, between the emission of 2 Bolts
+        /// </summary>
         public float EmitEvery { get; set; }
+        /// <summary>
+        /// [GET/SET] The Source Area of the Bolts
+        /// </summary>
         public FXArea FXSource { get; set; }
+        /// <summary>
+        /// [GET/SET] The Target Area of the Bolts
+        /// </summary>
         public FXArea FXTarget { get; set; }
+
         float ICmpRenderer.BoundRadius
         {
             get { return 0; }
         }
+        /// <summary>
+        /// [GET/SET] The maximum amount of Sway (distance from the line connecting the starting and ending point) 
+        /// each Bolt can move from the median line
+        /// </summary>
         public float Sway { get; set; }
+        /// <summary>
+        /// [GET/SET] Thickness, in pixels, at focus distance of the Camera, of the Bolt
+        /// </summary>
         public float Thickness { get; set; }
+        /// <summary>
+        /// [GET/SET] The VisibilityGroup of the Component
+        /// </summary>
         public VisibilityFlag VisibilityGroup { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Lightning()
         {
             Sway = 100;

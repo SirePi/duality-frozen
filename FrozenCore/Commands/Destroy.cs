@@ -10,12 +10,11 @@ using FrozenCore.Data;
 
 namespace FrozenCore.Commands
 {
+    /// <summary>
+    /// Command used to destroy (dispose and remove from the Scene) a GameObject
+    /// </summary>
     public sealed class Destroy : Command
     {
-        internal Destroy()
-        {
-        }
-
         public override void Execute(float inSecondsPast, GameObject inGameObject)
         {
             inGameObject.DisposeLater();

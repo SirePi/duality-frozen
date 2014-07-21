@@ -4,6 +4,9 @@ using OpenTK;
 
 namespace FrozenCore
 {
+    /// <summary>
+    /// Represents a Point in Scene, World and UV coordinates
+    /// </summary>
     public struct MultiSpacePoint
     {
         public Vector3 SceneCoords;

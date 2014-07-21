@@ -5,6 +5,10 @@ using System.Text;
 
 namespace FrozenCore.Commands
 {
+    /// <summary>
+    /// Command encapsulating a list of Commands that will be carried out in parallel on a single GameObject.
+    /// The ParallelCommand will be considered Complete once all subCommands are completed.
+    /// </summary>
     public class ParallelCommand : Command
     {
         private List<Command> _commands;

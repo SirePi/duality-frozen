@@ -6,7 +6,8 @@ using System.Collections.Generic;
 namespace FrozenCore
 {
     /// <summary>
-    /// http://leonardinius.galeoconsulting.com/2012/06/howto-c-enums-with-additional-attributes-java-enum-gaps-covered/
+    /// Enumeration extentions
+    /// <see cref="http://leonardinius.galeoconsulting.com/2012/06/howto-c-enums-with-additional-attributes-java-enum-gaps-covered/"/>
     /// </summary>
     public static class EnumExtensions
     {

@@ -11,6 +11,9 @@ using FrozenCore.Data;
 
 namespace FrozenCore.Commands
 {
+    /// <summary>
+    /// TimedCommand used to Move a GameObject in 3D
+    /// </summary>
     public sealed class Move : TimedCommand<Transform>
     {
         private Vector3Range _range;

@@ -10,6 +10,9 @@ using FrozenCore.Data;
 
 namespace FrozenCore.Commands
 {
+    /// <summary>
+    /// TimedCommand used to rotate a GameObject around its Z axis.
+    /// </summary>
     public sealed class Rotate : TimedCommand<Transform>
     {
         private FloatRange _range;

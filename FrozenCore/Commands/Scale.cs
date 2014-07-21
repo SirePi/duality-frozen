@@ -11,6 +11,9 @@ using FrozenCore.Data;
 
 namespace FrozenCore.Commands
 {
+    /// <summary>
+    /// TimedCommand used to alter a GameObject's scale
+    /// </summary>
     public sealed class Scale : TimedCommand<Transform>
     {
         private FloatRange _range;

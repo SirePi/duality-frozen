@@ -10,6 +10,9 @@ using OpenTK;
 
 namespace FrozenCore.FX
 {
+    /// <summary>
+    /// A Particle Emitter
+    /// </summary>
     [Serializable]
     public class ParticleEmitter : Component, IDisposable, ICmpUpdatable, ICmpRenderer, ICmpInitializable
     {

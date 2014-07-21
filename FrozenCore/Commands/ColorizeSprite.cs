@@ -11,6 +11,9 @@ using FrozenCore.Data;
 
 namespace FrozenCore.Commands
 {
+    /// <summary>
+    /// TimedCommand used to alter over time the colorization of a SpriteRenderer
+    /// </summary>
     public sealed class ColorizeSprite : TimedCommand<SpriteRenderer>
     {
         private ColorRange _range;

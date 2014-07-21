@@ -10,6 +10,9 @@ using FrozenCore.Data;
 
 namespace FrozenCore.Commands
 {
+    /// <summary>
+    /// A utility Command used to send a signal to the other Commands. Used for command synchronization via WaitFor
+    /// </summary>
     public sealed class Signal : Command
     {
         public string Value { get; private set; }

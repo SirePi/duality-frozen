@@ -6,6 +6,14 @@ using Duality;
 
 namespace FrozenCore.Components
 {
+    /// <summary>
+    /// This Component is in charge of the asynchronous loading of a LoadableResource.
+    /// The Resource is loaded using a separate thread working in background; the thread can be monitored 
+    /// by implementing the LoaderOnUpdate and LoadingComplete methods.
+    /// <example>It's possible to have the LoadableResource set a volatile field from time to time that
+    /// reflects the loading percentage. LoaderOnUpdate could be then be implemented in order to display
+    /// such percentage, or affect a loading bar.</example>
+    /// </summary>
     [Serializable]
     public abstract class ThreadedLoader : Component, ICmpUpdatable, ICmpInitializable
     {

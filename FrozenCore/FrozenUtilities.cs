@@ -7,6 +7,9 @@ using OpenTK;
 
 namespace FrozenCore
 {
+    /// <summary>
+    /// A collection of general-purpose methods, mainly used inside FrozenCore.
+    /// </summary>
     public static class FrozenUtilities
     {
         private static readonly int[] POWER_OF_TWO_SIZES = new int[] {

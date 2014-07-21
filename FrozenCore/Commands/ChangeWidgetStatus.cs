@@ -12,6 +12,9 @@ using FrozenCore.Widgets;
 
 namespace FrozenCore.Commands
 {
+    /// <summary>
+    /// Command used to alter a Widget's Status.
+    /// </summary>
     public sealed class ChangeWidgetStatus : Command<Widget>
     {
         Widget.WidgetStatus _target;

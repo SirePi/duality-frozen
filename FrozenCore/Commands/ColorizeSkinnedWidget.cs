@@ -12,6 +12,9 @@ using FrozenCore.Widgets;
 
 namespace FrozenCore.Commands
 {
+    /// <summary>
+    /// TimedCommand used to alter over time the colorization of a Widget
+    /// </summary>
     public sealed class ColorizeSkinnedWidget : TimedCommand<SkinnedWidget>
     {
         private ColorRange _range;

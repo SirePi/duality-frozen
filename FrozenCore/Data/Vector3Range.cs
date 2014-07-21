@@ -7,7 +7,7 @@ using OpenTK;
 namespace FrozenCore.Data
 {
     /// <summary>
-    /// Implementation of Range for ColorRgba values
+    /// Implementation of Range for Vector3 values
     /// </summary>
     public class Vector3Range : Range<Vector3>
     {

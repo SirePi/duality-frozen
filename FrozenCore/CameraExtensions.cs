@@ -12,8 +12,18 @@ using Duality.Resources;
 
 namespace FrozenCore
 {
+    /// <summary>
+    /// Camera extensions
+    /// </summary>
     public static class CameraExtensions
     {
+        /// <summary>
+        /// Moves the Camera in 3D in order to contain the entirety of the Target Area in the screen's
+        /// viewport
+        /// </summary>
+        /// <param name="inCamera">The Camera</param>
+        /// <param name="inTargetArea">A 2D Polygon representing the extent of the area to show on screen</param>
+        /// <param name="inTargetZ">The reference Z coordinate of the area to show on screen</param>
         public static void LookAt(this Camera inCamera, Polygon inTargetArea, float inTargetZ)
         {
             float angle = inCamera.GameObj.Transform.Angle;
@@ -56,6 +66,13 @@ namespace FrozenCore
             inCamera.GameObj.Transform.MoveToAbs(new Vector3(centroid, z));
         }
 
+        /// <summary>
+        /// Moves the Camera on the XY plane, and alters the camera's FocusDist property in order to 
+        /// contain the entirety of the Target Area in the screen's viewport
+        /// </summary>
+        /// <param name="inCamera">The Camera</param>
+        /// <param name="inFocusArea">A 2D Polygon representing the extent of the area to show on screen</param>
+        /// <param name="inFocusZ">The reference Z coordinate of the area to show on screen</param>
         public static void FocusOn(this Camera inCamera, Polygon inFocusArea, float inFocusZ)
         {
             float angle = inCamera.GameObj.Transform.Angle;
@@ -98,6 +115,14 @@ namespace FrozenCore
             inCamera.GameObj.Transform.MoveToAbs(new Vector3(centroid, inCamera.GameObj.Transform.Pos.Z));
         }
 
+        /// <summary>
+        /// Creates a GameObject covering the entirety of the Camera's viewport and applies a ColorizeSprite
+        /// Command going from one Color to another
+        /// </summary>
+        /// <param name="inCamera">The Camera</param>
+        /// <param name="inTime">The time, in milliseconds, that the transition will take</param>
+        /// <param name="inStartColor">The starting color</param>
+        /// <param name="inEndColor">The ending color</param>
         public static void Fade(this Camera inCamera, float inTime, ColorRgba inStartColor, ColorRgba inEndColor)
         {
             GameObject fader = new GameObject("Fader", inCamera.GameObj);

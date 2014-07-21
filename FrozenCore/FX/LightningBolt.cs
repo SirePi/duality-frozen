@@ -11,7 +11,8 @@ using OpenTK.Graphics.OpenGL;
 namespace FrozenCore.FX
 {
     /// <summary>
-    /// Based on http://gamedev.tutsplus.com/tutorials/implementation/how-to-generate-shockingly-good-2d-lightning-effects/
+    /// Class modeling a single Lightning Bolt emitted by a Lightning emitter
+    /// <see cref="http://gamedev.tutsplus.com/tutorials/implementation/how-to-generate-shockingly-good-2d-lightning-effects/"/>
     /// </summary>
     internal class LightningBolt
     {
@@ -32,9 +33,9 @@ namespace FrozenCore.FX
         private List<Vector2> _verticesPositions;
         public Dictionary<IDrawDevice, BoltData> BatchInfos { get; private set; }
 
-        public ColorRgba CurrentColor { get; private set; }
-        public float CurrentThickness { get; private set; }
-        public bool IsAlive { get; private set; }
+        internal ColorRgba CurrentColor { get; private set; }
+        internal float CurrentThickness { get; private set; }
+        internal bool IsAlive { get; private set; }
 
         internal LightningBolt()
         {

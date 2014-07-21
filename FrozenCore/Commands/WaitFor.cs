@@ -11,6 +11,10 @@ using FrozenCore.Components;
 
 namespace FrozenCore.Commands
 {
+    /// <summary>
+    /// A utility Command that waits for a signal coming from another GameObject. Used for command synchronization 
+    /// via Signal
+    /// </summary>
     public sealed class WaitFor : Command<Commander>
     {
         private Commander _targetAnimator;

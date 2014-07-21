@@ -1,5 +1,4 @@
 ﻿// This code is provided under the MIT license. Originally by Roman Starkov.
-// http://roman.st/Article/Faster-Marsaglia-Xorshift-pseudo-random-generator-in-unsafe-C
 
 using System;
 using System.Collections.Generic;
@@ -7,6 +6,10 @@ using System.Linq;
 
 namespace FrozenCore
 {
+    /// <summary>
+    /// A XorShift-based fast random generator
+    /// <see cref="http://roman.st/Article/Faster-Marsaglia-Xorshift-pseudo-random-generator-in-unsafe-C"/>
+    /// </summary>
     public sealed class FastRandom : Xorshift
     {
         public override int FillBufferMultipleRequired { get { return 4; } }

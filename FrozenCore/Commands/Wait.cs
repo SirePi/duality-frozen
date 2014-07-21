@@ -10,6 +10,9 @@ using FrozenCore.Data;
 
 namespace FrozenCore.Commands
 {
+    /// <summary>
+    /// A Command used to stop the execution of the following Command until enough time has elapsed.
+    /// </summary>
     public sealed class Wait : Command
     {
         private float _timeToWait;

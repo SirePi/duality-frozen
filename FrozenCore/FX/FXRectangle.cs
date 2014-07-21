@@ -6,9 +6,15 @@ using OpenTK;
 
 namespace FrozenCore.FX
 {
+    /// <summary>
+    /// Implementation of a Rectangular FXArea
+    /// </summary>
     [Serializable]
     public class FXRectangle : FXArea
     {
+        /// <summary>
+        /// [GET/SET] the size of the Area
+        /// </summary>
         public Vector2 Size { get; set; }
 
         protected override void _DrawInEditor(Canvas inCanvas, Vector3 inPosition)

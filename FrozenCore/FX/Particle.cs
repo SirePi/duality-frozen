@@ -8,6 +8,9 @@ using OpenTK;
 
 namespace FrozenCore.FX
 {
+    /// <summary>
+    /// Class modeling a single Particle emitted by a Particle emitter
+    /// </summary>
     internal class Particle
     {
         private ColorRange _colorRange;
@@ -22,9 +25,9 @@ namespace FrozenCore.FX
         private float _scaleSpeed;
         private float _timeToLive;
 
-        public bool IsAlive { get; private set; }
-        public Vector3 Position { get; private set; }
-        public VertexC1P3T2[] Vertices { get; private set; }
+        internal bool IsAlive { get; private set; }
+        internal Vector3 Position { get; private set; }
+        internal VertexC1P3T2[] Vertices { get; private set; }
 
         internal Particle()
         {
