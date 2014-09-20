@@ -50,9 +50,12 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+    <Reference Include="Duality, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\duality\Duality\OpenTK.dll</HintPath>
+      <HintPath>..\..\duality\Duality\bin\Release\Duality.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\..\duality\Duality\bin\Release\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -170,16 +173,10 @@
     </None>
     <None Include="LICENSE" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\duality\Duality\Duality.csproj">
-      <Project>{D821AFB9-BCC9-4025-9A9C-798E2BC546AB}</Project>
-      <Name>Duality</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetDir)FrozenCore*" "$(SolutionDir)..\..\Plugins\*"
-copy /Y "$(TargetDir)Triangulator*" "$(SolutionDir)..\..\Plugins\*"</PostBuildEvent>
+    <PostBuildEvent>REM copy /Y "$(TargetDir)FrozenCore*" "$(SolutionDir)..\..\Plugins\*"
+REM copy /Y "$(TargetDir)Triangulator*" "$(SolutionDir)..\..\Plugins\*"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

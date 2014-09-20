@@ -181,5 +181,10 @@ namespace FrozenCore
             color.B = (byte)value.Z;
             color.A = (byte)value.W;
         }
+
+        public static float[] ToFloatArray(this ColorRgba value)
+        {
+            return new float[] { value.R / 255f, value.G / 255f, value.B / 255f, value.A / 255f };
+        }
     }
 }
