@@ -26,7 +26,7 @@ namespace FrozenCore.Widgets
         private bool _isDragged;
 
         [NonSerialized]
-        private bool _isMinimized;
+        private WindowStatus _wStatus;
 
         [NonSerialized]
         private GameObject _maximizeButton;
@@ -152,11 +152,14 @@ namespace FrozenCore.Widgets
             _fText = new FormattedText();
             _titleColor = Colors.White;
             _isDragged = false;
+
+            _wStatus = WindowStatus.Normal;
         }
 
         internal void Maximize()
         {
-            _isMinimized = false;
+            float deltaX = _maximizedSize.X - Rect.W;
+            LayoutButtons(deltaX);
 
             Rect newRect = Rect;
             newRect.W = _maximizedSize.X;
@@ -165,38 +168,38 @@ namespace FrozenCore.Widgets
 
             _maximizeButton.Active = false;
             _restoreButton.Active = true;
-            if (_minimizeButton != null)
-            {
-                _minimizeButton.Active = true;
-            }
 
             _restoreButton.Transform.Pos = _maximizeButton.Transform.Pos;
 
-            float deltaX = _maximizedSize.X - Rect.W;
-            LayoutButtons(deltaX);
-
+            _wStatus |= WindowStatus.Maximized;
             EnableChildren(true);
             OnResize();
         }
 
         internal void Minimize()
         {
-            _isMinimized = true;
+            Rect newRect = Rect;
+            bool isMinimized = (_wStatus & WindowStatus.Minimized) > 0;
 
-            Rect newRect = _normalRect;
-            newRect.H = Skin.Res.Border.Y + Skin.Res.Border.W;
+            if (isMinimized)
+            {
+                if ((_wStatus & WindowStatus.Maximized) > 0)
+                {
+                    newRect.H = _maximizedSize.Y;
+                }
+                else
+                {
+                    newRect.H = _normalRect.H;
+                }
+            }
+            else
+            {
+                newRect.H = Skin.Res.Border.Y + Skin.Res.Border.W;
+            }
             Rect = newRect;
 
-            _minimizeButton.Active = false;
-            _restoreButton.Active = true;
-            if (_maximizeButton != null)
-            {
-                _maximizeButton.Active = true;
-            }
-
-            _restoreButton.Transform.Pos = _minimizeButton.Transform.Pos;
-
-            EnableChildren(false);
+            _wStatus ^= WindowStatus.Minimized;
+            EnableChildren(isMinimized);
             OnResize();
         }
 
@@ -250,25 +253,21 @@ namespace FrozenCore.Widgets
 
         internal void Restore()
         {
-            if (!_isMinimized)
+            if ((_wStatus & WindowStatus.Maximized) > 0)
             {
-                float deltaX = _maximizedSize.X - Rect.W;
+                float deltaX = _maximizedSize.X - _normalRect.W;
                 LayoutButtons(-deltaX);
             }
-
-            _isMinimized = false;
 
             Rect = _normalRect;
 
             _restoreButton.Active = false;
-            if (_minimizeButton != null)
-            {
-                _minimizeButton.Active = true;
-            }
             if (_maximizeButton != null)
             {
                 _maximizeButton.Active = true;
             }
+
+            _wStatus ^= WindowStatus.Maximized;
 
             EnableChildren(true);
             OnResize();
@@ -330,7 +329,7 @@ namespace FrozenCore.Widgets
             _closeButton = new GameObject("closeButton", this.GameObj);
 
             Transform t = _closeButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - CloseButtonSize.X, 0, 0);
+            t.RelativePos = new Vector3(Rect.W - CloseButtonSize.X, 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             CloseButton cb = new CloseButton();
@@ -347,7 +346,7 @@ namespace FrozenCore.Widgets
             _maximizeButton = new GameObject("maximizeButton", this.GameObj);
 
             Transform t = _maximizeButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (ButtonsSize.X * 2), 0, 0);
+            t.RelativePos = new Vector3(Rect.W - (ButtonsSize.X * 2), 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             MaximizeButton mb = new MaximizeButton();
@@ -364,7 +363,7 @@ namespace FrozenCore.Widgets
             _minimizeButton = new GameObject("minimizeButton", this.GameObj);
 
             Transform t = _minimizeButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (ButtonsSize.X * 3), 0, 0);
+            t.RelativePos = new Vector3(Rect.W - (ButtonsSize.X * 3), 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             MinimizeButton mb = new MinimizeButton();
@@ -381,7 +380,7 @@ namespace FrozenCore.Widgets
             _restoreButton = new GameObject("restoreButton", this.GameObj);
 
             Transform t = _restoreButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (ButtonsSize.X * 4), 0, 0);
+            t.RelativePos = new Vector3(Rect.W - (ButtonsSize.X * 4), 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             RestoreButton rb = new RestoreButton();
@@ -460,5 +459,12 @@ namespace FrozenCore.Widgets
             pos.X += inDeltaX;
             inButton.Transform.RelativePos = pos;
         }
+    }
+
+    internal enum WindowStatus
+    {
+        Normal = 0x00,
+        Minimized = 0x01,
+        Maximized = 0x02
     }
 }

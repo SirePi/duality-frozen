@@ -131,11 +131,14 @@ namespace FrozenCore.Widgets
             _value = Math.Max(Value, 0);
             _value = Math.Min(Value, 100);
 
-            SkinnedWidget sw = _bar.GetComponent<SkinnedWidget>();
-            Rect rect = sw.Rect;
-            rect.W = (_vertices[6].Pos - _vertices[5].Pos).X * _value / 100;
+            if (_bar != null)
+            {
+                SkinnedWidget sw = _bar.GetComponent<SkinnedWidget>();
+                Rect rect = sw.Rect;
+                rect.W = (_vertices[6].Pos - _vertices[5].Pos).X * _value / 100;
 
-            sw.Rect = rect;
+                sw.Rect = rect;
+            }
         }
     }
 }
