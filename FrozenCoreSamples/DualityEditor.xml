@@ -4,110 +4,42 @@
         <name>DualityEditor</name>
     </assembly>
     <members>
-        <member name="F:Duality.Editor.Forms.CreateObjectDialog.components">
+        <member name="M:Duality.Editor.Program.Main(System.String[])">
             <summary>
-            Required designer variable.
+            Der Haupteinstiegspunkt für die Anwendung.
             </summary>
         </member>
-        <member name="M:Duality.Editor.Forms.CreateObjectDialog.Dispose(System.Boolean)">
+        <member name="F:Duality.Editor.Forms.MainForm.components">
             <summary>
-            Clean up any resources being used.
-            </summary>
-            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        </member>
-        <member name="M:Duality.Editor.Forms.CreateObjectDialog.InitializeComponent">
-            <summary>
-            Required method for Designer support - do not modify
-            the contents of this method with the code editor.
+            Erforderliche Designervariable.
             </summary>
         </member>
-        <member name="T:Duality.Editor.PropertyEditorMatching">
+        <member name="M:Duality.Editor.Forms.MainForm.Dispose(System.Boolean)">
             <summary>
-            Calculates a PropertyEditorAssignment priority for the given property Type in a certain context.
+            Verwendete Ressourcen bereinigen.
             </summary>
-            <param name="propertyType"></param>
-            <param name="context"></param>
-            <returns>The priority which connects the given Type to the PropertyEditor. Return <see cref="F:Duality.Editor.PropertyEditorAssignmentAttribute.PriorityNone"/> for no assignment.</returns>
+            <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
         </member>
-        <member name="T:Duality.Editor.PropertyEditorAssignmentAttribute">
+        <member name="M:Duality.Editor.Forms.MainForm.InitializeComponent">
             <summary>
-            This attribute is utilized to match PropertyEditors to the property Types they are supposed to edit.
-            </summary>
-        </member>
-        <member name="M:Duality.Editor.PropertyEditorAssignmentAttribute.#ctor(System.Type,System.Int32)">
-            <summary>
-            Creates a static PropertyEditor assignment to the specified property Type.
-            </summary>
-            <param name="propertyType"></param>
-            <param name="priority"></param>
-        </member>
-        <member name="M:Duality.Editor.PropertyEditorAssignmentAttribute.#ctor(System.Type,System.String)">
-            <summary>
-            Creates a dynamic PropertyEditor assignment based on the specified static <see cref="T:Duality.Editor.PropertyEditorMatching"/> method.
-            </summary>
-            <param name="methodHostType"></param>
-            <param name="staticMethodName"></param>
-        </member>
-        <member name="M:Duality.Editor.PropertyEditorAssignmentAttribute.MatchToProperty(System.Type,AdamsLair.WinForms.PropertyEditing.ProviderContext)">
-            <summary>
-            Determines the matching level between a PropertyEditor and the specified property Type.
-            </summary>
-            <param name="propertyType"></param>
-            <param name="context"></param>
-            <returns></returns>
-        </member>
-        <member name="F:Duality.Editor.ConvertOperation.Operation.Convert">
-            <summary>
-            A simple conversion operation that does not affect any data.
-            Example: Retrieving Texture from Material.
+            Erforderliche Methode für die Designerunterstützung.
+            Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
             </summary>
         </member>
-        <member name="F:Duality.Editor.ConvertOperation.Operation.CreateRes">
+        <member name="F:Duality.Editor.Forms.AboutBox.components">
             <summary>
-            A conversion that might create new resource data.
-            Example: Creating Material from Texture.
+            Erforderliche Designervariable.
             </summary>
         </member>
-        <member name="F:Duality.Editor.ConvertOperation.Operation.CreateObj">
+        <member name="M:Duality.Editor.Forms.AboutBox.Dispose(System.Boolean)">
             <summary>
-            A conversion that might create new object data.
-            Example: Construct a GameObject out of a set of Resources.
+            Verwendete Ressourcen bereinigen.
             </summary>
         </member>
-        <member name="F:Duality.Editor.HighlightMode.Conceptual">
+        <member name="M:Duality.Editor.Forms.AboutBox.InitializeComponent">
             <summary>
-            Highlights an objects conceptual representation, e.g. flashing its entry in an object overview.
-            </summary>
-        </member>
-        <member name="F:Duality.Editor.HighlightMode.Spatial">
-            <summary>
-            Highlights an objects spatial location, e.g. focusing it spatially in a scene view.
-            </summary>
-        </member>
-        <member name="M:Duality.Editor.DualityEditorApp.Highlight(System.Object,Duality.Editor.ObjectSelection,Duality.Editor.HighlightMode)">
-            <summary>
-            Triggers a highlight event in the editor, to which the appropriate modules will
-            be able to react. This usually means flashing a certain tree view entry or similar.
-            </summary>
-            <param name="sender"></param>
-            <param name="obj"></param>
-            <param name="mode"></param>
-        </member>
-        <member name="F:Duality.Editor.Forms.PublishGameDialog.components">
-            <summary>
-            Required designer variable.
-            </summary>
-        </member>
-        <member name="M:Duality.Editor.Forms.PublishGameDialog.Dispose(System.Boolean)">
-            <summary>
-            Clean up any resources being used.
-            </summary>
-            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        </member>
-        <member name="M:Duality.Editor.Forms.PublishGameDialog.InitializeComponent">
-            <summary>
-            Required method for Designer support - do not modify
-            the contents of this method with the code editor.
+            Erforderliche Methode für die Designerunterstützung.
+            Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
             </summary>
         </member>
         <member name="T:Duality.Editor.Properties.GeneralRes">
@@ -822,57 +754,94 @@
               Sucht eine lokalisierte Zeichenfolge, die Re-Parent {0} GameObjects ähnelt.
             </summary>
         </member>
-        <member name="T:Duality.Editor.Properties.GeneralResCache">
+        <member name="T:Duality.Editor.RecycleBin">
             <summary>
-            Since directly accessing code generated from .resx files will result in a deserialization on
-            each Resource access, this class allows cached Resource access.
+            Send files directly to the recycle bin.
             </summary>
         </member>
-        <member name="F:Duality.Editor.Forms.AboutBox.components">
+        <member name="M:Duality.Editor.RecycleBin.Send(System.String,Duality.Editor.NativeMethods.FileOperationFlags)">
             <summary>
-            Erforderliche Designervariable.
+            Send file to recycle bin
             </summary>
+            <param name="path">Location of directory or file to recycle</param>
+            <param name="flags">FileOperationFlags to add in addition to FOF_ALLOWUNDO</param>
         </member>
-        <member name="M:Duality.Editor.Forms.AboutBox.Dispose(System.Boolean)">
+        <member name="M:Duality.Editor.RecycleBin.Send(System.String)">
             <summary>
-            Verwendete Ressourcen bereinigen.
+            Send file to recycle bin.  Display dialog, display warning if files are too big to fit (FOF_WANTNUKEWARNING)
             </summary>
+            <param name="path">Location of directory or file to recycle</param>
         </member>
-        <member name="M:Duality.Editor.Forms.AboutBox.InitializeComponent">
+        <member name="M:Duality.Editor.RecycleBin.SendSilent(System.String)">
             <summary>
-            Erforderliche Methode für die Designerunterstützung.
-            Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+            Send file silently to recycle bin.  Surpress dialog, surpress errors, delete if too large.
             </summary>
+            <param name="path">Location of directory or file to recycle</param>
         </member>
-        <member name="F:Duality.Editor.Forms.AppRunningDialog.components">
+        <member name="F:Duality.Editor.Forms.SplashScreen.components">
             <summary>
             Required designer variable.
             </summary>
         </member>
-        <member name="M:Duality.Editor.Forms.AppRunningDialog.Dispose(System.Boolean)">
+        <member name="M:Duality.Editor.Forms.SplashScreen.Dispose(System.Boolean)">
             <summary>
             Clean up any resources being used.
             </summary>
             <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         </member>
-        <member name="M:Duality.Editor.Forms.AppRunningDialog.InitializeComponent">
+        <member name="M:Duality.Editor.Forms.SplashScreen.InitializeComponent">
             <summary>
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
             </summary>
         </member>
-        <member name="F:Duality.Editor.Forms.NewProjectDialog.components">
+        <member name="T:Duality.Editor.PropertyEditorMatching">
+            <summary>
+            Calculates a PropertyEditorAssignment priority for the given property Type in a certain context.
+            </summary>
+            <param name="propertyType"></param>
+            <param name="context"></param>
+            <returns>The priority which connects the given Type to the PropertyEditor. Return <see cref="F:Duality.Editor.PropertyEditorAssignmentAttribute.PriorityNone"/> for no assignment.</returns>
+        </member>
+        <member name="T:Duality.Editor.PropertyEditorAssignmentAttribute">
+            <summary>
+            This attribute is utilized to match PropertyEditors to the property Types they are supposed to edit.
+            </summary>
+        </member>
+        <member name="M:Duality.Editor.PropertyEditorAssignmentAttribute.#ctor(System.Type,System.Int32)">
+            <summary>
+            Creates a static PropertyEditor assignment to the specified property Type.
+            </summary>
+            <param name="propertyType"></param>
+            <param name="priority"></param>
+        </member>
+        <member name="M:Duality.Editor.PropertyEditorAssignmentAttribute.#ctor(System.Type,System.String)">
+            <summary>
+            Creates a dynamic PropertyEditor assignment based on the specified static <see cref="T:Duality.Editor.PropertyEditorMatching"/> method.
+            </summary>
+            <param name="methodHostType"></param>
+            <param name="staticMethodName"></param>
+        </member>
+        <member name="M:Duality.Editor.PropertyEditorAssignmentAttribute.MatchToProperty(System.Type,AdamsLair.WinForms.PropertyEditing.ProviderContext)">
+            <summary>
+            Determines the matching level between a PropertyEditor and the specified property Type.
+            </summary>
+            <param name="propertyType"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="F:Duality.Editor.Forms.ReloadCorePluginDialog.components">
             <summary>
             Required designer variable.
             </summary>
         </member>
-        <member name="M:Duality.Editor.Forms.NewProjectDialog.Dispose(System.Boolean)">
+        <member name="M:Duality.Editor.Forms.ReloadCorePluginDialog.Dispose(System.Boolean)">
             <summary>
             Clean up any resources being used.
             </summary>
             <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         </member>
-        <member name="M:Duality.Editor.Forms.NewProjectDialog.InitializeComponent">
+        <member name="M:Duality.Editor.Forms.ReloadCorePluginDialog.InitializeComponent">
             <summary>
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
@@ -895,166 +864,66 @@
             the contents of this method with the code editor.
             </summary>
         </member>
-        <member name="F:Duality.Editor.Forms.MainForm.components">
+        <member name="F:Duality.Editor.Forms.CreateObjectDialog.components">
             <summary>
-            Erforderliche Designervariable.
+            Required designer variable.
             </summary>
         </member>
-        <member name="M:Duality.Editor.Forms.MainForm.Dispose(System.Boolean)">
+        <member name="M:Duality.Editor.Forms.CreateObjectDialog.Dispose(System.Boolean)">
             <summary>
-            Verwendete Ressourcen bereinigen.
+            Clean up any resources being used.
             </summary>
-            <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         </member>
-        <member name="M:Duality.Editor.Forms.MainForm.InitializeComponent">
+        <member name="M:Duality.Editor.Forms.CreateObjectDialog.InitializeComponent">
             <summary>
-            Erforderliche Methode für die Designerunterstützung.
-            Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
-            </summary>
-        </member>
-        <member name="M:Duality.Editor.EditorPlugin.LoadPlugin">
-            <summary>
-            This method is called as soon as the plugins assembly is loaded. Initializes the plugins internal data.
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
             </summary>
         </member>
-        <member name="M:Duality.Editor.EditorPlugin.InitPlugin(Duality.Editor.Forms.MainForm)">
+        <member name="F:Duality.Editor.Forms.AppRunningDialog.components">
             <summary>
-            This method is called when all plugins and the editors user data and layout are loaded. May initialize GUI.
+            Required designer variable.
             </summary>
-            <param name="main"></param>
         </member>
-        <member name="M:Duality.Editor.EditorPlugin.SaveUserData(System.Xml.Linq.XElement)">
+        <member name="M:Duality.Editor.Forms.AppRunningDialog.Dispose(System.Boolean)">
             <summary>
-            Saves the plugins user data to the provided Xml Node.
+            Clean up any resources being used.
             </summary>
-            <param name="node"></param>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         </member>
-        <member name="M:Duality.Editor.EditorPlugin.LoadUserData(System.Xml.Linq.XElement)">
+        <member name="M:Duality.Editor.Forms.AppRunningDialog.InitializeComponent">
             <summary>
-            Loads the plugins user data from the provided Xml Node.
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
             </summary>
-            <param name="node"></param>
         </member>
-        <member name="M:Duality.Editor.EditorPlugin.DeserializeDockContent(System.Type)">
+        <member name="M:Duality.Editor.PackageManagement.PackageManager.GetForwardCompatibility(Duality.Editor.PackageManagement.PackageInfo)">
             <summary>
-            Called when initializing the editors layout and trying to set up one of this plugins DockContent.
-            Returns an IDockContent instance of the specified dockContentType. May return already existing
-            DockContent, a new an pre-setup instance or null as default.
+            Determines whether all installed pacakges are forward compatible to <paramref name="target"/>.
             </summary>
-            <param name="dockContentType"></param>
+            <param name="target"></param>
             <returns></returns>
         </member>
-        <member name="P:Duality.Editor.EditorPlugin.Id">
+        <member name="M:Duality.Editor.PackageManagement.PackageManager.GetSafeUpdateConfig(System.Collections.Generic.IEnumerable{Duality.Editor.PackageManagement.PackageInfo},Duality.Editor.PackageManagement.PackageCompatibility)">
             <summary>
-            The Plugins ID. This should be unique.
+            Given the specified set of packages, this method returns a new set of the same packages where each version is the newest one
+            that can be safely updated to, given the specified minimum forward compatibility level. If a package cannot be updated at all,
+            it will be omitted in the resulting list.
             </summary>
+            <param name="packages"></param>
+            <param name="minCompatibility"></param>
+            <returns></returns>
         </member>
-        <member name="F:Duality.Editor.Forms.ReloadCorePluginDialog.components">
+        <member name="M:Duality.Editor.PackageManagement.PackageManager.GetSafeUpdateConfig(System.Collections.Generic.IEnumerable{Duality.Editor.PackageManagement.LocalPackage},Duality.Editor.PackageManagement.PackageCompatibility)">
             <summary>
-            Required designer variable.
+            Given the specified set of packages, this method returns a new set of the same packages where each version is the newest one
+            that can be safely updated to, given the specified minimum forward compatibility level. If a package cannot be updated at all,
+            it will be omitted in the resulting list.
             </summary>
-        </member>
-        <member name="M:Duality.Editor.Forms.ReloadCorePluginDialog.Dispose(System.Boolean)">
-            <summary>
-            Clean up any resources being used.
-            </summary>
-            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        </member>
-        <member name="M:Duality.Editor.Forms.ReloadCorePluginDialog.InitializeComponent">
-            <summary>
-            Required method for Designer support - do not modify
-            the contents of this method with the code editor.
-            </summary>
-        </member>
-        <member name="F:Duality.Editor.Forms.SplashScreen.components">
-            <summary>
-            Required designer variable.
-            </summary>
-        </member>
-        <member name="M:Duality.Editor.Forms.SplashScreen.Dispose(System.Boolean)">
-            <summary>
-            Clean up any resources being used.
-            </summary>
-            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        </member>
-        <member name="M:Duality.Editor.Forms.SplashScreen.InitializeComponent">
-            <summary>
-            Required method for Designer support - do not modify
-            the contents of this method with the code editor.
-            </summary>
-        </member>
-        <member name="T:Duality.Editor.ExtMethodsForm">
-            <summary>
-            Provides extension methods for <see cref="T:System.Windows.Forms.Form"/>.
-            </summary>
-        </member>
-        <member name="M:Duality.Editor.ExtMethodsForm.SetTaskbarOverlayIcon(System.Windows.Forms.Form,System.Drawing.Icon,System.String)">
-            <summary>
-            Draws the specified overlay icon over this form's taskbar button.
-            </summary>
-            <param name="form">The form.</param>
-            <param name="icon">The overlay icon.</param>
-            <param name="description">The overlay icon's description.</param>
-        </member>
-        <member name="M:Duality.Editor.ExtMethodsForm.SetTaskbarProgress(System.Windows.Forms.ProgressBar)">
-            <summary>
-            Sets the progress bar in the containing form's taskbar button
-            to this progress bar's progress.
-            </summary>
-            <param name="progressBar">The progress bar.</param>
-        </member>
-        <member name="M:Duality.Editor.ExtMethodsForm.SetTaskbarProgress(System.Windows.Forms.ToolStripProgressBar)">
-            <summary>
-            Sets the progress bar in the containing form's taskbar button
-            to this toolstrip progress bar's progress.
-            </summary>
-            <param name="progressBar">The progress bar.</param>
-        </member>
-        <member name="M:Duality.Editor.ExtMethodsForm.SetTaskbarProgress(System.Windows.Forms.Form,System.Single)">
-            <summary>
-            Sets the progress bar of this form's taskbar button to the
-            specified percentage.
-            </summary>
-            <param name="form">The form.</param>
-            <param name="percent">The progress percentage.</param>
-        </member>
-        <member name="M:Duality.Editor.ExtMethodsForm.SetTaskbarProgressState(System.Windows.Forms.Form,Duality.Editor.ThumbnailProgressState)">
-            <summary>
-            Sets the progress bar of this form's taskbar button to the
-            specified state.
-            </summary>
-            <param name="form">The form.</param>
-            <param name="state">The taskbar progress state.</param>
-        </member>
-        <member name="T:Duality.Editor.ThumbnailProgressState">
-            <summary>
-            Represents the thumbnail progress bar state.
-            </summary>
-        </member>
-        <member name="F:Duality.Editor.ThumbnailProgressState.NoProgress">
-            <summary>
-            No progress is displayed.
-            </summary>
-        </member>
-        <member name="F:Duality.Editor.ThumbnailProgressState.Indeterminate">
-            <summary>
-            The progress is indeterminate (marquee).
-            </summary>
-        </member>
-        <member name="F:Duality.Editor.ThumbnailProgressState.Normal">
-            <summary>
-            Normal progress is displayed.
-            </summary>
-        </member>
-        <member name="F:Duality.Editor.ThumbnailProgressState.Error">
-            <summary>
-            An error occurred (red).
-            </summary>
-        </member>
-        <member name="F:Duality.Editor.ThumbnailProgressState.Paused">
-            <summary>
-            The operation is paused (yellow).
-            </summary>
+            <param name="packages"></param>
+            <param name="minCompatibility"></param>
+            <returns></returns>
         </member>
         <member name="T:Duality.Editor.NativeMethods.FileOperationFlags">
             <summary>
@@ -1116,35 +985,6 @@
             <summary>
             Rename the object(s)
             </summary>
-        </member>
-        <member name="M:Duality.Editor.Program.Main(System.String[])">
-            <summary>
-            Der Haupteinstiegspunkt für die Anwendung.
-            </summary>
-        </member>
-        <member name="T:Duality.Editor.RecycleBin">
-            <summary>
-            Send files directly to the recycle bin.
-            </summary>
-        </member>
-        <member name="M:Duality.Editor.RecycleBin.Send(System.String,Duality.Editor.NativeMethods.FileOperationFlags)">
-            <summary>
-            Send file to recycle bin
-            </summary>
-            <param name="path">Location of directory or file to recycle</param>
-            <param name="flags">FileOperationFlags to add in addition to FOF_ALLOWUNDO</param>
-        </member>
-        <member name="M:Duality.Editor.RecycleBin.Send(System.String)">
-            <summary>
-            Send file to recycle bin.  Display dialog, display warning if files are too big to fit (FOF_WANTNUKEWARNING)
-            </summary>
-            <param name="path">Location of directory or file to recycle</param>
-        </member>
-        <member name="M:Duality.Editor.RecycleBin.SendSilent(System.String)">
-            <summary>
-            Send file silently to recycle bin.  Surpress dialog, surpress errors, delete if too large.
-            </summary>
-            <param name="path">Location of directory or file to recycle</param>
         </member>
         <member name="T:Duality.Editor.Properties.Resources">
             <summary>
@@ -1260,6 +1100,193 @@
         <member name="P:Duality.Editor.Properties.Resources.working_bigtask">
             <summary>
               Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="T:Duality.Editor.Properties.GeneralResCache">
+            <summary>
+            Since directly accessing code generated from .resx files will result in a deserialization on
+            each Resource access, this class allows cached Resource access.
+            </summary>
+        </member>
+        <member name="F:Duality.Editor.HighlightMode.Conceptual">
+            <summary>
+            Highlights an objects conceptual representation, e.g. flashing its entry in an object overview.
+            </summary>
+        </member>
+        <member name="F:Duality.Editor.HighlightMode.Spatial">
+            <summary>
+            Highlights an objects spatial location, e.g. focusing it spatially in a scene view.
+            </summary>
+        </member>
+        <member name="M:Duality.Editor.DualityEditorApp.Highlight(System.Object,Duality.Editor.ObjectSelection,Duality.Editor.HighlightMode)">
+            <summary>
+            Triggers a highlight event in the editor, to which the appropriate modules will
+            be able to react. This usually means flashing a certain tree view entry or similar.
+            </summary>
+            <param name="sender"></param>
+            <param name="obj"></param>
+            <param name="mode"></param>
+        </member>
+        <member name="F:Duality.Editor.Forms.NewProjectDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Duality.Editor.Forms.NewProjectDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Duality.Editor.Forms.NewProjectDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:Duality.Editor.ConvertOperation.Operation.Convert">
+            <summary>
+            A simple conversion operation that does not affect any data.
+            Example: Retrieving Texture from Material.
+            </summary>
+        </member>
+        <member name="F:Duality.Editor.ConvertOperation.Operation.CreateRes">
+            <summary>
+            A conversion that might create new resource data.
+            Example: Creating Material from Texture.
+            </summary>
+        </member>
+        <member name="F:Duality.Editor.ConvertOperation.Operation.CreateObj">
+            <summary>
+            A conversion that might create new object data.
+            Example: Construct a GameObject out of a set of Resources.
+            </summary>
+        </member>
+        <member name="T:Duality.Editor.ExtMethodsForm">
+            <summary>
+            Provides extension methods for <see cref="T:System.Windows.Forms.Form"/>.
+            </summary>
+        </member>
+        <member name="M:Duality.Editor.ExtMethodsForm.SetTaskbarOverlayIcon(System.Windows.Forms.Form,System.Drawing.Icon,System.String)">
+            <summary>
+            Draws the specified overlay icon over this form's taskbar button.
+            </summary>
+            <param name="form">The form.</param>
+            <param name="icon">The overlay icon.</param>
+            <param name="description">The overlay icon's description.</param>
+        </member>
+        <member name="M:Duality.Editor.ExtMethodsForm.SetTaskbarProgress(System.Windows.Forms.ProgressBar)">
+            <summary>
+            Sets the progress bar in the containing form's taskbar button
+            to this progress bar's progress.
+            </summary>
+            <param name="progressBar">The progress bar.</param>
+        </member>
+        <member name="M:Duality.Editor.ExtMethodsForm.SetTaskbarProgress(System.Windows.Forms.ToolStripProgressBar)">
+            <summary>
+            Sets the progress bar in the containing form's taskbar button
+            to this toolstrip progress bar's progress.
+            </summary>
+            <param name="progressBar">The progress bar.</param>
+        </member>
+        <member name="M:Duality.Editor.ExtMethodsForm.SetTaskbarProgress(System.Windows.Forms.Form,System.Single)">
+            <summary>
+            Sets the progress bar of this form's taskbar button to the
+            specified percentage.
+            </summary>
+            <param name="form">The form.</param>
+            <param name="percent">The progress percentage.</param>
+        </member>
+        <member name="M:Duality.Editor.ExtMethodsForm.SetTaskbarProgressState(System.Windows.Forms.Form,Duality.Editor.ThumbnailProgressState)">
+            <summary>
+            Sets the progress bar of this form's taskbar button to the
+            specified state.
+            </summary>
+            <param name="form">The form.</param>
+            <param name="state">The taskbar progress state.</param>
+        </member>
+        <member name="T:Duality.Editor.ThumbnailProgressState">
+            <summary>
+            Represents the thumbnail progress bar state.
+            </summary>
+        </member>
+        <member name="F:Duality.Editor.ThumbnailProgressState.NoProgress">
+            <summary>
+            No progress is displayed.
+            </summary>
+        </member>
+        <member name="F:Duality.Editor.ThumbnailProgressState.Indeterminate">
+            <summary>
+            The progress is indeterminate (marquee).
+            </summary>
+        </member>
+        <member name="F:Duality.Editor.ThumbnailProgressState.Normal">
+            <summary>
+            Normal progress is displayed.
+            </summary>
+        </member>
+        <member name="F:Duality.Editor.ThumbnailProgressState.Error">
+            <summary>
+            An error occurred (red).
+            </summary>
+        </member>
+        <member name="F:Duality.Editor.ThumbnailProgressState.Paused">
+            <summary>
+            The operation is paused (yellow).
+            </summary>
+        </member>
+        <member name="M:Duality.Editor.EditorPlugin.LoadPlugin">
+            <summary>
+            This method is called as soon as the plugins assembly is loaded. Initializes the plugins internal data.
+            </summary>
+        </member>
+        <member name="M:Duality.Editor.EditorPlugin.InitPlugin(Duality.Editor.Forms.MainForm)">
+            <summary>
+            This method is called when all plugins and the editors user data and layout are loaded. May initialize GUI.
+            </summary>
+            <param name="main"></param>
+        </member>
+        <member name="M:Duality.Editor.EditorPlugin.SaveUserData(System.Xml.Linq.XElement)">
+            <summary>
+            Saves the plugins user data to the provided Xml Node.
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="M:Duality.Editor.EditorPlugin.LoadUserData(System.Xml.Linq.XElement)">
+            <summary>
+            Loads the plugins user data from the provided Xml Node.
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="M:Duality.Editor.EditorPlugin.DeserializeDockContent(System.Type)">
+            <summary>
+            Called when initializing the editors layout and trying to set up one of this plugins DockContent.
+            Returns an IDockContent instance of the specified dockContentType. May return already existing
+            DockContent, a new an pre-setup instance or null as default.
+            </summary>
+            <param name="dockContentType"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Duality.Editor.EditorPlugin.Id">
+            <summary>
+            The Plugins ID. This should be unique.
+            </summary>
+        </member>
+        <member name="F:Duality.Editor.Forms.PublishGameDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Duality.Editor.Forms.PublishGameDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Duality.Editor.Forms.PublishGameDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
             </summary>
         </member>
     </members>

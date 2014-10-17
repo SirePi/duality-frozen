@@ -211,6 +211,7 @@ namespace FrozenCore.Widgets
         protected override void OnUpdate(float inSecondsPast)
         {
             base.OnUpdate(inSecondsPast);
+
             if (_itemsAccessed)
             {
                 _listBoxComponent.Items = Items;

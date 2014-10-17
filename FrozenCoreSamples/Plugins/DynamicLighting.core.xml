@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DynamicLighting.core</name>
+    </assembly>
+    <members>
+        <member name="T:Duality.Plugins.DynamicLighting.Properties.DynLightResNames">
+            <summary>
+            This static class contains constant string representations of certain <see cref="T:Duality.Plugins.DynamicLighting.Properties.DynLightRes"/> resource entries.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.DynamicLighting.DynamicLightingCorePlugin">
+            <summary>
+            Defines the dynamic lighting core plugin.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.DynamicLighting.Properties.DynLightRes">
+            <summary>
+              Eine stark typisierte Ressourcenklasse zum Suchen von lokalisierten Zeichenfolgen usw.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.DynamicLighting.Properties.DynLightRes.ResourceManager">
+            <summary>
+              Gibt die zwischengespeicherte ResourceManager-Instanz zurück, die von dieser Klasse verwendet wird.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.DynamicLighting.Properties.DynLightRes.Culture">
+            <summary>
+              Überschreibt die CurrentUICulture-Eigenschaft des aktuellen Threads für alle
+              Ressourcenzuordnungen, die diese stark typisierte Ressourcenklasse verwenden.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.DynamicLighting.Properties.DynLightRes.IconCmpLightingSpriteRenderer">
+            <summary>
+              Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.DynamicLighting.Properties.DynLightRes.IconLight">
+            <summary>
+              Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.DynamicLighting.Properties.DynLightRes.IconResLightingTechnique">
+            <summary>
+              Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.DynamicLighting.LightingSpriteRenderer">
+            <summary>
+            Renders a sprite using dynamic lighting, either per-vertex or per-pixel, depending on the DrawTechnique that is used.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.DynamicLighting.LightingSpriteRenderer.VertexTranslucency">
+            <summary>
+            [GET / SET] Specifies the objects translucency for Light when using vertex lighting.
+            A very translucent object (1.0) is affected from Lights behind it as well as from Lights in front of it.
+            Non-translucent objects (0.0) are only affected by Lights in front of them.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.DynamicLighting.LightingAnimSpriteRenderer">
+            <summary>
+            Renders an animated sprite using dynamic lighting, either per-vertex or per-pixel, depending on the DrawTechnique that is used.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.DynamicLighting.LightingAnimSpriteRenderer.VertexTranslucency">
+            <summary>
+            [GET / SET] Specifies the objects translucency for Light when using vertex lighting.
+            A very translucent object (1.0) is affected from Lights behind it as well as from Lights in front of it.
+            Non-translucent objects (0.0) are only affected by Lights in front of them.
+            </summary>
+        </member>
+        <member name="T:Duality.Plugins.DynamicLighting.Light">
+            <summary>
+            A source of light. Supported light types are directional, ambient, point and spot.
+            To create directional or ambient lights, add this Component to a GameObject without Transform.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.DynamicLighting.Light.Direction">
+            <summary>
+            [GET / SET] The direction this Light points to. Used in spot and directional light. Set this to zero
+            in order to create a point light.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.DynamicLighting.Light.Color">
+            <summary>
+            [GET / SET] The Lights main color.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.DynamicLighting.Light.Intensity">
+            <summary>
+            [GET / SET] The Lights intensity.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.DynamicLighting.Light.AmbientColor">
+            <summary>
+            [GET / SET] The Lights ambient color value. Ambient light is used as base value in directional lighting.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.DynamicLighting.Light.AmbientIntensity">
+            <summary>
+            [GET / SET] The Lights ambient intensity. Ambient light is used as base value in directional lighting.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.DynamicLighting.Light.Range">
+            <summary>
+            [GET / SET] The Lights range. Only applies to point and spot lights.
+            </summary>
+        </member>
+        <member name="P:Duality.Plugins.DynamicLighting.Light.SpotFocus">
+            <summary>
+            [GET / SET] The Lights spot focus. The higher this value is, the smaller the spot radius.
+            </summary>
+        </member>
+    </members>
+</doc>

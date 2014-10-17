@@ -190,6 +190,7 @@ namespace FrozenCore.Widgets
 
         void ICmpRenderer.Draw(IDrawDevice device)
         {
+            PrepareVertices(device);
             Draw(device);
             DrawCanvas(new Canvas(device));
         }
@@ -264,7 +265,7 @@ namespace FrozenCore.Widgets
             return _areaOnScreen;
         }
 
-        internal virtual Polygon GetCustomAreaOnScreen(Camera inCamera)
+        public virtual Polygon GetCustomAreaOnScreen(Camera inCamera)
         {
             return Polygon.NO_POLYGON;
         }
@@ -294,6 +295,8 @@ namespace FrozenCore.Widgets
         protected abstract void OnStatusChange();
 
         protected abstract void OnUpdate(float inSecondsPast);
+
+        protected abstract void PrepareVertices(IDrawDevice inDevice);
 
         private void FixRelativeZ()
         {

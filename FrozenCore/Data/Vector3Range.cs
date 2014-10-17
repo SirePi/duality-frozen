@@ -11,8 +11,6 @@ namespace FrozenCore.Data
     /// </summary>
     public class Vector3Range : Range<Vector3>
     {
-        private Vector3 _delta;
-
         public Vector3Range(Vector3 inMin, Vector3 inMax)
             : base(inMin, inMax)
         {

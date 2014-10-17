@@ -63,12 +63,13 @@ namespace FrozenCore.Widgets
             get { return _skin; }
             set
             {
+                _skin = value;
+
                 if (value == null || value.Res.Material == null)
                 {
                     _skin = WidgetSkin.DEFAULT;
                 }
 
-                _skin = value;
                 SkinChanged();
             }
         }
@@ -130,6 +131,14 @@ namespace FrozenCore.Widgets
         }
 
         protected override void Draw(IDrawDevice inDevice)
+        {
+            if (_skin.Res != null)
+            {
+                inDevice.AddVertices(_skin.Res.Material, VertexMode.Quads, _vertices);
+            }
+        }
+
+        protected override void PrepareVertices(IDrawDevice inDevice)
         {
             /********************
              *  0    1    2    3
@@ -369,8 +378,6 @@ namespace FrozenCore.Widgets
                 {
                     ApplyVisibilityRectangle();
                 }
-
-                inDevice.AddVertices(skin.Material, VertexMode.Quads, _vertices);
             }
         }
 

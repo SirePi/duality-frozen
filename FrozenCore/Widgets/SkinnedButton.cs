@@ -178,6 +178,8 @@ namespace FrozenCore.Widgets
 
         protected override void OnUpdate(float inSecondsPast)
         {
+            base.OnUpdate(inSecondsPast);
+
             _secondsFromLastTick += inSecondsPast;
             if (_secondsFromLastTick > RepeatLeftClickEvery && _leftButtonDown && OnLeftClick.Res != null)
             {

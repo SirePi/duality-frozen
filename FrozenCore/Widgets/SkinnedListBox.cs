@@ -169,6 +169,8 @@ namespace FrozenCore.Widgets
 
         protected override void OnUpdate(float inSecondsPast)
         {
+            base.OnUpdate(inSecondsPast);
+
             if (_itemsAccessed)
             {
                 _fText.SourceText = String.Join("/n", _items);
