@@ -152,6 +152,16 @@ namespace FrozenCore
         public static readonly ColorRgba WhiteSmoke = new ColorRgba(245, 245, 245, 255);
         public static readonly ColorRgba Yellow = new ColorRgba(255, 255, 0, 255);
         public static readonly ColorRgba YellowGreen = new ColorRgba(154, 205, 50, 255);
+
+        public static ColorRgba FromBase1Vector4(Vector4 value)
+        {
+            return new ColorRgba(value.X, value.Y, value.Z, value.W);
+        }
+
+        public static ColorRgba FromBase255Vector4(Vector4 value)
+        {
+            return new ColorRgba((byte)value.X, (byte)value.Y, (byte)value.Z, (byte)value.W);
+        }
     }
 
     /// <summary>
@@ -167,19 +177,6 @@ namespace FrozenCore
         public static Vector4 ToVector4(this ColorRgba value)
         {
             return new Vector4(value.R, value.G, value.B, value.A);
-        }
-
-        /// <summary>
-        /// Converts a Vector4 to ColorRgba (X, Y, Z, W) = (R, G, B, A)
-        /// </summary>
-        /// <param name="color">The Color</param>
-        /// <param name="value">The Vector4 to convert</param>
-        public static void FromVector4(this ColorRgba color, Vector4 value)
-        {
-            color.R = (byte)value.X;
-            color.G = (byte)value.Y;
-            color.B = (byte)value.Z;
-            color.A = (byte)value.W;
         }
 
         public static float[] ToFloatArray(this ColorRgba value)
