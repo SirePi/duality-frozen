@@ -42,15 +42,18 @@ namespace FrozenCore.Widgets
             set
             {
                 _isChecked = value;
-                OnCheckUncheck();
-                OnStatusChange();
+                _dirtyFlags |= DirtyFlags.Value;
             }
         }
 
         public ContentRef<WidgetSkin> GlyphSkin
         {
             get { return _glyphSkin; }
-            set { _glyphSkin = value; }
+            set 
+            { 
+                _glyphSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom1;
+            }
         }
 
         public ContentRef<Script> OnChecked
@@ -166,21 +169,6 @@ namespace FrozenCore.Widgets
             }
         }
 
-        protected override void OnInit(Component.InitContext inContext)
-        {
-            base.OnInit(inContext);
-
-            if (inContext == InitContext.Activate && !FrozenUtilities.IsDualityEditor)
-            {
-                if (_glyph == null)
-                {
-                    AddGlyph();
-
-                    _glyph.Active = IsChecked;
-                }
-            }
-        }
-
         private void AddGlyph()
         {
             _glyph = new GameObject("glyph", this.GameObj);
@@ -200,11 +188,6 @@ namespace FrozenCore.Widgets
 
         private void OnCheckUncheck()
         {
-            if (_glyph != null)
-            {
-                _glyph.Active = IsChecked;
-            }
-
             if (IsChecked)
             {
                 if (OnChecked.Res != null)
@@ -219,7 +202,6 @@ namespace FrozenCore.Widgets
                     OnUnchecked.Res.Execute(this.GameObj, UncheckedArgument);
                 }
             }
-            //MouseLeave();
         }
 
         protected override void OnStatusChange()
@@ -228,9 +210,32 @@ namespace FrozenCore.Widgets
             
             if (_glyph != null)
             {
-                _glyph.Active = IsChecked;
-
                 _glyph.GetComponent<Widget>().Status = (Status == WidgetStatus.Disabled ? WidgetStatus.Disabled : WidgetStatus.Normal);
+            }
+        }
+
+        protected override void OnUpdate(float inSecondsPast)
+        {
+            base.OnUpdate(inSecondsPast);
+
+            if (_glyph == null && _glyphSkin != null)
+            {
+                AddGlyph();
+            }
+
+            if ((_dirtyFlags & DirtyFlags.Value) != DirtyFlags.None)
+            {
+                OnCheckUncheck();
+            }
+
+            if ((_dirtyFlags & DirtyFlags.Custom1) != DirtyFlags.None && _glyph != null)
+            {
+                _glyph.GetComponent<SkinnedWidget>().Skin = _glyphSkin;
+            }
+
+            if (_glyph != null)
+            {
+                _glyph.Active = IsChecked;
             }
         }
     }

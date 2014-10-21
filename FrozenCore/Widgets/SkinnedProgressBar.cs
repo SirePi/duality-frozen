@@ -51,7 +51,11 @@ namespace FrozenCore.Widgets
         public ContentRef<WidgetSkin> BarSkin
         {
             get { return _barSkin; }
-            set { _barSkin = value; }
+            set 
+            { 
+                _barSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom1;
+            }
         }
 
         public int Value
@@ -60,7 +64,7 @@ namespace FrozenCore.Widgets
             set 
             {
                 _value = value;
-                UpdateBar();
+                _dirtyFlags |= DirtyFlags.Custom2;
             }
         }
 
@@ -87,23 +91,6 @@ namespace FrozenCore.Widgets
 
             _bar.AddComponent<SkinnedPanel>(sp);
             Scene.Current.AddObject(_bar);
-        }
-
-        protected override void OnInit(Component.InitContext inContext)
-        {
-            base.OnInit(inContext);
-
-            if (inContext == InitContext.Activate && !FrozenUtilities.IsDualityEditor)
-            {
-                if (_bar == null)
-                {
-                    AddBar();
-
-                    _bar.GetComponent<Widget>().Status = Status;
-                }
-
-                UpdateBar();
-            }
         }
 
         protected override void DrawCanvas(Canvas inCanvas)
@@ -138,6 +125,30 @@ namespace FrozenCore.Widgets
                 rect.W = (_vertices[6].Pos - _vertices[5].Pos).X * _value / 100;
 
                 sw.Rect = rect;
+            }
+        }
+
+        protected override void OnUpdate(float inSecondsPast)
+        {
+            base.OnUpdate(inSecondsPast);
+
+            if (_bar == null && _barSkin != null)
+            {
+                AddBar();
+            }
+
+            if (_bar != null)
+            {
+                if ((_dirtyFlags & DirtyFlags.Custom1) != DirtyFlags.None)
+                {
+                    _bar.GetComponent<SkinnedWidget>().Skin = _barSkin;
+                }
+                if ((_dirtyFlags & DirtyFlags.Custom2) != DirtyFlags.None)
+                {
+                    UpdateBar();
+                }
+
+                _bar.GetComponent<Widget>().Status = Status;
             }
         }
     }

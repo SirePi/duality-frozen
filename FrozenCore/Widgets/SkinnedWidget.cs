@@ -70,7 +70,7 @@ namespace FrozenCore.Widgets
                     _skin = WidgetSkin.DEFAULT;
                 }
 
-                SkinChanged();
+                _dirtyFlags |= DirtyFlags.Skin;
             }
         }
 
@@ -382,12 +382,11 @@ namespace FrozenCore.Widgets
         }
 
         protected override void DrawCanvas(Canvas inCanvas)
-        {
-        }
+        { }
 
         protected override void OnInit(Component.InitContext inContext)
         {
-            SkinChanged();
+            _dirtyFlags |= DirtyFlags.Skin;
         }
 
         protected override void OnStatusChange()
@@ -420,6 +419,11 @@ namespace FrozenCore.Widgets
             if (_skin == null || _skin.Res == null)
             {
                 Skin = WidgetSkin.DEFAULT;
+            }
+
+            if ((_dirtyFlags &= DirtyFlags.Skin) != DirtyFlags.None)
+            {
+                OnSkinChange();
             }
         }
 
@@ -678,7 +682,7 @@ namespace FrozenCore.Widgets
             _points[15].UVCoords.Y = uvTopLeft.Y + _uvDelta.Y;
         }
 
-        private void SkinChanged()
+        private void OnSkinChange()
         {
             if (_skin.Res != null)
             {

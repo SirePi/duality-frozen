@@ -63,7 +63,11 @@ namespace FrozenCore.Widgets
         public Vector2 ButtonsSize
         {
             get { return _buttonsSize; }
-            set { _buttonsSize = value; }
+            set 
+            { 
+                _buttonsSize = value;
+                _dirtyFlags |= DirtyFlags.Custom6;
+            }
         }
 
         public bool CanClose
@@ -87,13 +91,21 @@ namespace FrozenCore.Widgets
         public Vector2 CloseButtonSize
         {
             get { return _closeButtonSize; }
-            set { _closeButtonSize = value; }
+            set 
+            { 
+                _closeButtonSize = value;
+                _dirtyFlags |= DirtyFlags.Custom5;
+            }
         }
 
         public ContentRef<WidgetSkin> CloseButtonSkin
         {
             get { return _closeButtonSkin; }
-            set { _closeButtonSkin = value; }
+            set 
+            { 
+                _closeButtonSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom1;
+            }
         }
 
         public bool IsDraggable
@@ -105,7 +117,11 @@ namespace FrozenCore.Widgets
         public ContentRef<WidgetSkin> MaximizeButtonSkin
         {
             get { return _maximizeButtonSkin; }
-            set { _maximizeButtonSkin = value; }
+            set 
+            { 
+                _maximizeButtonSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom2;
+            }
         }
 
         public ContentRef<Font> TitleFont
@@ -123,13 +139,21 @@ namespace FrozenCore.Widgets
         public ContentRef<WidgetSkin> MinimizeButtonSkin
         {
             get { return _minimizeButtonSkin; }
-            set { _minimizeButtonSkin = value; }
+            set 
+            { 
+                _minimizeButtonSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom3;
+            }
         }
 
         public ContentRef<WidgetSkin> RestoreButtonSkin
         {
             get { return _restoreButtonSkin; }
-            set { _restoreButtonSkin = value; }
+            set
+            {
+                _restoreButtonSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom4;
+            }
         }
 
         public string Title
@@ -297,32 +321,12 @@ namespace FrozenCore.Widgets
         protected override void OnInit(Component.InitContext inContext)
         {
             base.OnInit(inContext);
-            _normalRect = Rect;
 
-            if (inContext == InitContext.Activate && !FrozenUtilities.IsDualityEditor)
-            {
-                if (CanClose && _closeButton == null)
-                {
-                    AddCloseButton();
-                }
-                if (CanMaximize && _maximizeButton == null && _maximizedSize.X >= Rect.W && _maximizedSize.Y >= Rect.H)
-                {
-                    AddMaximizeButton();
-                }
-                if (CanMinimize && _minimizeButton == null)
-                {
-                    AddMinimizeButton();
-                }
-                if ((CanMaximize || CanMinimize) && _restoreButton == null)
-                {
-                    AddRestoreButton();
-                }
-            }
+            _normalRect = Rect;
         }
 
         protected virtual void OnResize()
-        {
-        }
+        { }
 
         private void AddCloseButton()
         {
@@ -449,6 +453,65 @@ namespace FrozenCore.Widgets
                     {
                         w.Status = _childrenStatus[w];
                     }
+                }
+            }
+        }
+
+        protected override void OnUpdate(float inSecondsPast)
+        {
+            base.OnUpdate(inSecondsPast);
+
+            if (CanClose && _closeButton == null && _closeButtonSkin != null)
+            {
+                AddCloseButton();
+            }
+            if (CanMaximize && _maximizeButton == null && _maximizedSize.X >= Rect.W && _maximizedSize.Y >= Rect.H && _maximizeButtonSkin != null)
+            {
+                AddMaximizeButton();
+            }
+            if (CanMinimize && _minimizeButton == null && _minimizeButtonSkin != null)
+            {
+                AddMinimizeButton();
+            }
+            if ((CanMaximize || CanMinimize) && _restoreButton == null && _restoreButtonSkin != null)
+            {
+                AddRestoreButton();
+            }
+
+            if ((_dirtyFlags & DirtyFlags.Custom1) != DirtyFlags.None && _closeButton != null)
+            {
+                _closeButton.GetComponent<SkinnedWidget>().Skin = _closeButtonSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom2) != DirtyFlags.None && _maximizeButton != null)
+            {
+                _maximizeButton.GetComponent<SkinnedWidget>().Skin = _maximizeButtonSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom3) != DirtyFlags.None && _minimizeButton != null)
+            {
+                _minimizeButton.GetComponent<SkinnedWidget>().Skin = _minimizeButtonSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom4) != DirtyFlags.None && _restoreButton != null)
+            {
+                _restoreButton.GetComponent<SkinnedWidget>().Skin = _restoreButtonSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom5) != DirtyFlags.None && _closeButton != null)
+            {
+                _closeButton.GetComponent<SkinnedWidget>().Rect = Rect.AlignTopLeft(0, 0, _closeButtonSize.X, _closeButtonSize.Y);
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom6) != DirtyFlags.None)
+            {
+                Rect newRect = Rect.AlignTopLeft(0, 0, _buttonsSize.X, _buttonsSize.Y);
+                if (_maximizeButton != null)
+                {
+                    _maximizeButton.GetComponent<SkinnedWidget>().Rect = newRect;
+                }
+                if (_minimizeButton != null)
+                {
+                    _minimizeButton.GetComponent<SkinnedWidget>().Rect = newRect;
+                }
+                if (_restoreButton != null)
+                {
+                    _restoreButton.GetComponent<SkinnedWidget>().Rect = newRect;
                 }
             }
         }

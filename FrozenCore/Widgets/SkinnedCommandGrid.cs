@@ -19,9 +19,6 @@ namespace FrozenCore.Widgets
         #region NonSerialized fields
 
         [NonSerialized]
-        private bool _itemsAccessed;
-
-        [NonSerialized]
         private int _visibleHeight;
 
         [NonSerialized]
@@ -120,24 +117,32 @@ namespace FrozenCore.Widgets
         public Vector2 ScrollbarButtonsSize
         {
             get { return _scrollbarButtonsSize; }
-            set { _scrollbarButtonsSize = value; }
+            set 
+            { 
+                _scrollbarButtonsSize = value;
+                _dirtyFlags |= DirtyFlags.Custom7;
+            }
         }
 
         public Vector2 ScrollbarCursorSize
         {
             get { return _scrollbarCursorSize; }
-            set { _scrollbarCursorSize = value; }
+            set 
+            { 
+                _scrollbarCursorSize = value;
+                _dirtyFlags |= DirtyFlags.Custom6;
+            }
         }
         public List<object> Items
         {
             get
             {
-                _itemsAccessed = true;
+                _dirtyFlags |= DirtyFlags.Value;
                 return _items;
             }
             set
             {
-                _itemsAccessed = true;
+                _dirtyFlags |= DirtyFlags.Value;
                 _items = value;
             }
         }
@@ -145,31 +150,51 @@ namespace FrozenCore.Widgets
         public ContentRef<WidgetSkin> HighlightSkin
         {
             get { return _highlightSkin; }
-            set { _highlightSkin = value; }
+            set 
+            {
+                _highlightSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom5;
+            }
         }
 
         public ContentRef<WidgetSkin> ScrollbarCursorSkin
         {
             get { return _scrollbarCursorSkin; }
-            set { _scrollbarCursorSkin = value; }
+            set
+            {
+                _scrollbarCursorSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom2;
+            }
         }
 
         public ContentRef<WidgetSkin> ScrollbarDecreaseButtonSkin
         {
             get { return _scrollbarDecreaseButtonSkin; }
-            set { _scrollbarDecreaseButtonSkin = value; }
+            set
+            {
+                _scrollbarDecreaseButtonSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom3;
+            }
         }
 
         public ContentRef<WidgetSkin> ScrollbarIncreaseButtonSkin
         {
             get { return _scrollbarIncreaseButtonSkin; }
-            set { _scrollbarIncreaseButtonSkin = value; }
+            set 
+            {
+                _scrollbarIncreaseButtonSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom4;
+            }
         }
 
         public ContentRef<WidgetSkin> ScrollbarSkin
         {
             get { return _scrollbarSkin; }
-            set { _scrollbarSkin = value; }
+            set 
+            { 
+                _scrollbarSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom1;
+            }
         }
 
         public object LeftClickArgument
@@ -346,31 +371,57 @@ namespace FrozenCore.Widgets
         {
             base.OnUpdate(inSecondsPast);
 
-            if (_itemsAccessed)
+            if (_highlight == null && _highlightSkin != null)
+            {
+                AddHighlight();
+            }
+
+            if (_scrollbar == null && _scrollbarSkin != null)
+            {
+                AddScrollBar();
+            }
+
+            if ((_dirtyFlags & DirtyFlags.Skin) != DirtyFlags.None)
+            {
+                _visibleWidth = (int)Math.Floor(Rect.W - Skin.Res.Border.X - Skin.Res.Border.W);
+                _visibleHeight = (int)Math.Floor(Rect.H - Skin.Res.Border.Y - Skin.Res.Border.Z);
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom1) != DirtyFlags.None && _scrollbar != null)
+            {
+                _scrollbar.GetComponent<SkinnedWidget>().Skin = _scrollbarSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom2) != DirtyFlags.None && _scrollbar != null)
+            {
+                _scrollbar.GetComponent<SkinnedScrollBar>().CursorSkin = _scrollbarCursorSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom3) != DirtyFlags.None && _scrollbar != null)
+            {
+                _scrollbar.GetComponent<SkinnedScrollBar>().DecreaseButtonSkin = _scrollbarDecreaseButtonSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom4) != DirtyFlags.None && _scrollbar != null)
+            {
+                _scrollbar.GetComponent<SkinnedScrollBar>().IncreaseButtonSkin = _scrollbarIncreaseButtonSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom5) != DirtyFlags.None && _highlight != null)
+            {
+                _highlight.GetComponent<SkinnedWidget>().Skin = _highlightSkin;
+            }
+
+            if ((_dirtyFlags & DirtyFlags.Custom6) != DirtyFlags.None && _scrollbar != null)
+            {
+                _scrollbar.GetComponent<SkinnedScrollBar>().CursorSize = _scrollbarCursorSize;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom7) != DirtyFlags.None && _scrollbar != null)
+            {
+                _scrollbar.GetComponent<SkinnedScrollBar>().ButtonsSize = _scrollbarButtonsSize;
+            }
+
+            if ((_dirtyFlags & DirtyFlags.Value) != DirtyFlags.None)
             {
                 UpdateGrid();
             }
 
             UpdateComponents();
-        }
-
-        protected override void OnInit(Component.InitContext inContext)
-        {
-            base.OnInit(inContext);
-
-            if (inContext == InitContext.Activate && !FrozenUtilities.IsDualityEditor)
-            {
-                if (_highlight == null)
-                {
-                    AddHighlight();
-                    AddScrollBar();
-                }
-
-                _visibleWidth = (int)Math.Floor(Rect.W - Skin.Res.Border.X - Skin.Res.Border.W);
-                _visibleHeight = (int)Math.Floor(Rect.H - Skin.Res.Border.Y - Skin.Res.Border.Z);
-
-                UpdateGrid();
-            }
         }
 
         private void UpdateGrid()

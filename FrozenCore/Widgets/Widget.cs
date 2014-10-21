@@ -22,6 +22,25 @@ namespace FrozenCore.Widgets
             Disabled
         }
 
+        [Flags]
+        public enum DirtyFlags
+        {
+            None = 0x0000,
+            Status = 0x0001,
+            Skin = 0x0002,
+            Value = 0x0004,
+            Custom1 = 0x0008,
+            Custom2 = 0x0010,
+            Custom3 = 0x0020,
+            Custom4 = 0x0040,
+            Custom5 = 0x0080,
+            Custom6 = 0x0100,
+            Custom7 = 0x0200,
+            Custom8 = 0x0400,
+            Custom9 = 0x0800
+        }
+
+
         #region NonSerialized fields
 
         [NonSerialized]
@@ -51,6 +70,8 @@ namespace FrozenCore.Widgets
         [NonSerialized]
         private bool _widgetActive;
 
+        [NonSerialized]
+        protected DirtyFlags _dirtyFlags;
         #endregion NonSerialized fields
 
         private WidgetStatus _status;
@@ -114,7 +135,7 @@ namespace FrozenCore.Widgets
             set
             {
                 _status = value;
-                OnStatusChange();
+                _dirtyFlags |= DirtyFlags.Status;
             }
         }
 
@@ -185,8 +206,7 @@ namespace FrozenCore.Widgets
         }
 
         void ICmpInitializable.OnShutdown(Component.ShutdownContext context)
-        {
-        }
+        { }
 
         void ICmpRenderer.Draw(IDrawDevice device)
         {
@@ -216,8 +236,14 @@ namespace FrozenCore.Widgets
         void ICmpUpdatable.OnUpdate()
         {
             _isInOverlay = (this.VisibilityGroup & VisibilityFlag.ScreenOverlay) != VisibilityFlag.None;
+            if ((_dirtyFlags & DirtyFlags.Status) != DirtyFlags.None)
+            {
+                OnStatusChange();
+            }
 
             OnUpdate(Time.LastDelta / 1000f);
+
+            _dirtyFlags = DirtyFlags.None;
         }
 
         internal virtual void Activate()

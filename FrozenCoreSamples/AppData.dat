@@ -11,7 +11,7 @@
   <startScene dataType="Struct" type="Duality.ContentRef`1[[Duality.Resources.Scene]]">
     <contentPath />
   </startScene>
-  <version dataType="UInt">0</version>
+  <version dataType="UInt">8</version>
   <websiteUrl dataType="String">http://www.fetzenet.de</websiteUrl>
 </root>
 <!-- XmlFormatterBase Document Separator -->
