@@ -132,6 +132,14 @@ namespace FrozenCore.Widgets
 
         protected override void Draw(IDrawDevice inDevice)
         {
+            /**
+             * This is needed to allow to display the widget correctly in the editor
+             **/
+            if (FrozenUtilities.IsDualityEditor)
+            {
+                OnSkinChange();
+            }
+
             if (_skin.Res != null)
             {
                 inDevice.AddVertices(_skin.Res.Material, VertexMode.Quads, _vertices);
@@ -421,7 +429,7 @@ namespace FrozenCore.Widgets
                 Skin = WidgetSkin.DEFAULT;
             }
 
-            if ((_dirtyFlags &= DirtyFlags.Skin) != DirtyFlags.None)
+            if ((_dirtyFlags & DirtyFlags.Skin) != DirtyFlags.None)
             {
                 OnSkinChange();
             }

@@ -418,6 +418,10 @@ namespace FrozenCore.Widgets
 
         private GameObject FindFirstGameObject()
         {
+            Widget firstWidget = Scene.Current.FindComponents<Widget>().FirstOrDefault(w => w.PreviousWidget == null && w.NextWidget != null);
+            return firstWidget != null ? firstWidget.GameObj : null;
+
+            /*
             return Scene.Current.AllObjects.FirstOrDefault(go =>
             {
                 bool result = false;
@@ -430,6 +434,17 @@ namespace FrozenCore.Widgets
 
                 return result;
             });
+             **/
+        }
+
+        public void FocusOn(Widget inWidget)
+        {
+            if(FocusedElement != null)
+            {
+                FocusedElement.MouseLeave();
+            }
+
+            FocusedElement = inWidget;
         }
     }
 }

@@ -29,6 +29,7 @@ namespace FrozenCore.Widgets
         private ContentRef<Font> _textFont;
         private ColorRgba _textColor;
         private object _uncheckedArgument;
+        private Alignment _textAlignment;
 
         public object CheckedArgument
         {
@@ -41,8 +42,11 @@ namespace FrozenCore.Widgets
             get { return _isChecked; }
             set
             {
-                _isChecked = value;
-                _dirtyFlags |= DirtyFlags.Value;
+                if (_isChecked != value)
+                {
+                    _isChecked = value;
+                    _dirtyFlags |= DirtyFlags.Value;
+                }
             }
         }
 
@@ -72,6 +76,12 @@ namespace FrozenCore.Widgets
         {
             get { return _text; }
             set { _text = value; }
+        }
+
+        public Alignment TextAlignment
+        {
+            get { return _textAlignment; }
+            set { _textAlignment = value; }
         }
 
         public ContentRef<Font> TextFont
@@ -153,7 +163,8 @@ namespace FrozenCore.Widgets
         {
             if (!String.IsNullOrWhiteSpace(_text))
             {
-                Vector3 buttonCenter = (_points[5].WorldCoords + _points[10].WorldCoords) / 2;
+                Vector3 textOrigin = Vector3.Zero;
+
                 if (_textFont.Res != null && _fText.Fonts[0] != _textFont)
                 {
                     _fText.Fonts[0] = _textFont;
@@ -164,7 +175,25 @@ namespace FrozenCore.Widgets
                 inCanvas.PushState();
                 inCanvas.State.ColorTint = _textColor;
                 inCanvas.State.TransformAngle = GameObj.Transform.Angle;
-                inCanvas.DrawText(_fText, buttonCenter.X, buttonCenter.Y, buttonCenter.Z + DELTA_Z, null, Alignment.Center);
+
+                switch (_textAlignment)
+                {
+                    case Alignment.Left:
+                        textOrigin = (_points[5].WorldCoords + _points[9].WorldCoords) / 2;
+                        inCanvas.DrawText(_fText, textOrigin.X, textOrigin.Y, textOrigin.Z + DELTA_Z, null, Alignment.Left);
+                        break;
+
+                    case Alignment.Right:
+                        textOrigin = (_points[6].WorldCoords + _points[10].WorldCoords) / 2;
+                        inCanvas.DrawText(_fText, textOrigin.X, textOrigin.Y, textOrigin.Z + DELTA_Z, null, Alignment.Right);
+                        break;
+
+                    default:
+                        textOrigin = (_points[5].WorldCoords + _points[10].WorldCoords) / 2;
+                        inCanvas.DrawText(_fText, textOrigin.X, textOrigin.Y, textOrigin.Z + DELTA_Z, null, Alignment.Center);
+                        break;
+                }
+                
                 inCanvas.PopState();
             }
         }
@@ -216,8 +245,6 @@ namespace FrozenCore.Widgets
 
         protected override void OnUpdate(float inSecondsPast)
         {
-            base.OnUpdate(inSecondsPast);
-
             if (_glyph == null && _glyphSkin != null)
             {
                 AddGlyph();
@@ -237,6 +264,8 @@ namespace FrozenCore.Widgets
             {
                 _glyph.Active = IsChecked;
             }
+
+            base.OnUpdate(inSecondsPast);
         }
     }
 }

@@ -459,8 +459,6 @@ namespace FrozenCore.Widgets
 
         protected override void OnUpdate(float inSecondsPast)
         {
-            base.OnUpdate(inSecondsPast);
-
             if (CanClose && _closeButton == null && _closeButtonSkin != null)
             {
                 AddCloseButton();
@@ -514,6 +512,8 @@ namespace FrozenCore.Widgets
                     _restoreButton.GetComponent<SkinnedWidget>().Rect = newRect;
                 }
             }
+
+            base.OnUpdate(inSecondsPast);
         }
 
         private void MoveButton(GameObject inButton, float inDeltaX)

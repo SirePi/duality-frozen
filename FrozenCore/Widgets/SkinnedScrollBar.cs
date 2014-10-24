@@ -53,19 +53,31 @@ namespace FrozenCore.Widgets
         public ContentRef<WidgetSkin> CursorSkin
         {
             get { return _cursorSkin; }
-            set { _cursorSkin = value; }
+            set 
+            { 
+                _cursorSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom1;
+            }
         }
 
         public ContentRef<WidgetSkin> DecreaseButtonSkin
         {
             get { return _decreaseButtonSkin; }
-            set { _decreaseButtonSkin = value; }
+            set 
+            {
+                _decreaseButtonSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom2;
+            }
         }
 
         public ContentRef<WidgetSkin> IncreaseButtonSkin
         {
             get { return _increaseButtonSkin; }
-            set { _increaseButtonSkin = value; }
+            set 
+            { 
+                _increaseButtonSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom3;
+            }
         }
 
         public int Maximum
@@ -74,7 +86,7 @@ namespace FrozenCore.Widgets
             set
             {
                 _max = value;
-                UpdateCursor();
+                _dirtyFlags |= DirtyFlags.Value;
             }
         }
 
@@ -84,7 +96,7 @@ namespace FrozenCore.Widgets
             set
             {
                 _min = value;
-                UpdateCursor();
+                _dirtyFlags |= DirtyFlags.Value;
             }
         }
 
@@ -108,7 +120,7 @@ namespace FrozenCore.Widgets
                 if (_value != value)
                 {
                     _value = value;
-                    UpdateCursor();
+                    _dirtyFlags |= DirtyFlags.Value;
 
                     if (_onValueChanged.Res != null)
                     {
@@ -143,7 +155,7 @@ namespace FrozenCore.Widgets
             _value = _min;
             _scrollSpeed = 1;
         }
-
+        /*
         protected override void OnInit(Component.InitContext inContext)
         {
             base.OnInit(inContext);
@@ -164,7 +176,7 @@ namespace FrozenCore.Widgets
                 UpdateCursor();
             }
         }
-
+        */
         protected override void OnStatusChange()
         {
             base.OnStatusChange();
@@ -234,6 +246,41 @@ namespace FrozenCore.Widgets
 
             _increaseButton.AddComponent<ScrollIncreaseButton>(sib);
             Scene.Current.AddObject(_increaseButton);
+        }
+
+        protected override void OnUpdate(float inSecondsPast)
+        {
+            if (_cursor == null && _cursorSkin != null)
+            {
+                AddScrollCursor();
+            }
+            if (_increaseButton == null && _increaseButtonSkin != null)
+            {
+                AddScrollIncreaseButton();
+            }
+            if (_decreaseButton == null && _decreaseButtonSkin != null)
+            {
+                AddScrollDecreaseButton();
+            }
+
+            if ((_dirtyFlags & DirtyFlags.Custom1) != DirtyFlags.None && _cursor != null)
+            {
+                _cursor.GetComponent<SkinnedWidget>().Skin = _cursorSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom2) != DirtyFlags.None && _decreaseButton != null)
+            {
+                _decreaseButton.GetComponent<SkinnedWidget>().Skin = _decreaseButtonSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom3) != DirtyFlags.None && _increaseButton != null)
+            {
+                _increaseButton.GetComponent<SkinnedWidget>().Skin = _increaseButtonSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Value) != DirtyFlags.None)
+            {
+                UpdateCursor();
+            }
+
+            base.OnUpdate(inSecondsPast);
         }
 
         private void UpdateCursor()

@@ -20,9 +20,6 @@ namespace FrozenCore.Widgets
         private FormattedText _text;
 
         [NonSerialized]
-        private bool _itemsAccessed;
-
-        [NonSerialized]
         private GameObject _listBox;
 
         [NonSerialized]
@@ -60,63 +57,95 @@ namespace FrozenCore.Widgets
         public ContentRef<WidgetSkin> DropdownSkin
         {
             get { return _dropdownSkin; }
-            set { _dropdownSkin = value; }
+            set 
+            { 
+                _dropdownSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom6;
+            }
         }
 
         public ContentRef<WidgetSkin> HighlightSkin
         {
             get { return _highlightSkin; }
-            set { _highlightSkin = value; }
+            set 
+            { 
+                _highlightSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom5;
+            }
         }
 
         public List<object> Items
         {
             get
             {
-                _itemsAccessed = true;
+                _dirtyFlags |= DirtyFlags.Value;
                 return _items;
             }
             set
             {
-                _itemsAccessed = true;
                 _items = value;
+                _dirtyFlags |= DirtyFlags.Value;
             }
         }
 
         public Vector2 ScrollbarButtonsSize
         {
             get { return _scrollbarButtonsSize; }
-            set { _scrollbarButtonsSize = value; }
+            set 
+            { 
+                _scrollbarButtonsSize = value;
+                _dirtyFlags |= DirtyFlags.Custom8;
+            }
         }
 
         public Vector2 ScrollbarCursorSize
         {
             get { return _scrollbarCursorSize; }
-            set { _scrollbarCursorSize = value; }
+            set 
+            { 
+                _scrollbarCursorSize = value;
+                _dirtyFlags |= DirtyFlags.Custom7;
+            }
         }
 
         public ContentRef<WidgetSkin> ScrollbarCursorSkin
         {
             get { return _scrollbarCursorSkin; }
-            set { _scrollbarCursorSkin = value; }
+            set 
+            { 
+                _scrollbarCursorSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom2;
+            }
         }
 
         public ContentRef<WidgetSkin> ScrollbarDecreaseButtonSkin
         {
             get { return _scrollbarDecreaseButtonSkin; }
-            set { _scrollbarDecreaseButtonSkin = value; }
+            set 
+            {
+                _scrollbarDecreaseButtonSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom3;
+            }
         }
 
         public ContentRef<WidgetSkin> ScrollbarIncreaseButtonSkin
         {
             get { return _scrollbarIncreaseButtonSkin; }
-            set { _scrollbarIncreaseButtonSkin = value; }
+            set 
+            { 
+                _scrollbarIncreaseButtonSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom4;
+            }
         }
 
         public ContentRef<WidgetSkin> ScrollbarSkin
         {
             get { return _scrollbarSkin; }
-            set { _scrollbarSkin = value; }
+            set 
+            { 
+                _scrollbarSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom1;
+            }
         }
 
         public int ScrollSpeed
@@ -145,6 +174,8 @@ namespace FrozenCore.Widgets
             _text = new FormattedText();
             _dropDownHeight = 100;
             _scrollSpeed = 5;
+
+            _dirtyFlags |= DirtyFlags.Value;
         }
 
         public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
@@ -193,32 +224,6 @@ namespace FrozenCore.Widgets
             }
         }
 
-        protected override void OnInit(Component.InitContext inContext)
-        {
-            base.OnInit(inContext);
-
-            if (inContext == InitContext.Activate && !FrozenUtilities.IsDualityEditor)
-            {
-                if (_listBox == null)
-                {
-                    AddListBox();
-                }
-
-                _itemsAccessed = true;
-            }
-        }
-
-        protected override void OnUpdate(float inSecondsPast)
-        {
-            base.OnUpdate(inSecondsPast);
-
-            if (_itemsAccessed)
-            {
-                _listBoxComponent.Items = Items;
-                _itemsAccessed = false;
-            }
-        }
-
         private void AddListBox()
         {
             _listBox = new GameObject("listBox", this.GameObj);
@@ -246,6 +251,55 @@ namespace FrozenCore.Widgets
             _listBoxComponent.SelectedItem = null;
 
             Scene.Current.AddObject(_listBox);
+        }
+
+        protected override void OnUpdate(float inSecondsPast)
+        {
+            if (_listBox == null && _dropdownSkin != null)
+            {
+                AddListBox();
+            }
+
+            if ((_dirtyFlags & DirtyFlags.Custom1) != DirtyFlags.None && _listBox != null)
+            {
+                _listBoxComponent.Skin = _scrollbarSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom2) != DirtyFlags.None && _listBoxComponent != null)
+            {
+                _listBoxComponent.ScrollbarCursorSkin= _scrollbarCursorSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom3) != DirtyFlags.None && _listBoxComponent != null)
+            {
+                _listBoxComponent.ScrollbarDecreaseButtonSkin = _scrollbarDecreaseButtonSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom4) != DirtyFlags.None && _listBoxComponent != null)
+            {
+                _listBoxComponent.ScrollbarIncreaseButtonSkin = _scrollbarIncreaseButtonSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom5) != DirtyFlags.None && _listBoxComponent != null)
+            {
+                _listBoxComponent.HighlightSkin= _highlightSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom6) != DirtyFlags.None && _listBoxComponent != null)
+            {
+                _listBoxComponent.Skin = _dropdownSkin;
+            }
+
+            if ((_dirtyFlags & DirtyFlags.Custom7) != DirtyFlags.None && _listBoxComponent != null)
+            {
+                _listBoxComponent.ScrollbarCursorSize = _scrollbarCursorSize;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom8) != DirtyFlags.None && _listBoxComponent != null)
+            {
+                _listBoxComponent.ScrollbarButtonsSize = _scrollbarButtonsSize;
+            }
+
+            if ((_dirtyFlags & DirtyFlags.Value) != DirtyFlags.None)
+            {
+                _listBoxComponent.Items = Items;
+            }
+
+            base.OnUpdate(inSecondsPast);
         }
     }
 }

@@ -171,7 +171,7 @@
     <item dataType="Struct" type="Duality.GameObject" id="3608675265">
       <active dataType="Bool">true</active>
       <children dataType="Struct" type="System.Collections.Generic.List`1[[Duality.GameObject]]" id="3556018755">
-        <_items dataType="Array" type="Duality.GameObject[]" id="3922714662" length="4">
+        <_items dataType="Array" type="Duality.GameObject[]" id="3922714662">
           <item dataType="Struct" type="Duality.GameObject" id="3912879882">
             <active dataType="Bool">true</active>
             <children />
@@ -419,7 +419,7 @@
                         <_radioGroup dataType="String">RGroup</_radioGroup>
                         <_rect dataType="Struct" type="Duality.Rect">
                           <H dataType="Float">30</H>
-                          <W dataType="Float">150</W>
+                          <W dataType="Float">200</W>
                           <X dataType="Float">0</X>
                           <Y dataType="Float">0</Y>
                         </_rect>
@@ -427,7 +427,8 @@
                           <contentPath dataType="String">Data\Graphics\Skins\RadioButton.WidgetSkin.res</contentPath>
                         </_skin>
                         <_status dataType="Enum" type="FrozenCore.Widgets.Widget+WidgetStatus" name="Normal" value="0" />
-                        <_text dataType="String">Some text</_text>
+                        <_text dataType="String">It's a Radio Button</_text>
+                        <_textAlignment dataType="Enum" type="Duality.Alignment" name="Left" value="1" />
                         <_textColor dataType="Struct" type="Duality.Drawing.ColorRgba">
                           <A dataType="Byte">255</A>
                           <B dataType="Byte">255</B>
@@ -542,7 +543,7 @@
                         <_radioGroup dataType="String">RGroup</_radioGroup>
                         <_rect dataType="Struct" type="Duality.Rect">
                           <H dataType="Float">30</H>
-                          <W dataType="Float">150</W>
+                          <W dataType="Float">200</W>
                           <X dataType="Float">0</X>
                           <Y dataType="Float">0</Y>
                         </_rect>
@@ -550,7 +551,8 @@
                           <contentPath dataType="String">Data\Graphics\Skins\RadioButton.WidgetSkin.res</contentPath>
                         </_skin>
                         <_status dataType="Enum" type="FrozenCore.Widgets.Widget+WidgetStatus" name="Normal" value="0" />
-                        <_text dataType="String">Other text</_text>
+                        <_text dataType="String">Also this one</_text>
+                        <_textAlignment dataType="Enum" type="Duality.Alignment" name="Right" value="2" />
                         <_textColor dataType="Struct" type="Duality.Drawing.ColorRgba">
                           <A dataType="Byte">255</A>
                           <B dataType="Byte">255</B>
@@ -686,7 +688,7 @@
                   <_overrideAutoZ dataType="Bool">false</_overrideAutoZ>
                   <_previous />
                   <_rect dataType="Struct" type="Duality.Rect">
-                    <H dataType="Float">200</H>
+                    <H dataType="Float">150</H>
                     <W dataType="Float">290</W>
                     <X dataType="Float">0</X>
                     <Y dataType="Float">0</Y>
@@ -716,7 +718,7 @@
                     <contentPath dataType="String">Data\Graphics\Skins\Panel.WidgetSkin.res</contentPath>
                   </_skin>
                   <_status dataType="Enum" type="FrozenCore.Widgets.Widget+WidgetStatus" name="Normal" value="0" />
-                  <_text dataType="String">Testing/nTesting/nTesting...</_text>
+                  <_text dataType="String">Testing/nTesting/nTesting/nTesting/nTesting/nTesting/nTesting/nTesting/nTesting/nTesting/nTesting/nTesting/nTesting...</_text>
                   <_textColor dataType="Struct" type="Duality.Drawing.ColorRgba">
                     <A dataType="Byte">255</A>
                     <B dataType="Byte">255</B>
@@ -772,9 +774,155 @@
             <parent dataType="ObjectRef">3608675265</parent>
             <prefabLink />
           </item>
+          <item dataType="Struct" type="Duality.GameObject" id="4101549498">
+            <active dataType="Bool">true</active>
+            <children />
+            <compList dataType="Struct" type="System.Collections.Generic.List`1[[Duality.Component]]" id="3681194190">
+              <_items dataType="Array" type="Duality.Component[]" id="4207079376" length="4">
+                <item dataType="Struct" type="Duality.Components.Transform" id="2166897134">
+                  <active dataType="Bool">true</active>
+                  <angle dataType="Float">0</angle>
+                  <angleAbs dataType="Float">0</angleAbs>
+                  <angleVel dataType="Float">0</angleVel>
+                  <angleVelAbs dataType="Float">0</angleVelAbs>
+                  <deriveAngle dataType="Bool">true</deriveAngle>
+                  <gameobj dataType="ObjectRef">4101549498</gameobj>
+                  <ignoreParent dataType="Bool">false</ignoreParent>
+                  <initState dataType="Enum" type="Duality.InitState" name="Initialized" value="1" />
+                  <parentTransform dataType="ObjectRef">1674022901</parentTransform>
+                  <pos dataType="Struct" type="OpenTK.Vector3">
+                    <X dataType="Float">50</X>
+                    <Y dataType="Float">200</Y>
+                    <Z dataType="Float">-0.001</Z>
+                  </pos>
+                  <posAbs dataType="Struct" type="OpenTK.Vector3">
+                    <X dataType="Float">-250</X>
+                    <Y dataType="Float">0</Y>
+                    <Z dataType="Float">-0.001</Z>
+                  </posAbs>
+                  <scale dataType="Float">1</scale>
+                  <scaleAbs dataType="Float">1</scaleAbs>
+                  <vel dataType="Struct" type="OpenTK.Vector3">
+                    <X dataType="Float">0</X>
+                    <Y dataType="Float">0</Y>
+                    <Z dataType="Float">0</Z>
+                  </vel>
+                  <velAbs dataType="Struct" type="OpenTK.Vector3">
+                    <X dataType="Float">0</X>
+                    <Y dataType="Float">0</Y>
+                    <Z dataType="Float">0</Z>
+                  </velAbs>
+                </item>
+                <item dataType="Struct" type="FrozenCore.Widgets.SkinnedDropDownButton" id="378506863">
+                  <_activeArea dataType="Enum" type="FrozenCore.Widgets.ActiveArea" name="RightBorder" value="4" />
+                  <_dropDownHeight dataType="Int">100</_dropDownHeight>
+                  <_dropdownSkin dataType="Struct" type="Duality.ContentRef`1[[FrozenCore.Resources.Widgets.WidgetSkin]]">
+                    <contentPath dataType="String">Data\Graphics\Skins\Panel.WidgetSkin.res</contentPath>
+                  </_dropdownSkin>
+                  <_highlightSkin dataType="Struct" type="Duality.ContentRef`1[[FrozenCore.Resources.Widgets.WidgetSkin]]">
+                    <contentPath dataType="String">Data\Graphics\Skins\Highlight.WidgetSkin.res</contentPath>
+                  </_highlightSkin>
+                  <_items dataType="Struct" type="System.Collections.Generic.List`1[[System.Object]]" id="3031111819">
+                    <_items dataType="Array" type="System.Object[]" id="3150349942" length="4">
+                      <item dataType="String">One</item>
+                      <item dataType="String">Two</item>
+                      <item dataType="Enum" type="System.StringSplitOptions" name="RemoveEmptyEntries" value="1" />
+                    </_items>
+                    <_size dataType="Int">3</_size>
+                    <_version dataType="Int">15</_version>
+                  </_items>
+                  <_next />
+                  <_overrideAutoZ dataType="Bool">false</_overrideAutoZ>
+                  <_previous />
+                  <_rect dataType="Struct" type="Duality.Rect">
+                    <H dataType="Float">30</H>
+                    <W dataType="Float">220</W>
+                    <X dataType="Float">0</X>
+                    <Y dataType="Float">0</Y>
+                  </_rect>
+                  <_scrollbarButtonsSize dataType="Struct" type="OpenTK.Vector2">
+                    <X dataType="Float">10</X>
+                    <Y dataType="Float">20</Y>
+                  </_scrollbarButtonsSize>
+                  <_scrollbarCursorSize dataType="Struct" type="OpenTK.Vector2">
+                    <X dataType="Float">10</X>
+                    <Y dataType="Float">10</Y>
+                  </_scrollbarCursorSize>
+                  <_scrollbarCursorSkin dataType="Struct" type="Duality.ContentRef`1[[FrozenCore.Resources.Widgets.WidgetSkin]]">
+                    <contentPath dataType="String">Data\Graphics\Skins\ScrollBarCursor.WidgetSkin.res</contentPath>
+                  </_scrollbarCursorSkin>
+                  <_scrollbarDecreaseButtonSkin dataType="Struct" type="Duality.ContentRef`1[[FrozenCore.Resources.Widgets.WidgetSkin]]">
+                    <contentPath dataType="String">Data\Graphics\Skins\ScrollBarDecrease.WidgetSkin.res</contentPath>
+                  </_scrollbarDecreaseButtonSkin>
+                  <_scrollbarIncreaseButtonSkin dataType="Struct" type="Duality.ContentRef`1[[FrozenCore.Resources.Widgets.WidgetSkin]]">
+                    <contentPath dataType="String">Data\Graphics\Skins\ScrollBarIncrease.WidgetSkin.res</contentPath>
+                  </_scrollbarIncreaseButtonSkin>
+                  <_scrollbarSkin dataType="Struct" type="Duality.ContentRef`1[[FrozenCore.Resources.Widgets.WidgetSkin]]">
+                    <contentPath dataType="String">Data\Graphics\Skins\ScrollBar.WidgetSkin.res</contentPath>
+                  </_scrollbarSkin>
+                  <_scrollSpeed dataType="Int">5</_scrollSpeed>
+                  <_skin dataType="Struct" type="Duality.ContentRef`1[[FrozenCore.Resources.Widgets.WidgetSkin]]">
+                    <contentPath dataType="String">Data\Graphics\Skins\DropDown.WidgetSkin.res</contentPath>
+                  </_skin>
+                  <_status dataType="Enum" type="FrozenCore.Widgets.Widget+WidgetStatus" name="Normal" value="0" />
+                  <_textColor dataType="Struct" type="Duality.Drawing.ColorRgba">
+                    <A dataType="Byte">255</A>
+                    <B dataType="Byte">255</B>
+                    <G dataType="Byte">255</G>
+                    <R dataType="Byte">255</R>
+                  </_textColor>
+                  <_textFont dataType="Struct" type="Duality.ContentRef`1[[Duality.Resources.Font]]">
+                    <contentPath />
+                  </_textFont>
+                  <_tint dataType="Struct" type="Duality.Drawing.ColorRgba">
+                    <A dataType="Byte">255</A>
+                    <B dataType="Byte">255</B>
+                    <G dataType="Byte">255</G>
+                    <R dataType="Byte">255</R>
+                  </_tint>
+                  <_visibleRect dataType="Struct" type="Duality.Rect">
+                    <H dataType="Float">0</H>
+                    <W dataType="Float">0</W>
+                    <X dataType="Float">0</X>
+                    <Y dataType="Float">0</Y>
+                  </_visibleRect>
+                  <_visiblityFlag dataType="Enum" type="Duality.Drawing.VisibilityFlag" name="Group0" value="1" />
+                  <active dataType="Bool">true</active>
+                  <gameobj dataType="ObjectRef">4101549498</gameobj>
+                  <initState dataType="Enum" type="Duality.InitState" name="Initialized" value="1" />
+                </item>
+              </_items>
+              <_size dataType="Int">2</_size>
+              <_version dataType="Int">2</_version>
+            </compList>
+            <compMap dataType="Struct" type="System.Collections.Generic.Dictionary`2[[System.Type],[Duality.Component]]" id="3384876874" surrogate="true">
+              <header />
+              <body>
+                <keys dataType="Array" type="System.Type[]" id="2683622796">
+                  <item dataType="ObjectRef">3780118422</item>
+                  <item dataType="Type" id="2786213796" value="FrozenCore.Widgets.SkinnedDropDownButton" />
+                </keys>
+                <values dataType="Array" type="Duality.Component[]" id="643790326">
+                  <item dataType="ObjectRef">2166897134</item>
+                  <item dataType="ObjectRef">378506863</item>
+                </values>
+              </body>
+            </compMap>
+            <compTransform dataType="ObjectRef">2166897134</compTransform>
+            <identifier dataType="Struct" type="System.Guid" surrogate="true">
+              <header>
+                <data dataType="Array" type="System.Byte[]" id="27438872">3ufSWKrSX0qUSX75991FOw==</data>
+              </header>
+              <body />
+            </identifier>
+            <initState dataType="Enum" type="Duality.InitState" name="Initialized" value="1" />
+            <name dataType="String">DropDown</name>
+            <parent dataType="ObjectRef">3608675265</parent>
+            <prefabLink />
+          </item>
         </_items>
-        <_size dataType="Int">3</_size>
-        <_version dataType="Int">3</_version>
+        <_size dataType="Int">4</_size>
+        <_version dataType="Int">6</_version>
       </children>
       <compList dataType="Struct" type="System.Collections.Generic.List`1[[Duality.Component]]" id="976593592">
         <_items dataType="Array" type="Duality.Component[]" id="2243843369" length="4">
@@ -895,12 +1043,12 @@
             <initState dataType="Enum" type="Duality.InitState" name="Initialized" value="1" />
             <parentTransform />
             <pos dataType="Struct" type="OpenTK.Vector3">
-              <X dataType="Float">0</X>
+              <X dataType="Float">-100</X>
               <Y dataType="Float">250</Y>
               <Z dataType="Float">0</Z>
             </pos>
             <posAbs dataType="Struct" type="OpenTK.Vector3">
-              <X dataType="Float">0</X>
+              <X dataType="Float">-100</X>
               <Y dataType="Float">250</Y>
               <Z dataType="Float">0</Z>
             </posAbs>
@@ -992,9 +1140,293 @@
       <parent />
       <prefabLink />
     </item>
+    <item dataType="Struct" type="Duality.GameObject" id="1748443023">
+      <active dataType="Bool">true</active>
+      <children />
+      <compList dataType="Struct" type="System.Collections.Generic.List`1[[Duality.Component]]" id="3040150253">
+        <_items dataType="Array" type="Duality.Component[]" id="3943341798" length="4">
+          <item dataType="Struct" type="Duality.Components.Transform" id="4108757955">
+            <active dataType="Bool">true</active>
+            <angle dataType="Float">0</angle>
+            <angleAbs dataType="Float">0</angleAbs>
+            <angleVel dataType="Float">0</angleVel>
+            <angleVelAbs dataType="Float">0</angleVelAbs>
+            <deriveAngle dataType="Bool">true</deriveAngle>
+            <gameobj dataType="ObjectRef">1748443023</gameobj>
+            <ignoreParent dataType="Bool">false</ignoreParent>
+            <initState dataType="Enum" type="Duality.InitState" name="Initialized" value="1" />
+            <parentTransform />
+            <pos dataType="Struct" type="OpenTK.Vector3">
+              <X dataType="Float">-200</X>
+              <Y dataType="Float">-300</Y>
+              <Z dataType="Float">0</Z>
+            </pos>
+            <posAbs dataType="Struct" type="OpenTK.Vector3">
+              <X dataType="Float">-200</X>
+              <Y dataType="Float">-300</Y>
+              <Z dataType="Float">0</Z>
+            </posAbs>
+            <scale dataType="Float">1</scale>
+            <scaleAbs dataType="Float">1</scaleAbs>
+            <vel dataType="Struct" type="OpenTK.Vector3">
+              <X dataType="Float">0</X>
+              <Y dataType="Float">0</Y>
+              <Z dataType="Float">0</Z>
+            </vel>
+            <velAbs dataType="Struct" type="OpenTK.Vector3">
+              <X dataType="Float">0</X>
+              <Y dataType="Float">0</Y>
+              <Z dataType="Float">0</Z>
+            </velAbs>
+          </item>
+          <item dataType="Struct" type="FrozenCore.Widgets.SkinnedCommandGrid" id="3820687698">
+            <_activeArea dataType="Enum" type="FrozenCore.Widgets.ActiveArea" name="None" value="0" />
+            <_highlightSkin dataType="Struct" type="Duality.ContentRef`1[[FrozenCore.Resources.Widgets.WidgetSkin]]">
+              <contentPath dataType="String">Data\Graphics\Skins\Highlight.WidgetSkin.res</contentPath>
+            </_highlightSkin>
+            <_itemPadding dataType="Struct" type="OpenTK.Vector4">
+              <W dataType="Float">0</W>
+              <X dataType="Float">0</X>
+              <Y dataType="Float">0</Y>
+              <Z dataType="Float">0</Z>
+            </_itemPadding>
+            <_items dataType="Struct" type="System.Collections.Generic.List`1[[System.Object]]" id="1252799782">
+              <_items dataType="Array" type="System.Object[]" id="2182712576" length="16">
+                <item dataType="String">First Element</item>
+                <item dataType="String">Second</item>
+                <item dataType="Enum" type="System.DayOfWeek" name="Monday" value="1" />
+                <item dataType="Enum" type="FrozenCore.Widgets.Widget+DirtyFlags" name="Skin, Custom1" value="10" />
+                <item dataType="Struct" type="OpenTK.Vector2">
+                  <X dataType="Float">5</X>
+                  <Y dataType="Float">85</Y>
+                </item>
+              </_items>
+              <_size dataType="Int">5</_size>
+              <_version dataType="Int">53</_version>
+            </_items>
+            <_keyDown dataType="Enum" type="OpenTK.Input.Key" name="Down" value="46" />
+            <_keyLeft dataType="Enum" type="OpenTK.Input.Key" name="Left" value="47" />
+            <_keyRight dataType="Enum" type="OpenTK.Input.Key" name="Right" value="48" />
+            <_keyUp dataType="Enum" type="OpenTK.Input.Key" name="Up" value="45" />
+            <_leftClickArgument />
+            <_next />
+            <_onLeftClick dataType="Struct" type="Duality.ContentRef`1[[FrozenCore.Script]]">
+              <contentPath />
+            </_onLeftClick>
+            <_onRightClick dataType="Struct" type="Duality.ContentRef`1[[FrozenCore.Script]]">
+              <contentPath />
+            </_onRightClick>
+            <_overrideAutoZ dataType="Bool">false</_overrideAutoZ>
+            <_previous />
+            <_rect dataType="Struct" type="Duality.Rect">
+              <H dataType="Float">80</H>
+              <W dataType="Float">400</W>
+              <X dataType="Float">0</X>
+              <Y dataType="Float">0</Y>
+            </_rect>
+            <_rightClickArgument />
+            <_scrollbarButtonsSize dataType="Struct" type="OpenTK.Vector2">
+              <X dataType="Float">10</X>
+              <Y dataType="Float">20</Y>
+            </_scrollbarButtonsSize>
+            <_scrollbarCursorSize dataType="Struct" type="OpenTK.Vector2">
+              <X dataType="Float">10</X>
+              <Y dataType="Float">10</Y>
+            </_scrollbarCursorSize>
+            <_scrollbarCursorSkin dataType="Struct" type="Duality.ContentRef`1[[FrozenCore.Resources.Widgets.WidgetSkin]]">
+              <contentPath dataType="String">Data\Graphics\Skins\ScrollBarCursor.WidgetSkin.res</contentPath>
+            </_scrollbarCursorSkin>
+            <_scrollbarDecreaseButtonSkin dataType="Struct" type="Duality.ContentRef`1[[FrozenCore.Resources.Widgets.WidgetSkin]]">
+              <contentPath dataType="String">Data\Graphics\Skins\ScrollBarDecrease.WidgetSkin.res</contentPath>
+            </_scrollbarDecreaseButtonSkin>
+            <_scrollbarIncreaseButtonSkin dataType="Struct" type="Duality.ContentRef`1[[FrozenCore.Resources.Widgets.WidgetSkin]]">
+              <contentPath dataType="String">Data\Graphics\Skins\ScrollBarIncrease.WidgetSkin.res</contentPath>
+            </_scrollbarIncreaseButtonSkin>
+            <_scrollbarSkin dataType="Struct" type="Duality.ContentRef`1[[FrozenCore.Resources.Widgets.WidgetSkin]]">
+              <contentPath dataType="String">Data\Graphics\Skins\ScrollBar.WidgetSkin.res</contentPath>
+            </_scrollbarSkin>
+            <_skin dataType="Struct" type="Duality.ContentRef`1[[FrozenCore.Resources.Widgets.WidgetSkin]]">
+              <contentPath dataType="String">Data\Graphics\Skins\Panel.WidgetSkin.res</contentPath>
+            </_skin>
+            <_status dataType="Enum" type="FrozenCore.Widgets.Widget+WidgetStatus" name="Normal" value="0" />
+            <_textColor dataType="Struct" type="Duality.Drawing.ColorRgba">
+              <A dataType="Byte">255</A>
+              <B dataType="Byte">255</B>
+              <G dataType="Byte">255</G>
+              <R dataType="Byte">255</R>
+            </_textColor>
+            <_textFont dataType="Struct" type="Duality.ContentRef`1[[Duality.Resources.Font]]">
+              <contentPath />
+            </_textFont>
+            <_tint dataType="Struct" type="Duality.Drawing.ColorRgba">
+              <A dataType="Byte">255</A>
+              <B dataType="Byte">0</B>
+              <G dataType="Byte">255</G>
+              <R dataType="Byte">255</R>
+            </_tint>
+            <_visibleRect dataType="Struct" type="Duality.Rect">
+              <H dataType="Float">0</H>
+              <W dataType="Float">0</W>
+              <X dataType="Float">0</X>
+              <Y dataType="Float">0</Y>
+            </_visibleRect>
+            <_visiblityFlag dataType="Enum" type="Duality.Drawing.VisibilityFlag" name="Group0" value="1" />
+            <active dataType="Bool">true</active>
+            <gameobj dataType="ObjectRef">1748443023</gameobj>
+            <initState dataType="Enum" type="Duality.InitState" name="Initialized" value="1" />
+          </item>
+        </_items>
+        <_size dataType="Int">2</_size>
+        <_version dataType="Int">2</_version>
+      </compList>
+      <compMap dataType="Struct" type="System.Collections.Generic.Dictionary`2[[System.Type],[Duality.Component]]" id="2490376440" surrogate="true">
+        <header />
+        <body>
+          <keys dataType="Array" type="System.Type[]" id="1518136455">
+            <item dataType="ObjectRef">3780118422</item>
+            <item dataType="Type" id="2447628110" value="FrozenCore.Widgets.SkinnedCommandGrid" />
+          </keys>
+          <values dataType="Array" type="Duality.Component[]" id="873953664">
+            <item dataType="ObjectRef">4108757955</item>
+            <item dataType="ObjectRef">3820687698</item>
+          </values>
+        </body>
+      </compMap>
+      <compTransform dataType="ObjectRef">4108757955</compTransform>
+      <identifier dataType="Struct" type="System.Guid" surrogate="true">
+        <header>
+          <data dataType="Array" type="System.Byte[]" id="1161671557">ZFaHobCK4Emj0ENRTxgNCw==</data>
+        </header>
+        <body />
+      </identifier>
+      <initState dataType="Enum" type="Duality.InitState" name="Initialized" value="1" />
+      <name dataType="String">SkinnedCommandGrid</name>
+      <parent />
+      <prefabLink />
+    </item>
+    <item dataType="Struct" type="Duality.GameObject" id="3005610690">
+      <active dataType="Bool">true</active>
+      <children />
+      <compList dataType="Struct" type="System.Collections.Generic.List`1[[Duality.Component]]" id="171494988">
+        <_items dataType="Array" type="Duality.Component[]" id="2673313700" length="4">
+          <item dataType="Struct" type="Duality.Components.Transform" id="1070958326">
+            <active dataType="Bool">true</active>
+            <angle dataType="Float">0</angle>
+            <angleAbs dataType="Float">0</angleAbs>
+            <angleVel dataType="Float">0</angleVel>
+            <angleVelAbs dataType="Float">0</angleVelAbs>
+            <deriveAngle dataType="Bool">true</deriveAngle>
+            <gameobj dataType="ObjectRef">3005610690</gameobj>
+            <ignoreParent dataType="Bool">false</ignoreParent>
+            <initState dataType="Enum" type="Duality.InitState" name="Initialized" value="1" />
+            <parentTransform />
+            <pos dataType="Struct" type="OpenTK.Vector3">
+              <X dataType="Float">220</X>
+              <Y dataType="Float">-300</Y>
+              <Z dataType="Float">-0.001</Z>
+            </pos>
+            <posAbs dataType="Struct" type="OpenTK.Vector3">
+              <X dataType="Float">220</X>
+              <Y dataType="Float">-300</Y>
+              <Z dataType="Float">-0.001</Z>
+            </posAbs>
+            <scale dataType="Float">1</scale>
+            <scaleAbs dataType="Float">1</scaleAbs>
+            <vel dataType="Struct" type="OpenTK.Vector3">
+              <X dataType="Float">0</X>
+              <Y dataType="Float">0</Y>
+              <Z dataType="Float">0</Z>
+            </vel>
+            <velAbs dataType="Struct" type="OpenTK.Vector3">
+              <X dataType="Float">0</X>
+              <Y dataType="Float">0</Y>
+              <Z dataType="Float">0</Z>
+            </velAbs>
+          </item>
+          <item dataType="Struct" type="FrozenCore.Widgets.SkinnedButton" id="1551431256">
+            <_activeArea dataType="Enum" type="FrozenCore.Widgets.ActiveArea" name="All" value="7" />
+            <_leftClickArgument />
+            <_next />
+            <_onLeftClick dataType="Struct" type="Duality.ContentRef`1[[FrozenCore.Script]]">
+              <contentPath dataType="String">Data\Scripts\FocusOnGrid.FocusOnGrid.res</contentPath>
+            </_onLeftClick>
+            <_onRightClick dataType="Struct" type="Duality.ContentRef`1[[FrozenCore.Script]]">
+              <contentPath />
+            </_onRightClick>
+            <_overrideAutoZ dataType="Bool">false</_overrideAutoZ>
+            <_previous />
+            <_rect dataType="Struct" type="Duality.Rect">
+              <H dataType="Float">30</H>
+              <W dataType="Float">80</W>
+              <X dataType="Float">0</X>
+              <Y dataType="Float">0</Y>
+            </_rect>
+            <_repeatLeftClickEvery dataType="Float">0.5</_repeatLeftClickEvery>
+            <_rightClickArgument />
+            <_skin dataType="Struct" type="Duality.ContentRef`1[[FrozenCore.Resources.Widgets.WidgetSkin]]">
+              <contentPath dataType="String">Data\Graphics\Skins\YellowButton.WidgetSkin.res</contentPath>
+            </_skin>
+            <_status dataType="Enum" type="FrozenCore.Widgets.Widget+WidgetStatus" name="Normal" value="0" />
+            <_text dataType="String">Focus</_text>
+            <_textColor dataType="Struct" type="Duality.Drawing.ColorRgba">
+              <A dataType="Byte">255</A>
+              <B dataType="Byte">255</B>
+              <G dataType="Byte">255</G>
+              <R dataType="Byte">255</R>
+            </_textColor>
+            <_textFont dataType="Struct" type="Duality.ContentRef`1[[Duality.Resources.Font]]">
+              <contentPath dataType="String">Default:Font:GenericSansSerif12</contentPath>
+            </_textFont>
+            <_tint dataType="Struct" type="Duality.Drawing.ColorRgba">
+              <A dataType="Byte">255</A>
+              <B dataType="Byte">255</B>
+              <G dataType="Byte">255</G>
+              <R dataType="Byte">255</R>
+            </_tint>
+            <_visibleRect dataType="Struct" type="Duality.Rect">
+              <H dataType="Float">0</H>
+              <W dataType="Float">0</W>
+              <X dataType="Float">0</X>
+              <Y dataType="Float">0</Y>
+            </_visibleRect>
+            <_visiblityFlag dataType="Enum" type="Duality.Drawing.VisibilityFlag" name="Group0" value="1" />
+            <active dataType="Bool">true</active>
+            <gameobj dataType="ObjectRef">3005610690</gameobj>
+            <initState dataType="Enum" type="Duality.InitState" name="Initialized" value="1" />
+          </item>
+        </_items>
+        <_size dataType="Int">2</_size>
+        <_version dataType="Int">2</_version>
+      </compList>
+      <compMap dataType="Struct" type="System.Collections.Generic.Dictionary`2[[System.Type],[Duality.Component]]" id="1380834806" surrogate="true">
+        <header />
+        <body>
+          <keys dataType="Array" type="System.Type[]" id="1776496582">
+            <item dataType="ObjectRef">3780118422</item>
+            <item dataType="ObjectRef">2264193604</item>
+          </keys>
+          <values dataType="Array" type="Duality.Component[]" id="4250053306">
+            <item dataType="ObjectRef">1070958326</item>
+            <item dataType="ObjectRef">1551431256</item>
+          </values>
+        </body>
+      </compMap>
+      <compTransform dataType="ObjectRef">1070958326</compTransform>
+      <identifier dataType="Struct" type="System.Guid" surrogate="true">
+        <header>
+          <data dataType="Array" type="System.Byte[]" id="688381126">27O8AJmob0m1OBt2o7A4dg==</data>
+        </header>
+        <body />
+      </identifier>
+      <initState dataType="Enum" type="Duality.InitState" name="Initialized" value="1" />
+      <name dataType="String">Button</name>
+      <parent />
+      <prefabLink />
+    </item>
     <item dataType="ObjectRef">3912879882</item>
     <item dataType="ObjectRef">114325725</item>
     <item dataType="ObjectRef">3481137179</item>
+    <item dataType="ObjectRef">4101549498</item>
     <item dataType="ObjectRef">4189188617</item>
     <item dataType="ObjectRef">1414517029</item>
   </serializeObj>

@@ -23,7 +23,6 @@ namespace FrozenCoreSamples
         protected override void InitPlugin()
         {
             base.InitPlugin();
-            Scene.Entered += _sceneEnteredHandler;
         }
 
         void Scene_Entered(object sender, System.EventArgs e)

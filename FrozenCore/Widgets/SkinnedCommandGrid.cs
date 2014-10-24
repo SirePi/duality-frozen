@@ -142,8 +142,8 @@ namespace FrozenCore.Widgets
             }
             set
             {
-                _dirtyFlags |= DirtyFlags.Value;
                 _items = value;
+                _dirtyFlags |= DirtyFlags.Value;
             }
         }
 
@@ -259,7 +259,7 @@ namespace FrozenCore.Widgets
 
         public SkinnedCommandGrid()
         {
-            ActiveArea = Widgets.ActiveArea.None;
+            ActiveArea = Widgets.ActiveArea.Center;
 
             _fText = new FormattedText();
             _textColor = Colors.White;
@@ -272,6 +272,8 @@ namespace FrozenCore.Widgets
             _items = new List<object>();
             _rows = 1;
             _columns = 1;
+
+            _dirtyFlags |= DirtyFlags.Value;
         }
 
         public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
@@ -308,7 +310,7 @@ namespace FrozenCore.Widgets
             _scrollComponent.IncreaseButtonSkin = ScrollbarIncreaseButtonSkin;
             _scrollComponent.ButtonsSize = ScrollbarButtonsSize;
             _scrollComponent.CursorSize = ScrollbarCursorSize;
-            _scrollComponent.OnValueChanged = InternalScripts.GetScript<InternalScripts.CommandGridScrollbarValueChanged>();
+            //_scrollComponent.OnValueChanged = InternalScripts.GetScript<InternalScripts.CommandGridScrollbarValueChanged>();
 
             _scrollComponent.Rect = Rect.AlignTopLeft(0, 0, scrollbarWidth, Rect.W);
             _scrollComponent.ScrollSpeed = 1;
@@ -369,8 +371,6 @@ namespace FrozenCore.Widgets
 
         protected override void OnUpdate(float inSecondsPast)
         {
-            base.OnUpdate(inSecondsPast);
-
             if (_highlight == null && _highlightSkin != null)
             {
                 AddHighlight();
@@ -422,6 +422,8 @@ namespace FrozenCore.Widgets
             }
 
             UpdateComponents();
+
+            base.OnUpdate(inSecondsPast);
         }
 
         private void UpdateGrid()
@@ -518,13 +520,15 @@ namespace FrozenCore.Widgets
         {
             if (SelectedIndex >= 0 && _scrollComponent != null)
             {
+                _highlight.Active = true;
+
                 int itemColumn = (int)(MathF.Floor(SelectedIndex / _rows));
                 int itemRow = SelectedIndex - (itemColumn * _rows);
 
                 if (itemColumn < _scrollComponent.Value || itemColumn > _scrollComponent.Value + _visibleColumns - 1)
                 {
                     _scrollComponent.Value = itemColumn - 1;
-                } 
+                }
 
                 Vector3 relativePos = _highlight.Transform.RelativePos;
                 relativePos.X = Skin.Res.Border.X + (_gridCellSize.X * (itemColumn - _scrollComponent.Value));
@@ -533,11 +537,10 @@ namespace FrozenCore.Widgets
                 _highlight.Transform.RelativePos = relativePos;
                 _highlightPanel.Rect = new Rect(_gridCellSize);
             }
-        }
-
-        internal void ScrollValueChanged()
-        {
-            
+            else
+            {
+                _highlight.Active = false;
+            }
         }
     }
 }

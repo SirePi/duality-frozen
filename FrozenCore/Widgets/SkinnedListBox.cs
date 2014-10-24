@@ -23,9 +23,6 @@ namespace FrozenCore.Widgets
         private SkinnedPanel _highlightPanel;
 
         [NonSerialized]
-        private bool _itemsAccessed;
-
-        [NonSerialized]
         private Polygon _listArea;
 
         [NonSerialized]
@@ -43,20 +40,24 @@ namespace FrozenCore.Widgets
         public ContentRef<WidgetSkin> HighlightSkin
         {
             get { return _highlightSkin; }
-            set { _highlightSkin = value; }
+            set 
+            { 
+                _highlightSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom5;
+            }
         }
 
         public List<object> Items
         {
             get
             {
-                _itemsAccessed = true;
+                _dirtyFlags |= DirtyFlags.Value;
                 return _items;
             }
             set
             {
-                _itemsAccessed = true;
                 _items = value;
+                _dirtyFlags |= DirtyFlags.Value;
             }
         }
 
@@ -150,32 +151,23 @@ namespace FrozenCore.Widgets
             _listArea[3] = inDevice.GetScreenCoord(_points[9].WorldCoords).Xy;
         }
 
-        protected override void OnInit(Component.InitContext inContext)
-        {
-            _fText.SourceText = String.Join("/n", _items);
-
-            base.OnInit(inContext);
-
-            if (inContext == InitContext.Activate && !FrozenUtilities.IsDualityEditor)
-            {
-                if (_highlight == null)
-                {
-                    AddHighlight();
-                }
-
-                UpdateWidget(false);
-            }
-        }
-
         protected override void OnUpdate(float inSecondsPast)
         {
             base.OnUpdate(inSecondsPast);
 
-            if (_itemsAccessed)
+            if (_highlight == null && _highlightSkin != null)
+            {
+                AddHighlight();
+            }
+
+            if ((_dirtyFlags & DirtyFlags.Custom5) != DirtyFlags.None && _highlight != null)
+            {
+                _highlight.GetComponent<SkinnedWidget>().Skin = _highlightSkin;
+            }
+
+            if ((_dirtyFlags & DirtyFlags.Value) != DirtyFlags.None)
             {
                 _fText.SourceText = String.Join("/n", _items);
-                _itemsAccessed = false;
-
                 UpdateWidget(false);
             }
 

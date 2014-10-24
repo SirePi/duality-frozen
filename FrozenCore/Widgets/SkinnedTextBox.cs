@@ -123,7 +123,7 @@ namespace FrozenCore.Widgets
                 inCanvas.PopState();
             }
         }
-
+        /*
         protected override void OnInit(Component.InitContext inContext)
         {
             base.OnInit(inContext);
@@ -143,13 +143,16 @@ namespace FrozenCore.Widgets
                 UpdateCaret();
             }
         }
-
+        */
         protected override void OnUpdate(float inSecondsPast)
         {
-            base.OnUpdate(inSecondsPast);
-
             if (IsWidgetActive)
             {
+                if (_caret == null)
+                {
+                    AddCaret();
+                }
+
                 if (_text != _lastText)
                 {
                     _lastText = _text;
@@ -174,6 +177,8 @@ namespace FrozenCore.Widgets
             {
                 _caret.Active = false;
             }
+
+            base.OnUpdate(inSecondsPast);
         }
 
         private void AddCaret()

@@ -59,37 +59,61 @@ namespace FrozenCore.Widgets
         public Vector2 ScrollbarButtonsSize
         {
             get { return _scrollbarButtonsSize; }
-            set { _scrollbarButtonsSize = value; }
+            set 
+            { 
+                _scrollbarButtonsSize = value;
+                _dirtyFlags |= DirtyFlags.Custom7;
+            }
         }
 
         public Vector2 ScrollbarCursorSize
         {
             get { return _scrollbarCursorSize; }
-            set { _scrollbarCursorSize = value; }
+            set 
+            {
+                _scrollbarCursorSize = value;
+                _dirtyFlags |= DirtyFlags.Custom6;
+            }
         }
 
         public ContentRef<WidgetSkin> ScrollbarCursorSkin
         {
             get { return _scrollbarCursorSkin; }
-            set { _scrollbarCursorSkin = value; }
+            set
+            { 
+                _scrollbarCursorSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom2;
+            }
         }
 
         public ContentRef<WidgetSkin> ScrollbarDecreaseButtonSkin
         {
             get { return _scrollbarDecreaseButtonSkin; }
-            set { _scrollbarDecreaseButtonSkin = value; }
+            set 
+            { 
+                _scrollbarDecreaseButtonSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom3;
+            }
         }
 
         public ContentRef<WidgetSkin> ScrollbarIncreaseButtonSkin
         {
             get { return _scrollbarIncreaseButtonSkin; }
-            set { _scrollbarIncreaseButtonSkin = value; }
+            set 
+            { 
+                _scrollbarIncreaseButtonSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom4;
+            }
         }
 
         public ContentRef<WidgetSkin> ScrollbarSkin
         {
             get { return _scrollbarSkin; }
-            set { _scrollbarSkin = value; }
+            set 
+            { 
+                _scrollbarSkin = value;
+                _dirtyFlags |= DirtyFlags.Custom1;
+            }
         }
 
         public int ScrollSpeed
@@ -118,6 +142,8 @@ namespace FrozenCore.Widgets
             _textColor = Colors.White;
             _textVertices = new VertexC1P3T2[4];
             _scrollSpeed = 5;
+
+            _dirtyFlags |= DirtyFlags.Value;
         }
 
         protected override void Draw(IDrawDevice inDevice)
@@ -171,30 +197,6 @@ namespace FrozenCore.Widgets
                 _textVertices[3].Pos.Z += DELTA_Z;
 
                 inDevice.AddVertices(_batchInfo, VertexMode.Quads, _textVertices);
-            }
-        }
-
-        protected override void DrawCanvas(Canvas inCanvas)
-        {
-        }
-
-        protected override void OnInit(Component.InitContext inContext)
-        {
-            base.OnInit(inContext);
-
-            if (inContext == InitContext.Activate && !FrozenUtilities.IsDualityEditor)
-            {
-                if (_scrollbar == null)
-                {
-                    AddScrollBar();
-                }
-
-                _scrollbar.GetComponent<Widget>().Status = Status;
-
-                _visibleWidth = (int)Math.Floor(Rect.W - Skin.Res.Border.X - Skin.Res.Border.W);
-                _visibleHeight = (int)Math.Floor(Rect.H - Skin.Res.Border.Y - Skin.Res.Border.Z);
-
-                UpdateWidget(true);
             }
         }
 
@@ -297,6 +299,52 @@ namespace FrozenCore.Widgets
 
             _scrollbar.AddComponent<SkinnedScrollBar>(_scrollComponent);
             Scene.Current.AddObject(_scrollbar);
+        }
+
+        protected override void OnUpdate(float inSecondsPast)
+        {
+            if (_scrollbar == null && _scrollbarSkin != null)
+            {
+                AddScrollBar();
+            }
+
+            if ((_dirtyFlags & DirtyFlags.Skin) != DirtyFlags.None)
+            {
+                _visibleWidth = (int)Math.Floor(Rect.W - Skin.Res.Border.X - Skin.Res.Border.W);
+                _visibleHeight = (int)Math.Floor(Rect.H - Skin.Res.Border.Y - Skin.Res.Border.Z);
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom1) != DirtyFlags.None && _scrollbar != null)
+            {
+                _scrollbar.GetComponent<SkinnedWidget>().Skin = _scrollbarSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom2) != DirtyFlags.None && _scrollbar != null)
+            {
+                _scrollbar.GetComponent<SkinnedScrollBar>().CursorSkin = _scrollbarCursorSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom3) != DirtyFlags.None && _scrollbar != null)
+            {
+                _scrollbar.GetComponent<SkinnedScrollBar>().DecreaseButtonSkin = _scrollbarDecreaseButtonSkin;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom4) != DirtyFlags.None && _scrollbar != null)
+            {
+                _scrollbar.GetComponent<SkinnedScrollBar>().IncreaseButtonSkin = _scrollbarIncreaseButtonSkin;
+            }
+
+            if ((_dirtyFlags & DirtyFlags.Custom6) != DirtyFlags.None && _scrollbar != null)
+            {
+                _scrollbar.GetComponent<SkinnedScrollBar>().CursorSize = _scrollbarCursorSize;
+            }
+            if ((_dirtyFlags & DirtyFlags.Custom7) != DirtyFlags.None && _scrollbar != null)
+            {
+                _scrollbar.GetComponent<SkinnedScrollBar>().ButtonsSize = _scrollbarButtonsSize;
+            }
+
+            if (_scrollbar != null)
+            {
+                _scrollbar.GetComponent<SkinnedWidget>().Status = Status;
+            }
+
+            base.OnUpdate(inSecondsPast);
         }
     }
 }

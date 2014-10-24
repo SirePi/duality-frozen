@@ -8,6 +8,8 @@ namespace GameRes
 	public static class Data {
 		public static class Graphics {
 			public static class Skins {
+				public static Duality.ContentRef<FrozenCore.Resources.Widgets.WidgetSkin> DropDown_WidgetSkin { get { return Duality.ContentProvider.RequestContent<FrozenCore.Resources.Widgets.WidgetSkin>(@"Data\Graphics\Skins\DropDown.WidgetSkin.res"); }}
+				public static Duality.ContentRef<FrozenCore.Resources.Widgets.WidgetSkin> Highlight_WidgetSkin { get { return Duality.ContentProvider.RequestContent<FrozenCore.Resources.Widgets.WidgetSkin>(@"Data\Graphics\Skins\Highlight.WidgetSkin.res"); }}
 				public static Duality.ContentRef<FrozenCore.Resources.Widgets.WidgetSkin> Panel_WidgetSkin { get { return Duality.ContentProvider.RequestContent<FrozenCore.Resources.Widgets.WidgetSkin>(@"Data\Graphics\Skins\Panel.WidgetSkin.res"); }}
 				public static Duality.ContentRef<FrozenCore.Resources.Widgets.WidgetSkin> Progress_WidgetSkin { get { return Duality.ContentProvider.RequestContent<FrozenCore.Resources.Widgets.WidgetSkin>(@"Data\Graphics\Skins\Progress.WidgetSkin.res"); }}
 				public static Duality.ContentRef<FrozenCore.Resources.Widgets.WidgetSkin> ProgressBar_WidgetSkin { get { return Duality.ContentProvider.RequestContent<FrozenCore.Resources.Widgets.WidgetSkin>(@"Data\Graphics\Skins\ProgressBar.WidgetSkin.res"); }}
@@ -24,6 +26,8 @@ namespace GameRes
 				public static Duality.ContentRef<FrozenCore.Resources.Widgets.WidgetSkin> WindowRestoreBtn_WidgetSkin { get { return Duality.ContentProvider.RequestContent<FrozenCore.Resources.Widgets.WidgetSkin>(@"Data\Graphics\Skins\WindowRestoreBtn.WidgetSkin.res"); }}
 				public static Duality.ContentRef<FrozenCore.Resources.Widgets.WidgetSkin> YellowButton_WidgetSkin { get { return Duality.ContentProvider.RequestContent<FrozenCore.Resources.Widgets.WidgetSkin>(@"Data\Graphics\Skins\YellowButton.WidgetSkin.res"); }}
 				public static void LoadAll() {
+					DropDown_WidgetSkin.MakeAvailable();
+					Highlight_WidgetSkin.MakeAvailable();
 					Panel_WidgetSkin.MakeAvailable();
 					Progress_WidgetSkin.MakeAvailable();
 					ProgressBar_WidgetSkin.MakeAvailable();
@@ -58,8 +62,10 @@ namespace GameRes
 			}
 		}
 		public static class Scripts {
+			public static Duality.ContentRef<FrozenCoreSamples.Scripts.FocusOnGrid> FocusOnGrid_FocusOnGrid { get { return Duality.ContentProvider.RequestContent<FrozenCoreSamples.Scripts.FocusOnGrid>(@"Data\Scripts\FocusOnGrid.FocusOnGrid.res"); }}
 			public static Duality.ContentRef<FrozenCoreSamples.Scripts.ProgressIncrease> ProgressIncrease_ProgressIncrease { get { return Duality.ContentProvider.RequestContent<FrozenCoreSamples.Scripts.ProgressIncrease>(@"Data\Scripts\ProgressIncrease.ProgressIncrease.res"); }}
 			public static void LoadAll() {
+				FocusOnGrid_FocusOnGrid.MakeAvailable();
 				ProgressIncrease_ProgressIncrease.MakeAvailable();
 			}
 		}

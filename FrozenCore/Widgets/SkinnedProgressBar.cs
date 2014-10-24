@@ -130,8 +130,6 @@ namespace FrozenCore.Widgets
 
         protected override void OnUpdate(float inSecondsPast)
         {
-            base.OnUpdate(inSecondsPast);
-
             if (_bar == null && _barSkin != null)
             {
                 AddBar();
@@ -150,6 +148,8 @@ namespace FrozenCore.Widgets
 
                 _bar.GetComponent<Widget>().Status = Status;
             }
+
+            base.OnUpdate(inSecondsPast);
         }
     }
 }

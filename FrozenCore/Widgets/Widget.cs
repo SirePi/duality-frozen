@@ -134,8 +134,11 @@ namespace FrozenCore.Widgets
             get { return _status; }
             set
             {
-                _status = value;
-                _dirtyFlags |= DirtyFlags.Status;
+                if (_status != value)
+                {
+                    _status = value;
+                    _dirtyFlags |= DirtyFlags.Status;
+                }
             }
         }
 
@@ -202,6 +205,7 @@ namespace FrozenCore.Widgets
                 Status = WidgetStatus.Normal;
             }
 
+            _dirtyFlags |= DirtyFlags.Status;
             OnInit(context);
         }
 
@@ -326,7 +330,7 @@ namespace FrozenCore.Widgets
 
         private void FixRelativeZ()
         {
-            if (this.GameObj.Parent != null && this.GameObj.Parent.Transform != null)
+            if (this.GameObj.Parent != null && this.GameObj.Parent.Transform != null && !_overrideAutoZ)
             {
                 Vector3 pos = this.GameObj.Transform.Pos;
                 pos.Z = this.GameObj.Parent.Transform.Pos.Z + DELTA_Z;
@@ -337,10 +341,7 @@ namespace FrozenCore.Widgets
 
         private void GameObj_EventParentChanged(object sender, GameObjectParentChangedEventArgs e)
         {
-            if (!_overrideAutoZ)
-            {
-                FixRelativeZ();
-            }
+            FixRelativeZ();
         }
 
         private Polygon GetDefaultActiveAreaOnScreen(Camera inCamera)

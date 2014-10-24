@@ -7,9 +7,6 @@ namespace FrozenCore.Widgets
     [Serializable]
     public class SkinnedTextBlock : SkinnedMultiLineWidget
     {
-        [NonSerialized]
-        private bool _textChanged;
-
         private string _text;
 
         public String Text
@@ -18,24 +15,21 @@ namespace FrozenCore.Widgets
             set
             {
                 _text = value;
-                _textChanged = true;
+                _dirtyFlags |= DirtyFlags.Value;
             }
         }
 
         public SkinnedTextBlock()
         {
             ActiveArea = Widgets.ActiveArea.None;
-            _textChanged = true;
         }
 
         protected override void OnUpdate(float inSecondsPast)
         {
             base.OnUpdate(inSecondsPast);
 
-            if (_textChanged)
+            if ((_dirtyFlags & DirtyFlags.Value) != DirtyFlags.None)
             {
-                _textChanged = false;
-
                 _fText.SourceText = _text;
                 UpdateWidget(true);
             }
