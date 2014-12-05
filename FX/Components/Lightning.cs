@@ -8,8 +8,9 @@ using Duality.Drawing;
 using Duality.Editor;
 using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.FX.Properties;
+using SnowyPeak.Duality.Plugin.Frozen.Core;
 
-namespace SnowyPeak.Duality.Plugin.Frozen.Core.FX.Components
+namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
 {
     /// <summary>
     /// A Lightning effect emitter. Requires 2 FXAreas to work

@@ -6,8 +6,11 @@ using Duality.Components;
 using Duality.Drawing;
 using Duality.Editor;
 using OpenTK;
+using SnowyPeak.Duality.Plugin.Frozen.Core.Data;
+using SnowyPeak.Duality.Plugin.Frozen.Core;
 
-namespace SnowyPeak.Duality.Plugin.Frozen.Core.FX.Components
+
+namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
 {
     /// <summary>
     /// Abstract Component used by FX classes to determine the area where the effect can appear
@@ -20,9 +23,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.FX.Components
         ///
         /// </summary>
         [EditorHintFlags(MemberFlags.Invisible)]
-        public virtual Data.FloatRange ZRange
+        public virtual FloatRange ZRange
         {
-            get { return Data.FloatRange.ZERO; }
+            get { return FloatRange.ZERO; }
         }
 
         /// <summary>

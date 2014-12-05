@@ -9,8 +9,9 @@ using Duality.Resources;
 using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Data;
 using SnowyPeak.Duality.Plugin.Frozen.FX.Properties;
+using SnowyPeak.Duality.Plugin.Frozen.Core;
 
-namespace SnowyPeak.Duality.Plugin.Frozen.Core.FX.Components
+namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
 {
     /// <summary>
     /// A Particle Emitter

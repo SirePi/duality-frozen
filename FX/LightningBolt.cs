@@ -8,8 +8,9 @@ using Duality.Drawing;
 using Duality.Resources;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using SnowyPeak.Duality.Plugin.Frozen.Core;
 
-namespace SnowyPeak.Duality.Plugin.Frozen.Core.FX
+namespace SnowyPeak.Duality.Plugin.Frozen.FX
 {
     /// <summary>
     /// Class modeling a single Lightning Bolt emitted by a Lightning emitter

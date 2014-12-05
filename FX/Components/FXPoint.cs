@@ -6,7 +6,7 @@ using Duality.Editor;
 using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.FX.Properties;
 
-namespace SnowyPeak.Duality.Plugin.Frozen.Core.FX.Components
+namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
 {
     /// <summary>
     /// Implementation of a puntiform FXArea

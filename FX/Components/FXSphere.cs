@@ -6,8 +6,9 @@ using Duality.Drawing;
 using Duality.Editor;
 using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.FX.Properties;
+using SnowyPeak.Duality.Plugin.Frozen.Core.Data;
 
-namespace SnowyPeak.Duality.Plugin.Frozen.Core.FX.Components
+namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
 {
     /// <summary>
     /// Implementation of a spheric FXArea
@@ -25,9 +26,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.FX.Components
         ///
         /// </summary>
         [EditorHintFlags(MemberFlags.Invisible)]
-        public override Data.FloatRange ZRange
+        public override FloatRange ZRange
         {
-            get { return new Data.FloatRange(-Radius, Radius); }
+            get { return new FloatRange(-Radius, Radius); }
         }
 
         /// <summary>

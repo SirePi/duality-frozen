@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>SnowyPeak.Duality.Plugin.Frozen.FX</id>
+        <version>1.0.0</version>
+        <title>SnowyPeak's Frozen Plugin (FX)</title>
+        <authors>Pilati Alessandro</authors>
+        <owners>Pilati Alessandro</owners>
+        <licenseUrl>https://github.com/SirePi/duality-frozen/blob/master-nuget/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/SirePi/duality-frozen</projectUrl>
+        <iconUrl>https://raw.githubusercontent.com/SirePi/duality-frozen/master-nuget/nuspecs/fx.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>This plugin provides special effects components such as Particle emitters and Lightning generators.</description>
+        <summary>SnowyPeak.Duality.Plugin.Frozen.FX plugin</summary>
+        <tags>Duality Plugin Frozen Core Effects FX</tags>
+        <dependencies>
+            <dependency id="AdamsLair.Duality" version="1.3.2" />
+            <dependency id="SnowyPeak.Duality.Plugin.Frozen.Core" version="1.0.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\FX\bin\Release\SnowyPeak.Duality.Frozen.FX.core.dll" target="lib\SnowyPeak.Duality.Frozen.FX.core.dll" />
+        <file src="..\FX\bin\Release\SnowyPeak.Duality.Frozen.FX.core.pdb" target="lib\SnowyPeak.Duality.Frozen.FX.core.pdb" />
+        <file src="..\FX\bin\Release\SnowyPeak.Duality.Frozen.FX.core.XML" target="lib\SnowyPeak.Duality.Frozen.FX.core.XML" />
+    </files>
+</package>

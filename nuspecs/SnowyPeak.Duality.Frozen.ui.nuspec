@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>SnowyPeak.Duality.Plugin.Frozen.UI</id>
+        <version>1.0.0</version>
+        <title>SnowyPeak's Frozen Plugin (UI)</title>
+        <authors>Pilati Alessandro</authors>
+        <owners>Pilati Alessandro</owners>
+        <licenseUrl>https://github.com/SirePi/duality-frozen/blob/master-nuget/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/SirePi/duality-frozen</projectUrl>
+        <iconUrl>https://raw.githubusercontent.com/SirePi/duality-frozen/master-nuget/nuspecs/ui.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>This plugin provides UI Widgets and controllers.</description>
+        <summary>SnowyPeak.Duality.Plugin.Frozen.Core plugin</summary>
+        <tags>Duality Plugin Frozen Core UI</tags>
+        <dependencies>
+            <dependency id="AdamsLair.Duality" version="1.3.2" />
+            <dependency id="SnowyPeak.Duality.Plugin.Frozen.Core" version="1.0.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\UI\bin\Release\SnowyPeak.Duality.Frozen.UI.core.dll" target="lib\SnowyPeak.Duality.Frozen.UI.core.dll" />
+        <file src="..\UI\bin\Release\SnowyPeak.Duality.Frozen.UI.core.pdb" target="lib\SnowyPeak.Duality.Frozen.UI.core.pdb" />
+        <file src="..\UI\bin\Release\SnowyPeak.Duality.Frozen.UI.core.XML" target="lib\SnowyPeak.Duality.Frozen.UI.core.XML" />
+    </files>
+</package>

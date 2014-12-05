@@ -6,7 +6,7 @@ using Duality.Drawing;
 using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Data;
 
-namespace SnowyPeak.Duality.Plugin.Frozen.Core.FX
+namespace SnowyPeak.Duality.Plugin.Frozen.FX
 {
     /// <summary>
     /// Class modeling a single Particle emitted by a Particle emitter

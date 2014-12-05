@@ -4,7 +4,7 @@ using Duality;
 using Duality.Resources;
 using OpenTK;
 
-namespace SnowyPeak.Duality.Plugin.Frozen.Core.FX
+namespace SnowyPeak.Duality.Plugin.Frozen.FX
 {
     internal class ParticleMaterial
     {

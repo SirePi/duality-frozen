@@ -6,8 +6,9 @@ using Duality.Drawing;
 using Duality.Editor;
 using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.FX.Properties;
+using SnowyPeak.Duality.Plugin.Frozen.Core.Data;
 
-namespace SnowyPeak.Duality.Plugin.Frozen.Core.FX.Components
+namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
 {
     /// <summary>
     /// Implementation of a "cubic" FXArea
@@ -25,12 +26,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.FX.Components
         ///
         /// </summary>
         [EditorHintFlags(MemberFlags.Invisible)]
-        public override Data.FloatRange ZRange
+        public override FloatRange ZRange
         {
             get
             {
                 float halfSize = Size.Z / 2;
-                return new Data.FloatRange(-halfSize, halfSize);
+                return new FloatRange(-halfSize, halfSize);
             }
         }
 

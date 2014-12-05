@@ -1,21 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
-        <id>SnowyPeak.Duality.Plugin.Data</id>
-        <version>1.0.1</version>
-        <title>SnowyPeak's Data Plugin (Core)</title>
+        <id>SnowyPeak.Duality.Plugin.Frozen.Core</id>
+        <version>1.0.0</version>
+        <title>SnowyPeak's Frozen Plugin (Core)</title>
         <authors>Pilati Alessandro</authors>
         <owners>Pilati Alessandro</owners>
-        <licenseUrl>https://github.com/SirePi/duality-data/blob/master/LICENSE</licenseUrl>
-        <projectUrl>https://github.com/SirePi/duality-data</projectUrl>
+        <licenseUrl>https://github.com/SirePi/duality-frozen/blob/master-nuget/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/SirePi/duality-frozen</projectUrl>
+        <iconUrl>https://raw.githubusercontent.com/SirePi/duality-frozen/master-nuget/nuspecs/core.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>This plugin provides facilities for importing and managing text-based files in general, and text-based data files such as xml/xsd and csv in particular.</description>
-        <summary>SnowyPeak.Duality.Plugin.Data core plugin</summary>
-        <tags>Duality Plugin Data File</tags>
+        <description>This plugin provides basic data structures, components and utilities, mainly used by other Frozen plugins.</description>
+        <summary>SnowyPeak.Duality.Plugin.Frozen.Core plugin</summary>
+        <tags>Duality Plugin Frozen Core</tags>
         <dependencies>
-            <dependency id="AdamsLair.Duality" version="1.3.0" />
+            <dependency id="AdamsLair.Duality" version="1.3.2" />
         </dependencies>
     </metadata>
     <files>
+        <file src="..\Core\bin\Release\SnowyPeak.Duality.Frozen.core.dll" target="lib\SnowyPeak.Duality.Frozen.core.dll" />
+        <file src="..\Core\bin\Release\SnowyPeak.Duality.Frozen.core.pdb" target="lib\SnowyPeak.Duality.Frozen.core.pdb" />
+        <file src="..\Core\bin\Release\SnowyPeak.Duality.Frozen.core.XML" target="lib\SnowyPeak.Duality.Frozen.core.XML" />
     </files>
 </package>
