@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A3CF2AA7-6F8E-4787-9EA3-813D8341AF51}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SnowyPeak.Duality.Plugin.Frozen.UI</RootNamespace>
+    <AssemblyName>SnowyPeak.Duality.Frozen.UI.core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\SnowyPeak.Duality.Frozen.UI.core.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\SnowyPeak.Duality.Frozen.UI.core.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Duality, Version=1.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AdamsLair.Duality.1.3.2\lib\Duality.dll</HintPath>
+    </Reference>
+    <Reference Include="FarseerDuality, Version=3.3.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AdamsLair.FarseerDuality.3.3.9.0\lib\net40\FarseerDuality.dll</HintPath>
+    </Reference>
+    <Reference Include="NVorbis">
+      <HintPath>..\packages\AdamsLair.NVorbis.0.7.4\lib\NVorbis.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AdamsLair.OpenTK.1.1.1.0\lib\net20\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK.GLControl, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AdamsLair.OpenTK.GLControl.1.1.1.0\lib\net20\OpenTK.GLControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="CommanderExtensions.cs" />
+    <Compile Include="Commands\ChangeWidgetStatus.cs" />
+    <Compile Include="Commands\ColorizeSkinnedWidget.cs" />
+    <Compile Include="CorePlugin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Res.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Res.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\ResNames.cs" />
+    <Compile Include="Resources\DefaultScripts\CloseDialog.cs" />
+    <Compile Include="Resources\DefaultScripts\CloseWindow.cs" />
+    <Compile Include="Resources\DefaultScripts\Quit.cs" />
+    <Compile Include="Resources\Script.cs" />
+    <Compile Include="Resources\SkinOrigin.cs" />
+    <Compile Include="Resources\WidgetSkin.cs" />
+    <Compile Include="Widgets\ActiveArea.cs" />
+    <Compile Include="Widgets\InternalScripts.cs" />
+    <Compile Include="Widgets\InternalWidgets.cs" />
+    <Compile Include="Widgets\SkinnedButton.cs" />
+    <Compile Include="Widgets\SkinnedCheckButton.cs" />
+    <Compile Include="Widgets\SkinnedCommandGrid.cs" />
+    <Compile Include="Widgets\SkinnedDropDownButton.cs" />
+    <Compile Include="Widgets\SkinnedListBox.cs" />
+    <Compile Include="Widgets\SkinnedMultiLineWidget.cs" />
+    <Compile Include="Widgets\SkinnedPanel.cs" />
+    <Compile Include="Widgets\SkinnedProgressBar.cs" />
+    <Compile Include="Widgets\SkinnedRadioButton.cs" />
+    <Compile Include="Widgets\SkinnedScrollBar.cs" />
+    <Compile Include="Widgets\SkinnedTextBlock.cs" />
+    <Compile Include="Widgets\SkinnedTextBox.cs" />
+    <Compile Include="Widgets\SkinnedWidget.cs" />
+    <Compile Include="Widgets\SkinnedWindow.cs" />
+    <Compile Include="Widgets\Widget.cs" />
+    <Compile Include="Widgets\WidgetController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="SkinConfiguration.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{23836EF4-4D69-4C19-A376-A2604AFC5E85}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Res.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Res.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="EmbeddedResources\iconResButton.png" />
+    <Content Include="EmbeddedResources\iconResCheckButton.png" />
+    <Content Include="EmbeddedResources\iconResCommandGrid.png" />
+    <Content Include="EmbeddedResources\iconResDropDownButton.png" />
+    <Content Include="EmbeddedResources\iconResListBox.png" />
+    <Content Include="EmbeddedResources\iconResPanel.png" />
+    <Content Include="EmbeddedResources\iconResProgressBar.png" />
+    <Content Include="EmbeddedResources\iconResRadioButton.png" />
+    <Content Include="EmbeddedResources\iconResScript.png" />
+    <Content Include="EmbeddedResources\iconResScrollBar.png" />
+    <Content Include="EmbeddedResources\iconResSkin.png" />
+    <Content Include="EmbeddedResources\iconResTextBlock.png" />
+    <Content Include="EmbeddedResources\iconResTextBox.png" />
+    <Content Include="EmbeddedResources\iconResWidget.png" />
+    <Content Include="EmbeddedResources\iconResWidgetController.png" />
+    <Content Include="EmbeddedResources\iconResWindow.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

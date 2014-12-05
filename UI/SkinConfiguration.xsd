@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="SkinConfiguration"
+     targetNamespace="urn:FrozenCoreSkin"
+     xmlns="urn:FrozenCoreSkin"
+     xmlns:xs="http://www.w3.org/2001/XMLSchema"
+     elementFormDefault="qualified">
+  <xs:element name="skin">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="button" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="skin" type="skinType" minOccurs="1" maxOccurs="1" />
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:normalizedString" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="window" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="skin" type="skinType" minOccurs="1" maxOccurs="1" />
+              <xs:element name="minimizeButton" type="skinType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="maximizeButton" type="skinType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="closeButton" type="skinType" minOccurs="0" maxOccurs="1" />
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:normalizedString" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="checkbox" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="skin" type="skinType" minOccurs="1" maxOccurs="1" />
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:normalizedString" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="listbox" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="skin" type="skinType" minOccurs="1" maxOccurs="1" />
+              <xs:element name="overlay" type="skinType" minOccurs="1" maxOccurs="1" />
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:normalizedString" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="combobox" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="skin" type="skinType" minOccurs="1" maxOccurs="1" />
+              <xs:element name="listboxSkin" type="skinType" minOccurs="1" maxOccurs="1" />
+              <xs:element name="listboxOverlay" type="skinType" minOccurs="1" maxOccurs="1" />
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:normalizedString" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:normalizedString" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="vector2Type">
+    <xs:restriction base="xs:normalizedString">
+      <!--xs:pattern value="([0-9])+(\.?([0-9])+)?,([0-9])+(\.?([0-9])+)?" /-->
+      <!--X,Y -->
+      <xs:pattern value="([0-9])+,([0-9])+" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="borderType">
+    <xs:restriction base="xs:normalizedString">
+      <!-- Left,Top,Right,Bottom -->
+      <xs:pattern value="([0-9])+,([0-9])+,([0-9])+,([0-9])+" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="templateType">
+    <xs:attribute name="size" type="vector2Type" use="required" />
+    <xs:attribute name="border" type="borderType" use="optional" />
+  </xs:complexType>
+  <xs:complexType name="originType">
+    <xs:attribute name="normal" type="vector2Type" use="required" />
+    <xs:attribute name="hover" type="vector2Type" use="required" />
+    <xs:attribute name="active" type="vector2Type" use="required" />
+    <xs:attribute name="disabled" type="vector2Type" use="required" />
+  </xs:complexType>
+  <xs:complexType name="skinType">
+    <xs:sequence>
+      <xs:element name="template" type="templateType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="origin" type="originType" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

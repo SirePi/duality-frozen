@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>SnowyPeak.Duality.Plugin.Data</id>
+        <version>1.0.1</version>
+        <title>SnowyPeak's Data Plugin (Core)</title>
+        <authors>Pilati Alessandro</authors>
+        <owners>Pilati Alessandro</owners>
+        <licenseUrl>https://github.com/SirePi/duality-data/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/SirePi/duality-data</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>This plugin provides facilities for importing and managing text-based files in general, and text-based data files such as xml/xsd and csv in particular.</description>
+        <summary>SnowyPeak.Duality.Plugin.Data core plugin</summary>
+        <tags>Duality Plugin Data File</tags>
+        <dependencies>
+            <dependency id="AdamsLair.Duality" version="1.3.0" />
+        </dependencies>
+    </metadata>
+    <files>
+    </files>
+</package>
