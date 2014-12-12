@@ -76,8 +76,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
             float sin = MathF.Sin(this.GameObj.Transform.Angle);
             float cos = MathF.Cos(this.GameObj.Transform.Angle);
 
-            result.X = dx * cos - dy * sin;
-            result.Y = dx * sin + dy * cos;
+            result.X = (dx * cos - dy * sin) * radius;
+            result.Y = (dx * sin + dy * cos) * radius;
 
             return result;
         }
