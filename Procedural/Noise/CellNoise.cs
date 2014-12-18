@@ -20,7 +20,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
     public sealed class CellNoise : Noise
     {
         private static readonly int BUCKETS = 10;
-        private static readonly Vector2[] EMPTY_BUCKET = new Vector2[0];
+        private static readonly KeyValuePair<Vector2, Vector2>[] EMPTY_BUCKET = new KeyValuePair<Vector2, Vector2>[0];
 
         private List<List<List<Vector2>>> _buckets;
         private Distance _distanceFunction;
@@ -216,16 +216,16 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
 
             for (int x = -inSurrounding; x < inSurrounding + 1; x++)
             {
-                foreach (Vector2 src in GetBucket(inBucketX + x, inBucketY - inSurrounding))
+                foreach (KeyValuePair<Vector2, Vector2> kvp in GetBucket(inBucketX + x, inBucketY - inSurrounding))
                 {
-                    result.Add(new KeyValuePair<float, Vector2>(GetDistance(inPoint, src), src));
+                    result.Add(new KeyValuePair<float, Vector2>(GetDistance(inPoint, kvp.Value), kvp.Key));
                 }
 
                 if (inSurrounding != 0)
                 {
-                    foreach (Vector2 src in GetBucket(inBucketX + x, inBucketY + inSurrounding))
+                    foreach (KeyValuePair<Vector2, Vector2> kvp in GetBucket(inBucketX + x, inBucketY + inSurrounding))
                     {
-                        result.Add(new KeyValuePair<float, Vector2>(GetDistance(inPoint, src), src));
+                        result.Add(new KeyValuePair<float, Vector2>(GetDistance(inPoint, kvp.Value), kvp.Key));
                     }
                 }
             }
@@ -234,14 +234,14 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
             {
                 for (int y = -(inSurrounding - 1); y < inSurrounding; y++)
                 {
-                    foreach (Vector2 src in GetBucket(inBucketX - inSurrounding, inBucketY + y))
+                    foreach (KeyValuePair<Vector2, Vector2> kvp in GetBucket(inBucketX - inSurrounding, inBucketY + y))
                     {
-                        result.Add(new KeyValuePair<float, Vector2>(GetDistance(inPoint, src), src));
+                        result.Add(new KeyValuePair<float, Vector2>(GetDistance(inPoint, kvp.Value), kvp.Key));
                     }
 
-                    foreach (Vector2 src in GetBucket(inBucketX + inSurrounding, inBucketY + y))
+                    foreach (KeyValuePair<Vector2, Vector2> kvp in GetBucket(inBucketX + inSurrounding, inBucketY + y))
                     {
-                        result.Add(new KeyValuePair<float, Vector2>(GetDistance(inPoint, src), src));
+                        result.Add(new KeyValuePair<float, Vector2>(GetDistance(inPoint, kvp.Value), kvp.Key));
                     }
                 }
             }
@@ -249,7 +249,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
             return result;
         }
 
-        private Vector2[] GetBucket(int x, int y)
+        private IEnumerable<KeyValuePair<Vector2, Vector2>> GetBucket(int x, int y)
         {
             Wrap wrap = Wrap.None;
 
@@ -264,26 +264,36 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
                 y = (y + BUCKETS) % BUCKETS;
             }
 
-            Vector2[] result = (x < 0 || x >= BUCKETS || y < 0 || y >= BUCKETS) ? EMPTY_BUCKET : _buckets[x][y].ToArray();
+            IEnumerable<KeyValuePair<Vector2, Vector2>> result = EMPTY_BUCKET;
 
-            if (wrap != Wrap.None)
+            if (!(x < 0 || x >= BUCKETS || y < 0 || y >= BUCKETS) && _buckets[x][y].Count > 0)
             {
-                Vector2 pt;
-
-                for (int i = 0; i < result.Length; i++)
+                if (wrap == Wrap.None)
                 {
-                    pt = result[i];
+                    result = _buckets[x][y].Select(v => new KeyValuePair<Vector2, Vector2>(v, v));
+                }
+                else
+                {
+                    List<KeyValuePair<Vector2, Vector2>> list = new List<KeyValuePair<Vector2, Vector2>>();
+                    Vector2 pt;
 
-                    if ((wrap & Wrap.Left) != Wrap.None)
-                        pt.X -= 1;
-                    if ((wrap & Wrap.Right) != Wrap.None)
-                        pt.X += 1;
-                    if ((wrap & Wrap.Top) != Wrap.None)
-                        pt.Y -= 1;
-                    if ((wrap & Wrap.Bottom) != Wrap.None)
-                        pt.Y += 1;
+                    for (int i = 0; i < _buckets[x][y].Count; i++)
+                    {
+                        pt = _buckets[x][y][i];
 
-                    result[i] = pt;
+                        if ((wrap & Wrap.Left) != Wrap.None)
+                            pt.X -= 1;
+                        if ((wrap & Wrap.Right) != Wrap.None)
+                            pt.X += 1;
+                        if ((wrap & Wrap.Top) != Wrap.None)
+                            pt.Y -= 1;
+                        if ((wrap & Wrap.Bottom) != Wrap.None)
+                            pt.Y += 1;
+
+                        list.Add(new KeyValuePair<Vector2, Vector2>(_buckets[x][y][i], pt));
+                    }
+
+                    result = list.ToArray();
                 }
             }
 
