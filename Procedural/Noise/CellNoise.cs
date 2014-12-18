@@ -7,6 +7,10 @@ using System.Text;
 using Duality;
 using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.Core;
+using System.Drawing;
+using System.Drawing.Imaging;
+using Duality.Drawing;
+using System.Runtime.InteropServices;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
 {
@@ -23,6 +27,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
         private int _numPoints;
         private List<Vector2> _sites;
         private bool _wrapping;
+
+        public int[][] SitesMap { get; private set; }
 
         /// <summary>
         /// Constructor
@@ -104,6 +110,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
                 _distanceFunction = Euclidean.Instance;
             }
 
+            SitesMap = new int[inWidth][];
+            for (int x = 0; x < inWidth; x++)
+            {
+                SitesMap[x] = new int[inHeight];
+            }
+
             SortedList<float, Vector2> list = new SortedList<float, Vector2>();
 
             float bucketWidth = (float)inWidth / BUCKETS;
@@ -162,10 +174,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
                         surrounding++;
                     } while ((couldFindBetter || list.Count == 0) && surrounding < BUCKETS);
 
-                    float value = list.ElementAt(0).Key;
-
                     //now that we have the value, put it in
-                    NoiseMap[x][y] = value;
+                    NoiseMap[x][y] = list.ElementAt(0).Key;
+                    SitesMap[x][y] = Sites.IndexOf(list.ElementAt(0).Value);
                 }
             }
         }
@@ -282,6 +293,49 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
         private float GetDistance(Vector2 a, Vector2 b)
         {
             return _distanceFunction.GetDistance(a, b);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="inWidth"></param>
+        /// <param name="inHeight"></param>
+        /// <param name="inColors"></param>
+        /// <returns></returns>
+        public Bitmap SitesToBitmap(int inWidth, int inHeight, List<ColorRgba> inColors)
+        {
+            Generate(inWidth, inHeight);
+
+            Bitmap bmp = new Bitmap(inWidth, inHeight, PixelFormat.Format32bppArgb);
+
+            BitmapData bitmapData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
+            int BytesPerPixel = Bitmap.GetPixelFormatSize(bmp.PixelFormat) / 8;
+            byte[] pixels = new byte[bitmapData.Stride * bmp.Height];
+            IntPtr firstPixel = bitmapData.Scan0;
+
+            Marshal.Copy(firstPixel, pixels, 0, pixels.Length);
+
+            for (int y = 0; y < bitmapData.Height; y++)
+            {
+                int CurrentLine = y * bitmapData.Stride;
+                for (int x = 0; x < bitmapData.Width; x++)
+                {
+                    int site = SitesMap[x][y];
+                    ColorRgba color = inColors[site % inColors.Count];
+
+                    int kx = (x * BytesPerPixel);
+                    pixels[CurrentLine + kx] = color.B;
+                    pixels[CurrentLine + kx + 1] = color.G;
+                    pixels[CurrentLine + kx + 2] = color.R;
+                    pixels[CurrentLine + kx + 3] = color.A;
+                }
+            }
+
+            // Copy modified bytes back
+            Marshal.Copy(pixels, 0, firstPixel, pixels.Length);
+            bmp.UnlockBits(bitmapData);
+
+            return bmp;
         }
     }
 }
