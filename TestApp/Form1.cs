@@ -12,6 +12,7 @@ using OpenTK;
 using Duality;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Data;
 using SnowyPeak.Duality.Plugin.Frozen.Core;
+using Duality.Drawing;
 
 namespace TestApp
 {
@@ -48,7 +49,7 @@ namespace TestApp
             CellNoise b = new CellNoise(20, true);
             b.Seed = 1;
             //b.SetDistanceFunction(SnowyPeak.Duality.Plugin.Frozen.Procedural.Chebychev.Instance);
-            b.SetDistanceFunction(new Wonky());
+            //b.SetDistanceFunction(new Wonky());
 
             CellNoise c = new CellNoise(1, true);
             c.SetDistanceFunction(SnowyPeak.Duality.Plugin.Frozen.Procedural.Chebychev.Instance);
@@ -62,17 +63,20 @@ namespace TestApp
 
             _noise = new Multiply(new Normalize(a), d);
             _noise = new Normalize(b);
+
+            _noise = b;
         }
 
         private void Form1_DoubleClick(object sender, EventArgs e)
         {
             _noise.Seed = _seed;
 
+            
 
-
-            //_noise.Generate(_size, _size);
             this.BackgroundImage = null;
-            _bmp = _noise.ToBitmap(_size, _size, new ColorRange(Colors.Red, Colors.Yellow));
+            
+            //_bmp = _noise.ToBitmap(_size, _size, new ColorRange(Colors.Red, Colors.Yellow));
+            _bmp = (_noise as CellNoise).SitesToBitmap(_size, _size, new ColorRgba[] { Colors.Yellow, Colors.White, Colors.Blue, Colors.Purple, Colors.MistyRose, Colors.Firebrick, Colors.SaddleBrown, Colors.Goldenrod, Colors.DimGray });
 
             /*
             _bmp = new Bitmap(_size, _size);

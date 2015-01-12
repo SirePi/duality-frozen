@@ -312,7 +312,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
         /// <param name="inHeight"></param>
         /// <param name="inColors"></param>
         /// <returns></returns>
-        public Bitmap SitesToBitmap(int inWidth, int inHeight, List<ColorRgba> inColors)
+        public Bitmap SitesToBitmap(int inWidth, int inHeight, IEnumerable<ColorRgba> inColors)
         {
             Generate(inWidth, inHeight);
 
@@ -324,6 +324,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
             IntPtr firstPixel = bitmapData.Scan0;
 
             Marshal.Copy(firstPixel, pixels, 0, pixels.Length);
+            ColorRgba[] colors = inColors.ToArray();
 
             for (int y = 0; y < bitmapData.Height; y++)
             {
@@ -331,7 +332,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
                 for (int x = 0; x < bitmapData.Width; x++)
                 {
                     int site = SitesMap[x][y];
-                    ColorRgba color = inColors[site % inColors.Count];
+                    ColorRgba color = colors[site % colors.Length];
 
                     int kx = (x * BytesPerPixel);
                     pixels[CurrentLine + kx] = color.B;
