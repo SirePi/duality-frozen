@@ -46,10 +46,10 @@ namespace TestApp
             Noise a = SimplexNoise.CLOUDS;
             Noise d = SimplexNoise.CLOUDS;
             
-            CellNoise b = new CellNoise(20, true);
+            CellNoise b = new CellNoise(20, false);
             b.Seed = 1;
-            //b.SetDistanceFunction(SnowyPeak.Duality.Plugin.Frozen.Procedural.Chebychev.Instance);
-            //b.SetDistanceFunction(new Wonky());
+            b.SetDistanceFunction(SnowyPeak.Duality.Plugin.Frozen.Procedural.Minkowski.Instance);
+            b.SetDistanceFunction(new Wonky());
 
             CellNoise c = new CellNoise(1, true);
             c.SetDistanceFunction(SnowyPeak.Duality.Plugin.Frozen.Procedural.Chebychev.Instance);
@@ -65,19 +65,25 @@ namespace TestApp
             _noise = new Normalize(b);
 
             _noise = b;
+
+            _noise = new Normalize(new SimplexNoise(8, .5f, 2, 1, 1));
         }
 
         private void Form1_DoubleClick(object sender, EventArgs e)
         {
             _noise.Seed = _seed;
 
-            
-
             this.BackgroundImage = null;
-            
-            //_bmp = _noise.ToBitmap(_size, _size, new ColorRange(Colors.Red, Colors.Yellow));
-            _bmp = (_noise as CellNoise).SitesToBitmap(_size, _size, new ColorRgba[] { Colors.Yellow, Colors.White, Colors.Blue, Colors.Purple, Colors.MistyRose, Colors.Firebrick, Colors.SaddleBrown, Colors.Goldenrod, Colors.DimGray });
+            /*
+            ColorRgba[] colors = new ColorRgba[(_noise as CellNoise).Sites.Count];
+            for (int i = 0; i < colors.Length; i++)
+            {
+                float value = 1f / (_noise as CellNoise).Sites.Count * i;
+                colors[i] = new ColorRgba(value, value, value, 1f);
+            }
 
+            _bmp = (_noise as CellNoise).SitesToBitmap(150, 150, colors);
+            */
             /*
             _bmp = new Bitmap(_size, _size);
             for (int x = 0; x < _size; x++)
@@ -89,7 +95,7 @@ namespace TestApp
                     _bmp.SetPixel(x, y, c);
                 }
             }
-            */
+            *
 
             _graph.Triangulate();
 
@@ -109,7 +115,9 @@ namespace TestApp
                     g.DrawString(i.ToString(), SystemFonts.DefaultFont, Brushes.LightBlue, half.X, half.Y);
                 }
             }
+            */
 
+            _bmp = _noise.ToBitmap(_size, _size, new ColorRange(Colors.Red, Colors.Yellow));
             this.BackgroundImage = _bmp;
         }
     }

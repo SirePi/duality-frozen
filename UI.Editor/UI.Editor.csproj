@@ -2,23 +2,22 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A634672A-400A-405B-9909-EFF3C2829131}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <ProjectGuid>{399E6733-D717-41AB-B00A-70326055E8EF}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TestApp</RootNamespace>
-    <AssemblyName>TestApp</AssemblyName>
+    <RootNamespace>SnowyPeak.Duality.Editor.Plugin.Frozen.UI</RootNamespace>
+    <AssemblyName>SnowyPeak.Duality.Frozen.UI.editor</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -27,8 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,15 +41,13 @@
     <Reference Include="Aga.Controls">
       <HintPath>..\packages\AdamsLair.TreeViewAdv.1.7.2.0\lib\net20\Aga.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="Duality, Version=1.5.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Duality">
       <HintPath>..\packages\AdamsLair.Duality.1.5.7\lib\Duality.dll</HintPath>
     </Reference>
     <Reference Include="DualityEditor">
       <HintPath>..\packages\AdamsLair.Duality.Editor.1.3.4\lib\DualityEditor.exe</HintPath>
     </Reference>
-    <Reference Include="FarseerDuality, Version=3.3.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="FarseerDuality">
       <HintPath>..\packages\AdamsLair.FarseerDuality.3.3.9.0\lib\net40\FarseerDuality.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.XmlTransform">
@@ -61,10 +57,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NuGet.Core.2.8.3\lib\net40-Client\NuGet.Core.dll</HintPath>
     </Reference>
-    <Reference Include="NVorbis, Version=0.7.4.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="NVorbis">
       <HintPath>..\packages\AdamsLair.NVorbis.0.7.4\lib\NVorbis.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AdamsLair.OpenTK.1.1.1.0\lib\net20\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK.GLControl, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -76,81 +73,68 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
       <HintPath>..\packages\AdamsLair.DockPanelSuite.2.8.1.0\lib\net20\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="Actions\EditorActions.cs" />
+    <Compile Include="EditorPlugin.cs" />
+    <Compile Include="Forms\SkinEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\SkinEditor.Designer.cs">
+      <DependentUpon>SkinEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="Forms\Vector2Editor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Vector2Editor.Designer.cs">
+      <DependentUpon>Vector2Editor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Include="Properties\EditorRes.Designer.cs">
       <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
-    </Compile>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>EditorRes.resx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj">
-      <Project>{23836EF4-4D69-4C19-A376-A2604AFC5E85}</Project>
-      <Name>Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FX\FX.csproj">
-      <Project>{BE08B772-96A1-4B02-9B14-EACD3DB66719}</Project>
-      <Name>FX</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Procedural\Procedural.csproj">
-      <Project>{0436B701-4051-4F8A-8513-BE52E9849631}</Project>
-      <Name>Procedural</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UI.Editor\UI.Editor.csproj">
-      <Project>{399E6733-D717-41AB-B00A-70326055E8EF}</Project>
-      <Name>UI.Editor</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\UI\UI.csproj">
       <Project>{A3CF2AA7-6F8E-4787-9EA3-813D8341AF51}</Project>
       <Name>UI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="bgSprites.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Forms\SkinEditor.resx">
+      <DependentUpon>SkinEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Vector2Editor.resx">
+      <DependentUpon>Vector2Editor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\EditorRes.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditorRes.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Questo progetto fa riferimento a uno o più pacchetti NuGet che non sono presenti sul computer in uso. Abilitare il ripristino dei pacchetti NuGet per scaricarli. Per ulteriori informazioni, visitare http://go.microsoft.com/fwlink/?LinkID=322105. Il file mancante è {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

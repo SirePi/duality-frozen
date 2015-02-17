@@ -17,6 +17,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
     [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
     public class WidgetSkin : Resource
     {
+        public new static string FileExt = ".WidgetSkin" + Resource.FileExt;
+
         /// <summary>
         ///
         /// </summary>

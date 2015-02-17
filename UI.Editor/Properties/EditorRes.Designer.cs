@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TestApp.Properties {
+namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Properties {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace TestApp.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    internal class EditorRes {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal EditorRes() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace TestApp.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TestApp.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Properties.EditorRes", typeof(EditorRes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,24 @@ namespace TestApp.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Edits the skin via a graphical interface.
+        /// </summary>
+        internal static string ActionDesc_EditSkin {
+            get {
+                return ResourceManager.GetString("ActionDesc_EditSkin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Edit.
+        /// </summary>
+        internal static string ActionName_EditSkin {
+            get {
+                return ResourceManager.GetString("ActionName_EditSkin", resourceCulture);
             }
         }
     }
