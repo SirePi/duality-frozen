@@ -13,9 +13,15 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
 {
     public partial class SkinEditor : Form
     {
+        private Dictionary<Color, Color> _transparentColors;
+        private Dictionary<Color, Brush> _brushes;
+        private Dictionary<Color, Pen> _pens;
+
+        private bool _mouseDown;
+        private ColorDialog _cd = new ColorDialog() { AllowFullOpen = true, SolidColorOnly = false, FullOpen = true };
+
         private Point _zoomLocation;
         private int _scaledSize;
-        private Brush _rectangleBrush;
 
         public WidgetSkin ModifiedSkin { get; private set; }
 
@@ -37,6 +43,8 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
 
         private void picZoom_Paint(object sender, PaintEventArgs e)
         {
+            Vector2 _zoomVector = new Vector2(_zoomLocation.X, _zoomLocation.Y);
+
             Rectangle src = picZoom.ClientRectangle;
             src.Offset(_zoomLocation);
 
@@ -47,22 +55,27 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 
             e.Graphics.DrawImage(picOriginal.Image, picZoom.ClientRectangle, src, GraphicsUnit.Pixel);
+
+            DrawLines(e.Graphics, Color.MediumOrchid, (ModifiedSkin.Origin.Normal + ModifiedSkin.Border.Xy - _zoomVector) * zoom.Value, picZoom.Size);
+            DrawLines(e.Graphics, Color.MediumOrchid, (ModifiedSkin.Origin.Normal + ModifiedSkin.Size - new Vector2(ModifiedSkin.Border.Z, ModifiedSkin.Border.W) - _zoomVector) * zoom.Value, picZoom.Size);
+
+            DrawLines(e.Graphics, Color.DarkGray, (ModifiedSkin.Origin.Disabled - _zoomVector) * zoom.Value, picZoom.Size);
+            DrawLines(e.Graphics, Color.LimeGreen, (ModifiedSkin.Origin.Active - _zoomVector) * zoom.Value, picZoom.Size);
+            DrawLines(e.Graphics, Color.Gold, (ModifiedSkin.Origin.Hover - _zoomVector) * zoom.Value, picZoom.Size);
+            DrawLines(e.Graphics, Color.OrangeRed, (ModifiedSkin.Origin.Normal - _zoomVector) * zoom.Value, picZoom.Size);
+            DrawLines(e.Graphics, Color.Coral, (ModifiedSkin.Origin.Normal + ModifiedSkin.Size - _zoomVector) * zoom.Value, picZoom.Size);
         }
 
         private void zoom_ValueChanged(object sender, EventArgs e)
         {
             _scaledSize = picZoom.ClientRectangle.Width / zoom.Value;
-            picOriginal_MouseClick(null, null);
+
+            picOriginal.Invalidate();
+            picZoom.Invalidate();
         }
 
-        private void picOriginal_MouseClick(object sender, MouseEventArgs e)
+        private void picOriginal_Paint(object sender, PaintEventArgs e)
         {
-            if (e != null && e.Button == System.Windows.Forms.MouseButtons.Left)
-            {
-                _zoomLocation.X = e.X;
-                _zoomLocation.Y = e.Y;
-            }
-
             if (_zoomLocation.X + _scaledSize > picOriginal.Image.Width)
             {
                 _zoomLocation.X = picOriginal.Image.Width - _scaledSize;
@@ -71,36 +84,63 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
             {
                 _zoomLocation.Y = picOriginal.Image.Height - _scaledSize;
             }
+            if (_zoomLocation.X < 0)
+            {
+                _zoomLocation.X = 0;
+            }
+            if (_zoomLocation.Y < 0)
+            {
+                _zoomLocation.Y = 0;
+            }
 
-            picOriginal.Invalidate();
-            picZoom.Invalidate();
+            FillRectangle(e.Graphics, Color.DarkGray, ModifiedSkin.Origin.Disabled, ModifiedSkin.Size);
+            FillRectangle(e.Graphics, Color.LimeGreen, ModifiedSkin.Origin.Active, ModifiedSkin.Size);
+            FillRectangle(e.Graphics, Color.Gold, ModifiedSkin.Origin.Hover, ModifiedSkin.Size);
+            FillRectangle(e.Graphics, Color.OrangeRed, ModifiedSkin.Origin.Normal, ModifiedSkin.Size);
+
+            FillRectangle(e.Graphics, Color.CornflowerBlue, _zoomLocation.X, _zoomLocation.Y, _scaledSize, _scaledSize);
         }
 
-        private void picOriginal_Paint(object sender, PaintEventArgs e)
+        private void DrawLines(Graphics graphics, Color color, Vector2 point, Size limits)
         {
-            DrawLines(e.Graphics, Pens.Gray, ModifiedSkin.Origin.Disabled, picOriginal.Image.Size);
-            DrawLines(e.Graphics, Pens.Yellow, ModifiedSkin.Origin.Active, picOriginal.Image.Size);
-            DrawLines(e.Graphics, Pens.Cyan, ModifiedSkin.Origin.Hover, picOriginal.Image.Size);
-            DrawLines(e.Graphics, Pens.Red, ModifiedSkin.Origin.Normal, picOriginal.Image.Size);
-
-            e.Graphics.FillRectangle(_rectangleBrush, _zoomLocation.X, _zoomLocation.Y, _scaledSize, _scaledSize);
-            e.Graphics.DrawRectangle(Pens.AliceBlue, _zoomLocation.X, _zoomLocation.Y, _scaledSize, _scaledSize);
+            graphics.DrawLine(GetPen(color), 0, point.Y, limits.Width, point.Y);
+            graphics.DrawLine(GetPen(color), point.X, 0, point.X, limits.Height);
         }
 
-        private void DrawLines(Graphics graphics, Pen pen, Vector2 point, Size limits)
+        private void FillRectangle(Graphics graphics, Color color, Vector2 location, Vector2 size)
         {
-            graphics.DrawLine(pen, 0, point.Y, limits.Width, point.Y);
-            graphics.DrawLine(pen, point.X, 0, point.X, limits.Height);
+            FillRectangle(graphics, color, location.X, location.Y, size.X, size.Y);
         }
 
-        private void FillRectangle(Graphics graphics)
+        private void FillRectangle(Graphics graphics, Color color, float x, float y, float w, float h)
         {
+            if (!_transparentColors.ContainsKey(color))
+            {
+                _transparentColors[color] = Color.FromArgb(128, color);
+            }
 
+            graphics.FillRectangle(GetBrush(_transparentColors[color]), x, y, w, h);
+            graphics.DrawRectangle(GetPen(color), x, y, w, h);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private Brush GetBrush(Color color)
         {
+            if (!_brushes.ContainsKey(color))
+            {
+                _brushes[color] = new SolidBrush(color);
+            }
 
+            return _brushes[color];
+        }
+
+        private Pen GetPen(Color color)
+        {
+            if (!_pens.ContainsKey(color))
+            {
+                _pens[color] = new Pen(color, 1);
+            }
+
+            return _pens[color];
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -148,11 +188,11 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
                 }
                 else if (radBorderTL.Checked)
                 {
-                    v2eBorderTL.Value = point;
+                    v2eBorderTL.Value = point - ModifiedSkin.Origin.Normal;
                 }
                 else if (radBorderBR.Checked)
                 {
-                    v2eBorderBR.Value = point;
+                    v2eBorderBR.Value = ModifiedSkin.Origin.Normal + ModifiedSkin.Size - point;
                 }
 
                 ApplyValues();
@@ -175,15 +215,18 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
             border.W = v2eBorderBR.Value.X;
             border.Z = v2eBorderBR.Value.Y;
 
-            ModifiedSkin.Size = v2eRightBottom.Value - v2eNormal.Value;
+            ModifiedSkin.Size = v2eRightBottom.Value;
             ModifiedSkin.Origin = origin;
             ModifiedSkin.Border = border;
         }
 
         private void SkinEditor_Load(object sender, EventArgs e)
         {
+            _transparentColors = new Dictionary<Color, Color>();
+            _brushes = new Dictionary<Color, Brush>();
+            _pens = new Dictionary<Color, Pen>();
+
             _zoomLocation = Point.Empty;
-            _rectangleBrush = new SolidBrush(Color.FromArgb(128, Color.AliceBlue));
 
             Vector2 maxSize = new Vector2(picOriginal.Image.Size.Width, picOriginal.Image.Size.Height);
 
@@ -195,8 +238,74 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
             v2eBorderTL.MaxValue = maxSize;
             v2eBorderBR.MaxValue = maxSize;
 
-            picOriginal_MouseClick(null, null);
+            picOriginal.Invalidate();
+            picZoom.Invalidate();
+
+            comboBox1.SelectedIndex = 0;
             zoom_ValueChanged(null, null);
+        }
+
+        private void picOriginal_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_mouseDown)
+            {
+                _zoomLocation.X = e.X - _scaledSize / 2;
+                _zoomLocation.Y = e.Y - _scaledSize / 2;
+
+                picOriginal.Invalidate();
+                picZoom.Invalidate();
+            }
+        }
+
+        private void picOriginal_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                _mouseDown = false;
+
+                _zoomLocation.X = e.X - _scaledSize / 2;
+                _zoomLocation.Y = e.Y - _scaledSize / 2;
+
+                picOriginal.Invalidate();
+                picZoom.Invalidate();
+            }
+        }
+
+        private void picOriginal_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                _mouseDown = true;
+            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (comboBox1.SelectedIndex)
+            {
+                case 0:
+                    picZoom.BackColor = picOriginal.BackColor = Color.Transparent;
+                    break;
+
+                case 1:
+                    picZoom.BackColor = picOriginal.BackColor = Color.Black;
+                    break;
+
+                case 2:
+                    picZoom.BackColor = picOriginal.BackColor = Color.White;
+                    break;
+
+                case 3:
+                    if (_cd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        picZoom.BackColor = picOriginal.BackColor = _cd.Color;
+                    }
+                    else
+                    {
+                        comboBox1.SelectedIndex = 0;
+                    }
+                    break;
+            }
         }
     }
 }

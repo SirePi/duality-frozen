@@ -44,17 +44,9 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.v2eRightBottom = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
             this.label1 = new System.Windows.Forms.Label();
-            this.v2eNormal = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
-            this.v2eHover = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
-            this.v2eActive = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
-            this.v2eDisabled = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
-            this.v2eBorderTL = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
-            this.v2eBorderBR = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
             this.radRightBottom = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.button1 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -62,6 +54,14 @@
             this.picZoom = new System.Windows.Forms.PictureBox();
             this.picOriginal = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.v2eRightBottom = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
+            this.v2eNormal = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
+            this.v2eHover = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
+            this.v2eActive = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
+            this.v2eDisabled = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
+            this.v2eBorderTL = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
+            this.v2eBorderBR = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -79,7 +79,7 @@
             this.panel1.Controls.Add(this.tableLayoutPanel1);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(578, 0);
+            this.panel1.Location = new System.Drawing.Point(678, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(206, 666);
             this.panel1.TabIndex = 2;
@@ -216,28 +216,31 @@
             // 
             // label7
             // 
+            this.label7.BackColor = System.Drawing.Color.MediumOrchid;
             this.tableLayoutPanel2.SetColumnSpan(this.label7, 2);
             this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label7.Location = new System.Drawing.Point(3, 270);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(194, 16);
             this.label7.TabIndex = 13;
-            this.label7.Text = "Borders - Right / Bottom";
+            this.label7.Text = "Borders - Right / Bottom (Normal)";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label6
             // 
+            this.label6.BackColor = System.Drawing.Color.MediumOrchid;
             this.tableLayoutPanel2.SetColumnSpan(this.label6, 2);
             this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label6.Location = new System.Drawing.Point(3, 225);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(194, 16);
             this.label6.TabIndex = 12;
-            this.label6.Text = "Borders - Left / Top";
+            this.label6.Text = "Borders - Left / Top (Normal)";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label5
             // 
+            this.label5.BackColor = System.Drawing.Color.DarkGray;
             this.tableLayoutPanel2.SetColumnSpan(this.label5, 2);
             this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label5.Location = new System.Drawing.Point(3, 180);
@@ -249,6 +252,7 @@
             // 
             // label4
             // 
+            this.label4.BackColor = System.Drawing.Color.LimeGreen;
             this.tableLayoutPanel2.SetColumnSpan(this.label4, 2);
             this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label4.Location = new System.Drawing.Point(3, 135);
@@ -260,6 +264,7 @@
             // 
             // label3
             // 
+            this.label3.BackColor = System.Drawing.Color.Gold;
             this.tableLayoutPanel2.SetColumnSpan(this.label3, 2);
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label3.Location = new System.Drawing.Point(3, 90);
@@ -271,6 +276,7 @@
             // 
             // label2
             // 
+            this.label2.BackColor = System.Drawing.Color.OrangeRed;
             this.tableLayoutPanel2.SetColumnSpan(this.label2, 2);
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label2.Location = new System.Drawing.Point(3, 45);
@@ -280,72 +286,17 @@
             this.label2.Text = "Origin - Normal";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // v2eRightBottom
-            // 
-            this.v2eRightBottom.Location = new System.Drawing.Point(53, 19);
-            this.v2eRightBottom.Name = "v2eRightBottom";
-            this.v2eRightBottom.Size = new System.Drawing.Size(144, 23);
-            this.v2eRightBottom.TabIndex = 1;
-            this.v2eRightBottom.Value = ((OpenTK.Vector2)(resources.GetObject("v2eRightBottom.Value")));
-            // 
             // label1
             // 
+            this.label1.BackColor = System.Drawing.Color.Coral;
             this.tableLayoutPanel2.SetColumnSpan(this.label1, 2);
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(194, 16);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Common - Right / Bottom";
+            this.label1.Text = "Common - Size (Normal)";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // v2eNormal
-            // 
-            this.v2eNormal.Location = new System.Drawing.Point(53, 64);
-            this.v2eNormal.Name = "v2eNormal";
-            this.v2eNormal.Size = new System.Drawing.Size(144, 23);
-            this.v2eNormal.TabIndex = 2;
-            this.v2eNormal.Value = ((OpenTK.Vector2)(resources.GetObject("v2eNormal.Value")));
-            // 
-            // v2eHover
-            // 
-            this.v2eHover.Location = new System.Drawing.Point(53, 109);
-            this.v2eHover.Name = "v2eHover";
-            this.v2eHover.Size = new System.Drawing.Size(144, 23);
-            this.v2eHover.TabIndex = 3;
-            this.v2eHover.Value = ((OpenTK.Vector2)(resources.GetObject("v2eHover.Value")));
-            // 
-            // v2eActive
-            // 
-            this.v2eActive.Location = new System.Drawing.Point(53, 154);
-            this.v2eActive.Name = "v2eActive";
-            this.v2eActive.Size = new System.Drawing.Size(144, 23);
-            this.v2eActive.TabIndex = 4;
-            this.v2eActive.Value = ((OpenTK.Vector2)(resources.GetObject("v2eActive.Value")));
-            // 
-            // v2eDisabled
-            // 
-            this.v2eDisabled.Location = new System.Drawing.Point(53, 199);
-            this.v2eDisabled.Name = "v2eDisabled";
-            this.v2eDisabled.Size = new System.Drawing.Size(144, 23);
-            this.v2eDisabled.TabIndex = 5;
-            this.v2eDisabled.Value = ((OpenTK.Vector2)(resources.GetObject("v2eDisabled.Value")));
-            // 
-            // v2eBorderTL
-            // 
-            this.v2eBorderTL.Location = new System.Drawing.Point(53, 244);
-            this.v2eBorderTL.Name = "v2eBorderTL";
-            this.v2eBorderTL.Size = new System.Drawing.Size(144, 23);
-            this.v2eBorderTL.TabIndex = 6;
-            this.v2eBorderTL.Value = ((OpenTK.Vector2)(resources.GetObject("v2eBorderTL.Value")));
-            // 
-            // v2eBorderBR
-            // 
-            this.v2eBorderBR.Location = new System.Drawing.Point(53, 289);
-            this.v2eBorderBR.Name = "v2eBorderBR";
-            this.v2eBorderBR.Size = new System.Drawing.Size(144, 26);
-            this.v2eBorderBR.TabIndex = 7;
-            this.v2eBorderBR.Value = ((OpenTK.Vector2)(resources.GetObject("v2eBorderBR.Value")));
             // 
             // radRightBottom
             // 
@@ -364,9 +315,9 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.button1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.button3, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.button2, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.comboBox1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 596);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -376,18 +327,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(206, 70);
             this.tableLayoutPanel1.TabIndex = 2;
-            // 
-            // button1
-            // 
-            this.tableLayoutPanel1.SetColumnSpan(this.button1, 2);
-            this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button1.Location = new System.Drawing.Point(3, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(200, 29);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Set Background...";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button3
             // 
@@ -440,6 +379,7 @@
             // 
             // picZoom
             // 
+            this.picZoom.Cursor = System.Windows.Forms.Cursors.Cross;
             this.picZoom.Dock = System.Windows.Forms.DockStyle.Top;
             this.picZoom.Location = new System.Drawing.Point(3, 16);
             this.picZoom.Name = "picZoom";
@@ -452,14 +392,16 @@
             // picOriginal
             // 
             this.picOriginal.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.picOriginal.Location = new System.Drawing.Point(8, 8);
+            this.picOriginal.Location = new System.Drawing.Point(0, 0);
             this.picOriginal.Name = "picOriginal";
             this.picOriginal.Size = new System.Drawing.Size(578, 566);
             this.picOriginal.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.picOriginal.TabIndex = 4;
             this.picOriginal.TabStop = false;
             this.picOriginal.Paint += new System.Windows.Forms.PaintEventHandler(this.picOriginal_Paint);
-            this.picOriginal.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picOriginal_MouseClick);
+            this.picOriginal.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picOriginal_MouseDown);
+            this.picOriginal.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picOriginal_MouseMove);
+            this.picOriginal.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picOriginal_MouseUp);
             // 
             // panel2
             // 
@@ -468,17 +410,89 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(578, 666);
+            this.panel2.Size = new System.Drawing.Size(678, 666);
             this.panel2.TabIndex = 3;
+            // 
+            // comboBox1
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.comboBox1, 2);
+            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Transparent",
+            "Black",
+            "White",
+            "Custom..."});
+            this.comboBox1.Location = new System.Drawing.Point(3, 11);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(200, 21);
+            this.comboBox1.TabIndex = 4;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
+            // v2eRightBottom
+            // 
+            this.v2eRightBottom.Location = new System.Drawing.Point(53, 19);
+            this.v2eRightBottom.Name = "v2eRightBottom";
+            this.v2eRightBottom.Size = new System.Drawing.Size(144, 23);
+            this.v2eRightBottom.TabIndex = 1;
+            this.v2eRightBottom.Value = ((OpenTK.Vector2)(resources.GetObject("v2eRightBottom.Value")));
+            // 
+            // v2eNormal
+            // 
+            this.v2eNormal.Location = new System.Drawing.Point(53, 64);
+            this.v2eNormal.Name = "v2eNormal";
+            this.v2eNormal.Size = new System.Drawing.Size(144, 23);
+            this.v2eNormal.TabIndex = 2;
+            this.v2eNormal.Value = ((OpenTK.Vector2)(resources.GetObject("v2eNormal.Value")));
+            // 
+            // v2eHover
+            // 
+            this.v2eHover.Location = new System.Drawing.Point(53, 109);
+            this.v2eHover.Name = "v2eHover";
+            this.v2eHover.Size = new System.Drawing.Size(144, 23);
+            this.v2eHover.TabIndex = 3;
+            this.v2eHover.Value = ((OpenTK.Vector2)(resources.GetObject("v2eHover.Value")));
+            // 
+            // v2eActive
+            // 
+            this.v2eActive.Location = new System.Drawing.Point(53, 154);
+            this.v2eActive.Name = "v2eActive";
+            this.v2eActive.Size = new System.Drawing.Size(144, 23);
+            this.v2eActive.TabIndex = 4;
+            this.v2eActive.Value = ((OpenTK.Vector2)(resources.GetObject("v2eActive.Value")));
+            // 
+            // v2eDisabled
+            // 
+            this.v2eDisabled.Location = new System.Drawing.Point(53, 199);
+            this.v2eDisabled.Name = "v2eDisabled";
+            this.v2eDisabled.Size = new System.Drawing.Size(144, 23);
+            this.v2eDisabled.TabIndex = 5;
+            this.v2eDisabled.Value = ((OpenTK.Vector2)(resources.GetObject("v2eDisabled.Value")));
+            // 
+            // v2eBorderTL
+            // 
+            this.v2eBorderTL.Location = new System.Drawing.Point(53, 244);
+            this.v2eBorderTL.Name = "v2eBorderTL";
+            this.v2eBorderTL.Size = new System.Drawing.Size(144, 23);
+            this.v2eBorderTL.TabIndex = 6;
+            this.v2eBorderTL.Value = ((OpenTK.Vector2)(resources.GetObject("v2eBorderTL.Value")));
+            // 
+            // v2eBorderBR
+            // 
+            this.v2eBorderBR.Location = new System.Drawing.Point(53, 289);
+            this.v2eBorderBR.Name = "v2eBorderBR";
+            this.v2eBorderBR.Size = new System.Drawing.Size(144, 26);
+            this.v2eBorderBR.TabIndex = 7;
+            this.v2eBorderBR.Value = ((OpenTK.Vector2)(resources.GetObject("v2eBorderBR.Value")));
             // 
             // SkinEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 666);
+            this.ClientSize = new System.Drawing.Size(884, 666);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "SkinEditor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FrozenUI SkinEditor";
@@ -506,7 +520,6 @@
         private System.Windows.Forms.PictureBox picZoom;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
@@ -533,6 +546,7 @@
         private System.Windows.Forms.RadioButton radNormal;
         private System.Windows.Forms.PictureBox picOriginal;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.ComboBox comboBox1;
 
     }
 }
