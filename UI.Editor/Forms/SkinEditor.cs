@@ -17,6 +17,7 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
         private Dictionary<Color, Brush> _brushes;
         private Dictionary<Color, Pen> _pens;
 
+        private bool _loaded;
         private bool _mouseDown;
         private ColorDialog _cd = new ColorDialog() { AllowFullOpen = true, SolidColorOnly = false, FullOpen = true };
 
@@ -29,16 +30,13 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
         {
             InitializeComponent();
 
-            ModifiedSkin = inSkin;
-            picOriginal.Image = ModifiedSkin.Material.Res.MainTexture.Res.BasePixmap.Res.MainLayer.ToBitmap();
-        }
-
-        public SkinEditor(Image inSkin)
-        {
-            InitializeComponent();
-
-            ModifiedSkin = new WidgetSkin();
-            picOriginal.Image = inSkin;
+            ModifiedSkin = new WidgetSkin()
+            {
+                Border = inSkin.Border,
+                Material = inSkin.Material,
+                Origin = inSkin.Origin,
+                Size = inSkin.Size
+            };
         }
 
         private void picZoom_Paint(object sender, PaintEventArgs e)
@@ -167,7 +165,7 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
                     Vector2 newPoint = point - ModifiedSkin.Origin.Normal;
                     if (newPoint.X >= 0 && newPoint.Y >= 0)
                     {
-                        v2eRightBottom.Value = newPoint;
+                        v2eSize.Value = newPoint;
                     }
                 }
                 else if (radNormal.Checked)
@@ -196,8 +194,6 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
                 }
 
                 ApplyValues();
-                picOriginal.Invalidate();
-                picZoom.Invalidate();
             }
         }
 
@@ -212,10 +208,10 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
             origin.Disabled = v2eDisabled.Value;
             border.X = v2eBorderTL.Value.X;
             border.Y = v2eBorderTL.Value.Y;
-            border.W = v2eBorderBR.Value.X;
-            border.Z = v2eBorderBR.Value.Y;
+            border.Z = v2eBorderBR.Value.X;
+            border.W = v2eBorderBR.Value.Y;
 
-            ModifiedSkin.Size = v2eRightBottom.Value;
+            ModifiedSkin.Size = v2eSize.Value;
             ModifiedSkin.Origin = origin;
             ModifiedSkin.Border = border;
         }
@@ -228,9 +224,10 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
 
             _zoomLocation = Point.Empty;
 
+            picOriginal.Image = ModifiedSkin.Material.Res.MainTexture.Res.BasePixmap.Res.MainLayer.ToBitmap();
             Vector2 maxSize = new Vector2(picOriginal.Image.Size.Width, picOriginal.Image.Size.Height);
 
-            v2eRightBottom.MaxValue = maxSize;
+            v2eSize.MaxValue = maxSize;
             v2eNormal.MaxValue = maxSize;
             v2eHover.MaxValue = maxSize;
             v2eActive.MaxValue = maxSize;
@@ -238,11 +235,21 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
             v2eBorderTL.MaxValue = maxSize;
             v2eBorderBR.MaxValue = maxSize;
 
+            v2eSize.Value = ModifiedSkin.Size;
+            v2eNormal.Value = ModifiedSkin.Origin.Normal;
+            v2eHover.Value = ModifiedSkin.Origin.Hover;
+            v2eActive.Value = ModifiedSkin.Origin.Active;
+            v2eDisabled.Value = ModifiedSkin.Origin.Disabled;
+            v2eBorderTL.Value = new Vector2(ModifiedSkin.Border.X, ModifiedSkin.Border.Y);
+            v2eBorderBR.Value = new Vector2(ModifiedSkin.Border.Z, ModifiedSkin.Border.W);
+
             picOriginal.Invalidate();
             picZoom.Invalidate();
 
             comboBox1.SelectedIndex = 0;
             zoom_ValueChanged(null, null);
+
+            _loaded = true;
         }
 
         private void picOriginal_MouseMove(object sender, MouseEventArgs e)
@@ -305,6 +312,16 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
                         comboBox1.SelectedIndex = 0;
                     }
                     break;
+            }
+        }
+
+        private void v2_ValueChanged(object sender, EventArgs e)
+        {
+            if (_loaded)
+            {
+                ApplyValues();
+                picOriginal.Invalidate();
+                picZoom.Invalidate();
             }
         }
     }

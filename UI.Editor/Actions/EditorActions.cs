@@ -9,6 +9,7 @@ using Duality.Editor;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
 using SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms;
+using System.Reflection;
 
 namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Actions
 {
@@ -17,6 +18,15 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Actions
     /// </summary>
     public class EditorActionEditSkin : EditorSingleAction<WidgetSkin>
     {
+        private static readonly string[] EDITED_PROPERTIES =
+            new string[] { "Border", "Origin", "Size" };
+
+        private static readonly PropertyInfo[] WIDGETSKIN_PROPERTIES = 
+            typeof(WidgetSkin)
+                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .Where(p => EDITED_PROPERTIES.Contains(p.Name))
+                .ToArray();
+
         /// <summary>
         /// 
         /// </summary>
@@ -62,7 +72,11 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Actions
             SkinEditor se = new SkinEditor(skin);
             if (se.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                skin = se.ModifiedSkin;
+                skin.Border = se.ModifiedSkin.Border;
+                skin.Origin = se.ModifiedSkin.Origin;
+                skin.Size = se.ModifiedSkin.Size;
+
+                DualityEditorApp.NotifyObjPropChanged(this, new ObjectSelection(skin), WIDGETSKIN_PROPERTIES);
             }
         }
     }

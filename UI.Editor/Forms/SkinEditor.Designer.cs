@@ -49,13 +49,13 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.zoom = new System.Windows.Forms.TrackBar();
             this.picZoom = new System.Windows.Forms.PictureBox();
             this.picOriginal = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.v2eRightBottom = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
+            this.v2eSize = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
             this.v2eNormal = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
             this.v2eHover = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
             this.v2eActive = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor();
@@ -112,7 +112,7 @@
             this.tableLayoutPanel2.Controls.Add(this.label4, 0, 6);
             this.tableLayoutPanel2.Controls.Add(this.label3, 0, 4);
             this.tableLayoutPanel2.Controls.Add(this.label2, 0, 2);
-            this.tableLayoutPanel2.Controls.Add(this.v2eRightBottom, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.v2eSize, 1, 1);
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.v2eNormal, 1, 3);
             this.tableLayoutPanel2.Controls.Add(this.v2eHover, 1, 5);
@@ -350,6 +350,23 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // comboBox1
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.comboBox1, 2);
+            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Transparent",
+            "Black",
+            "White",
+            "Custom..."});
+            this.comboBox1.Location = new System.Drawing.Point(3, 11);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(200, 21);
+            this.comboBox1.TabIndex = 4;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.zoom);
@@ -413,30 +430,14 @@
             this.panel2.Size = new System.Drawing.Size(678, 666);
             this.panel2.TabIndex = 3;
             // 
-            // comboBox1
+            // v2eSize
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.comboBox1, 2);
-            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Transparent",
-            "Black",
-            "White",
-            "Custom..."});
-            this.comboBox1.Location = new System.Drawing.Point(3, 11);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(200, 21);
-            this.comboBox1.TabIndex = 4;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-            // 
-            // v2eRightBottom
-            // 
-            this.v2eRightBottom.Location = new System.Drawing.Point(53, 19);
-            this.v2eRightBottom.Name = "v2eRightBottom";
-            this.v2eRightBottom.Size = new System.Drawing.Size(144, 23);
-            this.v2eRightBottom.TabIndex = 1;
-            this.v2eRightBottom.Value = ((OpenTK.Vector2)(resources.GetObject("v2eRightBottom.Value")));
+            this.v2eSize.Location = new System.Drawing.Point(53, 19);
+            this.v2eSize.Name = "v2eSize";
+            this.v2eSize.Size = new System.Drawing.Size(144, 23);
+            this.v2eSize.TabIndex = 1;
+            this.v2eSize.Value = ((OpenTK.Vector2)(resources.GetObject("v2eSize.Value")));
+            this.v2eSize.ValueChanged += new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor.ValueChangedHandler(this.v2_ValueChanged);
             // 
             // v2eNormal
             // 
@@ -445,6 +446,7 @@
             this.v2eNormal.Size = new System.Drawing.Size(144, 23);
             this.v2eNormal.TabIndex = 2;
             this.v2eNormal.Value = ((OpenTK.Vector2)(resources.GetObject("v2eNormal.Value")));
+            this.v2eNormal.ValueChanged += new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor.ValueChangedHandler(this.v2_ValueChanged);
             // 
             // v2eHover
             // 
@@ -453,6 +455,7 @@
             this.v2eHover.Size = new System.Drawing.Size(144, 23);
             this.v2eHover.TabIndex = 3;
             this.v2eHover.Value = ((OpenTK.Vector2)(resources.GetObject("v2eHover.Value")));
+            this.v2eHover.ValueChanged += new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor.ValueChangedHandler(this.v2_ValueChanged);
             // 
             // v2eActive
             // 
@@ -461,6 +464,7 @@
             this.v2eActive.Size = new System.Drawing.Size(144, 23);
             this.v2eActive.TabIndex = 4;
             this.v2eActive.Value = ((OpenTK.Vector2)(resources.GetObject("v2eActive.Value")));
+            this.v2eActive.ValueChanged += new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor.ValueChangedHandler(this.v2_ValueChanged);
             // 
             // v2eDisabled
             // 
@@ -469,6 +473,7 @@
             this.v2eDisabled.Size = new System.Drawing.Size(144, 23);
             this.v2eDisabled.TabIndex = 5;
             this.v2eDisabled.Value = ((OpenTK.Vector2)(resources.GetObject("v2eDisabled.Value")));
+            this.v2eDisabled.ValueChanged += new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor.ValueChangedHandler(this.v2_ValueChanged);
             // 
             // v2eBorderTL
             // 
@@ -477,6 +482,7 @@
             this.v2eBorderTL.Size = new System.Drawing.Size(144, 23);
             this.v2eBorderTL.TabIndex = 6;
             this.v2eBorderTL.Value = ((OpenTK.Vector2)(resources.GetObject("v2eBorderTL.Value")));
+            this.v2eBorderTL.ValueChanged += new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor.ValueChangedHandler(this.v2_ValueChanged);
             // 
             // v2eBorderBR
             // 
@@ -485,6 +491,7 @@
             this.v2eBorderBR.Size = new System.Drawing.Size(144, 26);
             this.v2eBorderBR.TabIndex = 7;
             this.v2eBorderBR.Value = ((OpenTK.Vector2)(resources.GetObject("v2eBorderBR.Value")));
+            this.v2eBorderBR.ValueChanged += new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.Vector2Editor.ValueChangedHandler(this.v2_ValueChanged);
             // 
             // SkinEditor
             // 
@@ -529,7 +536,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private Vector2Editor v2eRightBottom;
+        private Vector2Editor v2eSize;
         private System.Windows.Forms.Label label1;
         private Vector2Editor v2eNormal;
         private Vector2Editor v2eHover;

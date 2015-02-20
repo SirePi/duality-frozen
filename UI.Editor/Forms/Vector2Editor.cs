@@ -12,21 +12,22 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
 {
     public partial class Vector2Editor : UserControl
     {
-        private Vector2 _value;
-        private bool _updating;
-
         public Vector2 Value 
         {
-            get { return _value; } 
+            get
+            {
+                return new Vector2((int)numX.Value, (int)numY.Value);
+            }
             set 
             {
-                _value = value;
-                _updating = true;
-
-                numX.Value = (int)_value.X;
-                numY.Value = (int)_value.Y;
-
-                _updating = false;
+                if ((int)numX.Value != (int)value.X)
+                {
+                    numX.Value = (int)value.X;
+                }
+                if ((int)numY.Value != (int)value.Y)
+                {
+                    numY.Value = (int)value.Y;
+                }
             }
         }
 
@@ -46,11 +47,13 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
 
         private void num_ValueChanged(object sender, EventArgs e)
         {
-            if (!_updating)
+            if (ValueChanged != null)
             {
-                _value.X = (int)numX.Value;
-                _value.Y = (int)numY.Value;
+                ValueChanged(this, new EventArgs());
             }
         }
+
+        public delegate void ValueChangedHandler(object sender, EventArgs e);
+        public event ValueChangedHandler ValueChanged;
     }
 }
