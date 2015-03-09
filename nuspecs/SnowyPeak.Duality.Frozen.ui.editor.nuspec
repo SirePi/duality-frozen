@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
-        <id>SnowyPeak.Duality.Plugin.Frozen.UI</id>
+        <id>SnowyPeak.Duality.Editor.Plugin.Frozen.UI</id>
         <version>1.0.4</version>
-        <title>SnowyPeak's Frozen Plugin (UI)</title>
+        <title>SnowyPeak's Frozen Plugin (UI Editor)</title>
         <authors>Pilati Alessandro</authors>
         <owners>Pilati Alessandro</owners>
         <licenseUrl>https://github.com/SirePi/duality-frozen/blob/master-nuget/LICENSE</licenseUrl>
@@ -11,15 +11,14 @@
         <iconUrl>https://raw.githubusercontent.com/SirePi/duality-frozen/master-nuget/nuspecs/ui.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>This plugin provides UI Widgets and controllers.</description>
-        <summary>SnowyPeak.Duality.Plugin.Frozen.UI plugin</summary>
-        <tags>Duality Plugin Frozen Core UI</tags>
+        <summary>SnowyPeak.Duality.Editor.Plugin.Frozen.UI plugin</summary>
+        <tags>Duality Plugin Frozen Editor UI</tags>
         <dependencies>
-            <dependency id="SnowyPeak.Duality.Plugin.Frozen.Core" version="1.0.4" />
+            <dependency id="SnowyPeak.Duality.Plugin.Frozen.UI" version="1.0.4" />
         </dependencies>
     </metadata>
     <files>
-        <file src="..\UI\bin\Release\SnowyPeak.Duality.Frozen.UI.core.dll" target="lib\SnowyPeak.Duality.Frozen.UI.core.dll" />
-        <file src="..\UI\bin\Release\SnowyPeak.Duality.Frozen.UI.core.pdb" target="lib\SnowyPeak.Duality.Frozen.UI.core.pdb" />
-        <file src="..\UI\bin\Release\SnowyPeak.Duality.Frozen.UI.core.XML" target="lib\SnowyPeak.Duality.Frozen.UI.core.XML" />
+        <file src="..\UI.Editor\bin\Release\SnowyPeak.Duality.Frozen.UI.editor.dll" target="lib\SnowyPeak.Duality.Frozen.UI.editor.dll" />
+        <file src="..\UI.Editor\bin\Release\SnowyPeak.Duality.Frozen.UI.editor.pdb" target="lib\SnowyPeak.Duality.Frozen.UI.editor.pdb" />
     </files>
 </package>
