@@ -39,6 +39,14 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
             };
         }
 
+        public SkinEditor(Bitmap inSkin)
+        {
+            InitializeComponent();
+
+            ModifiedSkin = new WidgetSkin();
+            picOriginal.Image = inSkin;
+        }
+
         private void picZoom_Paint(object sender, PaintEventArgs e)
         {
             Vector2 _zoomVector = new Vector2(_zoomLocation.X, _zoomLocation.Y);
@@ -218,6 +226,8 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
 
         private void SkinEditor_Load(object sender, EventArgs e)
         {
+            this.Icon = Icon.FromHandle(Properties.EditorRes.iconResSkin.GetHicon());
+
             _transparentColors = new Dictionary<Color, Color>();
             _brushes = new Dictionary<Color, Brush>();
             _pens = new Dictionary<Color, Pen>();

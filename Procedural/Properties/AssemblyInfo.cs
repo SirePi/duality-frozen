@@ -14,3 +14,5 @@ using System.Runtime.InteropServices;
 
 // Se il progetto viene esposto a COM, il GUID che segue verrà utilizzato per creare l'ID della libreria dei tipi
 [assembly: Guid("d52af1b2-d154-411b-8c7c-b78d84889d9b")]
+
+[assembly: AssemblyVersion("1.0.3")]

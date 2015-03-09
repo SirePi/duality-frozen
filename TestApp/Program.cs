@@ -20,7 +20,11 @@ namespace TestApp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            //Application.Run(new Form1());
+
+            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap("bgSprites.png");
+            SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.SkinEditor se = new SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms.SkinEditor(bmp);
+            Application.Run(se);
         }
     }
 }

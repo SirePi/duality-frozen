@@ -165,19 +165,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <param name="inSecondsPast"></param>
         protected override void OnUpdate(float inSecondsPast)
         {
+            if (_caret == null)
+            {
+                AddCaret();
+            }
+
             if (IsWidgetActive)
             {
-                if (_caret == null)
-                {
-                    AddCaret();
-                }
-
-                if (_text != _lastText)
-                {
-                    _lastText = _text;
-                    UpdateCaret();
-                }
-
                 _secondsFromLastTick += inSecondsPast;
                 _secondsFromLastKey += inSecondsPast;
 
@@ -191,6 +185,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                     _secondsFromLastKey = 0;
                     ManageKey();
                 }
+
+                UpdateCaret();
             }
             else
             {
@@ -212,7 +208,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
             SpriteRenderer sr = new SpriteRenderer();
             sr.VisibilityGroup = this.VisibilityGroup;
-            sr.Rect = Rect.AlignCenter(0, 0, 3, _fText.TextMetrics.Size.Y);
+            sr.Rect = Rect.AlignCenter(0, 0, 2, _fText.TextMetrics.Size.Y);
             sr.SharedMaterial = Material.InvertWhite;
 
             _caret.AddComponent<SpriteRenderer>(sr);

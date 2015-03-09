@@ -1,36 +1,18 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-// Le informazioni generali relative a un assembly sono controllate dal seguente 
+// Le informazioni generali relative a un assembly sono controllate dal seguente
 // set di attributi. Per modificare le informazioni associate a un assembly
 // occorre quindi modificare i valori di questi attributi.
-[assembly: AssemblyTitle("UI.Editor")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("UI.Editor")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2015")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+[assembly: AssemblyTitle("SnowyPeak.Duality.Editor.Plugin.Frozen.UI")]
+[assembly: AssemblyProduct("Duality Frozen UI editor plugin")]
 
-// Se si imposta ComVisible su false, i tipi in questo assembly non saranno visibili 
-// ai componenti COM. Se è necessario accedere a un tipo in questo assembly da 
+// Se si imposta ComVisible su false, i tipi in questo assembly non saranno visibili
+// ai componenti COM. Se è necessario accedere a un tipo in questo assembly da
 // COM, impostare su true l'attributo ComVisible per tale tipo.
 [assembly: ComVisible(false)]
 
 // Se il progetto viene esposto a COM, il GUID che segue verrà utilizzato per creare l'ID della libreria dei tipi
-[assembly: Guid("aa6587f5-54f9-4cc8-85a7-5c08330e5c83")]
+[assembly: Guid("f6efac02-a93a-48f9-aaf8-bac9b1526b0c")]
 
-// Le informazioni sulla versione di un assembly sono costituite dai seguenti quattro valori:
-//
-//      Numero di versione principale
-//      Numero di versione secondario 
-//      Numero build
-//      Revisione
-//
-// È possibile specificare tutti i valori oppure impostare valori predefiniti per i numeri relativi alla revisione e alla build 
-// utilizzando l'asterisco (*) come descritto di seguito:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.4")]
