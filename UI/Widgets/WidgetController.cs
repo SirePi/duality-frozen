@@ -232,6 +232,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                     DualityApp.Keyboard.KeyRepeat = false;
                 }
             }
+
+            OnInit(context);
         }
 
         void ICmpInitializable.OnShutdown(Component.ShutdownContext context)
@@ -246,6 +248,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 DualityApp.Keyboard.KeyDown -= _keyDownEventHandler;
                 DualityApp.Keyboard.KeyUp -= _keyUpEventHandler;
             }
+
+            OnShutdown(context);
         }
 
         /// <summary>
@@ -509,5 +513,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         {
             return (_modifierKeys == inModifierKeys || (_modifierKeys & inModifierKeys) > ModifierKeys.None);
         }
+
+        protected virtual void OnInit(Component.InitContext context) { }
+        protected virtual void OnShutdown(Component.ShutdownContext context) { }
     }
 }
