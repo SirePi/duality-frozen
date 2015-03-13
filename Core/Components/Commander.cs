@@ -100,6 +100,16 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         }
 
         /// <summary>
+        /// Adds a ColorizeText Command, from the current to the desired Color
+        /// </summary>
+        /// <param name="inColor">Target color</param>
+        /// <returns>The ColorizeText Command</returns>
+        public ColorizeText ColorizeText(ColorRgba inColor)
+        {
+            return Add(new ColorizeText(this.GameObj, inColor));
+        }
+
+        /// <summary>
         /// Adds a Destroy Command
         /// </summary>
         /// <returns>The Destroy Command</returns>

@@ -80,6 +80,7 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Commands\ColorizeText.cs" />
     <Compile Include="Extensions\ColorRgbaExtensions.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\ColorizeSprite.cs" />
