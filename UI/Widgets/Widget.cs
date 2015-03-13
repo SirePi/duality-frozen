@@ -326,6 +326,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         void ICmpUpdatable.OnUpdate()
         {
             _isInOverlay = (this.VisibilityGroup & VisibilityFlag.ScreenOverlay) != VisibilityFlag.None;
+
             if ((_dirtyFlags & DirtyFlags.Status) != DirtyFlags.None)
             {
                 OnStatusChange();

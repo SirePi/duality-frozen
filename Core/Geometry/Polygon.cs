@@ -223,5 +223,34 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Geometry
 
             return signedDoubleArea;
         }
+
+        /// <summary>
+        /// Rotates the Polygon of a specified amount
+        /// </summary>
+        public void Rotate(float inAngle, bool inRotateAroundCentroid)
+        {
+            float ca = MathF.Cos(inAngle);
+            float sa = MathF.Sin(inAngle);
+
+            Vector2 originalCentroid = Centroid;
+            if (inRotateAroundCentroid && Centroid != Vector2.Zero)
+            {
+                OriginOnCentroid();
+            }
+
+            for (int i = 0; i < Vertices.Length; i++)
+            {
+                Vector2 newVertex = new Vector2(
+                    Vertices[i].X * ca - Vertices[i].Y * sa,
+                    Vertices[i].X * sa + Vertices[i].Y * ca);
+
+                Vertices[i] = newVertex;
+            }
+
+            if (inRotateAroundCentroid)
+            {
+                Offset(originalCentroid);
+            }
+        }
     }
 }
