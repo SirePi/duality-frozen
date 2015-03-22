@@ -1,15 +1,15 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Linq;
 using Duality;
 using Duality.Drawing;
 using Duality.Editor;
 using Duality.Resources;
 using OpenTK;
+using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Data;
 using SnowyPeak.Duality.Plugin.Frozen.FX.Properties;
-using SnowyPeak.Duality.Plugin.Frozen.Core;
+using System;
+using System.Linq;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
 {
@@ -148,80 +148,103 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
         /// [GET / SET] the Color tint of the particles at the end of their lifetime
         /// </summary>
         public ColorRgba ColorEnd { get; set; }
+
         /// <summary>
         /// [GET / SET] the Color tint of the particles at the beginning of their lifetime
         /// </summary>
         public ColorRgba ColorStart { get; set; }
+
         /// <summary>
         /// [GET / SET] if off-screen particles should be drawn; Can improve performance to keep it off, but could
         /// also cause particles to disappear prematurely if too big.
         /// Only the particle's Center Coordinate is compared to the screen viewport.
         /// </summary>
         public bool DrawParticlesOffScreen { get; set; }
+
         /// <summary>
         /// [GET / SET] the starting relative direction of the emitter
         /// </summary>
         public float EmitterDirection { get; set; }
+
         /// <summary>
         /// [GET / SET] the rotation speed (in degrees/second) of the emitter
         /// </summary>
         public float EmitterRotationSpeed { get; set; }
+
         /// <summary>
         /// [GET / SET] the FXArea generating particles
         /// </summary>
         public FXArea FXArea { get; set; }
+
         /// <summary>
         /// [GET / SET] the initial direction range of the particles
         /// </summary>
         public Vector2 InitialDirection { get; set; }
+
         /// <summary>
         /// [GET / SET] the initial rotation range of the particles
         /// </summary>
         public Vector2 InitialRotation { get; set; }
+
         /// <summary>
         /// [GET / SET] the initial scale range of the particles
         /// </summary>
         public Vector2 InitialScale { get; set; }
+
         /// <summary>
         /// [GET / SET] if new particles are generated
         /// </summary>
         public bool IsEnabled { get; set; }
+
         /// <summary>
         /// [GET / SET] if particles are drawn
         /// </summary>
         public bool IsVisible { get; set; }
+
         /// <summary>
         /// [GET / SET] the material used for the particles
         /// </summary>
         public ContentRef<Material> Material { get; set; }
+
         /// <summary>
         /// [GET / SET] the movement speed range of the particles
         /// </summary>
         public Vector2 MovementSpeed { get; set; }
+
         /// <summary>
         /// [GET / SET] how many particles can be generated at most each second
         /// </summary>
         public int NewParticlesPerSecond { get; set; }
+
         /// <summary>
         /// [GET / SET] the minimum / maximum of particles that should be alive at a given moment
         /// </summary>
         public Vector2 ParticlesAmount { get; set; }
+
         /// <summary>
         /// [GET / SET] the rotation speed range of the particles
         /// </summary>
         public Vector2 RotationSpeed { get; set; }
+
         /// <summary>
         /// [GET / SET] the scale-change speed range of the particles
         /// </summary>
         public Vector2 ScaleSpeed { get; set; }
+
         /// <summary>
         /// [GET / SET] the time to live range of the particles
         /// </summary>
         public Vector2 TimeToLive { get; set; }
+
         /// <summary>
         /// [GET / SET] the VisibilityGroup
         /// </summary>
         public VisibilityFlag VisibilityGroup { get; set; }
+
+        /// <summary>
+        /// [GET] if there are particles still alive
+        /// </summary>
+        public bool HasAliveParticles { get { return _particlesAlive > 0; } }
 
         /// <summary>
         /// Sends a Burst of particles (emit all particles up to the maximum number in the next frame)
