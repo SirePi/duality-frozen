@@ -34,5 +34,14 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Commands
             w.Status = _target;
             IsComplete = true;
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="inGameObject"></param>
+        public override void Initialize(GameObject inGameObject)
+        {
+            // nothing to initialize
+        }
     }
 }

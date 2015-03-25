@@ -96,7 +96,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// <returns>The ColorizeSprite Command</returns>
         public ColorizeSprite ColorizeSprite(ColorRgba inColor)
         {
-            return Add(new ColorizeSprite(this.GameObj, inColor));
+            return Add(new ColorizeSprite(inColor));
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// <returns>The ColorizeText Command</returns>
         public ColorizeText ColorizeText(ColorRgba inColor)
         {
-            return Add(new ColorizeText(this.GameObj, inColor));
+            return Add(new ColorizeText(inColor));
         }
 
         /// <summary>
@@ -137,6 +137,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
             if (_currentOperation == null && _operations.Count > 0)
             {
                 _currentOperation = _operations[0];
+                _currentOperation.Initialize(this.GameObj);
+
                 _operations.RemoveAt(0);
             }
 
@@ -165,7 +167,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// <returns>The Move Command</returns>
         public Move MoveBy(Vector2 inAmount)
         {
-            return Add(new Move(this.GameObj, this.GameObj.Transform.Pos + new Vector3(inAmount, 0), false));
+            return Add(new Move(this.GameObj.Transform.Pos + new Vector3(inAmount, 0), false));
         }
 
         /// <summary>
@@ -175,7 +177,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// <returns>The Move Command</returns>
         public Move MoveBy(Vector3 inAmount)
         {
-            return Add(new Move(this.GameObj, this.GameObj.Transform.Pos + inAmount, false));
+            return Add(new Move(this.GameObj.Transform.Pos + inAmount, false));
         }
 
         /// <summary>
@@ -185,7 +187,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// <returns>The Move Command</returns>
         public Move MoveTo(Vector2 inTarget)
         {
-            return Add(new Move(this.GameObj, new Vector3(inTarget, this.GameObj.Transform.Pos.Z), false));
+            return Add(new Move(new Vector3(inTarget, this.GameObj.Transform.Pos.Z), false));
         }
 
         /// <summary>
@@ -195,7 +197,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// <returns>The Move Command</returns>
         public Move MoveTo(Vector3 inTarget)
         {
-            return Add(new Move(this.GameObj, inTarget, false));
+            return Add(new Move(inTarget, false));
         }
 
         /// <summary>
@@ -205,7 +207,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// <returns>The Move Command</returns>
         public Move MoveToRelative(Vector2 inTarget)
         {
-            return Add(new Move(this.GameObj, new Vector3(inTarget, 0), true));
+            return Add(new Move(new Vector3(inTarget, 0), true));
         }
 
         /// <summary>
@@ -215,7 +217,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// <returns>The Move Command</returns>
         public Move MoveToRelative(Vector3 inTarget)
         {
-            return Add(new Move(this.GameObj, inTarget, true));
+            return Add(new Move(inTarget, true));
         }
 
         /// <summary>
@@ -225,7 +227,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// <returns>The Rotate Command</returns>
         public Rotate RotateBy(float inAmount)
         {
-            return Add(new Rotate(this.GameObj, this.GameObj.Transform.Angle + inAmount, false));
+            return Add(new Rotate(this.GameObj.Transform.Angle + inAmount, false));
         }
 
         /// <summary>
@@ -235,7 +237,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// <returns>The Rotate Command</returns>
         public Rotate RotateTo(float inTarget)
         {
-            return Add(new Rotate(this.GameObj, inTarget, false));
+            return Add(new Rotate(inTarget, false));
         }
 
         /// <summary>
@@ -245,7 +247,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// <returns>The Rotate Command</returns>
         public Rotate RotateToRelative(float inTarget)
         {
-            return Add(new Rotate(this.GameObj, inTarget, true));
+            return Add(new Rotate(inTarget, true));
         }
 
         /// <summary>
@@ -255,7 +257,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// <returns>The Scale Command</returns>
         public Scale Scale(float inTarget)
         {
-            return Add(new Scale(this.GameObj, inTarget, false));
+            return Add(new Scale(inTarget, false));
         }
 
         /// <summary>
@@ -265,7 +267,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// <returns>The Scale Command</returns>
         public Scale ScaleRelative(float inTarget)
         {
-            return Add(new Scale(this.GameObj, inTarget, true));
+            return Add(new Scale(inTarget, true));
         }
 
         /// <summary>

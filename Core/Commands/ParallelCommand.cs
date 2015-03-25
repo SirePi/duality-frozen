@@ -44,7 +44,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Commands
         /// <param name="inGameObject"></param>
         public override void Execute(float inSecondsPast, GameObject inGameObject)
         {
-            IsComplete = false;
+            IsComplete = true;
+
             foreach (Command c in _commands)
             {
                 if (!c.IsComplete)
@@ -52,6 +53,18 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Commands
                     c.Execute(inSecondsPast, inGameObject);
                 }
                 IsComplete &= c.IsComplete;
+            }
+        }
+
+        /// <summary>
+        /// Initialization
+        /// </summary>
+        /// <param name="inGameObject"></param>
+        public override void Initialize(GameObject inGameObject)
+        {
+            foreach (Command c in _commands)
+            {
+                c.Initialize(inGameObject);
             }
         }
     }

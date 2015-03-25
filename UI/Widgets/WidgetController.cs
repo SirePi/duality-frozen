@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Duality;
 using Duality.Components;
+using Duality.Drawing;
 using Duality.Editor;
 using Duality.Resources;
 using OpenTK;
@@ -457,8 +458,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
             if (hoveredGUIComponents.Count() > 0)
             {
-                float closestZ = hoveredGUIComponents.Min(gc => gc.GameObj.Transform.Pos.Z);
-                hgc = hoveredGUIComponents.Where(gc => gc.GameObj.Transform.Pos.Z == closestZ).FirstOrDefault();
+                hoveredGUIComponents.Min(gc => gc.GameObj.Transform.Pos.Z);
+                hgc = hoveredGUIComponents
+                    .OrderBy(gc => gc.IsInOverlay ? 0 : 1)
+                    .ThenBy(gc => gc.GameObj.Transform.Pos.Z)
+                    .FirstOrDefault();
 
                 if (hgc != null && !hgc.GetActiveAreaOnScreen(GameObj.Camera).Contains(_currentMousePosition))
                 {

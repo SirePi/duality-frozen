@@ -18,11 +18,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Commands
     {
         private bool _isRelative;
         private Vector3Range _range;
+        private Vector3 _target;
 
-        internal Move(GameObject inGameObject, Vector3 inTargetPosition, bool inIsRelative)
+        internal Move(Vector3 inTargetPosition, bool inIsRelative)
         {
-            Transform t = GetComponent(inGameObject);
-            _range = new Vector3Range(inIsRelative ? t.RelativePos : t.Pos, inTargetPosition);
+            _target = inTargetPosition;
             _isRelative = inIsRelative;
         }
 
@@ -45,6 +45,16 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Commands
             {
                 SetPosition(t, _range.Lerp(_timePast / _timeToComplete));
             }
+        }
+
+        /// <summary>
+        /// Initialization
+        /// </summary>
+        /// <param name="inGameObject"></param>
+        public override void Initialize(GameObject inGameObject)
+        {
+            Transform t = GetComponent(inGameObject);
+            _range = new Vector3Range(_isRelative ? t.RelativePos : t.Pos, _target);
         }
 
         /// <summary>

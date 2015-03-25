@@ -35,6 +35,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
 
         protected static readonly OpenTK.Input.MouseButtonEventArgs RIGHT_CLICK_UP = new OpenTK.Input.MouseButtonEventArgs(0, 0, OpenTK.Input.MouseButton.Right, false);
 #pragma warning restore 1591
+
         /// <summary>
         ///
         /// </summary>
@@ -84,7 +85,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [Flags]
         public enum ModifierKeys
@@ -97,9 +98,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
             RControl = 0x08,
             LShift = 0x10,
             RShift = 0x20
-#pragma warning restore 1591        
+#pragma warning restore 1591
         }
-        
+
         /// <summary>
         /// [GET / SET] If the Receiver should always be notified of events even if there is a Focused InputVisualReceiver
         /// </summary>

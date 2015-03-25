@@ -24,6 +24,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Commands
         /// <param name="inSecondsPast"></param>
         /// <param name="inGameObject"></param>
         public abstract void Execute(float inSecondsPast, GameObject inGameObject);
+
+        /// <summary>
+        /// Initializes the command
+        /// </summary>
+        public abstract void Initialize(GameObject inGameObject);
     }
 
     /// <summary>

@@ -17,11 +17,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Commands
     public sealed class ColorizeSprite : TimedCommand<SpriteRenderer>
     {
         private ColorRange _range;
+        private ColorRgba _target;
 
-        internal ColorizeSprite(GameObject inGameObject, ColorRgba inTargetColor)
+        internal ColorizeSprite(ColorRgba inTargetColor)
         {
-            SpriteRenderer sr = GetComponent(inGameObject);
-            _range = new ColorRange(sr.ColorTint, inTargetColor);
+            _target = inTargetColor;
         }
 
         /// <summary>
@@ -52,6 +52,16 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Commands
                     sr.ColorTint = _range.Lerp(_timePast / _timeToComplete);
                 }
             }
+        }
+
+        /// <summary>
+        /// Initialization
+        /// </summary>
+        /// <param name="inGameObject"></param>
+        public override void Initialize(GameObject inGameObject)
+        {
+            SpriteRenderer sr = GetComponent(inGameObject);
+            _range = new ColorRange(sr.ColorTint, _target);
         }
 
         /// <summary>

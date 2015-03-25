@@ -19,11 +19,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Commands
     public sealed class ColorizeSkinnedWidget : TimedCommand<SkinnedWidget>
     {
         private ColorRange _range;
+        private ColorRgba _target;
 
         internal ColorizeSkinnedWidget(GameObject inGameObject, ColorRgba inTargetColor)
         {
-            SkinnedWidget sw = GetComponent(inGameObject);
-            _range = new ColorRange(sw.Tint, inTargetColor);
+            _target = inTargetColor;
         }
 
         /// <summary>
@@ -54,6 +54,16 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Commands
                     Colorize(sw, _range.Lerp(_timePast / _timeToComplete));
                 }
             }
+        }
+
+        /// <summary>
+        /// Initialization
+        /// </summary>
+        /// <param name="inGameObject"></param>
+        public override void Initialize(GameObject inGameObject)
+        {
+            SkinnedWidget sw = GetComponent(inGameObject);
+            _range = new ColorRange(sw.Tint, _target);
         }
 
         /// <summary>

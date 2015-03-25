@@ -17,11 +17,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Commands
     public sealed class ColorizeText : TimedCommand<TextRenderer>
     {
         private ColorRange _range;
+        private ColorRgba _target;
 
-        internal ColorizeText(GameObject inGameObject, ColorRgba inTargetColor)
+        internal ColorizeText(ColorRgba inTargetColor)
         {
-            TextRenderer tr = GetComponent(inGameObject);
-            _range = new ColorRange(tr.ColorTint, inTargetColor);
+            _target = inTargetColor;
         }
 
         /// <summary>
@@ -52,6 +52,16 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Commands
                     tr.ColorTint = _range.Lerp(_timePast / _timeToComplete);
                 }
             }
+        }
+
+        /// <summary>
+        /// Initialization
+        /// </summary>
+        /// <param name="inGameObject"></param>
+        public override void Initialize(GameObject inGameObject)
+        {
+            TextRenderer tr = GetComponent(inGameObject);
+            _range = new ColorRange(tr.ColorTint, _target);
         }
 
         /// <summary>

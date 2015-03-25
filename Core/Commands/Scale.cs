@@ -15,13 +15,14 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Commands
     /// </summary>
     public sealed class Scale : TimedCommand<Transform>
     {
+        private bool _isRelative;
         private FloatRange _range;
+        private float _target;
 
-        internal Scale(GameObject inGameObject, float inTargetScale, bool inIsRelative)
+        internal Scale(float inTargetScale, bool inIsRelative)
         {
-            Transform t = GetComponent(inGameObject);
-
-            _range = new FloatRange(t.Scale, inIsRelative ? t.Scale * inTargetScale : inTargetScale);
+            _target = inTargetScale;
+            _isRelative = inIsRelative;
         }
 
         /// <summary>
@@ -43,6 +44,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Commands
             {
                 t.Scale = _range.Lerp(_timePast / _timeToComplete);
             }
+        }
+
+        public override void Initialize(GameObject inGameObject)
+        {
+            Transform t = GetComponent(inGameObject);
+            _range = new FloatRange(t.Scale, _isRelative ? t.Scale * _target : _target);
         }
 
         /// <summary>

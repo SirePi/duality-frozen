@@ -177,6 +177,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return Rect.BoundingRadius; }
         }
 
+        [EditorHintFlags(MemberFlags.Invisible)]
+        public bool IsInOverlay
+        {
+            get { return _isInOverlay; }
+        }
+
         /// <summary>
         ///
         /// </summary>

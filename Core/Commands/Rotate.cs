@@ -17,11 +17,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Commands
     {
         private bool _isRelative;
         private FloatRange _range;
+        private float _target;
 
-        internal Rotate(GameObject inGameObject, float inTargetAngle, bool inIsRelative)
+        internal Rotate(float inTargetAngle, bool inIsRelative)
         {
-            Transform t = GetComponent(inGameObject);
-            _range = new FloatRange(inIsRelative ? t.RelativeAngle : t.Angle, inTargetAngle);
+            _target = inTargetAngle;
             _isRelative = inIsRelative;
         }
 
@@ -44,6 +44,16 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Commands
             {
                 SetAngle(t, _range.Lerp(_timePast / _timeToComplete));
             }
+        }
+
+        /// <summary>
+        /// Initialization
+        /// </summary>
+        /// <param name="inGameObject"></param>
+        public override void Initialize(GameObject inGameObject)
+        {
+            Transform t = GetComponent(inGameObject);
+            _range = new FloatRange(_isRelative ? t.RelativeAngle : t.Angle, _target);
         }
 
         /// <summary>

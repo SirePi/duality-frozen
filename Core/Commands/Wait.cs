@@ -42,5 +42,14 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Commands
                 }
             }
         }
+
+        /// <summary>
+        /// Initialization
+        /// </summary>
+        /// <param name="inGameObject"></param>
+        public override void Initialize(GameObject inGameObject)
+        {
+            // nohting to initialize
+        }
     }
 }

@@ -260,21 +260,35 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
 
             if (context == InitContext.Activate && Material != null)
             {
-                _particleMaterial = new ParticleMaterial(Material);
+                ReInitialize(true);
+            }
+        }
 
-                _colorRange = new ColorRange(ColorStart, ColorEnd);
-                _initialDirectionRange = new FloatRange(MathF.DegToRad(InitialDirection.X), MathF.DegToRad(InitialDirection.Y));
-                _initialRotationRange = new FloatRange(MathF.DegToRad(InitialRotation.X), MathF.DegToRad(InitialRotation.Y));
-                _initialScaleRange = new FloatRange(InitialScale.X, InitialScale.Y);
-                _movementSpeedRange = new FloatRange(MovementSpeed.X, MovementSpeed.Y);
-                _particlesNumberRange = new IntegerRange((int)ParticlesAmount.X, (int)ParticlesAmount.Y);
-                _rotationSpeedRange = new FloatRange(MathF.DegToRad(RotationSpeed.X), MathF.DegToRad(RotationSpeed.Y));
-                _scaleSpeedRange = new FloatRange(ScaleSpeed.X, ScaleSpeed.Y);
-                _timeToLiveRange = new FloatRange(TimeToLive.X, TimeToLive.Y);
+        /// <summary>
+        /// Reinitializes the emitter, eventually clearing the active particles.
+        /// Note: If the maximum number of active particles exceeds the vertex array's capacity, 
+        /// they will be reinitialized anyway-
+        /// </summary>
+        /// <param name="reinitializeParticles"></param>
+        public void ReInitialize(bool reinitializeParticles)
+        {
+            _particleMaterial = new ParticleMaterial(Material);
 
-                _emitterDirection = EmitterDirection * MathF.Pi / 180;
-                _emitterRotationSpeed = EmitterRotationSpeed * MathF.Pi / 180;
+            _colorRange = new ColorRange(ColorStart, ColorEnd);
+            _initialDirectionRange = new FloatRange(MathF.DegToRad(InitialDirection.X), MathF.DegToRad(InitialDirection.Y));
+            _initialRotationRange = new FloatRange(MathF.DegToRad(InitialRotation.X), MathF.DegToRad(InitialRotation.Y));
+            _initialScaleRange = new FloatRange(InitialScale.X, InitialScale.Y);
+            _movementSpeedRange = new FloatRange(MovementSpeed.X, MovementSpeed.Y);
+            _particlesNumberRange = new IntegerRange((int)ParticlesAmount.X, (int)ParticlesAmount.Y);
+            _rotationSpeedRange = new FloatRange(MathF.DegToRad(RotationSpeed.X), MathF.DegToRad(RotationSpeed.Y));
+            _scaleSpeedRange = new FloatRange(ScaleSpeed.X, ScaleSpeed.Y);
+            _timeToLiveRange = new FloatRange(TimeToLive.X, TimeToLive.Y);
 
+            _emitterDirection = EmitterDirection * MathF.Pi / 180;
+            _emitterRotationSpeed = EmitterRotationSpeed * MathF.Pi / 180;
+
+            if (reinitializeParticles || _particleVertices.Length < _particlesNumberRange.Max * 4)
+            {
                 _particleVertices = new VertexC1P3T2[_particlesNumberRange.Max * 4];
 
                 _particles = new Particle[_particlesNumberRange.Max];

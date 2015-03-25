@@ -44,6 +44,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         private string _text;
         private ColorRgba _textColor;
         private ContentRef<Font> _textFont;
+        private FormattedText.Icon[] _textIcons;
 
         /// <summary>
         /// Constructor
@@ -120,6 +121,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _textColor; }
             set { _textColor = value; }
         }
+
         /// <summary>
         /// [GET / SET] the Font of the Text
         /// </summary>
