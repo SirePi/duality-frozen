@@ -14,7 +14,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     [Serializable]
     [EditorHintImage(typeof(Res), ResNames.ImageRadioButton)]
     [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
-    public class SkinnedRadioButton : SkinnedCheckButton
+    public class RadioButton : CheckButton
     {
         private string _radioGroup;
 
@@ -41,7 +41,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
                     if (!String.IsNullOrWhiteSpace(RadioGroup))
                     {
-                        foreach (SkinnedRadioButton button in Scene.Current.FindComponents<SkinnedRadioButton>().Where(rb => rb.RadioGroup == this.RadioGroup && rb != this))
+                        foreach (RadioButton button in Scene.Current.FindComponents<RadioButton>().Where(rb => rb.RadioGroup == this.RadioGroup && rb != this))
                         {
                             button.IsChecked = false;
                         }

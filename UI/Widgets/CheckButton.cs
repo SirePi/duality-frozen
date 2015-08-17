@@ -19,7 +19,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     [Serializable]
     [EditorHintImage(typeof(Res), ResNames.ImageCheckButton)]
     [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
-    public class SkinnedCheckButton : SkinnedWidget
+    public class CheckButton : Widget
     {
         #region NonSerialized fields
 
@@ -32,25 +32,37 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         #endregion NonSerialized fields
 
         private object _checkedArgument;
-        private ContentRef<WidgetSkin> _glyphSkin;
         private bool _isChecked;
         private ContentRef<Script> _onChecked;
         private ContentRef<Script> _onUnchecked;
         private string _text;
-        private Alignment _textAlignment;
         private ColorRgba _textColor;
         private ContentRef<Font> _textFont;
         private object _uncheckedArgument;
+        private Alignment _glyphLocation;
+
+        private ContentRef<GlyphAppearance> _glyphAppearance;
+
+        public ContentRef<GlyphAppearance> Appearance
+        {
+            get { return _glyphAppearance; }
+            set
+            {
+                _glyphAppearance = value;
+                _dirtyFlags |= DirtyFlags.Appearance;
+            }
+        }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public SkinnedCheckButton()
+        public CheckButton()
         {
-            ActiveArea = Widgets.ActiveArea.LeftBorder;
+            ActiveArea = ActiveArea.LeftBorder;
 
             _fText = new FormattedText();
             _textColor = Colors.White;
+            _glyphLocation = Alignment.Left;
         }
 
         /// <summary>
@@ -62,18 +74,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             set { _checkedArgument = value; }
         }
 
-        /// <summary>
-        /// [GET / SET] the skin used for the Glyph
-        /// </summary>
-        public ContentRef<WidgetSkin> GlyphSkin
-        {
-            get { return _glyphSkin; }
-            set
-            {
-                _glyphSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom1;
-            }
-        }
         /// <summary>
         /// [GET / SET] if the Button is Checked
         /// </summary>
@@ -116,13 +116,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             set { _text = value; }
         }
 
-        /// <summary>
-        /// [GET / SET] the Alignment of the Text
-        /// </summary>
-        public Alignment TextAlignment
+        public Alignment GlyphLocation
         {
-            get { return _textAlignment; }
-            set { _textAlignment = value; }
+            get { return _glyphLocation; }
+            set { _glyphLocation = value; }
         }
 
         /// <summary>
@@ -221,36 +218,19 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         {
             if (!String.IsNullOrWhiteSpace(_text))
             {
-                Vector3 textOrigin = Vector3.Zero;
-
                 if (_textFont.Res != null && _fText.Fonts[0] != _textFont)
                 {
                     _fText.Fonts[0] = _textFont;
                 }
 
                 _fText.SourceText = _text;
+                Vector3 buttonCenter = (_points[5].WorldCoords + _points[10].WorldCoords) / 2;
 
                 inCanvas.PushState();
+
                 inCanvas.State.ColorTint = _textColor;
                 inCanvas.State.TransformAngle = GameObj.Transform.Angle;
-
-                switch (_textAlignment)
-                {
-                    case Alignment.Left:
-                        textOrigin = (_points[5].WorldCoords + _points[9].WorldCoords) / 2;
-                        inCanvas.DrawText(_fText, textOrigin.X, textOrigin.Y, textOrigin.Z + DELTA_Z, null, Alignment.Left);
-                        break;
-
-                    case Alignment.Right:
-                        textOrigin = (_points[6].WorldCoords + _points[10].WorldCoords) / 2;
-                        inCanvas.DrawText(_fText, textOrigin.X, textOrigin.Y, textOrigin.Z + DELTA_Z, null, Alignment.Right);
-                        break;
-
-                    default:
-                        textOrigin = (_points[5].WorldCoords + _points[10].WorldCoords) / 2;
-                        inCanvas.DrawText(_fText, textOrigin.X, textOrigin.Y, textOrigin.Z + DELTA_Z, null, Alignment.Center);
-                        break;
-                }
+                inCanvas.DrawText(_fText, buttonCenter.X, buttonCenter.Y, buttonCenter.Z + DELTA_Z, null, Alignment.Center);
 
                 inCanvas.PopState();
             }
@@ -265,7 +245,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
             if (_glyph != null)
             {
-                _glyph.GetComponent<Widget>().Status = (Status == WidgetStatus.Disabled ? WidgetStatus.Disabled : WidgetStatus.Normal);
+                _glyph.GetComponent<Panel>().Status = (Status == WidgetStatus.Disabled ? WidgetStatus.Disabled : WidgetStatus.Normal);
             }
         }
 
@@ -275,7 +255,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <param name="inSecondsPast"></param>
         protected override void OnUpdate(float inSecondsPast)
         {
-            if (_glyph == null && _glyphSkin != null)
+            if (_glyph == null && !_glyphAppearance.Res.Glyph.IsExplicitNull)
             {
                 AddGlyph();
             }
@@ -285,17 +265,17 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 OnCheckUncheck();
             }
 
-            if ((_dirtyFlags & DirtyFlags.Custom1) != DirtyFlags.None && _glyph != null)
-            {
-                _glyph.GetComponent<SkinnedWidget>().Skin = _glyphSkin;
-            }
-
             if (_glyph != null)
             {
+                if ((_dirtyFlags & DirtyFlags.Appearance) != DirtyFlags.None)
+                {
+                    Panel p = _glyph.GetComponent<Panel>();
+                    p.Appearance = AppearanceManager.RequestAppearanceContentRef(_glyphAppearance.Res.Glyph);
+                    p.Rect = Rect.AlignTopLeft(0, 0, _glyphAppearance.Res.GlyphSize.X, _glyphAppearance.Res.GlyphSize.Y);
+                }
+
                 _glyph.Active = IsChecked;
             }
-
-            base.OnUpdate(inSecondsPast);
         }
 
         private void AddGlyph()
@@ -306,12 +286,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             t.RelativePos = new Vector3(0, 0, 0);
             t.RelativeAngle = 0;
 
-            SkinnedPanel sp = new SkinnedPanel();
-            sp.VisibilityGroup = this.VisibilityGroup;
-            sp.Skin = GlyphSkin;
-            sp.Rect = Rect.AlignTopLeft(0, 0, GlyphSkin.Res.Size.X, GlyphSkin.Res.Size.Y);
+            Panel p = new Panel();
+            p.VisibilityGroup = this.VisibilityGroup;
+            p.Appearance = AppearanceManager.RequestAppearanceContentRef(_glyphAppearance.Res.Glyph);
+            p.Rect = Rect.AlignCenter(0, 0, _glyphAppearance.Res.GlyphSize.X, _glyphAppearance.Res.GlyphSize.Y);
 
-            _glyph.AddComponent<SkinnedPanel>(sp);
+            _glyph.AddComponent<Panel>(p);
             Scene.Current.AddObject(_glyph);
         }
 
@@ -331,6 +311,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                     OnUnchecked.Res.Execute(this.GameObj, UncheckedArgument);
                 }
             }
+        }
+
+        protected override Appearance GetBaseAppearance()
+        {
+            return _glyphAppearance.Res.Widget.Res;
         }
     }
 }

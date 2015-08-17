@@ -16,7 +16,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Commands
     /// <summary>
     /// TimedCommand used to alter over time the colorization of a Widget
     /// </summary>
-    public sealed class ColorizeSkinnedWidget : TimedCommand<SkinnedWidget>
+    public sealed class ColorizeSkinnedWidget : TimedCommand<Widget>
     {
         private ColorRange _range;
         private ColorRgba _target;
@@ -33,7 +33,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Commands
         /// <param name="inGameObject"></param>
         public override void Execute(float inSecondsPast, GameObject inGameObject)
         {
-            SkinnedWidget sw = GetComponent(inGameObject);
+            Widget sw = GetComponent(inGameObject);
 
             if (_timeToComplete <= 0)
             {
@@ -62,7 +62,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Commands
         /// <param name="inGameObject"></param>
         public override void Initialize(GameObject inGameObject)
         {
-            SkinnedWidget sw = GetComponent(inGameObject);
+            Widget sw = GetComponent(inGameObject);
             _range = new ColorRange(sw.Tint, _target);
         }
 
@@ -75,13 +75,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Commands
             return (_range.Max.ToVector4() - _range.Min.ToVector4()).Length;
         }
 
-        private void Colorize(SkinnedWidget inWidget, ColorRgba inColor)
+        private void Colorize(Widget inWidget, ColorRgba inColor)
         {
             inWidget.Tint = inColor;
 
-            if (inWidget is SkinnedButton)
+            if (inWidget is Button)
             {
-                (inWidget as SkinnedButton).TextColor = inColor;
+                (inWidget as Button).TextColor = inColor;
             }
         }
     }

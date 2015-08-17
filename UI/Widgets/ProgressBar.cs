@@ -19,7 +19,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     [Serializable]
     [EditorHintImage(typeof(Res), ResNames.ImageProgressBar)]
     [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
-    public class SkinnedProgressBar : SkinnedWidget
+    public class ProgressBar : Widget
     {
         #region NonSerialized fields
 
@@ -31,7 +31,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
         #endregion NonSerialized fields
 
-        private ContentRef<WidgetSkin> _barSkin;
+        private ContentRef<ProgressBarAppearance> _progressAppearance;
         private string _text;
         private ColorRgba _textColor;
         private ContentRef<Font> _textFont;
@@ -40,9 +40,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <summary>
         /// Constructor
         /// </summary>
-        public SkinnedProgressBar()
+        public ProgressBar()
         {
-            ActiveArea = Widgets.ActiveArea.None;
+            ActiveArea = ActiveArea.None;
 
             _fText = new FormattedText();
             _textColor = Colors.White;
@@ -51,13 +51,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <summary>
         /// [GET / SET] the Skin used for the ProgressBar
         /// </summary>
-        public ContentRef<WidgetSkin> BarSkin
+        public ContentRef<ProgressBarAppearance> Appearance
         {
-            get { return _barSkin; }
+            get { return _progressAppearance; }
             set
             {
-                _barSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom1;
+                _progressAppearance = value;
+                _dirtyFlags |= DirtyFlags.Appearance;
             }
         }
         /// <summary>
@@ -94,7 +94,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             set
             {
                 _value = value;
-                _dirtyFlags |= DirtyFlags.Custom2;
+                _dirtyFlags |= DirtyFlags.Value;
             }
         }
 
@@ -128,26 +128,24 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <param name="inSecondsPast"></param>
         protected override void OnUpdate(float inSecondsPast)
         {
-            if (_bar == null && _barSkin != null)
+            if (_bar == null && !_progressAppearance.Res.ProgressBar.IsExplicitNull)
             {
                 AddBar();
             }
 
             if (_bar != null)
             {
-                if ((_dirtyFlags & DirtyFlags.Custom1) != DirtyFlags.None)
+                if ((_dirtyFlags & DirtyFlags.Appearance) != DirtyFlags.None)
                 {
-                    _bar.GetComponent<SkinnedWidget>().Skin = _barSkin;
+                    _bar.GetComponent<Panel>().Appearance = AppearanceManager.RequestAppearanceContentRef(_progressAppearance.Res.ProgressBar);
                 }
-                if ((_dirtyFlags & DirtyFlags.Custom2) != DirtyFlags.None)
+                if ((_dirtyFlags & DirtyFlags.Value) != DirtyFlags.None)
                 {
                     UpdateBar();
                 }
 
                 _bar.GetComponent<Widget>().Status = Status;
             }
-
-            base.OnUpdate(inSecondsPast);
         }
 
         private void AddBar()
@@ -158,12 +156,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             t.RelativePos = new Vector3(Rect.W / 2, Rect.H / 2, 0);
             t.RelativeAngle = 0;
 
-            SkinnedPanel sp = new SkinnedPanel();
+            Panel sp = new Panel();
             sp.VisibilityGroup = this.VisibilityGroup;
-            sp.Skin = BarSkin;
-            sp.Rect = Rect.AlignLeft(-Rect.W / 2 + Skin.Res.Border.X, 0, 0, Rect.H - Skin.Res.Border.Y - Skin.Res.Border.W);
+            sp.Appearance = AppearanceManager.RequestAppearanceContentRef(_progressAppearance.Res.ProgressBar);
+            sp.Rect = Rect.AlignLeft(-Rect.W / 2 + _progressAppearance.Res.Widget.Res.Border.X, 0, 0, Rect.H - _progressAppearance.Res.Widget.Res.Border.Y - _progressAppearance.Res.Widget.Res.Border.W);
 
-            _bar.AddComponent<SkinnedPanel>(sp);
+            _bar.AddComponent<Panel>(sp);
             Scene.Current.AddObject(_bar);
         }
 
@@ -174,12 +172,17 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
             if (_bar != null)
             {
-                SkinnedWidget sw = _bar.GetComponent<SkinnedWidget>();
+                Panel sw = _bar.GetComponent<Panel>();
                 Rect rect = sw.Rect;
                 rect.W = (_vertices[6].Pos - _vertices[5].Pos).X * _value / 100;
 
                 sw.Rect = rect;
             }
+        }
+
+        protected override Appearance GetBaseAppearance()
+        {
+            return _progressAppearance.Res.Widget.Res;
         }
     }
 }

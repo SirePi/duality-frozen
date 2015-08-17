@@ -74,29 +74,46 @@
       <DependentUpon>Res.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\ResNames.cs" />
+    <Compile Include="AppearanceManager.cs" />
     <Compile Include="Resources\DefaultScripts\CloseDialog.cs" />
     <Compile Include="Resources\DefaultScripts\CloseWindow.cs" />
     <Compile Include="Resources\DefaultScripts\Quit.cs" />
+    <Compile Include="Resources\ProgressBarAppearance.cs" />
+    <Compile Include="Resources\ListBoxAppearance.cs" />
+    <Compile Include="Resources\MultiLineAppearance.cs" />
+    <Compile Include="Resources\DropDownAppearance.cs" />
+    <Compile Include="Resources\Skin.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Resources\WindowAppearance.cs" />
+    <Compile Include="Resources\ScrollBarAppearance.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Resources\SolidColorSkin.cs" />
+    <Compile Include="Resources\GradientSkin.cs" />
     <Compile Include="Resources\Script.cs" />
-    <Compile Include="Resources\SkinOrigin.cs" />
-    <Compile Include="Resources\WidgetSkin.cs" />
-    <Compile Include="Widgets\ActiveArea.cs" />
+    <Compile Include="Resources\Appearance.cs" />
+    <Compile Include="Resources\MaterialSkin.cs" />
+    <Compile Include="Resources\GlyphAppearance.cs" />
+    <Compile Include="Resources\WidgetAppearance.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ActiveArea.cs" />
     <Compile Include="Widgets\InternalScripts.cs" />
     <Compile Include="Widgets\InternalWidgets.cs" />
-    <Compile Include="Widgets\SkinnedButton.cs" />
-    <Compile Include="Widgets\SkinnedCheckButton.cs" />
-    <Compile Include="Widgets\SkinnedCommandGrid.cs" />
-    <Compile Include="Widgets\SkinnedDropDownButton.cs" />
-    <Compile Include="Widgets\SkinnedListBox.cs" />
-    <Compile Include="Widgets\SkinnedMultiLineWidget.cs" />
-    <Compile Include="Widgets\SkinnedPanel.cs" />
-    <Compile Include="Widgets\SkinnedProgressBar.cs" />
-    <Compile Include="Widgets\SkinnedRadioButton.cs" />
-    <Compile Include="Widgets\SkinnedScrollBar.cs" />
-    <Compile Include="Widgets\SkinnedTextBlock.cs" />
-    <Compile Include="Widgets\SkinnedTextBox.cs" />
-    <Compile Include="Widgets\SkinnedWidget.cs" />
-    <Compile Include="Widgets\SkinnedWindow.cs" />
+    <Compile Include="Widgets\Button.cs" />
+    <Compile Include="Widgets\CheckButton.cs" />
+    <Compile Include="Widgets\CommandGrid.cs" />
+    <Compile Include="Widgets\DropDownButton.cs" />
+    <Compile Include="Widgets\ListBox.cs" />
+    <Compile Include="Widgets\MultiLineWidget.cs" />
+    <Compile Include="Widgets\Panel.cs" />
+    <Compile Include="Widgets\ProgressBar.cs" />
+    <Compile Include="Widgets\RadioButton.cs" />
+    <Compile Include="Widgets\ScrollBar.cs" />
+    <Compile Include="Widgets\TextBlock.cs" />
+    <Compile Include="Widgets\TextBox.cs" />
+    <Compile Include="Widgets\Window.cs" />
     <Compile Include="Widgets\Widget.cs" />
     <Compile Include="Widgets\WidgetController.cs" />
   </ItemGroup>

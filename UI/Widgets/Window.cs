@@ -32,7 +32,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     [Serializable]
     [EditorHintImage(typeof(Res), ResNames.ImageWindow)]
     [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
-    public class SkinnedWindow : SkinnedWidget
+    public class Window : Widget
     {
         #region NonSerialized fields
 
@@ -65,17 +65,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
         #endregion NonSerialized fields
 
-        private Vector2 _buttonsSize;
         private bool _canClose;
         private bool _canMaximize;
         private bool _canMinimize;
-        private Vector2 _closeButtonSize;
-        private ContentRef<WidgetSkin> _closeButtonSkin;
+        private ContentRef<WindowAppearance> _windowAppearance;
         private bool _isDraggable;
-        private ContentRef<WidgetSkin> _maximizeButtonSkin;
         private Vector2 _maximizedSize;
-        private ContentRef<WidgetSkin> _minimizeButtonSkin;
-        private ContentRef<WidgetSkin> _restoreButtonSkin;
         private string _title;
         private ColorRgba _titleColor;
         private ContentRef<Font> _titleFont;
@@ -83,9 +78,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <summary>
         /// Constructor
         /// </summary>
-        public SkinnedWindow()
+        public Window()
         {
-            ActiveArea = Widgets.ActiveArea.TopBorder;
+            ActiveArea = ActiveArea.TopBorder;
 
             _childrenStatus = new Dictionary<Widget, WidgetStatus>();
             _fText = new FormattedText();
@@ -93,19 +88,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _isDragged = false;
 
             _wStatus = WindowStatus.Normal;
-        }
-
-        /// <summary>
-        /// [GET / SET] the Minimize, Maximize, and Restore Buttons size
-        /// </summary>
-        public Vector2 ButtonsSize
-        {
-            get { return _buttonsSize; }
-            set
-            {
-                _buttonsSize = value;
-                _dirtyFlags |= DirtyFlags.Custom6;
-            }
         }
 
         /// <summary>
@@ -136,28 +118,15 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         }
 
         /// <summary>
-        /// [GET / SET] the Close Button size
-        /// </summary>
-        public Vector2 CloseButtonSize
-        {
-            get { return _closeButtonSize; }
-            set
-            {
-                _closeButtonSize = value;
-                _dirtyFlags |= DirtyFlags.Custom5;
-            }
-        }
-
-        /// <summary>
         /// [GET / SET] the skin used for the Close button
         /// </summary>
-        public ContentRef<WidgetSkin> CloseButtonSkin
+        public ContentRef<WindowAppearance> Appearance
         {
-            get { return _closeButtonSkin; }
+            get { return _windowAppearance; }
             set
             {
-                _closeButtonSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom1;
+                _windowAppearance = value;
+                _dirtyFlags |= DirtyFlags.Appearance;
             }
         }
 
@@ -170,18 +139,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             set { _isDraggable = value; }
         }
 
-        /// <summary>
-        /// [GET / SET] the skin used for the Maximize button
-        /// </summary>
-        public ContentRef<WidgetSkin> MaximizeButtonSkin
-        {
-            get { return _maximizeButtonSkin; }
-            set
-            {
-                _maximizeButtonSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom2;
-            }
-        }
+        
 
         /// <summary>
         /// [GET / SET] the size of the Window when Maximized
@@ -191,30 +149,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _maximizedSize; }
             set { _maximizedSize = value; }
         }
-        /// <summary>
-        /// [GET / SET] the skin used for the Minimize button
-        /// </summary>
-        public ContentRef<WidgetSkin> MinimizeButtonSkin
-        {
-            get { return _minimizeButtonSkin; }
-            set
-            {
-                _minimizeButtonSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom3;
-            }
-        }
-        /// <summary>
-        /// [GET / SET] the skin used for the Restore button
-        /// </summary>
-        public ContentRef<WidgetSkin> RestoreButtonSkin
-        {
-            get { return _restoreButtonSkin; }
-            set
-            {
-                _restoreButtonSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom4;
-            }
-        }
+        
+       
         /// <summary>
         /// [GET / SET] The Text of the Title
         /// </summary>
@@ -260,7 +196,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// </summary>
         public override void MouseEnter()
         {
-            if (Status != WidgetStatus.Disabled && Skin.Res != null && !_isDragged)
+            if (Status != WidgetStatus.Disabled && !_isDragged)
             {
                 Status = WidgetStatus.Hover;
             }
@@ -271,7 +207,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// </summary>
         public override void MouseLeave()
         {
-            if (Status != WidgetStatus.Disabled && Skin.Res != null && !_isDragged)
+            if (Status != WidgetStatus.Disabled && !_isDragged)
             {
                 Status = WidgetStatus.Normal;
             }
@@ -350,7 +286,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             }
             else
             {
-                newRect.H = Skin.Res.Border.Y + Skin.Res.Border.W;
+                newRect.H = _windowAppearance.Res.Widget.Res.Border.Y + _windowAppearance.Res.Widget.Res.Border.W;
             }
             Rect = newRect;
 
@@ -461,57 +397,47 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <param name="inSecondsPast"></param>
         protected override void OnUpdate(float inSecondsPast)
         {
-            if (CanClose && _closeButton == null && _closeButtonSkin != null)
+            if (CanClose && _closeButton == null && !_windowAppearance.Res.Close.IsExplicitNull)
             {
                 AddCloseButton();
             }
-            if (CanMaximize && _maximizeButton == null && _maximizedSize.X >= Rect.W && _maximizedSize.Y >= Rect.H && _maximizeButtonSkin != null)
+            if (CanMaximize && _maximizeButton == null && _maximizedSize.X >= Rect.W && _maximizedSize.Y >= Rect.H && !_windowAppearance.Res.Maximize.IsExplicitNull)
             {
                 AddMaximizeButton();
             }
-            if (CanMinimize && _minimizeButton == null && _minimizeButtonSkin != null)
+            if (CanMinimize && _minimizeButton == null && !_windowAppearance.Res.Minimize.IsExplicitNull)
             {
                 AddMinimizeButton();
             }
-            if ((CanMaximize || CanMinimize) && _restoreButton == null && _restoreButtonSkin != null)
+            if ((CanMaximize || CanMinimize) && _restoreButton == null && !_windowAppearance.Res.Restore.IsExplicitNull)
             {
                 AddRestoreButton();
             }
 
-            if ((_dirtyFlags & DirtyFlags.Custom1) != DirtyFlags.None && _closeButton != null)
+            if ((_dirtyFlags & DirtyFlags.Appearance) != DirtyFlags.None)
             {
-                _closeButton.GetComponent<SkinnedWidget>().Skin = _closeButtonSkin;
-            }
-            if ((_dirtyFlags & DirtyFlags.Custom2) != DirtyFlags.None && _maximizeButton != null)
-            {
-                _maximizeButton.GetComponent<SkinnedWidget>().Skin = _maximizeButtonSkin;
-            }
-            if ((_dirtyFlags & DirtyFlags.Custom3) != DirtyFlags.None && _minimizeButton != null)
-            {
-                _minimizeButton.GetComponent<SkinnedWidget>().Skin = _minimizeButtonSkin;
-            }
-            if ((_dirtyFlags & DirtyFlags.Custom4) != DirtyFlags.None && _restoreButton != null)
-            {
-                _restoreButton.GetComponent<SkinnedWidget>().Skin = _restoreButtonSkin;
-            }
-            if ((_dirtyFlags & DirtyFlags.Custom5) != DirtyFlags.None && _closeButton != null)
-            {
-                _closeButton.GetComponent<SkinnedWidget>().Rect = Rect.AlignTopLeft(0, 0, _closeButtonSize.X, _closeButtonSize.Y);
-            }
-            if ((_dirtyFlags & DirtyFlags.Custom6) != DirtyFlags.None)
-            {
-                Rect newRect = Rect.AlignTopLeft(0, 0, _buttonsSize.X, _buttonsSize.Y);
+                Rect buttonRect = Rect.AlignTopLeft(0, 0, _windowAppearance.Res.ButtonSize.X, _windowAppearance.Res.ButtonSize.Y);
+                Rect closeRect = Rect.AlignTopLeft(0, 0, _windowAppearance.Res.CloseButtonSize.X, _windowAppearance.Res.CloseButtonSize.Y);
+
+                if (_closeButton != null)
+                {
+                    _closeButton.GetComponent<Button>().Appearance = AppearanceManager.RequestAppearanceContentRef(_windowAppearance.Res.Close);
+                    _minimizeButton.GetComponent<Button>().Rect = closeRect;
+                }
                 if (_maximizeButton != null)
                 {
-                    _maximizeButton.GetComponent<SkinnedWidget>().Rect = newRect;
+                    _maximizeButton.GetComponent<Button>().Appearance = AppearanceManager.RequestAppearanceContentRef(_windowAppearance.Res.Maximize);
+                    _minimizeButton.GetComponent<Button>().Rect = buttonRect;
                 }
                 if (_minimizeButton != null)
                 {
-                    _minimizeButton.GetComponent<SkinnedWidget>().Rect = newRect;
+                    _minimizeButton.GetComponent<Button>().Appearance = AppearanceManager.RequestAppearanceContentRef(_windowAppearance.Res.Minimize);
+                    _minimizeButton.GetComponent<Button>().Rect = buttonRect;
                 }
                 if (_restoreButton != null)
                 {
-                    _restoreButton.GetComponent<SkinnedWidget>().Rect = newRect;
+                    _restoreButton.GetComponent<Button>().Appearance = AppearanceManager.RequestAppearanceContentRef(_windowAppearance.Res.Restore);
+                    _minimizeButton.GetComponent<Button>().Rect = buttonRect;
                 }
             }
 
@@ -523,13 +449,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _closeButton = new GameObject("closeButton", this.GameObj);
 
             Transform t = _closeButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - CloseButtonSize.X, 0, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - _windowAppearance.Res.CloseButtonSize.X, 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             CloseButton cb = new CloseButton();
             cb.VisibilityGroup = this.VisibilityGroup;
-            cb.Skin = CloseButtonSkin;
-            cb.Rect = Rect.AlignTopLeft(0, 0, CloseButtonSize.X, CloseButtonSize.Y);
+            cb.Appearance = AppearanceManager.RequestAppearanceContentRef(_windowAppearance.Res.Close);
+            cb.Rect = Rect.AlignTopLeft(0, 0, _windowAppearance.Res.CloseButtonSize.X, _windowAppearance.Res.CloseButtonSize.Y);
 
             _closeButton.AddComponent<CloseButton>(cb);
             Scene.Current.AddObject(_closeButton);
@@ -540,13 +466,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _maximizeButton = new GameObject("maximizeButton", this.GameObj);
 
             Transform t = _maximizeButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (ButtonsSize.X * 2), 0, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - (_windowAppearance.Res.ButtonSize.X * 2), 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             MaximizeButton mb = new MaximizeButton();
             mb.VisibilityGroup = this.VisibilityGroup;
-            mb.Skin = MaximizeButtonSkin;
-            mb.Rect = Rect.AlignTopLeft(0, 0, ButtonsSize.X, ButtonsSize.Y);
+            mb.Appearance = AppearanceManager.RequestAppearanceContentRef(_windowAppearance.Res.Maximize);
+            mb.Rect = Rect.AlignTopLeft(0, 0, _windowAppearance.Res.ButtonSize.X, _windowAppearance.Res.ButtonSize.Y);
 
             _maximizeButton.AddComponent<MaximizeButton>(mb);
             Scene.Current.AddObject(_maximizeButton);
@@ -557,13 +483,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _minimizeButton = new GameObject("minimizeButton", this.GameObj);
 
             Transform t = _minimizeButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (ButtonsSize.X * 3), 0, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - (_windowAppearance.Res.ButtonSize.X * 3), 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             MinimizeButton mb = new MinimizeButton();
             mb.VisibilityGroup = this.VisibilityGroup;
-            mb.Skin = MinimizeButtonSkin;
-            mb.Rect = Rect.AlignTopLeft(0, 0, ButtonsSize.X, ButtonsSize.Y);
+            mb.Appearance = AppearanceManager.RequestAppearanceContentRef(_windowAppearance.Res.Minimize);
+            mb.Rect = Rect.AlignTopLeft(0, 0, _windowAppearance.Res.ButtonSize.X, _windowAppearance.Res.ButtonSize.Y);
 
             _minimizeButton.AddComponent<MinimizeButton>(mb);
             Scene.Current.AddObject(_minimizeButton);
@@ -574,13 +500,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _restoreButton = new GameObject("restoreButton", this.GameObj);
 
             Transform t = _restoreButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (ButtonsSize.X * 4), 0, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - (_windowAppearance.Res.ButtonSize.X * 4), 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             RestoreButton rb = new RestoreButton();
             rb.VisibilityGroup = this.VisibilityGroup;
-            rb.Skin = RestoreButtonSkin;
-            rb.Rect = Rect.AlignTopLeft(0, 0, ButtonsSize.X, ButtonsSize.Y);
+            rb.Appearance = AppearanceManager.RequestAppearanceContentRef(_windowAppearance.Res.Restore);
+            rb.Rect = Rect.AlignTopLeft(0, 0, _windowAppearance.Res.ButtonSize.X, _windowAppearance.Res.ButtonSize.Y);
 
             _restoreButton.Active = false;
             _restoreButton.AddComponent<RestoreButton>(rb);
@@ -626,6 +552,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             Vector3 pos = inButton.Transform.RelativePos;
             pos.X += inDeltaX;
             inButton.Transform.RelativePos = pos;
+        }
+
+        protected override Appearance GetBaseAppearance()
+        {
+            return _windowAppearance.Res.Widget.Res;
         }
     }
 }

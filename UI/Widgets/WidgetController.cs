@@ -261,7 +261,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         {
             _currentDialog = null;
 
-            if (inWindow is SkinnedWindow)
+            if (inWindow is Window)
             {
                 _currentDialog = inWindow;
             }
@@ -461,7 +461,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 hoveredGUIComponents.Min(gc => gc.GameObj.Transform.Pos.Z);
                 hgc = hoveredGUIComponents
                     .OrderBy(gc => gc.IsInOverlay ? 0 : 1)
-                    .ThenBy(gc => gc.GameObj.Transform.Pos.Z)
+                    .ThenBy(gc => gc.GameObj.Transform.Pos.Z + gc.ZOffset)
                     .FirstOrDefault();
 
                 if (hgc != null && !hgc.GetActiveAreaOnScreen(GameObj.Camera).Contains(_currentMousePosition))
@@ -471,7 +471,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
                 if (hgc != null && _currentDialog != null)
                 {
-                    if (hgc.GameObj.FindAncestorWithComponent<SkinnedWindow>() != _currentDialog.GameObj)
+                    if (hgc.GameObj.FindAncestorWithComponent<Window>() != _currentDialog.GameObj)
                     {
                         hgc = null;
                     }

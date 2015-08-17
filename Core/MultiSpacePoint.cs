@@ -1,5 +1,6 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
+using Duality.Drawing;
 using OpenTK;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Core
@@ -23,5 +24,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core
         ///
         /// </summary>
         public Vector3 WorldCoords;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ColorRgba Tint;
     }
 }

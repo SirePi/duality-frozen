@@ -46,7 +46,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         {
             public override void Execute(GameObject inSource, object inParameter)
             {
-                SkinnedWindow window = inSource.Parent.GetComponent<Widget>() as SkinnedWindow;
+                Window window = inSource.Parent.GetComponent<Widget>() as Window;
 
                 if (window != null)
                 {
@@ -59,7 +59,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         {
             public override void Execute(GameObject inSource, object inParameter)
             {
-                SkinnedWindow window = inSource.Parent.GetComponent<Widget>() as SkinnedWindow;
+                Window window = inSource.Parent.GetComponent<Widget>() as Window;
 
                 if (window != null)
                 {
@@ -72,7 +72,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         {
             public override void Execute(GameObject inSource, object inParameter)
             {
-                SkinnedWindow window = inSource.Parent.GetComponent<Widget>() as SkinnedWindow;
+                Window window = inSource.Parent.GetComponent<Widget>() as Window;
 
                 if (window != null)
                 {
@@ -85,7 +85,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         {
             public override void Execute(GameObject inSource, object inParameter)
             {
-                SkinnedScrollBar scrollBar = inSource.Parent.GetComponent<Widget>() as SkinnedScrollBar;
+                ScrollBar scrollBar = inSource.Parent.GetComponent<Widget>() as ScrollBar;
                 if (scrollBar != null)
                 {
                     scrollBar.Value = Math.Max(scrollBar.Minimum, scrollBar.Value - (int)inParameter);
@@ -97,7 +97,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         {
             public override void Execute(GameObject inSource, object inParameter)
             {
-                SkinnedScrollBar scrollBar = inSource.Parent.GetComponent<Widget>() as SkinnedScrollBar;
+                ScrollBar scrollBar = inSource.Parent.GetComponent<Widget>() as ScrollBar;
                 if (scrollBar != null)
                 {
                     scrollBar.Value = Math.Min(scrollBar.Maximum, scrollBar.Value + (int)inParameter);

@@ -1,6 +1,6 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
+namespace SnowyPeak.Duality.Plugin.Frozen.UI
 {
     /// <summary>
     ///

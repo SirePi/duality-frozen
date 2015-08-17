@@ -20,7 +20,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     [Serializable]
     [EditorHintImage(typeof(Res), ResNames.ImageListBox)]
     [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
-    public class SkinnedListBox : SkinnedMultiLineWidget
+    public class ListBox : MultiLineWidget
     {
         #region NonSerialized fields
 
@@ -28,7 +28,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         private GameObject _highlight;
 
         [NonSerialized]
-        private SkinnedPanel _highlightPanel;
+        private Panel _highlightPanel;
 
         [NonSerialized]
         private Polygon _listArea;
@@ -41,32 +41,29 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
         #endregion NonSerialized fields
 
-        private ContentRef<WidgetSkin> _highlightSkin;
-
         private List<object> _items;
+
+        private ContentRef<ListBoxAppearance> _listAppearance;
+
+        public ContentRef<ListBoxAppearance> Appearance
+        {
+            get { return _listAppearance; }
+            set
+            {
+                _listAppearance = value;
+                _dirtyFlags |= DirtyFlags.Appearance;
+            }
+        }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public SkinnedListBox()
+        public ListBox()
         {
             _items = new List<object>();
             _fText = new FormattedText();
             _listArea = new Polygon(4);
             _testPolygon = new Polygon(4);
-        }
-
-        /// <summary>
-        /// [GET / SET] the Skin used for the Highlight
-        /// </summary>
-        public ContentRef<WidgetSkin> HighlightSkin
-        {
-            get { return _highlightSkin; }
-            set
-            {
-                _highlightSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom5;
-            }
         }
 
         /// <summary>
@@ -126,8 +123,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <param name="e"></param>
         public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
         {
-            base.MouseDown(e);
-
             if (e.Button == OpenTK.Input.MouseButton.Left)
             {
                 float top = 0;
@@ -168,18 +163,22 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             }
         }
 
+        /*
         /// <summary>
         ///
         /// </summary>
         /// <param name="inDevice"></param>
-        protected override void Draw(IDrawDevice inDevice)
+        protected override void DrawCustom(IDrawDevice inDevice)
         {
-            base.Draw(inDevice);
-
             _listArea[0] = inDevice.GetScreenCoord(_points[5].WorldCoords).Xy;
             _listArea[1] = inDevice.GetScreenCoord(_points[6].WorldCoords).Xy;
             _listArea[2] = inDevice.GetScreenCoord(_points[10].WorldCoords).Xy;
             _listArea[3] = inDevice.GetScreenCoord(_points[9].WorldCoords).Xy;
+        }*/
+
+        protected override Appearance GetBaseAppearance()
+        {
+            return _listAppearance.Res.Widget.Res;
         }
 
         /// <summary>
@@ -188,16 +187,21 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <param name="inSecondsPast"></param>
         protected override void OnUpdate(float inSecondsPast)
         {
+            _multiAppearance.Res = _listAppearance.Res;
+
             base.OnUpdate(inSecondsPast);
 
-            if (_highlight == null && _highlightSkin != null)
+            if (_highlight == null && !_listAppearance.Res.Highlight.IsExplicitNull)
             {
                 AddHighlight();
             }
 
-            if ((_dirtyFlags & DirtyFlags.Custom5) != DirtyFlags.None && _highlight != null)
+            if ((_dirtyFlags & DirtyFlags.Appearance) != DirtyFlags.None)
             {
-                _highlight.GetComponent<SkinnedWidget>().Skin = _highlightSkin;
+                if (_highlight != null)
+                {
+                    _highlight.GetComponent<Panel>().Appearance = AppearanceManager.RequestAppearanceContentRef(_listAppearance.Res.Highlight);
+                }
             }
 
             if ((_dirtyFlags & DirtyFlags.Value) != DirtyFlags.None)
@@ -217,13 +221,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             t.RelativePos = new Vector3(Rect.W / 2, Rect.H / 2, DELTA_Z / 2);
             t.RelativeAngle = 0;
 
-            _highlightPanel = new SkinnedPanel();
+            _highlightPanel = new Panel();
             _highlightPanel.VisibilityGroup = this.VisibilityGroup;
-            _highlightPanel.Skin = HighlightSkin;
+            _highlightPanel.Appearance = AppearanceManager.RequestAppearanceContentRef(_listAppearance.Res.Highlight); ;
             _highlightPanel.Rect = Rect.AlignTopLeft(0, 0, 0, 0);
-            _highlightPanel.OverrideAutomaticZ = true;
 
-            _highlight.AddComponent<SkinnedPanel>(_highlightPanel);
+            _highlight.AddComponent<Panel>(_highlightPanel);
             Scene.Current.AddObject(_highlight);
         }
 
@@ -236,17 +239,19 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 float top = _scrollComponent.Value;
                 float bottom = _scrollComponent.Value + _visibleHeight;
 
+                ContentRef<Appearance> app = _listAppearance.Res.Widget;
+
                 Vector3 relativePos = _highlight.Transform.RelativePos;
-                relativePos.X = Skin.Res.Border.X;
-                relativePos.Y = Skin.Res.Border.Y + selectionRect.Y - top;
+                relativePos.X = app.Res.Border.X;
+                relativePos.Y = app.Res.Border.Y + selectionRect.Y - top;
 
                 Rect highlightRect = _highlightPanel.Rect;
                 highlightRect.H = selectionRect.H;
-                highlightRect.W = Rect.W - Skin.Res.Border.X - Skin.Res.Border.W;
+                highlightRect.W = Rect.W - app.Res.Border.X - app.Res.Border.W;
 
                 _highlight.Transform.RelativePos = relativePos;
                 _highlightPanel.Rect = highlightRect;
-                _highlightPanel.VisibleRect = highlightRect;
+                _highlightPanel.ClippingRect = highlightRect;
 
                 if (_isScrollbarRequired)
                 {
@@ -254,18 +259,18 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
                     if (selectionRect.Top.Y < top && selectionRect.Bottom.Y >= top)
                     {
-                        Rect highlightVisibleRect = _highlightPanel.VisibleRect;
+                        Rect highlightVisibleRect = _highlightPanel.ClippingRect;
                         highlightVisibleRect.Y = top - selectionRect.Top.Y;
 
-                        _highlightPanel.VisibleRect = highlightVisibleRect;
+                        _highlightPanel.ClippingRect = highlightVisibleRect;
                     }
 
                     if (selectionRect.Bottom.Y > bottom && selectionRect.Top.Y <= bottom)
                     {
-                        Rect highlightVisibleRect = _highlightPanel.VisibleRect;
+                        Rect highlightVisibleRect = _highlightPanel.ClippingRect;
                         highlightVisibleRect.H = highlightRect.H - (selectionRect.Bottom.Y - bottom);
 
-                        _highlightPanel.VisibleRect = highlightVisibleRect;
+                        _highlightPanel.ClippingRect = highlightVisibleRect;
                     }
                 }
             }

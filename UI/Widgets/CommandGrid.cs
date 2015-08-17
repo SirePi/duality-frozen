@@ -22,7 +22,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     [Serializable]
     [EditorHintImage(typeof(Res), ResNames.ImageCommandGrid)]
     [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
-    public class SkinnedCommandGrid : SkinnedWidget
+    public class CommandGrid : Widget
     {
         #region NonSerialized fields
 
@@ -39,7 +39,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         private GameObject _highlight;
 
         [NonSerialized]
-        private SkinnedPanel _highlightPanel;
+        private Panel _highlightPanel;
 
         [NonSerialized]
         private ushort _rows;
@@ -48,7 +48,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         private GameObject _scrollbar;
 
         [NonSerialized]
-        private SkinnedScrollBar _scrollComponent;
+        private ScrollBar _scrollComponent;
 
         [NonSerialized]
         private object _selectedItem;
@@ -64,7 +64,18 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
         #endregion NonSerialized fields
 
-        private ContentRef<WidgetSkin> _highlightSkin;
+        private ContentRef<ListBoxAppearance> _listAppearance;
+
+        public ContentRef<ListBoxAppearance> Appearance
+        {
+            get { return _listAppearance; }
+            set 
+            {
+                _listAppearance = value;
+                _dirtyFlags |= DirtyFlags.Appearance;
+            }
+        }
+
         private Vector4 _itemPadding;
         private List<object> _items;
         private Key _keyDown;
@@ -76,21 +87,15 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         private ContentRef<Script> _onRightClick;
 
         private object _rightClickArgument;
-        private Vector2 _scrollbarButtonsSize;
-        private Vector2 _scrollbarCursorSize;
-        private ContentRef<WidgetSkin> _scrollbarCursorSkin;
-        private ContentRef<WidgetSkin> _scrollbarDecreaseButtonSkin;
-        private ContentRef<WidgetSkin> _scrollbarIncreaseButtonSkin;
-        private ContentRef<WidgetSkin> _scrollbarSkin;
         private ColorRgba _textColor;
         private ContentRef<Font> _textFont;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public SkinnedCommandGrid()
+        public CommandGrid()
         {
-            ActiveArea = Widgets.ActiveArea.Center;
+            ActiveArea = ActiveArea.Center;
 
             _fText = new FormattedText();
             _textColor = Colors.White;
@@ -107,18 +112,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _dirtyFlags |= DirtyFlags.Value;
         }
 
-        /// <summary>
-        /// [GET / SET] the Skin used for the Highlight
-        /// </summary>
-        public ContentRef<WidgetSkin> HighlightSkin
-        {
-            get { return _highlightSkin; }
-            set
-            {
-                _highlightSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom5;
-            }
-        }
+       
         /// <summary>
         /// [GET / SET] the padding to apply to each item [x, y, z, w] => [left, top, right, bottom]
         /// </summary>
@@ -207,78 +201,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         {
             get { return _rightClickArgument; }
             set { _rightClickArgument = value; }
-        }
-        /// <summary>
-        /// [GET / SET] the size of the Scrollbar buttons
-        /// </summary>
-        public Vector2 ScrollbarButtonsSize
-        {
-            get { return _scrollbarButtonsSize; }
-            set
-            {
-                _scrollbarButtonsSize = value;
-                _dirtyFlags |= DirtyFlags.Custom7;
-            }
-        }
-        /// <summary>
-        /// [GET / SET] the size of the Scrollbar cursor
-        /// </summary>
-        public Vector2 ScrollbarCursorSize
-        {
-            get { return _scrollbarCursorSize; }
-            set
-            {
-                _scrollbarCursorSize = value;
-                _dirtyFlags |= DirtyFlags.Custom6;
-            }
-        }
-        /// <summary>
-        /// [GET / SET] the Skin used for the Scrollbar Cursor
-        /// </summary>
-        public ContentRef<WidgetSkin> ScrollbarCursorSkin
-        {
-            get { return _scrollbarCursorSkin; }
-            set
-            {
-                _scrollbarCursorSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom2;
-            }
-        }
-        /// <summary>
-        /// [GET / SET] the Skin that will be used for the Scrollbar Decrease button
-        /// </summary>
-        public ContentRef<WidgetSkin> ScrollbarDecreaseButtonSkin
-        {
-            get { return _scrollbarDecreaseButtonSkin; }
-            set
-            {
-                _scrollbarDecreaseButtonSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom3;
-            }
-        }
-        /// <summary>
-        /// [GET / SET] the Skin that will be used for the Scrollbar Increase button
-        /// </summary>
-        public ContentRef<WidgetSkin> ScrollbarIncreaseButtonSkin
-        {
-            get { return _scrollbarIncreaseButtonSkin; }
-            set
-            {
-                _scrollbarIncreaseButtonSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom4;
-            }
-        }
-        /// <summary>
-        /// [GET / SET] the Skin that will be used for the Scrollbar
-        /// </summary>
-        public ContentRef<WidgetSkin> ScrollbarSkin
-        {
-            get { return _scrollbarSkin; }
-            set
-            {
-                _scrollbarSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom1;
-            }
         }
         /// <summary>
         /// [GET / SET] the index of the Selected item
@@ -441,49 +363,32 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <param name="inSecondsPast"></param>
         protected override void OnUpdate(float inSecondsPast)
         {
-            if (_highlight == null && _highlightSkin != null)
+            if (_highlight == null && !_listAppearance.Res.Highlight.IsExplicitNull)
             {
                 AddHighlight();
             }
 
-            if (_scrollbar == null && _scrollbarSkin != null)
+            if (_scrollbar == null && !_listAppearance.Res.ScrollBar.IsExplicitNull)
             {
                 AddScrollBar();
             }
 
-            if ((_dirtyFlags & DirtyFlags.Skin) != DirtyFlags.None)
+            if ((_dirtyFlags & DirtyFlags.Appearance) != DirtyFlags.None)
             {
-                _visibleWidth = (int)Math.Floor(Rect.W - Skin.Res.Border.X - Skin.Res.Border.W);
-                _visibleHeight = (int)Math.Floor(Rect.H - Skin.Res.Border.Y - Skin.Res.Border.Z);
-            }
-            if ((_dirtyFlags & DirtyFlags.Custom1) != DirtyFlags.None && _scrollbar != null)
-            {
-                _scrollbar.GetComponent<SkinnedWidget>().Skin = _scrollbarSkin;
-            }
-            if ((_dirtyFlags & DirtyFlags.Custom2) != DirtyFlags.None && _scrollbar != null)
-            {
-                _scrollbar.GetComponent<SkinnedScrollBar>().CursorSkin = _scrollbarCursorSkin;
-            }
-            if ((_dirtyFlags & DirtyFlags.Custom3) != DirtyFlags.None && _scrollbar != null)
-            {
-                _scrollbar.GetComponent<SkinnedScrollBar>().DecreaseButtonSkin = _scrollbarDecreaseButtonSkin;
-            }
-            if ((_dirtyFlags & DirtyFlags.Custom4) != DirtyFlags.None && _scrollbar != null)
-            {
-                _scrollbar.GetComponent<SkinnedScrollBar>().IncreaseButtonSkin = _scrollbarIncreaseButtonSkin;
-            }
-            if ((_dirtyFlags & DirtyFlags.Custom5) != DirtyFlags.None && _highlight != null)
-            {
-                _highlight.GetComponent<SkinnedWidget>().Skin = _highlightSkin;
-            }
+                if(_scrollbar != null)
+                {
+                    _scrollbar.GetComponent<ScrollBar>().Appearance = _listAppearance.Res.ScrollBar;
+                }
 
-            if ((_dirtyFlags & DirtyFlags.Custom6) != DirtyFlags.None && _scrollbar != null)
-            {
-                _scrollbar.GetComponent<SkinnedScrollBar>().CursorSize = _scrollbarCursorSize;
-            }
-            if ((_dirtyFlags & DirtyFlags.Custom7) != DirtyFlags.None && _scrollbar != null)
-            {
-                _scrollbar.GetComponent<SkinnedScrollBar>().ButtonsSize = _scrollbarButtonsSize;
+                if(_highlight != null)
+                {
+                    _highlight.GetComponent<Panel>().Appearance = AppearanceManager.RequestAppearanceContentRef(_listAppearance.Res.Highlight);
+                }
+
+                ContentRef<Appearance> app = _listAppearance.Res.Widget;
+
+                _visibleWidth = (int)Math.Floor(Rect.W - app.Res.Border.X - app.Res.Border.W);
+                _visibleHeight = (int)Math.Floor(Rect.H - app.Res.Border.Y - app.Res.Border.Z);
             }
 
             if ((_dirtyFlags & DirtyFlags.Value) != DirtyFlags.None)
@@ -504,13 +409,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             t.RelativePos = new Vector3(Rect.W / 2, Rect.H / 2, DELTA_Z / 2);
             t.RelativeAngle = 0;
 
-            _highlightPanel = new SkinnedPanel();
+            _highlightPanel = new Panel();
             _highlightPanel.VisibilityGroup = this.VisibilityGroup;
-            _highlightPanel.Skin = HighlightSkin;
+            _highlightPanel.Appearance = AppearanceManager.RequestAppearanceContentRef(_listAppearance.Res.Highlight);
             _highlightPanel.Rect = Rect.AlignTopLeft(0, 0, 0, 0);
-            _highlightPanel.OverrideAutomaticZ = true;
 
-            _highlight.AddComponent<SkinnedPanel>(_highlightPanel);
+            _highlight.AddComponent<Panel>(_highlightPanel);
             Scene.Current.AddObject(_highlight);
         }
 
@@ -518,26 +422,23 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         {
             _scrollbar = new GameObject("scrollbar", this.GameObj);
 
-            float scrollbarWidth = Math.Max(ScrollbarButtonsSize.X, ScrollbarCursorSize.X);
+            ContentRef<ScrollBarAppearance> sba = _listAppearance.Res.ScrollBar.Res;
+
+            float scrollbarWidth = Math.Max(sba.Res.ButtonSize.X, sba.Res.CursorSize.X);
 
             Transform t = _scrollbar.AddComponent<Transform>();
             t.RelativePos = new Vector3(0, Rect.H, 0);
             t.RelativeAngle = -MathF.PiOver2;
 
-            _scrollComponent = new SkinnedScrollBar();
+            _scrollComponent = new ScrollBar();
             _scrollComponent.VisibilityGroup = this.VisibilityGroup;
-            _scrollComponent.Skin = ScrollbarSkin;
-            _scrollComponent.CursorSkin = ScrollbarCursorSkin;
-            _scrollComponent.DecreaseButtonSkin = ScrollbarDecreaseButtonSkin;
-            _scrollComponent.IncreaseButtonSkin = ScrollbarIncreaseButtonSkin;
-            _scrollComponent.ButtonsSize = ScrollbarButtonsSize;
-            _scrollComponent.CursorSize = ScrollbarCursorSize;
+            _scrollComponent.Appearance = sba;
             //_scrollComponent.OnValueChanged = InternalScripts.GetScript<InternalScripts.CommandGridScrollbarValueChanged>();
 
             _scrollComponent.Rect = Rect.AlignTopLeft(0, 0, scrollbarWidth, Rect.W);
             _scrollComponent.ScrollSpeed = 1;
 
-            _scrollbar.AddComponent<SkinnedScrollBar>(_scrollComponent);
+            _scrollbar.AddComponent<ScrollBar>(_scrollComponent);
             Scene.Current.AddObject(_scrollbar);
         }
 
@@ -555,9 +456,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                     _scrollComponent.Value = itemColumn - 1;
                 }
 
+                Vector4 border = _listAppearance.Res.Widget.Res.Border;
                 Vector3 relativePos = _highlight.Transform.RelativePos;
-                relativePos.X = Skin.Res.Border.X + (_gridCellSize.X * (itemColumn - _scrollComponent.Value));
-                relativePos.Y = Skin.Res.Border.Y + (_gridCellSize.Y * itemRow);
+                relativePos.X = border.X + (_gridCellSize.X * (itemColumn - _scrollComponent.Value));
+                relativePos.Y = border.Y + (_gridCellSize.Y * itemRow);
 
                 _highlight.Transform.RelativePos = relativePos;
                 _highlightPanel.Rect = new Rect(_gridCellSize);
@@ -615,6 +517,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 _scrollComponent.Maximum = 1;
                 _scrollComponent.Value = 0;
             }
+        }
+
+        protected override Appearance GetBaseAppearance()
+        {
+            return _listAppearance.Res.Widget.Res;
         }
     }
 }

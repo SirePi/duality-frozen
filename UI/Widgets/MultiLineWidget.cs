@@ -16,7 +16,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     ///
     /// </summary>
     [Serializable]
-    public abstract class SkinnedMultiLineWidget : SkinnedWidget
+    public abstract class MultiLineWidget : Widget
     {
         #region NonSerialized fields
 
@@ -36,7 +36,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         ///
         /// </summary>
         [NonSerialized]
-        protected SkinnedScrollBar _scrollComponent;
+        protected ScrollBar _scrollComponent;
 
         /// <summary>
         ///
@@ -64,12 +64,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
         #endregion NonSerialized fields
 
-        private Vector2 _scrollbarButtonsSize;
-        private Vector2 _scrollbarCursorSize;
-        private ContentRef<WidgetSkin> _scrollbarCursorSkin;
-        private ContentRef<WidgetSkin> _scrollbarDecreaseButtonSkin;
-        private ContentRef<WidgetSkin> _scrollbarIncreaseButtonSkin;
-        private ContentRef<WidgetSkin> _scrollbarSkin;
+        protected ContentRef<MultiLineAppearance> _multiAppearance;
         private int _scrollSpeed;
         private ColorRgba _textColor;
         private ContentRef<Font> _textFont;
@@ -77,9 +72,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <summary>
         /// Constructor
         /// </summary>
-        public SkinnedMultiLineWidget()
+        public MultiLineWidget()
         {
-            ActiveArea = Widgets.ActiveArea.Center;
+            ActiveArea = ActiveArea.Center;
 
             _fText = new FormattedText();
             _textColor = Colors.White;
@@ -89,83 +84,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _dirtyFlags |= DirtyFlags.Value;
         }
 
-        /// <summary>
-        /// [GET / SET] the size of the Scrollbar buttons
-        /// </summary>
-        public Vector2 ScrollbarButtonsSize
-        {
-            get { return _scrollbarButtonsSize; }
-            set
-            {
-                _scrollbarButtonsSize = value;
-                _dirtyFlags |= DirtyFlags.Custom7;
-            }
-        }
-
-        /// <summary>
-        /// [GET / SET] the size of the Scrollbar cursor
-        /// </summary>
-        public Vector2 ScrollbarCursorSize
-        {
-            get { return _scrollbarCursorSize; }
-            set
-            {
-                _scrollbarCursorSize = value;
-                _dirtyFlags |= DirtyFlags.Custom6;
-            }
-        }
-
-        /// <summary>
-        /// [GET / SET] the Skin used for the Scrollbar Cursor
-        /// </summary>
-        public ContentRef<WidgetSkin> ScrollbarCursorSkin
-        {
-            get { return _scrollbarCursorSkin; }
-            set
-            {
-                _scrollbarCursorSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom2;
-            }
-        }
-
-        /// <summary>
-        /// [GET / SET] the Skin that will be used for the Scrollbar Decrease button
-        /// </summary>
-        public ContentRef<WidgetSkin> ScrollbarDecreaseButtonSkin
-        {
-            get { return _scrollbarDecreaseButtonSkin; }
-            set
-            {
-                _scrollbarDecreaseButtonSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom3;
-            }
-        }
-
-        /// <summary>
-        /// [GET / SET] the Skin that will be used for the Scrollbar Increase button
-        /// </summary>
-        public ContentRef<WidgetSkin> ScrollbarIncreaseButtonSkin
-        {
-            get { return _scrollbarIncreaseButtonSkin; }
-            set
-            {
-                _scrollbarIncreaseButtonSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom4;
-            }
-        }
-
-        /// <summary>
-        /// [GET / SET] the Skin that will be used for the Scrollbar
-        /// </summary>
-        public ContentRef<WidgetSkin> ScrollbarSkin
-        {
-            get { return _scrollbarSkin; }
-            set
-            {
-                _scrollbarSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom1;
-            }
-        }
 
         /// <summary>
         /// [GET / SET] the speed, in pixels/second of scrolling
@@ -198,10 +116,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         ///
         /// </summary>
         /// <param name="inDevice"></param>
-        protected override void Draw(IDrawDevice inDevice)
+        protected override void DrawCustom(IDrawDevice device)
         {
-            base.Draw(inDevice);
-
             if (!String.IsNullOrWhiteSpace(_fText.SourceText) && _batchInfo != null)
             {
                 _textVertices[0].TexCoord.X = 0;
@@ -248,7 +164,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 _textVertices[3].Pos = _points[9].SceneCoords;
                 _textVertices[3].Pos.Z += DELTA_Z;
 
-                inDevice.AddVertices(_batchInfo, VertexMode.Quads, _textVertices);
+                device.AddVertices(_batchInfo, VertexMode.Quads, _textVertices);
             }
         }
 
@@ -271,48 +187,28 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <param name="inSecondsPast"></param>
         protected override void OnUpdate(float inSecondsPast)
         {
-            if (_scrollbar == null && _scrollbarSkin != null)
+            if (_scrollbar == null && !_multiAppearance.Res.ScrollBar.IsExplicitNull)
             {
                 AddScrollBar();
             }
 
-            if ((_dirtyFlags & DirtyFlags.Skin) != DirtyFlags.None)
+            if ((_dirtyFlags & DirtyFlags.Appearance) != DirtyFlags.None)
             {
-                _visibleWidth = (int)Math.Floor(Rect.W - Skin.Res.Border.X - Skin.Res.Border.W);
-                _visibleHeight = (int)Math.Floor(Rect.H - Skin.Res.Border.Y - Skin.Res.Border.Z);
-            }
-            if ((_dirtyFlags & DirtyFlags.Custom1) != DirtyFlags.None && _scrollbar != null)
-            {
-                _scrollbar.GetComponent<SkinnedWidget>().Skin = _scrollbarSkin;
-            }
-            if ((_dirtyFlags & DirtyFlags.Custom2) != DirtyFlags.None && _scrollbar != null)
-            {
-                _scrollbar.GetComponent<SkinnedScrollBar>().CursorSkin = _scrollbarCursorSkin;
-            }
-            if ((_dirtyFlags & DirtyFlags.Custom3) != DirtyFlags.None && _scrollbar != null)
-            {
-                _scrollbar.GetComponent<SkinnedScrollBar>().DecreaseButtonSkin = _scrollbarDecreaseButtonSkin;
-            }
-            if ((_dirtyFlags & DirtyFlags.Custom4) != DirtyFlags.None && _scrollbar != null)
-            {
-                _scrollbar.GetComponent<SkinnedScrollBar>().IncreaseButtonSkin = _scrollbarIncreaseButtonSkin;
-            }
+                ContentRef<Appearance> sba = _multiAppearance.Res.Widget;
 
-            if ((_dirtyFlags & DirtyFlags.Custom6) != DirtyFlags.None && _scrollbar != null)
-            {
-                _scrollbar.GetComponent<SkinnedScrollBar>().CursorSize = _scrollbarCursorSize;
-            }
-            if ((_dirtyFlags & DirtyFlags.Custom7) != DirtyFlags.None && _scrollbar != null)
-            {
-                _scrollbar.GetComponent<SkinnedScrollBar>().ButtonsSize = _scrollbarButtonsSize;
+                _visibleWidth = (int)Math.Floor(Rect.W - sba.Res.Border.X - sba.Res.Border.W);
+                _visibleHeight = (int)Math.Floor(Rect.H - sba.Res.Border.Y - sba.Res.Border.Z);
             }
 
             if (_scrollbar != null)
             {
-                _scrollbar.GetComponent<SkinnedWidget>().Status = Status;
-            }
+                if ((_dirtyFlags & DirtyFlags.Appearance) != DirtyFlags.None)
+                {
+                    _scrollbar.GetComponent<ScrollBar>().Appearance = _multiAppearance.Res.ScrollBar;
+                }
 
-            base.OnUpdate(inSecondsPast);
+                _scrollbar.GetComponent<Widget>().Status = Status;
+            }
         }
 
         /// <summary>
@@ -388,26 +284,28 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         {
             _scrollbar = new GameObject("scrollbar", this.GameObj);
 
-            float scrollbarWidth = Math.Max(ScrollbarButtonsSize.X, ScrollbarCursorSize.X);
+            ContentRef<ScrollBarAppearance> sba = _multiAppearance.Res.ScrollBar;
+
+            float scrollbarWidth = Math.Max(sba.Res.ButtonSize.X, sba.Res.ButtonSize.Y);
 
             Transform t = _scrollbar.AddComponent<Transform>();
             t.RelativePos = new Vector3(Rect.W - scrollbarWidth, 0, 0);
             t.RelativeAngle = 0;
 
-            _scrollComponent = new SkinnedScrollBar();
+            _scrollComponent = new ScrollBar();
             _scrollComponent.VisibilityGroup = this.VisibilityGroup;
-            _scrollComponent.Skin = ScrollbarSkin;
-            _scrollComponent.CursorSkin = ScrollbarCursorSkin;
-            _scrollComponent.DecreaseButtonSkin = ScrollbarDecreaseButtonSkin;
-            _scrollComponent.IncreaseButtonSkin = ScrollbarIncreaseButtonSkin;
-            _scrollComponent.ButtonsSize = ScrollbarButtonsSize;
-            _scrollComponent.CursorSize = ScrollbarCursorSize;
+            _scrollComponent.Appearance = sba;
 
             _scrollComponent.Rect = Rect.AlignTopLeft(0, 0, scrollbarWidth, Rect.H);
             _scrollComponent.ScrollSpeed = _scrollSpeed;
 
-            _scrollbar.AddComponent<SkinnedScrollBar>(_scrollComponent);
+            _scrollbar.AddComponent<ScrollBar>(_scrollComponent);
             Scene.Current.AddObject(_scrollbar);
+        }
+
+        protected override Appearance GetBaseAppearance()
+        {
+            return _multiAppearance.Res.Widget.Res;
         }
     }
 }

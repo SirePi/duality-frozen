@@ -3,6 +3,8 @@
 using System;
 using Duality.Editor;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
+using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
+using Duality;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
@@ -12,16 +14,28 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     [Serializable]
     [EditorHintImage(typeof(Res), ResNames.ImageTextBlock)]
     [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
-    public class SkinnedTextBlock : SkinnedMultiLineWidget
+    public class TextBlock : MultiLineWidget
     {
         private string _text;
 
         /// <summary>
+        /// [GET / SET] the Skin that will be used for the Scrollbar
+        /// </summary>
+        protected ContentRef<MultiLineAppearance> Appearance
+        {
+            set
+            {
+                _multiAppearance = value;
+                _dirtyFlags |= DirtyFlags.Appearance;
+            }
+        }
+
+        /// <summary>
         /// Constructor
         /// </summary>
-        public SkinnedTextBlock()
+        public TextBlock()
         {
-            ActiveArea = Widgets.ActiveArea.None;
+            ActiveArea = ActiveArea.None;
         }
 
         /// <summary>

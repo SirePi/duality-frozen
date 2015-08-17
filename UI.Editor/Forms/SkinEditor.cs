@@ -33,7 +33,7 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
             ModifiedSkin = new WidgetSkin()
             {
                 Border = inSkin.Border,
-                Material = inSkin.Material,
+                MaterialRef = inSkin.MaterialRef,
                 Origin = inSkin.Origin,
                 Size = inSkin.Size
             };
@@ -234,7 +234,7 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Forms
 
             _zoomLocation = Point.Empty;
 
-            picOriginal.Image = ModifiedSkin.Material.Res.MainTexture.Res.BasePixmap.Res.MainLayer.ToBitmap();
+            picOriginal.Image = ModifiedSkin.MaterialRef.Res.MainTexture.Res.BasePixmap.Res.MainLayer.ToBitmap();
             Vector2 maxSize = new Vector2(picOriginal.Image.Size.Width, picOriginal.Image.Size.Height);
 
             v2eSize.MaxValue = maxSize;

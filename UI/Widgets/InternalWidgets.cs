@@ -4,7 +4,7 @@ using Duality;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
-    internal class CloseButton : SkinnedButton
+    internal class CloseButton : Button
     {
         public CloseButton()
         {
@@ -12,7 +12,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         }
     }
 
-    internal class MaximizeButton : SkinnedButton
+    internal class MaximizeButton : Button
     {
         public MaximizeButton()
         {
@@ -20,7 +20,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         }
     }
 
-    internal class MinimizeButton : SkinnedButton
+    internal class MinimizeButton : Button
     {
         public MinimizeButton()
         {
@@ -28,7 +28,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         }
     }
 
-    internal class RestoreButton : SkinnedButton
+    internal class RestoreButton : Button
     {
         public RestoreButton()
         {
@@ -36,10 +36,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         }
     }
 
-    internal class ScrollCursor : SkinnedButton
+    internal class ScrollCursor : Button
     {
         private float _currentDelta;
-        private SkinnedScrollBar _parent;
+        private ScrollBar _parent;
 
         public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
         {
@@ -57,8 +57,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
         public override void MouseMove(OpenTK.Input.MouseMoveEventArgs e)
         {
-            base.MouseMove(e);
-
             if (_leftButtonDown)
             {
                 float angle = -this.GameObj.Transform.Angle;
@@ -67,7 +65,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
                 if (_parent == null)
                 {
-                    _parent = this.GameObj.Parent.GetComponent<SkinnedScrollBar>();
+                    _parent = this.GameObj.Parent.GetComponent<ScrollBar>();
                 }
 
                 int valueChange = (int)(_currentDelta / _parent.ValueDelta);
@@ -80,7 +78,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         }
     }
 
-    internal class ScrollDecreaseButton : SkinnedButton
+    internal class ScrollDecreaseButton : Button
     {
         public ScrollDecreaseButton()
         {
@@ -90,7 +88,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         }
     }
 
-    internal class ScrollIncreaseButton : SkinnedButton
+    internal class ScrollIncreaseButton : Button
     {
         public ScrollIncreaseButton()
         {

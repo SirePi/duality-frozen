@@ -24,7 +24,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
         /// </summary>
         public static readonly ContentRef<WidgetSkin> DEFAULT = new ContentRef<WidgetSkin>(new WidgetSkin()
         {
-            Material = global::Duality.Resources.Material.Checkerboard,
+            MaterialRef = Material.Checkerboard,
             Size = new Vector2(64, 64),
             Border = Vector4.Zero,
             Origin = new SkinOrigin()
@@ -51,7 +51,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
         /// <summary>
         ///
         /// </summary>
-        public ContentRef<Material> Material
+        public ContentRef<Material> MaterialRef
         {
             get { return _material; }
             set { _material = value; }

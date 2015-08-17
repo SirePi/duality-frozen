@@ -18,7 +18,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     [Serializable]
     [EditorHintImage(typeof(Res), ResNames.ImageButton)]
     [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
-    public class SkinnedButton : SkinnedWidget
+    public class Button : Widget
     {
         #region NonSerialized fields
 
@@ -46,12 +46,23 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         private ContentRef<Font> _textFont;
         private FormattedText.Icon[] _textIcons;
 
+        private ContentRef<WidgetAppearance> _widgetAppearance;
+
+        public ContentRef<WidgetAppearance> Appearance
+        {
+            get { return _widgetAppearance; }
+            set
+            {
+                _widgetAppearance = value;
+                _dirtyFlags |= DirtyFlags.Appearance;
+            }
+        }
         /// <summary>
         /// Constructor
         /// </summary>
-        public SkinnedButton()
+        public Button()
         {
-            ActiveArea = Widgets.ActiveArea.All;
+            ActiveArea = ActiveArea.All;
 
             _fText = new FormattedText();
             _textColor = Colors.White;
@@ -130,6 +141,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _textFont; }
             set { _textFont = value; }
         }
+
 
         /// <summary>
         ///
@@ -217,18 +229,20 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         {
             if (!String.IsNullOrWhiteSpace(_text))
             {
-                Vector3 buttonCenter = (_points[5].WorldCoords + _points[10].WorldCoords) / 2;
                 if (_textFont.Res != null && _fText.Fonts[0] != _textFont)
                 {
                     _fText.Fonts[0] = _textFont;
                 }
 
                 _fText.SourceText = _text;
+                Vector3 buttonCenter = (_points[5].WorldCoords + _points[10].WorldCoords) / 2;
 
                 inCanvas.PushState();
+
                 inCanvas.State.ColorTint = _textColor;
                 inCanvas.State.TransformAngle = GameObj.Transform.Angle;
                 inCanvas.DrawText(_fText, buttonCenter.X, buttonCenter.Y, buttonCenter.Z + DELTA_Z, null, Alignment.Center);
+
                 inCanvas.PopState();
             }
         }
@@ -239,14 +253,20 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <param name="inSecondsPast"></param>
         protected override void OnUpdate(float inSecondsPast)
         {
+            base.OnUpdate(inSecondsPast);
+
             _secondsFromLastTick += inSecondsPast;
+
             if (_secondsFromLastTick > RepeatLeftClickEvery && _leftButtonDown && OnLeftClick.Res != null)
             {
                 _secondsFromLastTick = 0;
                 OnLeftClick.Res.Execute(this.GameObj, _leftClickArgument);
             }
+        }
 
-            base.OnUpdate(inSecondsPast);
+        protected override Appearance GetBaseAppearance()
+        {
+            return _widgetAppearance.Res.Widget.Res;
         }
     }
 }

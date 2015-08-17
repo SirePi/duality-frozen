@@ -24,9 +24,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         ///
         /// </summary>
         [NonSerialized]
-        protected bool _isMouseOver;
-
-        [NonSerialized]
         private Vector2 _skinSize;
 
         [NonSerialized]
@@ -37,42 +34,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
         #endregion NonSerialized fields
 
-        [NonSerialized]
-        private static readonly int[] COLUMN_1 = new int[] { 0, 1, 12, 13, 24, 25 };
-
-        [NonSerialized]
-        private static readonly int[] COLUMN_2 = new int[] { 3, 2, 15, 14, 27, 26 };
-
-        [NonSerialized]
-        private static readonly int[] COLUMN_3 = new int[] { 4, 5, 16, 17, 28, 29 };
-
-        [NonSerialized]
-        private static readonly int[] COLUMN_4 = new int[] { 7, 6, 19, 18, 31, 30 };
-
-        [NonSerialized]
-        private static readonly int[] COLUMN_5 = new int[] { 8, 9, 20, 21, 32, 33 };
-
-        [NonSerialized]
-        private static readonly int[] COLUMN_6 = new int[] { 11, 10, 23, 22, 35, 34 };
-
-        [NonSerialized]
-        private static readonly int[] ROW_1 = new int[] { 0, 3, 4, 7, 8, 11 };
-
-        [NonSerialized]
-        private static readonly int[] ROW_2 = new int[] { 1, 2, 5, 6, 9, 10 };
-
-        [NonSerialized]
-        private static readonly int[] ROW_3 = new int[] { 12, 15, 16, 19, 20, 23 };
-
-        [NonSerialized]
-        private static readonly int[] ROW_4 = new int[] { 13, 14, 17, 18, 21, 22 };
-
-        [NonSerialized]
-        private static readonly int[] ROW_5 = new int[] { 24, 27, 28, 31, 32, 35 };
-
-        [NonSerialized]
-        private static readonly int[] ROW_6 = new int[] { 25, 26, 29, 30, 33, 34 };
-
+        
         private ContentRef<WidgetSkin> _skin;
         private ColorRgba _tint;
 
@@ -137,32 +99,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <param name="e"></param>
         public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
         {
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override void MouseEnter()
-        {
-            _isMouseOver = true;
-
-            if (Status != WidgetStatus.Disabled)
-            {
-                Status = WidgetStatus.Hover;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override void MouseLeave()
-        {
-            _isMouseOver = false;
-
-            if (Status != WidgetStatus.Disabled)
-            {
-                Status = WidgetStatus.Normal;
-            }
         }
 
         /// <summary>

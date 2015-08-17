@@ -17,7 +17,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     [Serializable]
     [EditorHintImage(typeof(Res), ResNames.ImageScrollBar)]
     [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
-    public class SkinnedScrollBar : SkinnedWidget
+    public class ScrollBar : Widget
     {
         #region NonSerialized fields
 
@@ -32,11 +32,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
         #endregion NonSerialized fields
 
-        private Vector2 _buttonsSize;
-        private Vector2 _cursorSize;
-        private ContentRef<WidgetSkin> _cursorSkin;
-        private ContentRef<WidgetSkin> _decreaseButtonSkin;
-        private ContentRef<WidgetSkin> _increaseButtonSkin;
+        private ContentRef<ScrollBarAppearance> _scrollAppearance;
         private int _max;
         private int _min;
         private ContentRef<Script> _onValueChanged;
@@ -47,9 +43,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <summary>
         /// Constructor
         /// </summary>
-        public SkinnedScrollBar()
+        public ScrollBar()
         {
-            ActiveArea = Widgets.ActiveArea.LeftBorder;
+            ActiveArea = ActiveArea.None;
 
             _min = 0;
             _max = 10;
@@ -58,59 +54,15 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         }
 
         /// <summary>
-        /// [GET / SET] the size of the Scrollbar buttons
-        /// </summary>
-        public Vector2 ButtonsSize
-        {
-            get { return _buttonsSize; }
-            set { _buttonsSize = value; }
-        }
-
-        /// <summary>
-        /// [GET / SET] the size of the Scrollbar cursor
-        /// </summary>
-        public Vector2 CursorSize
-        {
-            get { return _cursorSize; }
-            set { _cursorSize = value; }
-        }
-
-        /// <summary>
         /// [GET / SET] the Skin used for the Scrollbar Cursor
         /// </summary>
-        public ContentRef<WidgetSkin> CursorSkin
+        public ContentRef<ScrollBarAppearance> Appearance
         {
-            get { return _cursorSkin; }
+            get { return _scrollAppearance; }
             set
             {
-                _cursorSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom1;
-            }
-        }
-
-        /// <summary>
-        /// [GET / SET] the Skin used for the Scrollbar Decrease button
-        /// </summary>
-        public ContentRef<WidgetSkin> DecreaseButtonSkin
-        {
-            get { return _decreaseButtonSkin; }
-            set
-            {
-                _decreaseButtonSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom2;
-            }
-        }
-
-        /// <summary>
-        /// [GET / SET] the Skin used for the Scrollbar Increase button
-        /// </summary>
-        public ContentRef<WidgetSkin> IncreaseButtonSkin
-        {
-            get { return _increaseButtonSkin; }
-            set
-            {
-                _increaseButtonSkin = value;
-                _dirtyFlags |= DirtyFlags.Custom3;
+                _scrollAppearance = value;
+                _dirtyFlags |= DirtyFlags.Appearance;
             }
         }
 
@@ -196,7 +148,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         {
             get
             {
-                float length = Rect.H - (ButtonsSize.Y * 2) - (CursorSize.Y);
+                float cursorY = _scrollAppearance.Res.CursorSize.Y;
+
+                float length = Rect.H - (cursorY * 2) - (cursorY);
                 return length / (Maximum - Minimum);
             }
         }
@@ -228,31 +182,36 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <param name="inSecondsPast"></param>
         protected override void OnUpdate(float inSecondsPast)
         {
-            if (_cursor == null && _cursorSkin != null)
+            if (_cursor == null && !_scrollAppearance.Res.Cursor.IsExplicitNull)
             {
                 AddScrollCursor();
+                _dirtyFlags |= DirtyFlags.Value;
             }
-            if (_increaseButton == null && _increaseButtonSkin != null)
+            if (_increaseButton == null && !_scrollAppearance.Res.Increase.IsExplicitNull)
             {
                 AddScrollIncreaseButton();
             }
-            if (_decreaseButton == null && _decreaseButtonSkin != null)
+            if (_decreaseButton == null && !_scrollAppearance.Res.Decrease.IsExplicitNull)
             {
                 AddScrollDecreaseButton();
             }
 
-            if ((_dirtyFlags & DirtyFlags.Custom1) != DirtyFlags.None && _cursor != null)
+            if ((_dirtyFlags & DirtyFlags.Appearance) != DirtyFlags.None)
             {
-                _cursor.GetComponent<SkinnedWidget>().Skin = _cursorSkin;
+                if (_cursor != null)
+                {
+                    _cursor.GetComponent<ScrollCursor>().Appearance = AppearanceManager.RequestAppearanceContentRef(_scrollAppearance.Res.Cursor);
+                }
+                if(_decreaseButton != null)
+                {
+                    _decreaseButton.GetComponent<ScrollDecreaseButton>().Appearance = AppearanceManager.RequestAppearanceContentRef(_scrollAppearance.Res.Decrease);
+                }
+                if(_increaseButton != null)
+                {
+                    _increaseButton.GetComponent<ScrollIncreaseButton>().Appearance = AppearanceManager.RequestAppearanceContentRef(_scrollAppearance.Res.Increase);
+                }
             }
-            if ((_dirtyFlags & DirtyFlags.Custom2) != DirtyFlags.None && _decreaseButton != null)
-            {
-                _decreaseButton.GetComponent<SkinnedWidget>().Skin = _decreaseButtonSkin;
-            }
-            if ((_dirtyFlags & DirtyFlags.Custom3) != DirtyFlags.None && _increaseButton != null)
-            {
-                _increaseButton.GetComponent<SkinnedWidget>().Skin = _increaseButtonSkin;
-            }
+
             if ((_dirtyFlags & DirtyFlags.Value) != DirtyFlags.None)
             {
                 UpdateCursor();
@@ -271,8 +230,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
             ScrollCursor sc = new ScrollCursor();
             sc.VisibilityGroup = this.VisibilityGroup;
-            sc.Skin = CursorSkin;
-            sc.Rect = Rect.AlignCenter(0, 0, CursorSize.X, CursorSize.Y);
+            sc.Appearance = AppearanceManager.RequestAppearanceContentRef(_scrollAppearance.Res.Cursor);
+            sc.Rect = Rect.AlignCenter(0, 0, _scrollAppearance.Res.CursorSize.X, _scrollAppearance.Res.CursorSize.Y);
 
             _cursor.AddComponent<ScrollCursor>(sc);
             Scene.Current.AddObject(_cursor);
@@ -283,13 +242,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _decreaseButton = new GameObject("decreaseButton", this.GameObj);
 
             Transform t = _decreaseButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W / 2, ButtonsSize.Y / 2, 0);
+            t.RelativePos = new Vector3(Rect.W / 2, _scrollAppearance.Res.ButtonSize.Y / 2, 0);
             t.RelativeAngle = 0;
 
             ScrollDecreaseButton sdb = new ScrollDecreaseButton();
             sdb.VisibilityGroup = this.VisibilityGroup;
-            sdb.Skin = DecreaseButtonSkin;
-            sdb.Rect = Rect.AlignCenter(0, 0, ButtonsSize.X, ButtonsSize.Y);
+            sdb.Appearance = AppearanceManager.RequestAppearanceContentRef(_scrollAppearance.Res.Decrease);
+            sdb.Rect = Rect.AlignCenter(0, 0, _scrollAppearance.Res.ButtonSize.X, _scrollAppearance.Res.ButtonSize.Y);
             sdb.LeftClickArgument = _scrollSpeed;
 
             _decreaseButton.AddComponent<ScrollDecreaseButton>(sdb);
@@ -301,13 +260,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _increaseButton = new GameObject("increaseButton", this.GameObj);
 
             Transform t = _increaseButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W / 2, Rect.H - ButtonsSize.Y / 2, 0);
+            t.RelativePos = new Vector3(Rect.W / 2, Rect.H - _scrollAppearance.Res.ButtonSize.Y / 2, 0);
             t.RelativeAngle = 0;
 
             ScrollIncreaseButton sib = new ScrollIncreaseButton();
             sib.VisibilityGroup = this.VisibilityGroup;
-            sib.Skin = IncreaseButtonSkin;
-            sib.Rect = Rect.AlignCenter(0, 0, ButtonsSize.X, ButtonsSize.Y);
+            sib.Appearance = AppearanceManager.RequestAppearanceContentRef(_scrollAppearance.Res.Increase);
+            sib.Rect = Rect.AlignCenter(0, 0, _scrollAppearance.Res.ButtonSize.X, _scrollAppearance.Res.ButtonSize.Y);
             sib.LeftClickArgument = _scrollSpeed;
 
             _increaseButton.AddComponent<ScrollIncreaseButton>(sib);
@@ -321,13 +280,18 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 _value = Math.Min(Value, _max);
                 _value = Math.Max(Value, _min);
 
-                float length = Rect.H - (ButtonsSize.Y * 2) - (CursorSize.Y);
+                float length = Rect.H - (_scrollAppearance.Res.ButtonSize.Y * 2) - (_scrollAppearance.Res.CursorSize.Y);
                 Vector3 direction = _increaseButton.Transform.Pos - _decreaseButton.Transform.Pos;
 
                 Vector3 origin = _decreaseButton.Transform.Pos + (direction / 2) - (direction.Normalized * length / 2);
 
                 _cursor.Transform.Pos = origin + (direction.Normalized * (Value - Minimum) * length / (Maximum - Minimum));
             }
+        }
+
+        protected override Appearance GetBaseAppearance()
+        {
+            return _scrollAppearance.Res.Widget.Res;
         }
     }
 }

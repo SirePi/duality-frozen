@@ -1,6 +1,5 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
 using Duality;
 using Duality.Components;
 using Duality.Components.Renderers;
@@ -10,6 +9,8 @@ using Duality.Resources;
 using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
+using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
+using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
@@ -19,7 +20,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     [Serializable]
     [EditorHintImage(typeof(Res), ResNames.ImageTextBox)]
     [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
-    public class SkinnedTextBox : SkinnedWidget
+    public class TextBox : Widget
     {
         #region NonSerialized fields
 
@@ -57,16 +58,28 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         private ColorRgba _textColor;
         private ContentRef<Font> _textFont;
 
+        private ContentRef<WidgetAppearance> _widgetAppearance;
+
         /// <summary>
         /// Constructor
         /// </summary>
-        public SkinnedTextBox()
+        public TextBox()
         {
-            ActiveArea = Widgets.ActiveArea.Center;
+            ActiveArea = ActiveArea.Center;
 
             _fText = new FormattedText();
             _textColor = Colors.White;
             _keyRepeatSpeed = DEFAULT_KEY_REPEAT;
+        }
+
+        public ContentRef<WidgetAppearance> Appearance
+        {
+            get { return _widgetAppearance; }
+            set
+            {
+                _widgetAppearance = value;
+                _dirtyFlags |= DirtyFlags.Appearance;
+            }
         }
 
         /// <summary>
@@ -96,6 +109,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _textColor; }
             set { _textColor = value; }
         }
+
         /// <summary>
         /// [GET / SET] the Font of the Text
         /// </summary>
@@ -112,8 +126,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <param name="k"></param>
         public override void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
         {
-            base.KeyDown(e, k);
-
             _keyDown = e.Key;
             _modifierKeys = k;
             _secondsFromLastKey = 0;
@@ -128,8 +140,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <param name="k"></param>
         public override void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
         {
-            base.KeyUp(e, k);
-
             _keyDown = null;
             _modifierKeys = k;
         }
@@ -157,6 +167,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
                 inCanvas.PopState();
             }
+        }
+
+        protected override Appearance GetBaseAppearance()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -192,8 +207,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             {
                 _caret.Active = false;
             }
-
-            base.OnUpdate(inSecondsPast);
         }
 
         private void AddCaret()
@@ -275,10 +288,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
         private void UpdateCaret()
         {
-            if (_caret != null && Skin.Res != null)
+            if (_caret != null)
             {
+                Vector3 textLeft = (_points[5].WorldCoords + _points[9].WorldCoords) / 2;
+
                 Vector3 caretPosition = _caret.Transform.RelativePos;
-                caretPosition.X = Skin.Res.Border.X + _fText.Size.X;
+                caretPosition.X = textLeft.X + _fText.Size.X;
 
                 _caret.Transform.RelativePos = caretPosition;
             }
