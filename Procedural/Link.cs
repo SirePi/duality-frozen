@@ -1,12 +1,15 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
+using System;
+
 namespace SnowyPeak.Duality.Plugin.Frozen.Procedural
 {
     /// <summary>
     /// Models a Link between two INodes of a Graph
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Link<T> where T : class, INode
+    [Serializable]
+    public class Link<T> where T : class, INode, new()
     {
         /// <summary>
         /// [GET / SET] The starting INode of the Link

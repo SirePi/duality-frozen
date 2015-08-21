@@ -1,6 +1,7 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using OpenTK;
+using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Procedural
 {
@@ -18,12 +19,18 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural
     /// <summary>
     ///
     /// </summary>
+    [Serializable]
     public sealed class DefaultNode : INode
     {
         /// <summary>
         ///
         /// </summary>
         /// <param name="v"></param>
+        public DefaultNode()
+        {
+
+        }
+
         public DefaultNode(Vector2 v)
         {
             Position = v;
@@ -32,6 +39,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural
         /// <summary>
         ///
         /// </summary>
-        public Vector2 Position { get; private set; }
+        public Vector2 Position { get; set; }
     }
 }

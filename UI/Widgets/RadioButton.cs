@@ -38,16 +38,24 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 if (e.Button == OpenTK.Input.MouseButton.Left && _isMouseOver && !IsChecked)
                 {
                     IsChecked = true;
+                }
+            }
+        }
 
-                    if (!String.IsNullOrWhiteSpace(RadioGroup))
+        protected override void OnUpdate(float inSecondsPast)
+        {
+            if ((_dirtyFlags & DirtyFlags.Value) != DirtyFlags.None)
+            {
+                if (IsChecked && !String.IsNullOrWhiteSpace(RadioGroup))
+                {
+                    foreach (RadioButton button in Scene.Current.FindComponents<RadioButton>().Where(rb => rb.RadioGroup == this.RadioGroup && rb != this))
                     {
-                        foreach (RadioButton button in Scene.Current.FindComponents<RadioButton>().Where(rb => rb.RadioGroup == this.RadioGroup && rb != this))
-                        {
-                            button.IsChecked = false;
-                        }
+                        button.IsChecked = false;
                     }
                 }
             }
+
+            base.OnUpdate(inSecondsPast);
         }
     }
 }

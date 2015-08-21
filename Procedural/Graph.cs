@@ -5,6 +5,7 @@ using System.Linq;
 using Duality;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Geometry;
 using SnowyPeak.Duality.Plugin.Frozen.Procedural.Triangulation;
+using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Procedural
 {
@@ -18,7 +19,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural
         /// </summary>
         /// <param name="inGraph"></param>
         /// <returns></returns>
-        public static bool IsConnected<T>(this Graph<T> inGraph) where T : class, INode
+        public static bool IsConnected<T>(this Graph<T> inGraph) where T : class, INode, new()
         {
             return Graph<T>.IsGraphConnected(inGraph.Links, inGraph.Nodes.Count);
         }
@@ -30,7 +31,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural
     /// the position of the node.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Graph<T> where T : class, INode
+    [Serializable]
+    public class Graph<T> where T : class, INode, new()
     {
         /// <summary>
         /// Constructor
