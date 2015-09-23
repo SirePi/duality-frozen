@@ -45,7 +45,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
 
             Position = inOrigin;
             _scale = inInitialScale;
-            _direction = inInitialDirection;
+            _direction = inInitialDirection - MathF.PiOver2;
             _rotation = inInitialRotation;
 
             _movementSpeed = inMovementSpeed;

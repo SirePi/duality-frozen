@@ -192,6 +192,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
         public Vector2 InitialScale { get; set; }
 
         /// <summary>
+        /// [GET / SET] if particles' angle should be aligned with the traveling direction.
+        /// If set, InitialRotation will be ignored
+        /// </summary>
+        public bool AlignParticlesWithDirection { get; set; }
+
+        /// <summary>
         /// [GET / SET] if new particles are generated
         /// </summary>
         public bool IsEnabled { get; set; }
@@ -476,9 +482,18 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
             float rotationSpeed = _rotationSpeedRange.GetRandom(FastRandom.Instance);
             float scaleSpeed = _scaleSpeedRange.GetRandom(FastRandom.Instance);
 
-            float direction = FXArea.GameObj.Transform.Angle + _initialDirectionRange.GetRandom(FastRandom.Instance);
-            float rotation = FXArea.GameObj.Transform.Angle + _initialRotationRange.GetRandom(FastRandom.Instance);
+            float direction = FXArea.GameObj.Transform.Angle +  _initialDirectionRange.GetRandom(FastRandom.Instance);
+            float rotation = FXArea.GameObj.Transform.Angle;
             float scale = _initialScaleRange.GetRandom(FastRandom.Instance);
+
+            if (AlignParticlesWithDirection)
+            {
+                rotation = direction;
+            }
+            else
+            {
+                rotation += _initialRotationRange.GetRandom(FastRandom.Instance);
+            }
 
             float ttl = _timeToLiveRange.GetRandom(FastRandom.Instance);
 
