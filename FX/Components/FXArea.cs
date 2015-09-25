@@ -5,7 +5,6 @@ using Duality;
 using Duality.Components;
 using Duality.Drawing;
 using Duality.Editor;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Data;
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 
@@ -15,7 +14,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
     /// <summary>
     /// Abstract Component used by FX classes to determine the area where the effect can appear
     /// </summary>
-    [Serializable]
     [RequiredComponent(typeof(Transform))]
     public abstract class FXArea : Component
     {
@@ -47,11 +45,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
         /// <summary>
         ///
         /// </summary>
-        /// <param name="inRandom"></param>
         /// <returns></returns>
-        internal Vector3 GetPoint(Random inRandom)
+        internal Vector3 GetPoint()
         {
-            return _GetPoint(inRandom);
+            return _GetPoint();
         }
 
         /// <summary>
@@ -63,8 +60,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
         /// <summary>
         ///
         /// </summary>
-        /// <param name="inRandom"></param>
         /// <returns></returns>
-        protected abstract Vector3 _GetPoint(Random inRandom);
+        protected abstract Vector3 _GetPoint();
     }
 }

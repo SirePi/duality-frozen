@@ -7,10 +7,11 @@ using Duality.Components;
 using Duality.Drawing;
 using Duality.Editor;
 using Duality.Resources;
-using OpenTK;
+
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
+using Duality.Input;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
@@ -29,38 +30,38 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     /// <summary>
     /// A Window Widget
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageWindow)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    
+    [EditorHintImage(ResNames.ImageWindow)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public class Window : Widget
     {
         #region NonSerialized fields
 
-        [NonSerialized]
+        [DontSerialize]
         private Dictionary<Widget, WidgetStatus> _childrenStatus;
 
-        [NonSerialized]
+        [DontSerialize]
         private GameObject _closeButton;
 
-        [NonSerialized]
+        [DontSerialize]
         private FormattedText _fText;
 
-        [NonSerialized]
+        [DontSerialize]
         private bool _isDragged;
 
-        [NonSerialized]
+        [DontSerialize]
         private GameObject _maximizeButton;
 
-        [NonSerialized]
+        [DontSerialize]
         private GameObject _minimizeButton;
 
-        [NonSerialized]
+        [DontSerialize]
         private Rect _normalRect;
 
-        [NonSerialized]
+        [DontSerialize]
         private GameObject _restoreButton;
 
-        [NonSerialized]
+        [DontSerialize]
         private WindowStatus _wStatus;
 
         #endregion NonSerialized fields
@@ -180,7 +181,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         ///
         /// </summary>
         /// <param name="e"></param>
-        public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseDown(MouseButtonEventArgs e)
         {
             base.MouseDown(e);
 
@@ -217,13 +218,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         ///
         /// </summary>
         /// <param name="e"></param>
-        public override void MouseMove(OpenTK.Input.MouseMoveEventArgs e)
+        public override void MouseMove(MouseMoveEventArgs e)
         {
             base.MouseMove(e);
 
             if (_isDragged)
             {
-                this.GameObj.Transform.Pos += (new Vector3(e.XDelta, e.YDelta, 0));
+                this.GameObj.Transform.Pos += (new Vector3(e.DeltaX, e.DeltaY, 0));
             }
         }
 
@@ -231,7 +232,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         ///
         /// </summary>
         /// <param name="e"></param>
-        public override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseUp(MouseButtonEventArgs e)
         {
             base.MouseUp(e);
 
@@ -416,8 +417,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
             if ((_dirtyFlags & DirtyFlags.Appearance) != DirtyFlags.None)
             {
-                Rect buttonRect = Rect.AlignTopLeft(0, 0, _windowAppearance.Res.ButtonSize.X, _windowAppearance.Res.ButtonSize.Y);
-                Rect closeRect = Rect.AlignTopLeft(0, 0, _windowAppearance.Res.CloseButtonSize.X, _windowAppearance.Res.CloseButtonSize.Y);
+                Rect buttonRect = Rect.Align(Alignment.TopLeft, 0, 0, _windowAppearance.Res.ButtonSize.X, _windowAppearance.Res.ButtonSize.Y);
+                Rect closeRect = Rect.Align(Alignment.TopLeft, 0, 0, _windowAppearance.Res.CloseButtonSize.X, _windowAppearance.Res.CloseButtonSize.Y);
 
                 if (_closeButton != null)
                 {
@@ -455,7 +456,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             CloseButton cb = new CloseButton();
             cb.VisibilityGroup = this.VisibilityGroup;
             cb.Appearance = AppearanceManager.RequestAppearanceContentRef(_windowAppearance.Res.Close);
-            cb.Rect = Rect.AlignTopLeft(0, 0, _windowAppearance.Res.CloseButtonSize.X, _windowAppearance.Res.CloseButtonSize.Y);
+            cb.Rect = Rect.Align(Alignment.TopLeft, 0, 0, _windowAppearance.Res.CloseButtonSize.X, _windowAppearance.Res.CloseButtonSize.Y);
 
             _closeButton.AddComponent<CloseButton>(cb);
             Scene.Current.AddObject(_closeButton);
@@ -472,7 +473,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             MaximizeButton mb = new MaximizeButton();
             mb.VisibilityGroup = this.VisibilityGroup;
             mb.Appearance = AppearanceManager.RequestAppearanceContentRef(_windowAppearance.Res.Maximize);
-            mb.Rect = Rect.AlignTopLeft(0, 0, _windowAppearance.Res.ButtonSize.X, _windowAppearance.Res.ButtonSize.Y);
+            mb.Rect = Rect.Align(Alignment.TopLeft, 0, 0, _windowAppearance.Res.ButtonSize.X, _windowAppearance.Res.ButtonSize.Y);
 
             _maximizeButton.AddComponent<MaximizeButton>(mb);
             Scene.Current.AddObject(_maximizeButton);
@@ -489,7 +490,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             MinimizeButton mb = new MinimizeButton();
             mb.VisibilityGroup = this.VisibilityGroup;
             mb.Appearance = AppearanceManager.RequestAppearanceContentRef(_windowAppearance.Res.Minimize);
-            mb.Rect = Rect.AlignTopLeft(0, 0, _windowAppearance.Res.ButtonSize.X, _windowAppearance.Res.ButtonSize.Y);
+            mb.Rect = Rect.Align(Alignment.TopLeft, 0, 0, _windowAppearance.Res.ButtonSize.X, _windowAppearance.Res.ButtonSize.Y);
 
             _minimizeButton.AddComponent<MinimizeButton>(mb);
             Scene.Current.AddObject(_minimizeButton);
@@ -506,7 +507,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             RestoreButton rb = new RestoreButton();
             rb.VisibilityGroup = this.VisibilityGroup;
             rb.Appearance = AppearanceManager.RequestAppearanceContentRef(_windowAppearance.Res.Restore);
-            rb.Rect = Rect.AlignTopLeft(0, 0, _windowAppearance.Res.ButtonSize.X, _windowAppearance.Res.ButtonSize.Y);
+            rb.Rect = Rect.Align(Alignment.TopLeft, 0, 0, _windowAppearance.Res.ButtonSize.X, _windowAppearance.Res.ButtonSize.Y);
 
             _restoreButton.Active = false;
             _restoreButton.AddComponent<RestoreButton>(rb);

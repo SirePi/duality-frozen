@@ -3,17 +3,16 @@
 using System;
 using Duality.Drawing;
 using Duality.Editor;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.FX.Properties;
+using Duality;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
 {
     /// <summary>
     /// Implementation of a puntiform FXArea
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageFXPoint)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryFX)]
+    [EditorHintImage(ResNames.ImageFXPoint)]
+    [EditorHintCategory(ResNames.CategoryFX)]
     public class FXPoint : FXArea
     {
         /// <summary>
@@ -28,9 +27,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
         /// <summary>
         ///
         /// </summary>
-        /// <param name="inRandom"></param>
         /// <returns></returns>
-        protected override Vector3 _GetPoint(Random inRandom)
+        protected override Vector3 _GetPoint()
         {
             return Vector3.Zero;
         }

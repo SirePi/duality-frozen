@@ -1,15 +1,13 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Collections.Generic;
 using Duality;
 using Duality.Components;
 using Duality.Components.Renderers;
 using Duality.Drawing;
 using Duality.Resources;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Components;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Geometry;
+using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Core
 {
@@ -41,7 +39,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core
 
             t.RelativePos = new Vector3(0, 0, inCamera.FocusDist);
 
-            sr.Rect = Rect.AlignCenter(0, 0, DualityApp.TargetResolution.X, DualityApp.TargetResolution.Y);
+            sr.Rect = Rect.Align(Alignment.Center, 0, 0, DualityApp.TargetResolution.X, DualityApp.TargetResolution.Y);
             sr.SharedMaterial = new ContentRef<Material>(new Material(DrawTechnique.Alpha, Colors.White, Texture.White));
             sr.ColorTint = inStartColor;
 

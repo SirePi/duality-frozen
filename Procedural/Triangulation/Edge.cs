@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using Duality;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Geometry;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Triangulation
@@ -190,10 +189,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Triangulation
         /// <param name="bounds"></param>
         public void ClipVertices(Rect bounds)
         {
-            float xmin = bounds.Left.X;
-            float ymin = bounds.Top.Y;
-            float xmax = bounds.Right.X;
-            float ymax = bounds.Bottom.Y;
+            float xmin = bounds.LeftX;
+            float ymin = bounds.TopY;
+            float xmax = bounds.RightX;
+            float ymax = bounds.BottomY;
 
             Vertex vertex0, vertex1;
             float x0, x1, y0, y1;

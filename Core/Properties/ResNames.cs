@@ -1,21 +1,18 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace SnowyPeak.Duality.Plugin.Frozen.Core.Properties
 {
 #pragma warning disable 1591
 
     public static class ResNames
     {
-        public const string Category = "Category_Core";
+        private const string ManifestBaseName = "SnowyPeak.Duality.Plugin.Frozen.Core.EmbeddedResources.";
 
-        public const string ImageCommander = "iconResCommander";
-        public const string ImageInputController = "iconResInputController";
-        public const string ImageVisualTreeHider = "iconResVisualTreeHider";
+        public const string Category = "Frozen/Core";
+
+        public const string ImageCommander = ManifestBaseName + "iconResCommander.png";
+        public const string ImageInputController = ManifestBaseName + "iconResInputController.png";
+        public const string ImageVisualTreeHider = ManifestBaseName + "iconResVisualTreeHider.png";
     }
 
 #pragma warning restore 1591

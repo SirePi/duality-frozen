@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Duality;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Geometry;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Triangulation
@@ -221,16 +220,16 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Triangulation
         {
             Bounds result = Bounds.None;
 
-            if (point.X == bounds.Left.X)
+            if (point.X == bounds.LeftX)
                 result |= Bounds.Left;
 
-            if (point.X == bounds.Right.X)
+            if (point.X == bounds.RightX)
                 result |= Bounds.Right;
 
-            if (point.Y == bounds.Top.Y)
+            if (point.Y == bounds.TopY)
                 result |= Bounds.Top;
 
-            if (point.Y == bounds.Bottom.Y)
+            if (point.Y == bounds.BottomY)
                 result |= Bounds.Bottom;
 
             return result;
@@ -329,112 +328,112 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Triangulation
                     float px, py;
                     if ((rightCheck & Bounds.Right) != Bounds.None)
                     {
-                        px = bounds.Right.X;
+                        px = bounds.RightX;
 
                         if ((newCheck & Bounds.Bottom) != Bounds.None)
                         {
-                            py = bounds.Bottom.Y;
+                            py = bounds.BottomY;
                             points.Add(new Vector2(px, py));
                         }
                         else if ((newCheck & Bounds.Top) != Bounds.None)
                         {
-                            py = bounds.Top.Y;
+                            py = bounds.TopY;
                             points.Add(new Vector2(px, py));
                         }
                         else if ((newCheck & Bounds.Left) != Bounds.None)
                         {
                             if (rightPoint.Y - bounds.Y + newPoint.Y - bounds.Y < bounds.H)
                             {
-                                py = bounds.Top.Y;
+                                py = bounds.TopY;
                             }
                             else
                             {
-                                py = bounds.Bottom.Y;
+                                py = bounds.BottomY;
                             }
 
                             points.Add(new Vector2(px, py));
-                            points.Add(new Vector2(bounds.Right.X, py));
+                            points.Add(new Vector2(bounds.RightX, py));
                         }
                     }
                     else if ((rightCheck & Bounds.Left) != Bounds.None)
                     {
-                        px = bounds.Left.X;
+                        px = bounds.LeftX;
                         if ((newCheck & Bounds.Bottom) != Bounds.None)
                         {
-                            py = bounds.Bottom.Y;
+                            py = bounds.BottomY;
                             points.Add(new Vector2(px, py));
                         }
                         else if ((newCheck & Bounds.Top) != Bounds.None)
                         {
-                            py = bounds.Top.Y;
+                            py = bounds.TopY;
                             points.Add(new Vector2(px, py));
                         }
                         else if ((newCheck & Bounds.Right) != Bounds.None)
                         {
                             if (rightPoint.Y - bounds.Y + newPoint.Y - bounds.Y < bounds.H)
                             {
-                                py = bounds.Top.Y;
+                                py = bounds.TopY;
                             }
                             else
                             {
-                                py = bounds.Bottom.Y;
+                                py = bounds.BottomY;
                             }
                             points.Add(new Vector2(px, py));
-                            points.Add(new Vector2(bounds.Right.X, py));
+                            points.Add(new Vector2(bounds.RightX, py));
                         }
                     }
                     else if ((rightCheck & Bounds.Top) != Bounds.None)
                     {
-                        py = bounds.Top.Y;
+                        py = bounds.TopY;
                         if ((newCheck & Bounds.Right) != Bounds.None)
                         {
-                            px = bounds.Right.X;
+                            px = bounds.RightX;
                             points.Add(new Vector2(px, py));
                         }
                         else if ((newCheck & Bounds.Left) != Bounds.None)
                         {
-                            px = bounds.Left.X;
+                            px = bounds.LeftX;
                             points.Add(new Vector2(px, py));
                         }
                         else if ((newCheck & Bounds.Bottom) != Bounds.None)
                         {
                             if (rightPoint.X - bounds.X + newPoint.X - bounds.X < bounds.W)
                             {
-                                px = bounds.Left.X;
+                                px = bounds.LeftX;
                             }
                             else
                             {
-                                px = bounds.Right.X;
+                                px = bounds.RightX;
                             }
                             points.Add(new Vector2(px, py));
-                            points.Add(new Vector2(px, bounds.Bottom.Y));
+                            points.Add(new Vector2(px, bounds.BottomY));
                         }
                     }
                     else if ((rightCheck & Bounds.Bottom) != Bounds.None)
                     {
-                        py = bounds.Bottom.Y;
+                        py = bounds.BottomY;
                         if ((newCheck & Bounds.Right) != Bounds.None)
                         {
-                            px = bounds.Right.X;
+                            px = bounds.RightX;
                             points.Add(new Vector2(px, py));
                         }
                         else if ((newCheck & Bounds.Left) != Bounds.None)
                         {
-                            px = bounds.Left.X;
+                            px = bounds.LeftX;
                             points.Add(new Vector2(px, py));
                         }
                         else if ((newCheck & Bounds.Top) != Bounds.None)
                         {
                             if (rightPoint.X - bounds.X + newPoint.X - bounds.X < bounds.W)
                             {
-                                px = bounds.Left.X;
+                                px = bounds.LeftX;
                             }
                             else
                             {
-                                px = bounds.Right.X;
+                                px = bounds.RightX;
                             }
                             points.Add(new Vector2(px, py));
-                            points.Add(new Vector2(px, bounds.Top.Y));
+                            points.Add(new Vector2(px, bounds.TopY));
                         }
                     }
                 }

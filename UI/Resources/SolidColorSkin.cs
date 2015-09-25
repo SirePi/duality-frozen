@@ -3,7 +3,6 @@
 using Duality;
 using Duality.Drawing;
 using Duality.Editor;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using System;
 using SnowyPeak.Duality.Plugin.Frozen.Core;
@@ -13,13 +12,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
     /// <summary>
     ///
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageSkin)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    [EditorHintImage(ResNames.ImageSkin)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public class SolidColorSkin : Skin
     {
-        public new static string FileExt = ".SolidColorSkin" + Resource.FileExt;
-
         private ColorRgba _color;
 
         public ColorRgba Color

@@ -1,9 +1,6 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Collections.Generic;
 using Duality;
-using OpenTK;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Core
 {
@@ -24,13 +21,26 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core
         }
     }
 
+    /// <summary>
+    /// Vector4 Extensions
+    /// </summary>
     public static class Vector4Extensions
     {
+        /// <summary>
+        /// Returns the XY components as a Vector2
+        /// </summary>
+        /// <param name="inVector"></param>
+        /// <returns></returns>
         public static Vector2 XY(this Vector4 inVector)
         {
             return new Vector2(inVector.X, inVector.Y);
         }
 
+        /// <summary>
+        /// Returns the ZW components as a Vector2
+        /// </summary>
+        /// <param name="inVector"></param>
+        /// <returns></returns>
         public static Vector2 ZW(this Vector4 inVector)
         {
             return new Vector2(inVector.Z, inVector.W);

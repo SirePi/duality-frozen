@@ -40,6 +40,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Data
         {
             get { return _reverse.Keys.AsEnumerable(); }
         }
+
         /// <summary>
         /// Gets or Sets a Key, given a Value
         /// </summary>

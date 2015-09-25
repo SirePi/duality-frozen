@@ -3,7 +3,6 @@
 using System;
 using Duality;
 using Duality.Drawing;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Data;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.FX
@@ -87,7 +86,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
             Vector2 xDot, yDot;
             MathF.GetTransformDotVec(_rotation, inPreprocessedScale, out xDot, out yDot);
 
-            Rect rectTemp = _material.Rectangle.Transform(_scale, _scale);
+            Rect rectTemp = _material.Rectangle.Scaled(_scale, _scale);
             Vector2 edge1 = rectTemp.TopLeft;
             Vector2 edge2 = rectTemp.BottomLeft;
             Vector2 edge3 = rectTemp.BottomRight;

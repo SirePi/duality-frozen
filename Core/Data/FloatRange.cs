@@ -1,7 +1,7 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
 using Duality;
+using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Core.Data
 {
@@ -46,9 +46,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Data
         /// </summary>
         /// <param name="inRandom"></param>
         /// <returns></returns>
-        public override float GetRandom(Random inRandom)
+        public override float GetRandom()
         {
-            return (float)(Min + (inRandom.NextDouble() * Delta));
+            return (float)(Min + (MathF.Rnd.NextDouble() * Delta));
         }
 
         /// <summary>

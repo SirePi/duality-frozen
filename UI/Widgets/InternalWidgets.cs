@@ -1,6 +1,7 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using Duality;
+using Duality.Input;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
@@ -41,11 +42,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         private float _currentDelta;
         private ScrollBar _parent;
 
-        public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseDown(MouseButtonEventArgs e)
         {
             if (Status != WidgetStatus.Disabled)
             {
-                if (e.Button == OpenTK.Input.MouseButton.Left)
+                if (e.Button == MouseButton.Left)
                 {
                     Status = WidgetStatus.Active;
 
@@ -55,13 +56,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             }
         }
 
-        public override void MouseMove(OpenTK.Input.MouseMoveEventArgs e)
+        public override void MouseMove(MouseMoveEventArgs e)
         {
             if (_leftButtonDown)
             {
                 float angle = -this.GameObj.Transform.Angle;
 
-                _currentDelta += (e.YDelta * MathF.Cos(angle)) + (e.XDelta * MathF.Sin(angle));
+                _currentDelta += (e.DeltaY * MathF.Cos(angle)) + (e.DeltaY * MathF.Sin(angle));
 
                 if (_parent == null)
                 {

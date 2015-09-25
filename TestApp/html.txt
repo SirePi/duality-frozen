@@ -1,0 +1,11 @@
+﻿  <ul class="uk-tab uk-tab-left uk-width-medium-1-6">
+    <li ng-class="mailbox.params.direction==='in' ? 'uk-active' : ''">
+      <a href="#/mail/in/1"><i class="fa fa-sign-in"></i> Ricevuti({{mailbox.messagesCount.in}})</a>
+    </li>
+    <li ng-class="mailbox.params.direction==='out' ? 'uk-active' : ''">
+      <a href="#/mail/out/1"><i class="fa fa-sign-out"></i> Inviati({{mailbox.messagesCount.out}})</a>
+    </li>
+    <li ng-class="mailbox.params.direction==='archive' ? 'uk-active' : ''">
+      <a href="#/mail/archive/1"><i class="fa fa-archive"></i> Archiviati</a>
+    </li>
+  </ul>

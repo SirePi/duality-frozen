@@ -8,7 +8,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural
     /// Models a Link between two INodes of a Graph
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [Serializable]
     public class Link<T> where T : class, INode, new()
     {
         /// <summary>

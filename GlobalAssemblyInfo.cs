@@ -1,6 +1,4 @@
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Resources;
 
 /*
  * General Information about an assembly is controlled through the following
@@ -8,10 +6,9 @@ using System.Resources;
  * associated with an assembly.
  */
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyCopyright("Copyright © Alessandro Pilati 2014")]
+[assembly: AssemblyCopyright("Copyright © Alessandro Pilati 2014-2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
 /*
  * Version information for an assembly consists of the following four values:
  *
@@ -24,5 +21,3 @@ using System.Resources;
  *  by using the '*' as shown below:
  *  [assembly: AssemblyVersion("1.0.*")]
  */
-
-[assembly: NeutralResourcesLanguageAttribute("en-US", UltimateResourceFallbackLocation.MainAssembly)]

@@ -1,9 +1,5 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Duality;
 using Duality.Components;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Data;
@@ -46,6 +42,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Commands
             }
         }
 
+        /// <summary>
+        /// Initialization
+        /// </summary>
+        /// <param name="inGameObject"></param>
         public override void Initialize(GameObject inGameObject)
         {
             Transform t = GetComponent(inGameObject);

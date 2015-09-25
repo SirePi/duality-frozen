@@ -135,17 +135,14 @@
       <Project>{0436B701-4051-4F8A-8513-BE52E9849631}</Project>
       <Name>Procedural</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UI.Editor\UI.Editor.csproj">
-      <Project>{399E6733-D717-41AB-B00A-70326055E8EF}</Project>
-      <Name>UI.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UI\UI.csproj">
-      <Project>{A3CF2AA7-6F8E-4787-9EA3-813D8341AF51}</Project>
-      <Name>UI</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="bgSprites.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="html.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

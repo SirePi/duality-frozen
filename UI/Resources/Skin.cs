@@ -3,7 +3,6 @@
 using Duality;
 using Duality.Drawing;
 using Duality.Resources;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using System;
 
@@ -12,43 +11,42 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
     /// <summary>
     ///
     /// </summary>
-    [Serializable]
     public abstract class Skin : Resource
     {
-        [NonSerialized]
+        [DontSerialize]
         protected static readonly int[] COLUMN_1 = new int[] { 0, 1, 12, 13, 24, 25 };
 
-        [NonSerialized]
+        [DontSerialize]
         protected static readonly int[] COLUMN_2 = new int[] { 3, 2, 15, 14, 27, 26 };
 
-        [NonSerialized]
+        [DontSerialize]
         protected static readonly int[] COLUMN_3 = new int[] { 4, 5, 16, 17, 28, 29 };
 
-        [NonSerialized]
+        [DontSerialize]
         protected static readonly int[] COLUMN_4 = new int[] { 7, 6, 19, 18, 31, 30 };
 
-        [NonSerialized]
+        [DontSerialize]
         protected static readonly int[] COLUMN_5 = new int[] { 8, 9, 20, 21, 32, 33 };
 
-        [NonSerialized]
+        [DontSerialize]
         protected static readonly int[] COLUMN_6 = new int[] { 11, 10, 23, 22, 35, 34 };
 
-        [NonSerialized]
+        [DontSerialize]
         protected static readonly int[] ROW_1 = new int[] { 0, 3, 4, 7, 8, 11 };
 
-        [NonSerialized]
+        [DontSerialize]
         protected static readonly int[] ROW_2 = new int[] { 1, 2, 5, 6, 9, 10 };
 
-        [NonSerialized]
+        [DontSerialize]
         protected static readonly int[] ROW_3 = new int[] { 12, 15, 16, 19, 20, 23 };
 
-        [NonSerialized]
+        [DontSerialize]
         protected static readonly int[] ROW_4 = new int[] { 13, 14, 17, 18, 21, 22 };
 
-        [NonSerialized]
+        [DontSerialize]
         protected static readonly int[] ROW_5 = new int[] { 24, 27, 28, 31, 32, 35 };
 
-        [NonSerialized]
+        [DontSerialize]
         protected static readonly int[] ROW_6 = new int[] { 25, 26, 29, 30, 33, 34 };
 
         protected ContentRef<Material> _material;
@@ -60,7 +58,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
 
         public virtual void PrepareVertices(ref MultiSpacePoint[] vertices, Vector4 border, Rect widgetArea, float scale)
         {
-            Rect waTemp = widgetArea.Transform(scale, scale);
+            Rect waTemp = widgetArea.Scaled(scale, scale);
 
             Vector2 topLeft = waTemp.TopLeft;
             Vector2 bottomRight = waTemp.BottomRight;
@@ -132,7 +130,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
             //applying clipping area
             if (clipArea != Rect.Empty && clipArea != widgetArea)
             {
-                if (clipArea.Left.X >= innerTopLeft.X)
+                if (clipArea.LeftX >= innerTopLeft.X)
                 {
                     vertices[0].Color = Colors.Transparent;
                     vertices[1].Color = Colors.Transparent;
@@ -148,7 +146,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
                     vertices[27].Color = Colors.Transparent;
                 }
 
-                if (clipArea.Right.X <= innerBottomRight.X)
+                if (clipArea.RightX <= innerBottomRight.X)
                 {
                     vertices[8].Color = Colors.Transparent;
                     vertices[9].Color = Colors.Transparent;
@@ -164,7 +162,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
                     vertices[35].Color = Colors.Transparent;
                 }
 
-                if ((clipArea.Left.X >= innerBottomRight.X) || (clipArea.Right.X <= innerTopLeft.X))
+                if ((clipArea.LeftX >= innerBottomRight.X) || (clipArea.RightX <= innerTopLeft.X))
                 {
                     vertices[4].Color = Colors.Transparent;
                     vertices[5].Color = Colors.Transparent;
@@ -180,7 +178,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
                     vertices[31].Color = Colors.Transparent;
                 }
 
-                if (clipArea.Top.Y >= innerTopLeft.Y)
+                if (clipArea.TopY >= innerTopLeft.Y)
                 {
                     vertices[0].Color = Colors.Transparent;
                     vertices[1].Color = Colors.Transparent;
@@ -196,7 +194,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
                     vertices[11].Color = Colors.Transparent;
                 }
 
-                if (clipArea.Bottom.Y <= innerBottomRight.Y)
+                if (clipArea.BottomY <= innerBottomRight.Y)
                 {
                     vertices[24].Color = Colors.Transparent;
                     vertices[25].Color = Colors.Transparent;
@@ -212,7 +210,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
                     vertices[35].Color = Colors.Transparent;
                 }
 
-                if ((clipArea.Top.Y >= innerBottomRight.Y) || (clipArea.Bottom.Y <= innerTopLeft.Y))
+                if ((clipArea.TopY >= innerBottomRight.Y) || (clipArea.BottomY <= innerTopLeft.Y))
                 {
                     vertices[12].Color = Colors.Transparent;
                     vertices[13].Color = Colors.Transparent;

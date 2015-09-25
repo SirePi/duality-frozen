@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using OpenTK;
+using Duality;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Geometry;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Triangulation

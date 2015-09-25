@@ -4,7 +4,6 @@ using Duality;
 using Duality.Drawing;
 using Duality.Editor;
 using Duality.Resources;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Data;
 using SnowyPeak.Duality.Plugin.Frozen.FX.Properties;
@@ -16,105 +15,104 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
     /// <summary>
     /// A Particle Emitter
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageParticleEmitter)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryFX)]
+    [EditorHintImage(ResNames.ImageParticleEmitter)]
+    [EditorHintCategory(ResNames.CategoryFX)]
     public class ParticleEmitter : Component, IDisposable, ICmpUpdatable, ICmpRenderer, ICmpInitializable
     {
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected ColorRange _colorRange;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected float _emitterDirection;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected float _emitterRotationSpeed;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected FloatRange _initialDirectionRange;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected FloatRange _initialRotationRange;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected FloatRange _initialScaleRange;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected FloatRange _movementSpeedRange;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected IntegerRange _particlesNumberRange;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected FloatRange _rotationSpeedRange;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected FloatRange _scaleSpeedRange;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected FloatRange _timeToLiveRange;
 
-        [NonSerialized]
+        [DontSerialize]
         private static readonly Vector2 DEFAULT_PARTICLES = new Vector2(50, 100);
 
-        [NonSerialized]
+        [DontSerialize]
         private static readonly int DEFAULT_PARTICLES_PER_SECOND = 10;
 
-        [NonSerialized]
+        [DontSerialize]
         private static readonly Vector2 DEFAULT_TTL = new Vector2(1, 2);
 
-        [NonSerialized]
+        [DontSerialize]
         private bool _inEditor;
 
-        [NonSerialized]
+        [DontSerialize]
         private ParticleMaterial _particleMaterial;
 
-        [NonSerialized]
+        [DontSerialize]
         private Particle[] _particles;
 
-        [NonSerialized]
+        [DontSerialize]
         private int _particlesAlive;
 
-        [NonSerialized]
+        [DontSerialize]
         private VertexC1P3T2[] _particleVertices;
 
-        [NonSerialized]
+        [DontSerialize]
         private bool _sendBurst;
 
-        [NonSerialized]
+        [DontSerialize]
         private float _timeSinceLastParticle;
 
         /// <summary>
@@ -478,13 +476,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
 
         internal virtual void InitializeParticle(Particle inParticle)
         {
-            float movementSpeed = _movementSpeedRange.GetRandom(FastRandom.Instance);
-            float rotationSpeed = _rotationSpeedRange.GetRandom(FastRandom.Instance);
-            float scaleSpeed = _scaleSpeedRange.GetRandom(FastRandom.Instance);
+            float movementSpeed = _movementSpeedRange.GetRandom();
+            float rotationSpeed = _rotationSpeedRange.GetRandom();
+            float scaleSpeed = _scaleSpeedRange.GetRandom();
 
-            float direction = FXArea.GameObj.Transform.Angle +  _initialDirectionRange.GetRandom(FastRandom.Instance);
+            float direction = FXArea.GameObj.Transform.Angle +  _initialDirectionRange.GetRandom();
             float rotation = FXArea.GameObj.Transform.Angle;
-            float scale = _initialScaleRange.GetRandom(FastRandom.Instance);
+            float scale = _initialScaleRange.GetRandom();
 
             if (AlignParticlesWithDirection)
             {
@@ -492,12 +490,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
             }
             else
             {
-                rotation += _initialRotationRange.GetRandom(FastRandom.Instance);
+                rotation += _initialRotationRange.GetRandom();
             }
 
-            float ttl = _timeToLiveRange.GetRandom(FastRandom.Instance);
+            float ttl = _timeToLiveRange.GetRandom();
 
-            Vector3 origin = FXArea.GetPoint(FastRandom.Instance);
+            Vector3 origin = FXArea.GetPoint();
 
             inParticle.SetData(_particleMaterial,
                 origin,

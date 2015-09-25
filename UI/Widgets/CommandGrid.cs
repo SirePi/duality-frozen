@@ -7,11 +7,11 @@ using Duality.Components;
 using Duality.Drawing;
 using Duality.Editor;
 using Duality.Resources;
-using OpenTK;
-using OpenTK.Input;
+
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
+using Duality.Input;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
@@ -19,47 +19,47 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     /// A SkinnedCommandGrid is a Widget that behaves like the command list of Final Fantasy battle screens.
     /// It can only be controlled by keyboard and needs to be specifically assigned Focus on the WidgetController.
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageCommandGrid)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    
+    [EditorHintImage(ResNames.ImageCommandGrid)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public class CommandGrid : Widget
     {
         #region NonSerialized fields
 
-        [NonSerialized]
+        [DontSerialize]
         private ushort _columns;
 
-        [NonSerialized]
+        [DontSerialize]
         private FormattedText _fText;
 
-        [NonSerialized]
+        [DontSerialize]
         private Vector2 _gridCellSize;
 
-        [NonSerialized]
+        [DontSerialize]
         private GameObject _highlight;
 
-        [NonSerialized]
+        [DontSerialize]
         private Panel _highlightPanel;
 
-        [NonSerialized]
+        [DontSerialize]
         private ushort _rows;
 
-        [NonSerialized]
+        [DontSerialize]
         private GameObject _scrollbar;
 
-        [NonSerialized]
+        [DontSerialize]
         private ScrollBar _scrollComponent;
 
-        [NonSerialized]
+        [DontSerialize]
         private object _selectedItem;
 
-        [NonSerialized]
+        [DontSerialize]
         private ushort _visibleColumns;
 
-        [NonSerialized]
+        [DontSerialize]
         private int _visibleHeight;
 
-        [NonSerialized]
+        [DontSerialize]
         private int _visibleWidth;
 
         #endregion NonSerialized fields
@@ -260,7 +260,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// </summary>
         /// <param name="e"></param>
         /// <param name="k"></param>
-        public override void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
+        public override void KeyDown(KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
         {
             if (Status != WidgetStatus.Disabled)
             {
@@ -287,15 +287,15 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         ///
         /// </summary>
         /// <param name="e"></param>
-        public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseDown(MouseButtonEventArgs e)
         {
             if (Status != WidgetStatus.Disabled)
             {
-                if (e.Button == OpenTK.Input.MouseButton.Right && OnRightClick.Res != null)
+                if (e.Button == MouseButton.Right && OnRightClick.Res != null)
                 {
                     OnRightClick.Res.Execute(this.GameObj, RightClickArgument);
                 }
-                if (e.Button == OpenTK.Input.MouseButton.Left && OnLeftClick.Res != null)
+                if (e.Button == MouseButton.Left && OnLeftClick.Res != null)
                 {
                     Status = WidgetStatus.Active;
                     OnLeftClick.Res.Execute(this.GameObj, _leftClickArgument);
@@ -412,7 +412,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _highlightPanel = new Panel();
             _highlightPanel.VisibilityGroup = this.VisibilityGroup;
             _highlightPanel.Appearance = AppearanceManager.RequestAppearanceContentRef(_listAppearance.Res.Highlight);
-            _highlightPanel.Rect = Rect.AlignTopLeft(0, 0, 0, 0);
+            _highlightPanel.Rect = Rect.Align(Alignment.TopLeft, 0, 0, 0, 0);
 
             _highlight.AddComponent<Panel>(_highlightPanel);
             Scene.Current.AddObject(_highlight);
@@ -435,7 +435,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _scrollComponent.Appearance = sba;
             //_scrollComponent.OnValueChanged = InternalScripts.GetScript<InternalScripts.CommandGridScrollbarValueChanged>();
 
-            _scrollComponent.Rect = Rect.AlignTopLeft(0, 0, scrollbarWidth, Rect.W);
+            _scrollComponent.Rect = Rect.Align(Alignment.TopLeft, 0, 0, scrollbarWidth, Rect.W);
             _scrollComponent.ScrollSpeed = 1;
 
             _scrollbar.AddComponent<ScrollBar>(_scrollComponent);

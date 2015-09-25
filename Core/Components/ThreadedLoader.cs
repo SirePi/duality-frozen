@@ -1,8 +1,9 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
+using Duality;
 using System;
 using System.Threading;
-using Duality;
+using System.Threading.Tasks;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
 {
@@ -14,11 +15,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
     /// reflects the loading percentage. LoaderOnUpdate could be then be implemented in order to display
     /// such percentage, or affect a loading bar.</example>
     /// </summary>
-    [Serializable]
     public abstract class ThreadedLoader : Component, ICmpUpdatable, ICmpInitializable
     {
-        [NonSerialized]
-        private System.Threading.Thread _loadingThread;
+        [DontSerialize]
+        private Task _task;
+
+        [DontSerialize]
+        private CancellationTokenSource _cts;
 
         /// <summary>
         ///
@@ -29,21 +32,20 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         {
             if (context == InitContext.Activate)
             {
-                if (ResourceToLoad.Res != null && _loadingThread == null)
+                if (ResourceToLoad.Res != null && _task == null)
                 {
-                    _loadingThread = new Thread(new ThreadStart(ResourceToLoad.Res.LoadInBackground));
-                    _loadingThread.IsBackground = true;
-                    _loadingThread.Start();
+                    _cts = new CancellationTokenSource();
+                    _task = LoadAsync(_cts.Token);
                 }
             }
         }
 
         void ICmpInitializable.OnShutdown(Component.ShutdownContext context)
         {
-            if (_loadingThread != null && _loadingThread.IsAlive)
+            if (_task != null && !_task.IsCompleted)
             {
-                _loadingThread.Abort();
-                _loadingThread = null;
+                _cts.Cancel();
+                _task = null;
             }
         }
 
@@ -51,19 +53,16 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         {
             LoaderOnUpdate();
 
-            if (ResourceToLoad != null)
-            {
-                if (ResourceToLoad.Res.IsLoaded)
-                {
-                    LoadingComplete();
-                    _loadingThread = null;
-                }
-            }
-            else
+            if (ResourceToLoad == null || ResourceToLoad.Res.IsLoaded)
             {
                 LoadingComplete();
-                _loadingThread = null;
+                _task = null;
             }
+        }
+
+        private Task LoadAsync(CancellationToken cancellationToken)
+        {
+            return Task.Run(new Action(ResourceToLoad.Res.LoadInBackground));
         }
 
         /// <summary>

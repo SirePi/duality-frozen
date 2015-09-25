@@ -4,7 +4,6 @@ using System;
 using Duality;
 using Duality.Drawing;
 using Duality.Editor;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.FX.Properties;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
@@ -12,9 +11,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
     /// <summary>
     /// Implementation of a Rectangular FXArea
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageFXRect)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryFX)]
+    [EditorHintImage(ResNames.ImageFXRect)]
+    [EditorHintCategory(ResNames.CategoryFX)]
     public class FXRectangle : FXArea
     {
         /// <summary>
@@ -36,15 +34,14 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
         /// <summary>
         ///
         /// </summary>
-        /// <param name="inRandom"></param>
         /// <returns></returns>
-        protected override Vector3 _GetPoint(Random inRandom)
+        protected override Vector3 _GetPoint()
         {
             Vector2 result = Vector2.Zero;
 
             // Generating random point
-            result.X = inRandom.NextFloat(-1, 1);
-            result.Y = inRandom.NextFloat(-1, 1);
+            result.X = MathF.Rnd.NextFloat(-1, 1);
+            result.Y = MathF.Rnd.NextFloat(-1, 1);
 
             // Rescaling
             result = result * Size / 2;

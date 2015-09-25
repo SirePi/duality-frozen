@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Duality;
+﻿using Duality;
 using Duality.Drawing;
 using Duality.Editor;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Commands;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Properties;
+using System.Collections.Generic;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
 {
@@ -16,21 +12,20 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
     /// It provides a series of predefined methods to generate and manage SnowyPeak.Duality.Plugin.Frozen.Core's included Commands,
     /// but also allows the user to register its own custom Commands.
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageCommander)]
-    [EditorHintCategory(typeof(Res), ResNames.Category)]
+    [EditorHintImage(ResNames.ImageCommander)]
+    [EditorHintCategory(ResNames.Category)]
     public class Commander : Component, ICmpUpdatable
     {
-        [NonSerialized]
+        [DontSerialize]
         private Command _currentOperation;
 
-        [NonSerialized]
+        [DontSerialize]
         private ParallelCommand _currentParallel;
 
-        [NonSerialized]
+        [DontSerialize]
         private string _currentSignal;
 
-        [NonSerialized]
+        [DontSerialize]
         private List<Command> _operations;
 
         /// <summary>

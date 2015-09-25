@@ -4,7 +4,7 @@ using System;
 using Duality;
 using Duality.Editor;
 using Duality.Resources;
-using OpenTK;
+
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Widgets;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;

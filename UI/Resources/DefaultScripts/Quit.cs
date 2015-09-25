@@ -13,9 +13,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources.DefaultScripts
     /// <summary>
     /// Command used to quit the game
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageScript)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    
+    [EditorHintImage(ResNames.ImageScript)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public sealed class Quit : Script
     {
         /// <summary>

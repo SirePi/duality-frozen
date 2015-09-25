@@ -1,9 +1,7 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Collections.Generic;
 using Duality;
-using OpenTK;
+using System.Collections.Generic;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Core.Geometry
 {
@@ -107,6 +105,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Geometry
         {
             get { return MathF.Abs(SignedDoubleArea() * 0.5f); }
         }
+
         /// <summary>
         /// Returns the Centroid of the Polygon, as the point where its extents are halved on each direction
         /// </summary>
@@ -124,10 +123,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Geometry
                 return result / Vertices.Length;
             }
         }
+
         /// <summary>
         /// The vertices of the Polygon
         /// </summary>
         public Vector2[] Vertices { get; private set; }
+
         /// <summary>
         /// Returns the Winding (Clockwise/Counterclockwise) of the Polygon's vertices
         /// </summary>
@@ -147,6 +148,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Geometry
                 return PolygonWinding.None;
             }
         }
+
         /// <summary>
         /// Returns the i-index vertex of the Polygon
         /// </summary>

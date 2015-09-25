@@ -34,7 +34,7 @@ namespace TestApp
 
         private Noise _noise;
         private Bitmap _bmp;
-        private Graph<INode> _graph;
+        private Graph<DefaultNode> _graph;
 
         public Form1()
         {
@@ -55,7 +55,7 @@ namespace TestApp
             c.SetDistanceFunction(SnowyPeak.Duality.Plugin.Frozen.Procedural.Chebychev.Instance);
             c.Sites = b.Sites;
 
-            _graph = new Graph<INode>();
+            _graph = new Graph<DefaultNode>();
             foreach (Vector2 v in b.Sites)
             {
                 _graph.Nodes.Add(new DefaultNode(v));

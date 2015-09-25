@@ -1,11 +1,11 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
 using Duality;
 using Duality.Components;
 using Duality.Editor;
-using OpenTK;
+using Duality.Input;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Properties;
+using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
 {
@@ -16,48 +16,47 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
     /// current status, and also to manage InputVisualReceivers in a way that allows the implementation of a basic GUI.
     /// </summary>
     /// <seealso cref="BaseInputReceiver"/>
-    [Serializable]
     [RequiredComponent(typeof(Camera))]
-    [EditorHintImage(typeof(Res), ResNames.ImageInputController)]
-    [EditorHintCategory(typeof(Res), ResNames.Category)]
+    [EditorHintImage(ResNames.ImageInputController)]
+    [EditorHintCategory(ResNames.Category)]
     public class InputController : Component, ICmpInitializable
     {
 #pragma warning disable 1591
-        protected static readonly OpenTK.Input.MouseButtonEventArgs LEFT_CLICK_DOWN = new OpenTK.Input.MouseButtonEventArgs(0, 0, OpenTK.Input.MouseButton.Left, true);
+        protected static readonly MouseButtonEventArgs LEFT_CLICK_DOWN = new MouseButtonEventArgs(DualityApp.Mouse, 0, 0, MouseButton.Left, true);
 
-        protected static readonly OpenTK.Input.MouseButtonEventArgs LEFT_CLICK_UP = new OpenTK.Input.MouseButtonEventArgs(0, 0, OpenTK.Input.MouseButton.Left, false);
+        protected static readonly MouseButtonEventArgs LEFT_CLICK_UP = new MouseButtonEventArgs(DualityApp.Mouse, 0, 0, MouseButton.Left, false);
 
-        protected static readonly OpenTK.Input.MouseButtonEventArgs MIDDLE_CLICK_DOWN = new OpenTK.Input.MouseButtonEventArgs(0, 0, OpenTK.Input.MouseButton.Middle, true);
+        protected static readonly MouseButtonEventArgs MIDDLE_CLICK_DOWN = new MouseButtonEventArgs(DualityApp.Mouse, 0, 0, MouseButton.Middle, true);
 
-        protected static readonly OpenTK.Input.MouseButtonEventArgs MIDDLE_CLICK_UP = new OpenTK.Input.MouseButtonEventArgs(0, 0, OpenTK.Input.MouseButton.Middle, false);
+        protected static readonly MouseButtonEventArgs MIDDLE_CLICK_UP = new MouseButtonEventArgs(DualityApp.Mouse, 0, 0, MouseButton.Middle, false);
 
-        protected static readonly OpenTK.Input.MouseButtonEventArgs RIGHT_CLICK_DOWN = new OpenTK.Input.MouseButtonEventArgs(0, 0, OpenTK.Input.MouseButton.Right, true);
+        protected static readonly MouseButtonEventArgs RIGHT_CLICK_DOWN = new MouseButtonEventArgs(DualityApp.Mouse, 0, 0, MouseButton.Right, true);
 
-        protected static readonly OpenTK.Input.MouseButtonEventArgs RIGHT_CLICK_UP = new OpenTK.Input.MouseButtonEventArgs(0, 0, OpenTK.Input.MouseButton.Right, false);
+        protected static readonly MouseButtonEventArgs RIGHT_CLICK_UP = new MouseButtonEventArgs(DualityApp.Mouse, 0, 0, MouseButton.Right, false);
 #pragma warning restore 1591
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected Vector2 _currentMousePosition;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected InputReceiverVisual _draggedElement;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected Vector2 _lastMousePosition;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected ModifierKeys _modifierKeys;
 
         /// <summary>
@@ -65,9 +64,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// </summary>
         public InputController()
         {
-            LeftMouseKey = OpenTK.Input.Key.Enter;
-            RightMouseKey = OpenTK.Input.Key.Unknown;
-            MiddleMouseKey = OpenTK.Input.Key.Unknown;
+            LeftMouseKey = Key.Enter;
+            RightMouseKey = Key.Unknown;
+            MiddleMouseKey = Key.Unknown;
 
             MouseEnabled = true;
             KeyboardEnabled = true;
@@ -75,13 +74,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
             _lastMousePosition = new Vector2();
             _currentMousePosition = new Vector2();
 
-            _mouseDownEventHandler = new EventHandler<OpenTK.Input.MouseButtonEventArgs>(Mouse_ButtonDown);
-            _mouseUpEventHandler = new EventHandler<OpenTK.Input.MouseButtonEventArgs>(Mouse_ButtonUp);
-            _mouseMoveEventHandler = new EventHandler<OpenTK.Input.MouseMoveEventArgs>(Mouse_Move);
-            _mouseWheelEventHandler = new EventHandler<OpenTK.Input.MouseWheelEventArgs>(Mouse_WheelChanged);
+            _mouseDownEventHandler = new EventHandler<MouseButtonEventArgs>(Mouse_ButtonDown);
+            _mouseUpEventHandler = new EventHandler<MouseButtonEventArgs>(Mouse_ButtonUp);
+            _mouseMoveEventHandler = new EventHandler<MouseMoveEventArgs>(Mouse_Move);
+            _mouseWheelEventHandler = new EventHandler<MouseWheelEventArgs>(Mouse_WheelChanged);
 
-            _keyUpEventHandler = new EventHandler<OpenTK.Input.KeyboardKeyEventArgs>(Keyboard_KeyUp);
-            _keyDownEventHandler = new EventHandler<OpenTK.Input.KeyboardKeyEventArgs>(Keyboard_KeyDown);
+            _keyUpEventHandler = new EventHandler<KeyboardKeyEventArgs>(Keyboard_KeyUp);
+            _keyDownEventHandler = new EventHandler<KeyboardKeyEventArgs>(Keyboard_KeyDown);
         }
 
         /// <summary>
@@ -105,58 +104,55 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// [GET / SET] If the Receiver should always be notified of events even if there is a Focused InputVisualReceiver
         /// </summary>
         public bool AlwaysNotifyReceiver { get; set; }
+
         /// <summary>
         /// [GET] The currently Focused InputVisualReceiver
         /// </summary>
         public InputReceiverVisual FocusedElement { get; private set; }
+
         /// <summary>
         /// [GET] The currently Hovered InputVisualReceiver
         /// </summary>
         public InputReceiverVisual HoveredElement { get; private set; }
+
         /// <summary>
         /// [GET / SET] If the Controller should register for Keyboard events
         /// </summary>
         public bool KeyboardEnabled { get; set; }
+
         /// <summary>
         /// [GET / SET] The Keyboard key that will be treated as a Left Mouse click
         /// </summary>
-        public OpenTK.Input.Key LeftMouseKey { get; set; }
+        public Key LeftMouseKey { get; set; }
+
         /// <summary>
         /// [GET / SET] The Keyboard key that will be treated as a Middle Mouse click
         /// </summary>
-        public OpenTK.Input.Key MiddleMouseKey { get; set; }
+        public Key MiddleMouseKey { get; set; }
+
         /// <summary>
         /// [GET / SET] If the Controller should register for Mouse events
         /// </summary>
         public bool MouseEnabled { get; set; }
+
         /// <summary>
         /// [GET / SET] The default BaseInputReceiver
         /// </summary>
         public BaseInputReceiver Receiver { get; set; }
+
         /// <summary>
         /// [GET / SET] The Keyboard key that will be treated as a Right Mouse click
         /// </summary>
-        public OpenTK.Input.Key RightMouseKey { get; set; }
+        public Key RightMouseKey { get; set; }
 
         #region EventHandlers
 
-        [NonSerialized]
-        private EventHandler<OpenTK.Input.KeyboardKeyEventArgs> _keyDownEventHandler;
-
-        [NonSerialized]
-        private EventHandler<OpenTK.Input.KeyboardKeyEventArgs> _keyUpEventHandler;
-
-        [NonSerialized]
-        private EventHandler<OpenTK.Input.MouseButtonEventArgs> _mouseDownEventHandler;
-
-        [NonSerialized]
-        private EventHandler<OpenTK.Input.MouseMoveEventArgs> _mouseMoveEventHandler;
-
-        [NonSerialized]
-        private EventHandler<OpenTK.Input.MouseButtonEventArgs> _mouseUpEventHandler;
-
-        [NonSerialized]
-        private EventHandler<OpenTK.Input.MouseWheelEventArgs> _mouseWheelEventHandler;
+        private EventHandler<KeyboardKeyEventArgs> _keyDownEventHandler;
+        private EventHandler<KeyboardKeyEventArgs> _keyUpEventHandler;
+        private EventHandler<MouseButtonEventArgs> _mouseDownEventHandler;
+        private EventHandler<MouseMoveEventArgs> _mouseMoveEventHandler;
+        private EventHandler<MouseButtonEventArgs> _mouseUpEventHandler;
+        private EventHandler<MouseWheelEventArgs> _mouseWheelEventHandler;
 
         #endregion EventHandlers
 
@@ -220,29 +216,29 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected virtual void Keyboard_KeyDown(object sender, OpenTK.Input.KeyboardKeyEventArgs e)
+        protected virtual void Keyboard_KeyDown(object sender, KeyboardKeyEventArgs e)
         {
-            if (e.Key == OpenTK.Input.Key.LShift)
+            if (e.Key == Key.ShiftLeft)
             {
                 _modifierKeys |= ModifierKeys.LShift;
             }
-            if (e.Key == OpenTK.Input.Key.RShift)
+            if (e.Key == Key.ShiftRight)
             {
                 _modifierKeys |= ModifierKeys.RShift;
             }
-            if (e.Key == OpenTK.Input.Key.LControl)
+            if (e.Key == Key.ControlLeft)
             {
                 _modifierKeys |= ModifierKeys.LControl;
             }
-            if (e.Key == OpenTK.Input.Key.RControl)
+            if (e.Key == Key.ControlRight)
             {
                 _modifierKeys |= ModifierKeys.RControl;
             }
-            if (e.Key == OpenTK.Input.Key.LAlt)
+            if (e.Key == Key.AltLeft)
             {
                 _modifierKeys |= ModifierKeys.LAlt;
             }
-            if (e.Key == OpenTK.Input.Key.RAlt)
+            if (e.Key == Key.AltRight)
             {
                 _modifierKeys |= ModifierKeys.RAlt;
             }
@@ -284,29 +280,29 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected virtual void Keyboard_KeyUp(object sender, OpenTK.Input.KeyboardKeyEventArgs e)
+        protected virtual void Keyboard_KeyUp(object sender, KeyboardKeyEventArgs e)
         {
-            if (e.Key == OpenTK.Input.Key.LShift)
+            if (e.Key == Key.ShiftLeft)
             {
                 _modifierKeys -= ModifierKeys.LShift;
             }
-            if (e.Key == OpenTK.Input.Key.RShift)
+            if (e.Key == Key.ShiftRight)
             {
                 _modifierKeys -= ModifierKeys.RShift;
             }
-            if (e.Key == OpenTK.Input.Key.LControl)
+            if (e.Key == Key.ControlLeft)
             {
                 _modifierKeys -= ModifierKeys.LControl;
             }
-            if (e.Key == OpenTK.Input.Key.RControl)
+            if (e.Key == Key.ControlRight)
             {
                 _modifierKeys -= ModifierKeys.RControl;
             }
-            if (e.Key == OpenTK.Input.Key.LAlt)
+            if (e.Key == Key.AltLeft)
             {
                 _modifierKeys -= ModifierKeys.LAlt;
             }
-            if (e.Key == OpenTK.Input.Key.RAlt)
+            if (e.Key == Key.AltRight)
             {
                 _modifierKeys -= ModifierKeys.RAlt;
             }
@@ -327,7 +323,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected virtual void Mouse_ButtonDown(object sender, OpenTK.Input.MouseButtonEventArgs e)
+        protected virtual void Mouse_ButtonDown(object sender, MouseButtonEventArgs e)
         {
             FocusedElement = HoveredElement;
 
@@ -348,7 +344,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
                 Receiver.MouseDown(e);
             }
 
-            Mouse_Move(sender, new OpenTK.Input.MouseMoveEventArgs(e.X, e.Y, 0, 0));
+            Mouse_Move(sender, new MouseMoveEventArgs(DualityApp.Mouse, e.X, e.Y, 0, 0));
         }
 
         /// <summary>
@@ -356,7 +352,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected virtual void Mouse_ButtonUp(object sender, OpenTK.Input.MouseButtonEventArgs e)
+        protected virtual void Mouse_ButtonUp(object sender, MouseButtonEventArgs e)
         {
             _draggedElement = null;
 
@@ -370,7 +366,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
                 Receiver.MouseUp(e);
             }
 
-            Mouse_Move(sender, new OpenTK.Input.MouseMoveEventArgs(e.X, e.Y, 0, 0));
+            Mouse_Move(sender, new MouseMoveEventArgs(DualityApp.Mouse, e.X, e.Y, 0, 0));
         }
 
         /// <summary>
@@ -378,7 +374,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected virtual void Mouse_Move(object sender, OpenTK.Input.MouseMoveEventArgs e)
+        protected virtual void Mouse_Move(object sender, MouseMoveEventArgs e)
         {
             Drag(e.X, e.Y);
 
@@ -411,7 +407,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected virtual void Mouse_WheelChanged(object sender, OpenTK.Input.MouseWheelEventArgs e)
+        protected virtual void Mouse_WheelChanged(object sender, MouseWheelEventArgs e)
         {
             if (FocusedElement != null && FocusedElement.ReceiveMouseWheel)
             {

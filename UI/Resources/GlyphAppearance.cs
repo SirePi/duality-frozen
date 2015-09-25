@@ -4,7 +4,6 @@ using System;
 using Duality;
 using Duality.Editor;
 using Duality.Resources;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Widgets;
 
@@ -13,12 +12,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
     /// <summary>
     ///
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageSkin)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    [EditorHintImage(ResNames.ImageSkin)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public class GlyphAppearance : WidgetAppearance
     {
-        public new static string FileExt = ".GlyphAppearance" + Resource.FileExt;
 
         private ContentRef<Appearance> _glyphAppearance;
 

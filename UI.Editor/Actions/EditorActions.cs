@@ -16,6 +16,7 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Actions
     /// <summary>
     /// Double-click binding for the editor
     /// </summary>
+    /*
     public class EditorActionEditSkin : EditorSingleAction<WidgetSkin>
     {
         private static readonly string[] EDITED_PROPERTIES =
@@ -80,4 +81,5 @@ namespace SnowyPeak.Duality.Editor.Plugin.Frozen.UI.Actions
             }
         }
     }
+     * */
 }

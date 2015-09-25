@@ -5,8 +5,8 @@ using Duality.Components;
 using Duality.Components.Renderers;
 using Duality.Drawing;
 using Duality.Editor;
+using Duality.Input;
 using Duality.Resources;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
@@ -17,38 +17,38 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     /// <summary>
     /// A TextBox Widget
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageTextBox)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    
+    [EditorHintImage(ResNames.ImageTextBox)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public class TextBox : Widget
     {
         #region NonSerialized fields
 
-        [NonSerialized]
+        [DontSerialize]
         private static readonly float CARET_TICK = .5f;
 
-        [NonSerialized]
+        [DontSerialize]
         private static readonly float DEFAULT_KEY_REPEAT = .2f;
 
-        [NonSerialized]
+        [DontSerialize]
         private GameObject _caret;
 
-        [NonSerialized]
+        [DontSerialize]
         private FormattedText _fText;
 
-        [NonSerialized]
-        private OpenTK.Input.Key? _keyDown;
+        [DontSerialize]
+        private Key? _keyDown;
 
-        [NonSerialized]
+        [DontSerialize]
         private string _lastText;
 
-        [NonSerialized]
+        [DontSerialize]
         private WidgetController.ModifierKeys _modifierKeys;
 
-        [NonSerialized]
+        [DontSerialize]
         private float _secondsFromLastKey;
 
-        [NonSerialized]
+        [DontSerialize]
         private float _secondsFromLastTick;
 
         #endregion NonSerialized fields
@@ -124,7 +124,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// </summary>
         /// <param name="e"></param>
         /// <param name="k"></param>
-        public override void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
+        public override void KeyDown(KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
         {
             _keyDown = e.Key;
             _modifierKeys = k;
@@ -138,7 +138,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// </summary>
         /// <param name="e"></param>
         /// <param name="k"></param>
-        public override void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
+        public override void KeyUp(KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
         {
             _keyDown = null;
             _modifierKeys = k;
@@ -221,7 +221,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
             SpriteRenderer sr = new SpriteRenderer();
             sr.VisibilityGroup = this.VisibilityGroup;
-            sr.Rect = Rect.AlignCenter(0, 0, 2, _fText.TextMetrics.Size.Y);
+            sr.Rect = Rect.Align(Alignment.Center, 0, 0, 2, _fText.TextMetrics.Size.Y);
             sr.SharedMaterial = Material.InvertWhite;
 
             _caret.AddComponent<SpriteRenderer>(sr);
@@ -236,9 +236,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         {
             if (_keyDown.HasValue)
             {
-                OpenTK.Input.Key key = _keyDown.Value;
+                Key key = _keyDown.Value;
 
-                if (key >= OpenTK.Input.Key.A && key <= OpenTK.Input.Key.Z)
+                if (key >= Key.A && key <= Key.Z)
                 {
                     string c = key.ToString();
                     if ((_modifierKeys & WidgetController.ModifierKeys.Shift) == 0)
@@ -248,37 +248,37 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
                     _text += c;
                 }
-                else if (key >= OpenTK.Input.Key.Number0 && key <= OpenTK.Input.Key.Number9)
+                else if (key >= Key.Number0 && key <= Key.Number9)
                 {
-                    int digit = key - OpenTK.Input.Key.Number0;
+                    int digit = key - Key.Number0;
                     _text += digit.ToString();
                 }
-                else if (key >= OpenTK.Input.Key.Keypad0 && key <= OpenTK.Input.Key.Keypad9)
+                else if (key >= Key.Keypad0 && key <= Key.Keypad9)
                 {
-                    int digit = key - OpenTK.Input.Key.Keypad0;
+                    int digit = key - Key.Keypad0;
                     _text += digit.ToString();
                 }
                 else
                 {
                     switch (key)
                     {
-                        case OpenTK.Input.Key.BackSpace:
+                        case Key.BackSpace:
                             if (_text.Length > 0)
                             {
                                 _text = _text.Substring(0, _text.Length - 1);
                             }
                             break;
 
-                        case OpenTK.Input.Key.Space:
+                        case Key.Space:
                             _text += " ";
                             break;
 
-                        case OpenTK.Input.Key.Comma:
+                        case Key.Comma:
                             _text += ",";
                             break;
 
-                        case OpenTK.Input.Key.Period:
-                        case OpenTK.Input.Key.KeypadPeriod:
+                        case Key.Period:
+                        case Key.KeypadDecimal:
                             _text += ".";
                             break;
                     }

@@ -6,7 +6,7 @@ using Duality.Components;
 using Duality.Drawing;
 using Duality.Editor;
 using Duality.Resources;
-using OpenTK;
+
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
@@ -16,17 +16,17 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     /// <summary>
     /// A Progressbar Widget
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageProgressBar)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    
+    [EditorHintImage(ResNames.ImageProgressBar)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public class ProgressBar : Widget
     {
         #region NonSerialized fields
 
-        [NonSerialized]
+        [DontSerialize]
         private GameObject _bar;
 
-        [NonSerialized]
+        [DontSerialize]
         private FormattedText _fText;
 
         #endregion NonSerialized fields
@@ -159,7 +159,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             Panel sp = new Panel();
             sp.VisibilityGroup = this.VisibilityGroup;
             sp.Appearance = AppearanceManager.RequestAppearanceContentRef(_progressAppearance.Res.ProgressBar);
-            sp.Rect = Rect.AlignLeft(-Rect.W / 2 + _progressAppearance.Res.Widget.Res.Border.X, 0, 0, Rect.H - _progressAppearance.Res.Widget.Res.Border.Y - _progressAppearance.Res.Widget.Res.Border.W);
+            sp.Rect = Rect.Align(Alignment.Left, -Rect.W / 2 + _progressAppearance.Res.Widget.Res.Border.X, 0, 0, Rect.H - _progressAppearance.Res.Widget.Res.Border.Y - _progressAppearance.Res.Widget.Res.Border.W);
 
             _bar.AddComponent<Panel>(sp);
             Scene.Current.AddObject(_bar);

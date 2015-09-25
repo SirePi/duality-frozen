@@ -5,12 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Duality;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.Core;
-using System.Drawing;
-using System.Drawing.Imaging;
 using Duality.Drawing;
-using System.Runtime.InteropServices;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
 {
@@ -28,7 +24,16 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
         private List<Vector2> _sites;
         private bool _wrapping;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public int[][] SitesMap { get; private set; }
+
+        private class SortedElement
+        {
+            internal float Key { get; set; }
+            internal Vector2 Value { get; set; }
+        }
 
         /// <summary>
         /// Constructor
@@ -116,7 +121,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
                 SitesMap[x] = new int[inHeight];
             }
 
-            SortedList<float, Vector2> list = new SortedList<float, Vector2>();
+            List<SortedElement> sortedList = new List<SortedElement>();
 
             float bucketWidth = (float)inWidth / BUCKETS;
             float bucketHeight = (float)inHeight / BUCKETS;
@@ -131,7 +136,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
                     //Console.WriteLine("{0}, {1}", x, y);
                     Vector2 pt = new Vector2((float)x / inWidth, (float)y / inHeight);
                     //clear out the old distance
-                    list.Clear();
+                    sortedList.Clear();
 
                     //get the immediate bucket
                     int bx = FastMath.FastFloor(x / bucketWidth);
@@ -146,15 +151,20 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
                         List<KeyValuePair<float, Vector2>> nearestSources = FindNearestInSurrounding(pt, bx, by, surrounding);
                         foreach (KeyValuePair<float, Vector2> kvp in nearestSources)
                         {
-                            if (!list.Keys.Contains(kvp.Key))
+                            if (sortedList.FirstOrDefault(e => e.Key == kvp.Key) == null)
                             {
-                                list.Add(kvp.Key, kvp.Value);
+                                sortedList.Add(new SortedElement { Key = kvp.Key, Value = kvp.Value });
                             }
                         }
 
-                        if (list.Count > 0)
+                        sortedList.Sort((a, b) =>
                         {
-                            lastBestDistance = list.ElementAt(0).Key;
+                            return a.Key.CompareTo(b.Key);
+                        });
+
+                        if (sortedList.Count > 0)
+                        {
+                            lastBestDistance = sortedList.ElementAt(0).Key;
 
                             float dx = bx * bucketWidthNorm;
                             float dy = by * bucketHeightNorm;
@@ -172,11 +182,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
 
                         //Console.WriteLine("surrounding: {0}, bestDistance: {1}, list.Count: {2}", surrounding, lastBestDistance, list.Count);
                         surrounding++;
-                    } while ((couldFindBetter || list.Count == 0) && surrounding < BUCKETS);
+                    } while ((couldFindBetter || sortedList.Count == 0) && surrounding < BUCKETS);
 
                     //now that we have the value, put it in
-                    NoiseMap[x][y] = list.ElementAt(0).Key;
-                    SitesMap[x][y] = Sites.IndexOf(list.ElementAt(0).Value);
+                    NoiseMap[x][y] = sortedList.ElementAt(0).Key;
+                    SitesMap[x][y] = Sites.IndexOf(sortedList.ElementAt(0).Value);
                 }
             }
         }
@@ -312,10 +322,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
         /// <param name="inHeight"></param>
         /// <param name="inColors"></param>
         /// <returns></returns>
-        public Bitmap SitesToBitmap(int inWidth, int inHeight, IEnumerable<ColorRgba> inColors)
+        public PixelData SitesToBitmap(int inWidth, int inHeight, IEnumerable<ColorRgba> inColors)
         {
             Generate(inWidth, inHeight);
-
+            /*
             Bitmap bmp = new Bitmap(inWidth, inHeight, PixelFormat.Format32bppArgb);
 
             BitmapData bitmapData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
@@ -325,27 +335,34 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
 
             Marshal.Copy(firstPixel, pixels, 0, pixels.Length);
             ColorRgba[] colors = inColors.ToArray();
+            */
 
-            for (int y = 0; y < bitmapData.Height; y++)
+            ColorRgba[] pixels = new ColorRgba[inWidth * inHeight];
+            ColorRgba[] colors = inColors.ToArray();
+
+            for (int y = 0; y < inHeight; y++)
             {
-                int CurrentLine = y * bitmapData.Stride;
-                for (int x = 0; x < bitmapData.Width; x++)
+                for (int x = 0; x < inWidth; x++)
                 {
                     int site = SitesMap[x][y];
                     ColorRgba color = colors[site % colors.Length];
 
-                    int kx = (x * BytesPerPixel);
+                    pixels[(y * inWidth) + x] = color;
+
+                    /*int kx = (x * BytesPerPixel);
                     pixels[CurrentLine + kx] = color.B;
                     pixels[CurrentLine + kx + 1] = color.G;
                     pixels[CurrentLine + kx + 2] = color.R;
-                    pixels[CurrentLine + kx + 3] = color.A;
+                    pixels[CurrentLine + kx + 3] = color.A;*/
                 }
             }
 
             // Copy modified bytes back
-            Marshal.Copy(pixels, 0, firstPixel, pixels.Length);
+            /*Marshal.Copy(pixels, 0, firstPixel, pixels.Length);
             bmp.UnlockBits(bitmapData);
+            */
 
+            PixelData bmp = new PixelData(inWidth, inHeight, pixels);
             return bmp;
         }
     }

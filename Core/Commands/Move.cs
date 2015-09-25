@@ -1,12 +1,7 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Duality;
 using Duality.Components;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Data;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Core.Commands

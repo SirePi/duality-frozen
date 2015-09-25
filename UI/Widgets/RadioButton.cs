@@ -5,15 +5,16 @@ using System.Linq;
 using Duality.Editor;
 using Duality.Resources;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
+using Duality.Input;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
     /// <summary>
     /// A RadioButton Widget
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageRadioButton)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    
+    [EditorHintImage(ResNames.ImageRadioButton)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public class RadioButton : CheckButton
     {
         private string _radioGroup;
@@ -31,11 +32,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         ///
         /// </summary>
         /// <param name="e"></param>
-        public override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseUp(MouseButtonEventArgs e)
         {
             if (Status != WidgetStatus.Disabled)
             {
-                if (e.Button == OpenTK.Input.MouseButton.Left && _isMouseOver && !IsChecked)
+                if (e.Button == MouseButton.Left && _isMouseOver && !IsChecked)
                 {
                     IsChecked = true;
                 }

@@ -11,9 +11,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     /// <summary>
     /// A scrollable TextBlock
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageTextBlock)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    
+    [EditorHintImage(ResNames.ImageTextBlock)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public class TextBlock : MultiLineWidget
     {
         private string _text;

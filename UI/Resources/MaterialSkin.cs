@@ -4,7 +4,6 @@ using System;
 using Duality;
 using Duality.Editor;
 using Duality.Resources;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using Duality.Drawing;
@@ -14,12 +13,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
     /// <summary>
     ///
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageSkin)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    [EditorHintImage(ResNames.ImageSkin)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public class MaterialSkin : Skin
     {
-        public new static string FileExt = ".MaterialSkin" + Resource.FileExt;
 
         private int _atlasIndex;
 

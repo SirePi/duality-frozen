@@ -2,7 +2,6 @@
 
 using Duality;
 using Duality.Resources;
-using OpenTK;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.FX
 {
@@ -14,7 +13,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
             Texture mainTex = inMaterial.Res.MainTexture.Res;
 
             Center = mainTex.Size / 2f;
-            Rectangle = Rect.AlignCenter(0, 0, mainTex.Size.X, mainTex.Size.Y);
+            Rectangle = Rect.Align(Alignment.Center, 0, 0, mainTex.Size.X, mainTex.Size.Y);
         }
 
         public Vector2 Center { get; private set; }

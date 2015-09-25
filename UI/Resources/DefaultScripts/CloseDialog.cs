@@ -16,9 +16,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources.DefaultScripts
     /// <summary>
     /// Command used to close a Dialog window
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageScript)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    
+    [EditorHintImage(ResNames.ImageScript)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public class CloseDialog : Script
     {
         /// <summary>

@@ -31,7 +31,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural
     /// the position of the node.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [Serializable]
     public class Graph<T> where T : class, INode, new()
     {
         /// <summary>

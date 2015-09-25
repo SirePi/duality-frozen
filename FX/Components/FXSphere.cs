@@ -4,7 +4,6 @@ using System;
 using Duality;
 using Duality.Drawing;
 using Duality.Editor;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.FX.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Data;
 
@@ -13,9 +12,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
     /// <summary>
     /// Implementation of a spheric FXArea
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageFXSphere)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryFX)]
+    [EditorHintImage(ResNames.ImageFXSphere)]
+    [EditorHintCategory(ResNames.CategoryFX)]
     public class FXSphere : FXArea
     {
         /// <summary>
@@ -44,17 +42,16 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
         /// <summary>
         ///
         /// </summary>
-        /// <param name="inRandom"></param>
         /// <returns></returns>
-        protected override Vector3 _GetPoint(Random inRandom)
+        protected override Vector3 _GetPoint()
         {
             Vector3 result = Vector3.Zero;
 
             do
             {
-                result.X = inRandom.NextFloat(-1, 1);
-                result.Y = inRandom.NextFloat(-1, 1);
-                result.Z = inRandom.NextFloat(-1, 1);
+                result.X = MathF.Rnd.NextFloat(-1, 1);
+                result.Y = MathF.Rnd.NextFloat(-1, 1);
+                result.Z = MathF.Rnd.NextFloat(-1, 1);
             } while (result.LengthSquared > 1);
 
             return result * Radius;

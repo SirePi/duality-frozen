@@ -10,9 +10,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
     /// <summary>
     ///
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageScript)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    
+    [EditorHintImage(ResNames.ImageScript)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public abstract class Script : Resource
     {
         /// <summary>

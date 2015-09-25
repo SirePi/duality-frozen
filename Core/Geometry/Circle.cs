@@ -1,5 +1,4 @@
-using System;
-using OpenTK;
+using Duality;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Core.Geometry
 {
@@ -23,6 +22,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Geometry
         ///
         /// </summary>
         public Vector2 Center { get; private set; }
+
         /// <summary>
         ///
         /// </summary>

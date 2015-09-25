@@ -5,7 +5,7 @@ using Duality;
 using Duality.Components;
 using Duality.Editor;
 using Duality.Resources;
-using OpenTK;
+
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
 
@@ -14,20 +14,20 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     /// <summary>
     /// A Scrollbar Widget
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageScrollBar)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    
+    [EditorHintImage(ResNames.ImageScrollBar)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public class ScrollBar : Widget
     {
         #region NonSerialized fields
 
-        [NonSerialized]
+        [DontSerialize]
         private GameObject _cursor;
 
-        [NonSerialized]
+        [DontSerialize]
         private GameObject _decreaseButton;
 
-        [NonSerialized]
+        [DontSerialize]
         private GameObject _increaseButton;
 
         #endregion NonSerialized fields
@@ -231,7 +231,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             ScrollCursor sc = new ScrollCursor();
             sc.VisibilityGroup = this.VisibilityGroup;
             sc.Appearance = AppearanceManager.RequestAppearanceContentRef(_scrollAppearance.Res.Cursor);
-            sc.Rect = Rect.AlignCenter(0, 0, _scrollAppearance.Res.CursorSize.X, _scrollAppearance.Res.CursorSize.Y);
+            sc.Rect = Rect.Align(Alignment.Center, 0, 0, _scrollAppearance.Res.CursorSize.X, _scrollAppearance.Res.CursorSize.Y);
 
             _cursor.AddComponent<ScrollCursor>(sc);
             Scene.Current.AddObject(_cursor);
@@ -248,7 +248,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             ScrollDecreaseButton sdb = new ScrollDecreaseButton();
             sdb.VisibilityGroup = this.VisibilityGroup;
             sdb.Appearance = AppearanceManager.RequestAppearanceContentRef(_scrollAppearance.Res.Decrease);
-            sdb.Rect = Rect.AlignCenter(0, 0, _scrollAppearance.Res.ButtonSize.X, _scrollAppearance.Res.ButtonSize.Y);
+            sdb.Rect = Rect.Align(Alignment.Center, 0, 0, _scrollAppearance.Res.ButtonSize.X, _scrollAppearance.Res.ButtonSize.Y);
             sdb.LeftClickArgument = _scrollSpeed;
 
             _decreaseButton.AddComponent<ScrollDecreaseButton>(sdb);
@@ -266,7 +266,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             ScrollIncreaseButton sib = new ScrollIncreaseButton();
             sib.VisibilityGroup = this.VisibilityGroup;
             sib.Appearance = AppearanceManager.RequestAppearanceContentRef(_scrollAppearance.Res.Increase);
-            sib.Rect = Rect.AlignCenter(0, 0, _scrollAppearance.Res.ButtonSize.X, _scrollAppearance.Res.ButtonSize.Y);
+            sib.Rect = Rect.Align(Alignment.Center, 0, 0, _scrollAppearance.Res.ButtonSize.X, _scrollAppearance.Res.ButtonSize.Y);
             sib.LeftClickArgument = _scrollSpeed;
 
             _increaseButton.AddComponent<ScrollIncreaseButton>(sib);

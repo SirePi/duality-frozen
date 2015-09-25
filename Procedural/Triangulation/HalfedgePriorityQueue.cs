@@ -1,7 +1,7 @@
+using Duality;
 using System;
-
 using System.Collections.Generic;
-using OpenTK;
+
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Triangulation
 {

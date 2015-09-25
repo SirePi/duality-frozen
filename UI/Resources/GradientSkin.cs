@@ -4,7 +4,7 @@ using System;
 using Duality;
 using Duality.Editor;
 using Duality.Resources;
-using OpenTK;
+
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using Duality.Drawing;
 using SnowyPeak.Duality.Plugin.Frozen.Core;
@@ -14,12 +14,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
     /// <summary>
     ///
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageSkin)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    
+    [EditorHintImage(ResNames.ImageSkin)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public class GradientSkin : Skin
     {
-        public new static string FileExt = ".GradientSkin" + Resource.FileExt;
 
         private ColorRgba _colorTL;
         private ColorRgba _colorTR;

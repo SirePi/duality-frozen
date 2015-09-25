@@ -6,7 +6,6 @@ using System.Linq;
 using Duality;
 using Duality.Drawing;
 using Duality.Editor;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.FX.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 
@@ -15,21 +14,20 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
     /// <summary>
     /// A Lightning effect emitter. Requires 2 FXAreas to work
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageLightning)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryFX)]
+    [EditorHintImage(ResNames.ImageLightning)]
+    [EditorHintCategory(ResNames.CategoryFX)]
     public class Lightning : Component, ICmpUpdatable, ICmpRenderer, ICmpInitializable
     {
-        [NonSerialized]
+        [DontSerialize]
         private List<LightningBolt> _bolts;
 
-        [NonSerialized]
+        [DontSerialize]
         private bool _inEditor;
 
-        [NonSerialized]
+        [DontSerialize]
         private float _jaggedness;
 
-        [NonSerialized]
+        [DontSerialize]
         private float _timeSinceLastBolt;
 
         /// <summary>
@@ -41,6 +39,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
             Thickness = 2f;
             BoltLifeTime = 1;
             EmitEvery = 1;
+            DetailLevel = 5;
 
             VisibilityGroup = VisibilityFlag.Group0;
             Color = Colors.White;
@@ -66,6 +65,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
         /// [GET / SET] The Target Area of the Bolts
         /// </summary>
         public FXArea FXTarget { get; set; }
+        /// <summary>
+        /// [GET / SET] The DetailLevel of the lightning bolts. Lower values means more points in the lightning bolts.
+        /// </summary>
+        public int DetailLevel { get; set; }
 
         float ICmpRenderer.BoundRadius
         {
@@ -145,9 +148,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
             }
             else
             {
-                float scaleStartTemp = 1;
-                float scaleEndTemp = 1;
-
                 foreach (LightningBolt bolt in _bolts.Where(b => b.IsAlive))
                 {
                     VertexC1P3T2[] v = new VertexC1P3T2[4];
@@ -164,6 +164,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
 
                     Vector3 start = bd.Start;
                     Vector3 end = bd.End;
+                    float scaleStartTemp = 1;
+                    float scaleEndTemp = 1;
 
                     device.PreprocessCoords(ref start, ref scaleStartTemp);
                     device.PreprocessCoords(ref end, ref scaleEndTemp);
@@ -213,6 +215,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
 
         void ICmpUpdatable.OnUpdate()
         {
+            if (DetailLevel == 0)
+            {
+                DetailLevel = 1;
+            }
+
             if (!_inEditor && FXSource != null && FXTarget != null)
             {
                 float secondsPast = Time.LastDelta / 1000f;
@@ -247,10 +254,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
 
         internal virtual void InitializeBolt(LightningBolt inBolt)
         {
-            Vector3 source = FXSource.GameObj.Transform.Pos + FXSource.GetPoint(FastRandom.Instance);
-            Vector3 target = FXTarget.GameObj.Transform.Pos + FXTarget.GetPoint(FastRandom.Instance);
+            Vector3 source = FXSource.GameObj.Transform.Pos + FXSource.GetPoint();
+            Vector3 target = FXTarget.GameObj.Transform.Pos + FXTarget.GetPoint();
 
-            inBolt.SetData(Sway, _jaggedness, source, target, Color, Thickness, BoltLifeTime);
+            inBolt.SetData(Sway, _jaggedness, source, target, Color, Thickness, DetailLevel, BoltLifeTime);
         }
     }
 }

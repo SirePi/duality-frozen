@@ -1,5 +1,5 @@
+using Duality;
 using System;
-using OpenTK;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Core.Geometry
 {
@@ -26,10 +26,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Geometry
         {
             get { return (P0.Value - P1.Value).Length; }
         }
+
         /// <summary>
         ///
         /// </summary>
         public Nullable<Vector2> P0 { get; private set; }
+
         /// <summary>
         ///
         /// </summary>

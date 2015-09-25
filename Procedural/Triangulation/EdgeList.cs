@@ -1,5 +1,5 @@
 using System;
-using OpenTK;
+using Duality;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Triangulation
 {

@@ -90,12 +90,6 @@
     </Compile>
     <Compile Include="Actions\EditorActions.cs" />
     <Compile Include="EditorPlugin.cs" />
-    <Compile Include="Forms\SkinEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\SkinEditor.Designer.cs">
-      <DependentUpon>SkinEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Vector2Editor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -119,9 +113,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\SkinEditor.resx">
-      <DependentUpon>SkinEditor.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Vector2Editor.resx">
       <DependentUpon>Vector2Editor.cs</DependentUpon>
     </EmbeddedResource>

@@ -2,8 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -128,39 +126,41 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural.Noise
         /// <param name="inHeight"></param>
         /// <param name="inColors"></param>
         /// <returns></returns>
-        public Bitmap ToBitmap(int inWidth, int inHeight, ColorRange inColors)
+        public PixelData ToPixelData(int inWidth, int inHeight, ColorRange inColors)
         {
             Generate(inWidth, inHeight);
 
-            Bitmap bmp = new Bitmap(inWidth, inHeight, PixelFormat.Format32bppArgb);
+            //BitmapData bitmapData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
+            //int BytesPerPixel = Bitmap.GetPixelFormatSize(bmp.PixelFormat) / 8;
+            //byte[] pixels = new byte[bitmapData.Stride * bmp.Height];
+            //IntPtr firstPixel = bitmapData.Scan0;
 
-            BitmapData bitmapData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
-            int BytesPerPixel = Bitmap.GetPixelFormatSize(bmp.PixelFormat) / 8;
-            byte[] pixels = new byte[bitmapData.Stride * bmp.Height];
-            IntPtr firstPixel = bitmapData.Scan0;
+            //Marshal.Copy(firstPixel, pixels, 0, pixels.Length);
 
-            Marshal.Copy(firstPixel, pixels, 0, pixels.Length);
+            ColorRgba[] pixels = new ColorRgba[inWidth * inHeight];
 
-            for (int y = 0; y < bitmapData.Height; y++)
+            for (int y = 0; y < inHeight; y++)
             {
-                int CurrentLine = y * bitmapData.Stride;
-                for (int x = 0; x < bitmapData.Width; x++)
+                for (int x = 0; x < inWidth; x++)
                 {
                     float value = NoiseMap[x][y];
                     ColorRgba color = inColors.Lerp(value);
 
+                    pixels[(y * inWidth) + x] = color;
+                    /*
                     int kx = (x * BytesPerPixel);
                     pixels[CurrentLine + kx] = color.B;
                     pixels[CurrentLine + kx + 1] = color.G;
                     pixels[CurrentLine + kx + 2] = color.R;
-                    pixels[CurrentLine + kx + 3] = color.A;
+                    pixels[CurrentLine + kx + 3] = color.A;*/
                 }
             }
 
             // Copy modified bytes back
-            Marshal.Copy(pixels, 0, firstPixel, pixels.Length);
-            bmp.UnlockBits(bitmapData);
+            //Marshal.Copy(pixels, 0, firstPixel, pixels.Length);
+            //bmp.UnlockBits(bitmapData);
 
+            PixelData bmp = new PixelData(inWidth, inHeight, pixels);
             return bmp;
         }
 

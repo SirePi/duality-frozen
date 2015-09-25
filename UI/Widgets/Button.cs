@@ -5,19 +5,20 @@ using Duality;
 using Duality.Drawing;
 using Duality.Editor;
 using Duality.Resources;
-using OpenTK;
+
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
+using Duality.Input;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
     /// <summary>
     /// A Button Widget
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageButton)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    
+    [EditorHintImage(ResNames.ImageButton)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public class Button : Widget
     {
         #region NonSerialized fields
@@ -25,13 +26,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected bool _leftButtonDown;
 
-        [NonSerialized]
+        [DontSerialize]
         private FormattedText _fText;
 
-        [NonSerialized]
+        [DontSerialize]
         private float _secondsFromLastTick;
 
         #endregion NonSerialized fields
@@ -147,15 +148,15 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         ///
         /// </summary>
         /// <param name="e"></param>
-        public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseDown(MouseButtonEventArgs e)
         {
             if (Status != WidgetStatus.Disabled)
             {
-                if (e.Button == OpenTK.Input.MouseButton.Right && OnRightClick.Res != null)
+                if (e.Button == MouseButton.Right && OnRightClick.Res != null)
                 {
                     OnRightClick.Res.Execute(this.GameObj, RightClickArgument);
                 }
-                if (e.Button == OpenTK.Input.MouseButton.Left)
+                if (e.Button == MouseButton.Left)
                 {
                     Status = WidgetStatus.Active;
 
@@ -196,11 +197,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         ///
         /// </summary>
         /// <param name="e"></param>
-        public override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseUp(MouseButtonEventArgs e)
         {
             if (Status != WidgetStatus.Disabled)
             {
-                if (e.Button == OpenTK.Input.MouseButton.Left)
+                if (e.Button == MouseButton.Left)
                 {
                     _leftButtonDown = false;
 

@@ -1,12 +1,9 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Collections.Generic;
-
 namespace SnowyPeak.Duality.Plugin.Frozen.Core
 {
     /// <summary>
-    /// MathF extentions
+    /// MathF extensions
     /// </summary>
     public static class FastMath
     {

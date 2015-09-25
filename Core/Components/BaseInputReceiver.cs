@@ -1,7 +1,7 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
 using Duality;
+using Duality.Input;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
 {
@@ -11,7 +11,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
     /// The type of methods called depend on the associated InputController and its configuration.
     /// </summary>
     /// <seealso cref="InputController"/>
-    [Serializable]
     public abstract class BaseInputReceiver : Component
     {
         /// <summary>
@@ -19,7 +18,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// </summary>
         /// <param name="e"></param>
         /// <param name="k"></param>
-        public virtual void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, InputController.ModifierKeys k)
+        public virtual void KeyDown(KeyboardKeyEventArgs e, InputController.ModifierKeys k)
         {
         }
 
@@ -28,7 +27,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// </summary>
         /// <param name="e"></param>
         /// <param name="k"></param>
-        public virtual void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, InputController.ModifierKeys k)
+        public virtual void KeyUp(KeyboardKeyEventArgs e, InputController.ModifierKeys k)
         {
         }
 
@@ -36,7 +35,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// Virtual MouseDown
         /// </summary>
         /// <param name="e"></param>
-        public virtual void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        public virtual void MouseDown(MouseButtonEventArgs e)
         {
         }
 
@@ -58,7 +57,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// Virtual MouseUp
         /// </summary>
         /// <param name="e"></param>
-        public virtual void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
+        public virtual void MouseUp(MouseButtonEventArgs e)
         {
         }
 
@@ -66,7 +65,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
         /// Virtual MouseWheel
         /// </summary>
         /// <param name="e"></param>
-        public virtual void MouseWheel(OpenTK.Input.MouseWheelEventArgs e)
+        public virtual void MouseWheel(MouseWheelEventArgs e)
         {
         }
     }

@@ -4,7 +4,6 @@ using System;
 using Duality;
 using Duality.Drawing;
 using Duality.Editor;
-using OpenTK;
 using SnowyPeak.Duality.Plugin.Frozen.FX.Properties;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
@@ -12,9 +11,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
     /// <summary>
     /// Implementation of a circular FXArea
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageFXCircle)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryFX)]
+    [EditorHintImage(ResNames.ImageFXCircle)]
+    [EditorHintCategory(ResNames.CategoryFX)]
     public class FXCircle : FXArea
     {
         /// <summary>
@@ -34,16 +32,15 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
         /// <summary>
         ///
         /// </summary>
-        /// <param name="inRandom"></param>
         /// <returns></returns>
-        protected override Vector3 _GetPoint(Random inRandom)
+        protected override Vector3 _GetPoint()
         {
             Vector3 result = Vector3.Zero;
 
             do
             {
-                result.X = inRandom.NextFloat(-1, 1);
-                result.Y = inRandom.NextFloat(-1, 1);
+                result.X = MathF.Rnd.NextFloat(-1, 1);
+                result.Y = MathF.Rnd.NextFloat(-1, 1);
                 result.Z = 0;
             } while (result.LengthSquared > 1);
 

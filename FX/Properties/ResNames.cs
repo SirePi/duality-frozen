@@ -11,15 +11,17 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Properties
 
     public static class ResNames
     {
-        public const string CategoryFX = "Category_FX";
+        private const string ManifestBaseName = "SnowyPeak.Duality.Plugin.Frozen.FX.EmbeddedResources.";
 
-        public const string ImageFXCircle = "iconResFXCircle";
-        public const string ImageFXCube = "iconResFXCube";
-        public const string ImageFXPoint = "iconResFXPoint";
-        public const string ImageFXRect = "iconResFXRect";
-        public const string ImageFXSphere = "iconResFXSphere";
-        public const string ImageLightning = "iconResLightning";
-        public const string ImageParticleEmitter = "iconResParticleEmitter";
+        public const string CategoryFX = "Frozen/FX";
+
+        public const string ImageFXCircle = ManifestBaseName + "iconResFXCircle.png";
+        public const string ImageFXCube = ManifestBaseName + "iconResFXCube.png";
+        public const string ImageFXPoint = ManifestBaseName + "iconResFXPoint.png";
+        public const string ImageFXRect = ManifestBaseName + "iconResFXRect.png";
+        public const string ImageFXSphere = ManifestBaseName + "iconResFXSphere.png";
+        public const string ImageLightning = ManifestBaseName + "iconResLightning.png";
+        public const string ImageParticleEmitter = ManifestBaseName + "iconResParticleEmitter.png";
     }
 
 #pragma warning restore 1591

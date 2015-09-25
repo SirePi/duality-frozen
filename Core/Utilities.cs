@@ -1,9 +1,7 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System.Linq;
 using Duality;
 using Duality.Drawing;
-using OpenTK;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Core
 {

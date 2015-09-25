@@ -6,22 +6,23 @@ using Duality.Components;
 using Duality.Drawing;
 using Duality.Editor;
 using Duality.Resources;
-using OpenTK;
+
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Geometry;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
 using System.Collections.Generic;
+using Duality.Input;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
     /// <summary>
     ///
     /// </summary>
-    [Serializable]
+    
     [RequiredComponent(typeof(Transform))]
-    [EditorHintImage(typeof(Res), ResNames.ImageWidget)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    [EditorHintImage(ResNames.ImageWidget)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public abstract class Widget : Component, ICmpRenderer, ICmpUpdatable, ICmpInitializable
     {
         private static readonly Skin DEFAULT_SKIN = new MaterialSkin() { Material = Material.Checkerboard };
@@ -61,10 +62,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             set { _activeArea = value; }
         }
 
-        [NonSerialized]
+        [DontSerialize]
         private ContentRef<Appearance> _appearance;
 
-        [NonSerialized]
+        [DontSerialize]
         protected bool _isMouseOver;
 
         [EditorHintFlags(MemberFlags.Invisible)]
@@ -139,58 +140,58 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected static readonly float DELTA_Z = -.01f;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected Polygon _activeAreaOnScreen;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected Polygon _areaOnScreen;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected DirtyFlags _dirtyFlags;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected bool _isInOverlay;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected MultiSpacePoint[] _points;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected bool _resized;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected Vector3[] _tempActiveAreaOnScreen;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected VertexC1P3T2[] _vertices;
 
-        [NonSerialized]
+        [DontSerialize]
         private bool _widgetActive;
 
         #endregion NonSerialized fields
@@ -391,7 +392,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// </summary>
         /// <param name="e"></param>
         /// <param name="k"></param>
-        public virtual void KeyDown(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
+        public virtual void KeyDown(KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
         { }
 
         /// <summary>
@@ -399,14 +400,14 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// </summary>
         /// <param name="e"></param>
         /// <param name="k"></param>
-        public virtual void KeyUp(OpenTK.Input.KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
+        public virtual void KeyUp(KeyboardKeyEventArgs e, WidgetController.ModifierKeys k)
         { }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        public virtual void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        public virtual void MouseDown(MouseButtonEventArgs e)
         { }
 
         /// <summary>
@@ -439,21 +440,21 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         ///
         /// </summary>
         /// <param name="e"></param>
-        public virtual void MouseMove(OpenTK.Input.MouseMoveEventArgs e) 
+        public virtual void MouseMove(MouseMoveEventArgs e) 
         { }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        public virtual void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
+        public virtual void MouseUp(MouseButtonEventArgs e)
         { }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        public virtual void MouseWheel(OpenTK.Input.MouseWheelEventArgs e)
+        public virtual void MouseWheel(MouseWheelEventArgs e)
         { }
 
         internal virtual void Activate()

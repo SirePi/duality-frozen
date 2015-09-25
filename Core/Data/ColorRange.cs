@@ -1,8 +1,8 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
+using Duality;
 using Duality.Drawing;
-using OpenTK;
+using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Core.Data
 {
@@ -34,9 +34,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Data
         /// </summary>
         /// <param name="inRandom"></param>
         /// <returns></returns>
-        public override ColorRgba GetRandom(Random inRandom)
+        public override ColorRgba GetRandom( )
         {
-            Vector4 color = _min + GetDeltaValue((float)inRandom.NextDouble());
+            Vector4 color = _min + GetDeltaValue((float)MathF.Rnd.NextFloat());
             return new ColorRgba((byte)color.X, (byte)color.Y, (byte)color.Z, (byte)color.W);
         }
 

@@ -7,36 +7,37 @@ using Duality.Components;
 using Duality.Drawing;
 using Duality.Editor;
 using Duality.Resources;
-using OpenTK;
+
 using SnowyPeak.Duality.Plugin.Frozen.Core.Geometry;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
+using Duality.Input;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
     /// <summary>
     /// A ListBox Widget
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageListBox)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    
+    [EditorHintImage(ResNames.ImageListBox)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public class ListBox : MultiLineWidget
     {
         #region NonSerialized fields
 
-        [NonSerialized]
+        [DontSerialize]
         private GameObject _highlight;
 
-        [NonSerialized]
+        [DontSerialize]
         private Panel _highlightPanel;
 
-        [NonSerialized]
+        [DontSerialize]
         private Polygon _listArea;
 
-        [NonSerialized]
+        [DontSerialize]
         private object _selectedItem;
 
-        [NonSerialized]
+        [DontSerialize]
         private Polygon _testPolygon;
 
         #endregion NonSerialized fields
@@ -121,9 +122,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         ///
         /// </summary>
         /// <param name="e"></param>
-        public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseDown(MouseButtonEventArgs e)
         {
-            if (e.Button == OpenTK.Input.MouseButton.Left)
+            if (e.Button == MouseButton.Left)
             {
                 float top = 0;
                 float bottom = _visibleHeight;
@@ -143,10 +144,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 {
                     Rect r = _fText.TextMetrics.LineBounds[i];
 
-                    if (!(r.Bottom.Y < top || r.Top.Y > bottom))
+                    if (!(r.BottomY < top || r.TopY > bottom))
                     {
-                        float realTop = Math.Max(r.Top.Y, top) - top;
-                        float realBottom = Math.Min(r.Bottom.Y, bottom) - top;
+                        float realTop = Math.Max(r.TopY, top) - top;
+                        float realBottom = Math.Min(r.BottomY, bottom) - top;
 
                         _testPolygon[0] = _activeAreaOnScreen[0] + (deltaLeft * realTop);
                         _testPolygon[1] = _activeAreaOnScreen[1] + (deltaRight * realTop);
@@ -224,7 +225,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _highlightPanel = new Panel();
             _highlightPanel.VisibilityGroup = this.VisibilityGroup;
             _highlightPanel.Appearance = AppearanceManager.RequestAppearanceContentRef(_listAppearance.Res.Highlight); ;
-            _highlightPanel.Rect = Rect.AlignTopLeft(0, 0, 0, 0);
+            _highlightPanel.Rect = Rect.Align(Alignment.TopLeft, 0, 0, 0, 0);
 
             _highlight.AddComponent<Panel>(_highlightPanel);
             Scene.Current.AddObject(_highlight);
@@ -255,20 +256,20 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
                 if (_isScrollbarRequired)
                 {
-                    _highlightPanel.Active = !(selectionRect.Bottom.Y <= top || selectionRect.Top.Y >= bottom);
+                    _highlightPanel.Active = !(selectionRect.BottomY <= top || selectionRect.TopY >= bottom);
 
-                    if (selectionRect.Top.Y < top && selectionRect.Bottom.Y >= top)
+                    if (selectionRect.TopY < top && selectionRect.BottomY >= top)
                     {
                         Rect highlightVisibleRect = _highlightPanel.ClippingRect;
-                        highlightVisibleRect.Y = top - selectionRect.Top.Y;
+                        highlightVisibleRect.Y = top - selectionRect.TopY;
 
                         _highlightPanel.ClippingRect = highlightVisibleRect;
                     }
 
-                    if (selectionRect.Bottom.Y > bottom && selectionRect.Top.Y <= bottom)
+                    if (selectionRect.BottomY > bottom && selectionRect.TopY <= bottom)
                     {
                         Rect highlightVisibleRect = _highlightPanel.ClippingRect;
-                        highlightVisibleRect.H = highlightRect.H - (selectionRect.Bottom.Y - bottom);
+                        highlightVisibleRect.H = highlightRect.H - (selectionRect.BottomY - bottom);
 
                         _highlightPanel.ClippingRect = highlightVisibleRect;
                     }

@@ -6,27 +6,28 @@ using Duality.Components;
 using Duality.Drawing;
 using Duality.Editor;
 using Duality.Resources;
-using OpenTK;
+
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
+using Duality.Input;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
     /// <summary>
     /// A CheckButton Widget
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageCheckButton)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    
+    [EditorHintImage(ResNames.ImageCheckButton)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public class CheckButton : Widget
     {
         #region NonSerialized fields
 
-        [NonSerialized]
+        [DontSerialize]
         private FormattedText _fText;
 
-        [NonSerialized]
+        [DontSerialize]
         private GameObject _glyph;
 
         #endregion NonSerialized fields
@@ -151,11 +152,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         ///
         /// </summary>
         /// <param name="e"></param>
-        public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseDown(MouseButtonEventArgs e)
         {
             if (Status != WidgetStatus.Disabled)
             {
-                if (e.Button == OpenTK.Input.MouseButton.Left)
+                if (e.Button == MouseButton.Left)
                 {
                     Status = WidgetStatus.Active;
                 }
@@ -192,9 +193,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         ///
         /// </summary>
         /// <param name="e"></param>
-        public override void MouseUp(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseUp(MouseButtonEventArgs e)
         {
-            if (e.Button == OpenTK.Input.MouseButton.Left && _isMouseOver)
+            if (e.Button == MouseButton.Left && _isMouseOver)
             {
                 IsChecked = !IsChecked;
                 Status = _isMouseOver ? WidgetStatus.Hover : WidgetStatus.Normal;
@@ -271,7 +272,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 {
                     Panel p = _glyph.GetComponent<Panel>();
                     p.Appearance = AppearanceManager.RequestAppearanceContentRef(_glyphAppearance.Res.Glyph);
-                    p.Rect = Rect.AlignTopLeft(0, 0, _glyphAppearance.Res.GlyphSize.X, _glyphAppearance.Res.GlyphSize.Y);
+                    p.Rect = Rect.Align(Alignment.TopLeft, 0, 0, _glyphAppearance.Res.GlyphSize.X, _glyphAppearance.Res.GlyphSize.Y);
                 }
 
                 _glyph.Active = IsChecked;
@@ -289,7 +290,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             Panel p = new Panel();
             p.VisibilityGroup = this.VisibilityGroup;
             p.Appearance = AppearanceManager.RequestAppearanceContentRef(_glyphAppearance.Res.Glyph);
-            p.Rect = Rect.AlignCenter(0, 0, _glyphAppearance.Res.GlyphSize.X, _glyphAppearance.Res.GlyphSize.Y);
+            p.Rect = Rect.Align(Alignment.Center, 0, 0, _glyphAppearance.Res.GlyphSize.X, _glyphAppearance.Res.GlyphSize.Y);
 
             _glyph.AddComponent<Panel>(p);
             Scene.Current.AddObject(_glyph);

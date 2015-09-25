@@ -6,8 +6,6 @@ using System.Linq;
 using Duality;
 using Duality.Drawing;
 using Duality.Resources;
-using OpenTK;
-using OpenTK.Graphics.OpenGL;
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.FX
@@ -23,8 +21,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
 
         private float _lifeTime;
 
-        private System.Drawing.Pen _pen;
-
         private float _sway2;
 
         private float _timeToLive;
@@ -34,7 +30,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
         internal LightningBolt()
         {
             _verticesPositions = new List<Vector2>();
-            _pen = new System.Drawing.Pen(System.Drawing.Color.White);
             BatchInfos = new Dictionary<IDrawDevice, BoltData>();
         }
 
@@ -51,29 +46,54 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
 
         internal void PrepareTextureForDrawDevice(IDrawDevice device)
         {
-            System.Drawing.PointF[] points = new System.Drawing.PointF[_verticesPositions.Count];
+            Vector2[] points = new Vector2[_verticesPositions.Count];
 
             // Drawing texture based on displacement for each camera
-            Vector3 start = _absoluteStart * device.GetScaleAtZ(_absoluteStart.Z);
-            Vector3 end = _absoluteEnd * device.GetScaleAtZ(_absoluteEnd.Z);
+            Vector3 start = _absoluteStart;// *device.GetScaleAtZ(_absoluteStart.Z);
+            Vector3 end = _absoluteEnd;// *device.GetScaleAtZ(_absoluteEnd.Z);
 
             Vector2 tangent = (end - start).Xy;
             float length = tangent.Length;
 
             for (int i = 0; i < points.Length; i++)
             {
-                points[i] = new System.Drawing.PointF(_verticesPositions[i].X * length, _verticesPositions[i].Y);
+                points[i] = new Vector2(_verticesPositions[i].X * length, _verticesPositions[i].Y);
             }
 
-            System.Drawing.Bitmap pixelData = new System.Drawing.Bitmap((int)MathF.Ceiling(length), (int)MathF.Ceiling(_sway2));
+            PixelData pixelData = new PixelData();
+            
+            Texture tx = new Texture((int)MathF.Ceiling(length), (int)MathF.Ceiling(_sway2), TextureSizeMode.NonPowerOfTwo);
 
-            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(pixelData))
+            using (RenderTarget rt = new RenderTarget(AAQuality.Off, tx))
+            using (DrawDevice td = new DrawDevice())
             {
+                td.Perspective = PerspectiveMode.Flat;
+                td.VisibilityMask = VisibilityFlag.AllGroups | VisibilityFlag.ScreenOverlay;
+                td.RenderMode = RenderMatrix.OrthoScreen;
+                td.Target = rt;
+                td.ViewportRect = new Rect(rt.Width, rt.Height);
+
+                td.PrepareForDrawcalls();
+                Canvas c = new Canvas(td);
+
+                for (int i = 1; i < points.Length; i++)
+                {
+                    c.FillThickLine(points[i - 1].X, points[i - 1].Y, points[i].X, points[i].Y, CurrentThickness);
+                }
+
+                td.Render(ClearFlag.All, ColorRgba.TransparentBlack, 1.0f);
+                /*
                 g.Clear(System.Drawing.Color.Transparent);
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
                 g.DrawLines(_pen, points);
+                 * */
             }
-
+            
+            /*
+            g.Clear(System.Drawing.Color.Transparent);
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+            g.DrawLines(_pen, points);
+            */
             if (!BatchInfos.ContainsKey(device))
             {
                 BatchInfo bi = new BatchInfo(
@@ -83,10 +103,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
                         new Texture(new ContentRef<Pixmap>(new Pixmap()))
                         {
                             FilterMin = TextureMinFilter.LinearMipmapLinear,
-                            FilterMag = TextureMagFilter.LinearSharpenSgis,
-                            WrapX = TextureWrapMode.ClampToEdge,
-                            WrapY = TextureWrapMode.ClampToEdge,
-                            TexSizeMode = Texture.SizeMode.Stretch
+                            FilterMag = TextureMagFilter.Linear,
+                            WrapX = TextureWrapMode.Clamp,
+                            WrapY = TextureWrapMode.Clamp,
+                            TexSizeMode = TextureSizeMode.Stretch
                         }));
 
                 BatchInfos.Add(device, new BoltData() { BatchInfo = bi });
@@ -94,22 +114,21 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
 
             BoltData bd = BatchInfos[device];
 
-            Texture tx = bd.BatchInfo.MainTexture.Res;
-            tx.BasePixmap.Res.MainLayer.FromBitmap(pixelData);
-            tx.ReloadData();
+            bd.BatchInfo.MainTexture = tx;
+            //tx.BasePixmap.Res.MainLayer.FromBitmap(pixelData);
+            //tx.ReloadData();
 
             bd.Start = start;
             bd.End = end;
             bd.IsReady = true;
         }
 
-        internal void SetData(float inSway, float inJaggedness, Vector3 inStart, Vector3 inEnd, ColorRgba inColor, float inThickness, float inTimeToLive)
+        internal void SetData(float inSway, float inJaggedness, Vector3 inStart, Vector3 inEnd, ColorRgba inColor, float inThickness, int inDetail, float inTimeToLive)
         {
             _absoluteStart = inStart;
             _absoluteEnd = inEnd;
 
             _lifeTime = _timeToLive = inTimeToLive;
-            _pen.Width = inThickness;
 
             float sway = inSway + inThickness;
             _sway2 = sway * 2;
@@ -121,9 +140,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
             _verticesPositions.Add(new Vector2(0, sway));
             _verticesPositions.Add(new Vector2(1, sway));
 
-            for (int i = 0; i < length / 4; i++)
+            for (int i = 0; i < length / inDetail; i++)
             {
-                _verticesPositions.Add(new Vector2(FastRandom.Instance.NextFloat() * 0.9f + 0.05f, sway));
+                _verticesPositions.Add(new Vector2(MathF.Rnd.NextFloat() * 0.9f + 0.05f, sway));
             }
             _verticesPositions = _verticesPositions.OrderBy(v => v.X).ToList();
 
@@ -135,7 +154,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
 
                 float scale = (length * inJaggedness) * (_verticesPositions[i].X - _verticesPositions[i - 1].X);
 
-                float displacement = (FastRandom.Instance.NextFloat() * _sway2) - sway;
+                float displacement = (MathF.Rnd.NextFloat() * _sway2) - sway;
                 displacement -= (displacement - prevDisplacement) * (1 - scale);
 
                 pos.Y += displacement;

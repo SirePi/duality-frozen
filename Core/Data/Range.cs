@@ -25,10 +25,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Data
         ///
         /// </summary>
         public T Delta { get; protected set; }
+
         /// <summary>
         ///
         /// </summary>
         public T Max { get; protected set; }
+
         /// <summary>
         ///
         /// </summary>
@@ -39,7 +41,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Data
         /// </summary>
         /// <param name="inRandom">The random instance to use</param>
         /// <returns></returns>
-        public abstract T GetRandom(Random inRandom);
+        public abstract T GetRandom();
 
         /// <summary>
         /// Get the value corresponding to the required interpolation. Parameter must be between 0 and 1

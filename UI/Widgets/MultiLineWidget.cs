@@ -5,8 +5,8 @@ using Duality;
 using Duality.Components;
 using Duality.Drawing;
 using Duality.Resources;
-using OpenTK;
-using OpenTK.Graphics.OpenGL;
+
+
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
 
@@ -15,7 +15,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     /// <summary>
     ///
     /// </summary>
-    [Serializable]
+    
     public abstract class MultiLineWidget : Widget
     {
         #region NonSerialized fields
@@ -23,43 +23,43 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected FormattedText _fText;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected bool _isScrollbarRequired;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected ScrollBar _scrollComponent;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected int _visibleHeight;
 
         /// <summary>
         ///
         /// </summary>
-        [NonSerialized]
+        [DontSerialize]
         protected int _visibleWidth;
 
-        [NonSerialized]
+        [DontSerialize]
         private BatchInfo _batchInfo;
 
-        [NonSerialized]
+        [DontSerialize]
         private GameObject _scrollbar;
 
-        [NonSerialized]
+        [DontSerialize]
         private VertexC1P3T2[] _textVertices;
 
-        [NonSerialized]
+        [DontSerialize]
         private Vector2 _uvUnit;
 
         #endregion NonSerialized fields
@@ -227,9 +227,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                         {
                             FilterMin = TextureMinFilter.NearestMipmapLinear,
                             FilterMag = TextureMagFilter.Nearest,
-                            WrapX = TextureWrapMode.ClampToEdge,
-                            WrapY = TextureWrapMode.ClampToEdge,
-                            TexSizeMode = Texture.SizeMode.Enlarge
+                            WrapX = TextureWrapMode.Clamp,
+                            WrapY = TextureWrapMode.Clamp,
+                            TexSizeMode = TextureSizeMode.Enlarge
                         }));
             }
 
@@ -270,7 +270,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                     }
                 }
 
-                Pixmap.Layer textLayer = new Pixmap.Layer(_fText.MaxWidth, (int)Math.Max(_visibleHeight, _fText.Size.Y), Colors.Transparent);
+                PixelData textLayer = new PixelData(_fText.MaxWidth, (int)Math.Max(_visibleHeight, _fText.Size.Y), Colors.Transparent);
 
                 _fText.RenderToBitmap(_fText.SourceText, textLayer);
 
@@ -296,7 +296,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _scrollComponent.VisibilityGroup = this.VisibilityGroup;
             _scrollComponent.Appearance = sba;
 
-            _scrollComponent.Rect = Rect.AlignTopLeft(0, 0, scrollbarWidth, Rect.H);
+            _scrollComponent.Rect = Rect.Align(Alignment.TopLeft, 0, 0, scrollbarWidth, Rect.H);
             _scrollComponent.ScrollSpeed = _scrollSpeed;
 
             _scrollbar.AddComponent<ScrollBar>(_scrollComponent);

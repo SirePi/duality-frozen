@@ -1,7 +1,5 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Collections.Generic;
 using Duality;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Core

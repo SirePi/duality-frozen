@@ -7,29 +7,30 @@ using Duality.Components;
 using Duality.Drawing;
 using Duality.Editor;
 using Duality.Resources;
-using OpenTK;
+
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
+using Duality.Input;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
     /// <summary>
     /// A DropdownButton (combobox) Widget
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImageDropDownButton)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    
+    [EditorHintImage(ResNames.ImageDropDownButton)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public class DropDownButton : Widget
     {
         #region NonSerialized fields
 
-        [NonSerialized]
+        [DontSerialize]
         private GameObject _listBox;
 
-        [NonSerialized]
+        [DontSerialize]
         private ListBox _listBoxComponent;
 
-        [NonSerialized]
+        [DontSerialize]
         private FormattedText _text;
 
         #endregion NonSerialized fields
@@ -67,7 +68,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 _dropDownHeight = value;
                 if (_listBoxComponent != null)
                 {
-                    _listBoxComponent.Rect = Rect.AlignTopLeft(0, 0, Rect.W, _dropDownHeight);
+                    _listBoxComponent.Rect = Rect.Align(Alignment.TopLeft, 0, 0, Rect.W, _dropDownHeight);
                 }
             }
         }
@@ -133,11 +134,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         ///
         /// </summary>
         /// <param name="e"></param>
-        public override void MouseDown(OpenTK.Input.MouseButtonEventArgs e)
+        public override void MouseDown(MouseButtonEventArgs e)
         {
             if (Status != WidgetStatus.Disabled)
             {
-                if (e.Button == OpenTK.Input.MouseButton.Left)
+                if (e.Button == MouseButton.Left)
                 {
                     _listBox.Active = !_listBox.Active;
                 }
@@ -218,7 +219,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _listBoxComponent = new ListBox();
             _listBoxComponent.VisibilityGroup = this.VisibilityGroup;
             _listBoxComponent.Appearance = _dropAppearance.Res.ListBox;
-            _listBoxComponent.Rect = Rect.AlignTopLeft(0, 0, Rect.W, _dropDownHeight);
+            _listBoxComponent.Rect = Rect.Align(Alignment.TopLeft, 0, 0, Rect.W, _dropDownHeight);
             _listBoxComponent.TextFont = TextFont;
 
             _listBox.AddComponent<ListBox>(_listBoxComponent);

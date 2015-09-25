@@ -11,9 +11,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     /// <summary>
     /// A Panel Widget
     /// </summary>
-    [Serializable]
-    [EditorHintImage(typeof(Res), ResNames.ImagePanel)]
-    [EditorHintCategory(typeof(Res), ResNames.CategoryWidgets)]
+    
+    [EditorHintImage(ResNames.ImagePanel)]
+    [EditorHintCategory(ResNames.CategoryWidgets)]
     public class Panel : Widget
     {
         private ContentRef<WidgetAppearance> _widgetAppearance;
