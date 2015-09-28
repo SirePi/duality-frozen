@@ -423,7 +423,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 if (_closeButton != null)
                 {
                     _closeButton.GetComponent<Button>().Appearance = AppearanceManager.RequestAppearanceContentRef(_windowAppearance.Res.Close);
-                    _minimizeButton.GetComponent<Button>().Rect = closeRect;
+                    _closeButton.GetComponent<Button>().Rect = closeRect;
                 }
                 if (_maximizeButton != null)
                 {
@@ -438,7 +438,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 if (_restoreButton != null)
                 {
                     _restoreButton.GetComponent<Button>().Appearance = AppearanceManager.RequestAppearanceContentRef(_windowAppearance.Res.Restore);
-                    _minimizeButton.GetComponent<Button>().Rect = buttonRect;
+                    _restoreButton.GetComponent<Button>().Rect = buttonRect;
                 }
             }
 
@@ -467,7 +467,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _maximizeButton = new GameObject("maximizeButton", this.GameObj);
 
             Transform t = _maximizeButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (_windowAppearance.Res.ButtonSize.X * 2), 0, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - (_windowAppearance.Res.CloseButtonSize.X + _windowAppearance.Res.ButtonSize.X), 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             MaximizeButton mb = new MaximizeButton();
@@ -484,7 +484,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _minimizeButton = new GameObject("minimizeButton", this.GameObj);
 
             Transform t = _minimizeButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W - (_windowAppearance.Res.ButtonSize.X * 3), 0, DELTA_Z);
+            t.RelativePos = new Vector3(Rect.W - (_windowAppearance.Res.CloseButtonSize.X + _windowAppearance.Res.ButtonSize.X * 2), 0, DELTA_Z);
             t.RelativeAngle = 0;
 
             MinimizeButton mb = new MinimizeButton();

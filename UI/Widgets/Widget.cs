@@ -338,7 +338,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
                 if (_currentSkin == null)
                 {
-                    _currentSkin = DEFAULT_SKIN;
+                    //_currentSkin = DEFAULT_SKIN;
                 }
 
                 PrepareVertices(device);
