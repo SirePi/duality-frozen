@@ -1,12 +1,10 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
 using Duality;
+using Duality.Drawing;
 using Duality.Editor;
 using Duality.Resources;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
-using SnowyPeak.Duality.Plugin.Frozen.Core;
-using Duality.Drawing;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
 {
@@ -17,7 +15,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
     [EditorHintCategory(ResNames.CategoryWidgets)]
     public class MaterialSkin : Skin
     {
-
         private int _atlasIndex;
 
         /// <summary>
@@ -28,6 +25,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
             get { return _material; }
             set { _material = value; }
         }
+
         /// <summary>
         ///
         /// </summary>
@@ -76,7 +74,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
             vertices[8].Tint = ColorRgba.White;
             vertices[9].UVCoords = txRect.TopLeft + new Vector2(borderLeft, borderBottom);
             vertices[9].Tint = ColorRgba.White;
-            vertices[10].UVCoords = txRect.TopLeft + new Vector2(borderRight,borderBottom);
+            vertices[10].UVCoords = txRect.TopLeft + new Vector2(borderRight, borderBottom);
             vertices[10].Tint = ColorRgba.White;
             vertices[11].UVCoords = txRect.TopLeft + new Vector2(txRect.Size.X, borderBottom);
             vertices[11].Tint = ColorRgba.White;

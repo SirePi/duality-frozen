@@ -4,8 +4,6 @@ using Duality;
 using Duality.Drawing;
 using Duality.Editor;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
-using System;
-using SnowyPeak.Duality.Plugin.Frozen.Core;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
 {
@@ -16,6 +14,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
     [EditorHintCategory(ResNames.CategoryWidgets)]
     public class SolidColorSkin : Skin
     {
+        public static readonly SolidColorSkin WHITE = new SolidColorSkin() { Color = ColorRgba.White };
+        public static readonly SolidColorSkin LIGHT_GREY = new SolidColorSkin() { Color = ColorRgba.LightGrey };
+        public static readonly SolidColorSkin DARK_GREY = new SolidColorSkin() { Color = ColorRgba.DarkGrey };
+        public static readonly SolidColorSkin RED = new SolidColorSkin() { Color = ColorRgba.Red };
+
         private ColorRgba _color;
 
         public ColorRgba Color

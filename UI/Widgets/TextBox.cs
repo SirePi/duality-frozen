@@ -17,7 +17,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     /// <summary>
     /// A TextBox Widget
     /// </summary>
-    
+
     [EditorHintImage(ResNames.ImageTextBox)]
     [EditorHintCategory(ResNames.CategoryWidgets)]
     public class TextBox : Widget
@@ -70,6 +70,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _fText = new FormattedText();
             _textColor = Colors.White;
             _keyRepeatSpeed = DEFAULT_KEY_REPEAT;
+
+            Appearance = DefaultGradientSkin.WIDGET;
         }
 
         public ContentRef<WidgetAppearance> Appearance

@@ -1,17 +1,17 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
+using Duality;
 using Duality.Editor;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
-using Duality;
+using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
     /// <summary>
     /// A scrollable TextBlock
     /// </summary>
-    
+
     [EditorHintImage(ResNames.ImageTextBlock)]
     [EditorHintCategory(ResNames.CategoryWidgets)]
     public class TextBlock : MultiLineWidget

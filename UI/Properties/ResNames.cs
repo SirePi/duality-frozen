@@ -1,10 +1,5 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Properties
 {
 #pragma warning disable 1591
@@ -13,8 +8,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Properties
     {
         private const string ManifestBaseName = "SnowyPeak.Duality.Plugin.Frozen.UI.EmbeddedResources.";
 
-        public const string CategoryScripts = ManifestBaseName + "Frozen/UI/Scripts";
-        public const string CategoryWidgets = ManifestBaseName + "Frozen/UI/Widgets";
+        public const string CategoryScripts = "Frozen/UI/Scripts";
+        public const string CategoryWidgets = "Frozen/UI/Widgets";
 
         public const string ImageButton = ManifestBaseName + "iconResButton.png";
         public const string ImageCheckButton = ManifestBaseName + "iconResCheckButton.png";

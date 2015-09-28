@@ -1,17 +1,16 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Collections.Generic;
 using Duality;
 using Duality.Components;
 using Duality.Drawing;
 using Duality.Editor;
+using Duality.Input;
 using Duality.Resources;
-
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
-using Duality.Input;
+using System;
+using System.Collections.Generic;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
@@ -30,7 +29,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     /// <summary>
     /// A Window Widget
     /// </summary>
-    
+
     [EditorHintImage(ResNames.ImageWindow)]
     [EditorHintCategory(ResNames.CategoryWidgets)]
     public class Window : Widget
@@ -89,6 +88,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _isDragged = false;
 
             _wStatus = WindowStatus.Normal;
+
+            Appearance = DefaultGradientSkin.WINDOW;
         }
 
         /// <summary>
@@ -140,8 +141,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             set { _isDraggable = value; }
         }
 
-        
-
         /// <summary>
         /// [GET / SET] the size of the Window when Maximized
         /// </summary>
@@ -150,8 +149,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _maximizedSize; }
             set { _maximizedSize = value; }
         }
-        
-       
+
         /// <summary>
         /// [GET / SET] The Text of the Title
         /// </summary>
@@ -160,6 +158,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _title; }
             set { _title = value; }
         }
+
         /// <summary>
         /// [GET / SET] the Color of the Title Text
         /// </summary>
@@ -168,6 +167,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _titleColor; }
             set { _titleColor = value; }
         }
+
         /// <summary>
         /// The Font of the Title Text
         /// </summary>

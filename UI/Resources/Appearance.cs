@@ -1,12 +1,10 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
 using Duality;
 using Duality.Editor;
-using Duality.Resources;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Widgets;
-using Duality.Drawing;
+using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
 {
@@ -17,7 +15,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
     [EditorHintCategory(ResNames.CategoryWidgets)]
     public class Appearance : Resource
     {
-
         private ContentRef<Skin>[] _skins;
 
         protected Vector4 _border;

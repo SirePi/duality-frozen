@@ -1,9 +1,8 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
+using Duality;
 using Duality.Editor;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
-using Duality;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
@@ -11,7 +10,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     /// <summary>
     /// A Panel Widget
     /// </summary>
-    
+
     [EditorHintImage(ResNames.ImagePanel)]
     [EditorHintCategory(ResNames.CategoryWidgets)]
     public class Panel : Widget
@@ -26,6 +25,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 _widgetAppearance = value;
                 _dirtyFlags |= DirtyFlags.Appearance;
             }
+        }
+
+        public Panel()
+        {
+            Appearance = DefaultGradientSkin.WIDGET;
         }
 
         protected override Appearance GetBaseAppearance()

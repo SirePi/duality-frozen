@@ -1,25 +1,23 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
 using Duality;
 using Duality.Components;
 using Duality.Drawing;
 using Duality.Editor;
+using Duality.Input;
 using Duality.Resources;
-
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Geometry;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
-using System.Collections.Generic;
-using Duality.Input;
+using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
     /// <summary>
     ///
     /// </summary>
-    
+
     [RequiredComponent(typeof(Transform))]
     [EditorHintImage(ResNames.ImageWidget)]
     [EditorHintCategory(ResNames.CategoryWidgets)]
@@ -47,11 +45,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         }
 
         protected ColorRgba _tint;
+
         public ColorRgba Tint
         {
             get { return _tint; }
             set { _tint = value; }
         }
+
         /// <summary>
         /// [GET / SET] The ActiveArea of the Widget that can react to mouse input such as
         /// Hover, Click, etc..
@@ -237,6 +237,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _previous; }
             set { _previous = value; }
         }
+
         /// <summary>
         ///
         /// </summary>
@@ -309,7 +310,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             if (context == InitContext.AddToGameObject)
             {
                 this.GameObj.EventParentChanged += new EventHandler<GameObjectParentChangedEventArgs>(GameObj_EventParentChanged);
-                RecalcZOffset();   
+                RecalcZOffset();
             }
 
             if (Status != WidgetStatus.Disabled)
@@ -326,7 +327,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
         void ICmpRenderer.Draw(IDrawDevice device)
         {
-            if(Frozen.Core.Utilities.IsDualityEditor)
+            if (Frozen.Core.Utilities.IsDualityEditor)
             {
                 _appearance = GetBaseAppearance();
             }
@@ -377,7 +378,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 OnStatusChange();
             }
 
-            if((_dirtyFlags & DirtyFlags.Appearance) != DirtyFlags.None)
+            if ((_dirtyFlags & DirtyFlags.Appearance) != DirtyFlags.None)
             {
                 _appearance = GetBaseAppearance();
             }
@@ -440,7 +441,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         ///
         /// </summary>
         /// <param name="e"></param>
-        public virtual void MouseMove(MouseMoveEventArgs e) 
+        public virtual void MouseMove(MouseMoveEventArgs e)
         { }
 
         /// <summary>
@@ -698,7 +699,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// </summary>
         /// <param name="inSecondsPast"></param>
         protected virtual void OnUpdate(float inSecondsPast)
-        { 
+        {
             /*
             for(int i = 0; i < _points.Length; i++)
             {

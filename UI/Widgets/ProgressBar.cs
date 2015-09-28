@@ -1,22 +1,21 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
 using Duality;
 using Duality.Components;
 using Duality.Drawing;
 using Duality.Editor;
 using Duality.Resources;
-
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
+using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
     /// <summary>
     /// A Progressbar Widget
     /// </summary>
-    
+
     [EditorHintImage(ResNames.ImageProgressBar)]
     [EditorHintCategory(ResNames.CategoryWidgets)]
     public class ProgressBar : Widget
@@ -46,6 +45,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
             _fText = new FormattedText();
             _textColor = Colors.White;
+
+            Appearance = DefaultGradientSkin.PROGRESSBAR;
         }
 
         /// <summary>
@@ -60,6 +61,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 _dirtyFlags |= DirtyFlags.Appearance;
             }
         }
+
         /// <summary>
         /// [GET / SET] the Text of the ProgressBar
         /// </summary>
@@ -77,6 +79,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _textColor; }
             set { _textColor = value; }
         }
+
         /// <summary>
         /// [GET / SET] the Font of the Text
         /// </summary>
@@ -85,6 +88,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _textFont; }
             set { _textFont = value; }
         }
+
         /// <summary>
         /// [GET / SET] The value of the progressbar, from 0 to 100
         /// </summary>

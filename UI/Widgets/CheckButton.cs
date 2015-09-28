@@ -1,23 +1,22 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
 using Duality;
 using Duality.Components;
 using Duality.Drawing;
 using Duality.Editor;
+using Duality.Input;
 using Duality.Resources;
-
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
-using Duality.Input;
+using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
     /// <summary>
     /// A CheckButton Widget
     /// </summary>
-    
+
     [EditorHintImage(ResNames.ImageCheckButton)]
     [EditorHintCategory(ResNames.CategoryWidgets)]
     public class CheckButton : Widget
@@ -64,6 +63,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _fText = new FormattedText();
             _textColor = Colors.White;
             _glyphLocation = Alignment.Left;
+
+            Appearance = DefaultGradientSkin.GLYPH;
         }
 
         /// <summary>
@@ -90,6 +91,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 }
             }
         }
+
         /// <summary>
         ///
         /// </summary>
@@ -131,6 +133,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _textColor; }
             set { _textColor = value; }
         }
+
         /// <summary>
         /// [GET / SET] the Font of the Text
         /// </summary>
@@ -139,6 +142,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _textFont; }
             set { _textFont = value; }
         }
+
         /// <summary>
         ///
         /// </summary>

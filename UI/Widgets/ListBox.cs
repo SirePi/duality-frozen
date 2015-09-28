@@ -1,24 +1,23 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Collections.Generic;
 using Duality;
 using Duality.Components;
 using Duality.Drawing;
 using Duality.Editor;
+using Duality.Input;
 using Duality.Resources;
-
 using SnowyPeak.Duality.Plugin.Frozen.Core.Geometry;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
-using Duality.Input;
+using System;
+using System.Collections.Generic;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
     /// <summary>
     /// A ListBox Widget
     /// </summary>
-    
+
     [EditorHintImage(ResNames.ImageListBox)]
     [EditorHintCategory(ResNames.CategoryWidgets)]
     public class ListBox : MultiLineWidget
@@ -65,6 +64,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _fText = new FormattedText();
             _listArea = new Polygon(4);
             _testPolygon = new Polygon(4);
+
+            Appearance = DefaultGradientSkin.LISTBOX;
         }
 
         /// <summary>

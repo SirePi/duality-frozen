@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SnowyPeak.Duality.Plugin.Frozen.Core.Components;
+﻿using SnowyPeak.Duality.Plugin.Frozen.Core.Components;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Commands;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Widgets;
 

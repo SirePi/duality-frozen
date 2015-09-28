@@ -1,9 +1,11 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Collections.Generic;
 using Duality;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
@@ -18,11 +20,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 _scriptsCache = new Dictionary<string, ContentRef<Script>>();
             }
 
-            Type scriptType = typeof(T);
+            TypeInfo scriptType = typeof(T).GetTypeInfo();
 
             if (!_scriptsCache.ContainsKey(scriptType.FullName))
             {
-                InternalScript newScript = scriptType.GetConstructor(Type.EmptyTypes).Invoke(null) as InternalScript;
+                InternalScript newScript = scriptType.DeclaredConstructors.First().Invoke(null) as InternalScript;
                 _scriptsCache.Add(scriptType.FullName, new ContentRef<Script>(newScript));
             }
 

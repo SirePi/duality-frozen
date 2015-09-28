@@ -1,20 +1,19 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
 using Duality;
 using Duality.Components;
 using Duality.Editor;
 using Duality.Resources;
-
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
+using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
     /// <summary>
     /// A Scrollbar Widget
     /// </summary>
-    
+
     [EditorHintImage(ResNames.ImageScrollBar)]
     [EditorHintCategory(ResNames.CategoryWidgets)]
     public class ScrollBar : Widget
@@ -51,6 +50,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _max = 10;
             _value = _min;
             _scrollSpeed = 1;
+
+            Appearance = DefaultGradientSkin.SCROLLBAR;
         }
 
         /// <summary>
@@ -202,11 +203,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 {
                     _cursor.GetComponent<ScrollCursor>().Appearance = AppearanceManager.RequestAppearanceContentRef(_scrollAppearance.Res.Cursor);
                 }
-                if(_decreaseButton != null)
+                if (_decreaseButton != null)
                 {
                     _decreaseButton.GetComponent<ScrollDecreaseButton>().Appearance = AppearanceManager.RequestAppearanceContentRef(_scrollAppearance.Res.Decrease);
                 }
-                if(_increaseButton != null)
+                if (_increaseButton != null)
                 {
                     _increaseButton.GetComponent<ScrollIncreaseButton>().Appearance = AppearanceManager.RequestAppearanceContentRef(_scrollAppearance.Res.Increase);
                 }

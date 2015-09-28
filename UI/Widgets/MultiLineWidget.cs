@@ -1,21 +1,19 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
 using Duality;
 using Duality.Components;
 using Duality.Drawing;
 using Duality.Resources;
-
-
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
+using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
     /// <summary>
     ///
     /// </summary>
-    
+
     public abstract class MultiLineWidget : Widget
     {
         #region NonSerialized fields
@@ -83,7 +81,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
             _dirtyFlags |= DirtyFlags.Value;
         }
-
 
         /// <summary>
         /// [GET / SET] the speed, in pixels/second of scrolling

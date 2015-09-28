@@ -1,22 +1,21 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
 using Duality;
 using Duality.Drawing;
 using Duality.Editor;
+using Duality.Input;
 using Duality.Resources;
-
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
-using Duality.Input;
+using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
     /// <summary>
     /// A Button Widget
     /// </summary>
-    
+
     [EditorHintImage(ResNames.ImageButton)]
     [EditorHintCategory(ResNames.CategoryWidgets)]
     public class Button : Widget
@@ -58,6 +57,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 _dirtyFlags |= DirtyFlags.Appearance;
             }
         }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -67,6 +67,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
             _fText = new FormattedText();
             _textColor = Colors.White;
+
+            Appearance = DefaultGradientSkin.WIDGET;
         }
 
         /// <summary>
@@ -142,7 +144,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _textFont; }
             set { _textFont = value; }
         }
-
 
         /// <summary>
         ///

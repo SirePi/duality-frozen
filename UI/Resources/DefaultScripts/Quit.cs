@@ -1,9 +1,5 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Duality;
 using Duality.Editor;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
@@ -13,7 +9,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources.DefaultScripts
     /// <summary>
     /// Command used to quit the game
     /// </summary>
-    
+
     [EditorHintImage(ResNames.ImageScript)]
     [EditorHintCategory(ResNames.CategoryWidgets)]
     public sealed class Quit : Script

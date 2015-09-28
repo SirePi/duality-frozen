@@ -1,23 +1,21 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Collections.Generic;
 using Duality;
 using Duality.Components;
 using Duality.Drawing;
 using Duality.Editor;
+using Duality.Input;
 using Duality.Resources;
-
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
-using Duality.Input;
+using System.Collections.Generic;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
     /// <summary>
     /// A DropdownButton (combobox) Widget
     /// </summary>
-    
+
     [EditorHintImage(ResNames.ImageDropDownButton)]
     [EditorHintCategory(ResNames.CategoryWidgets)]
     public class DropDownButton : Widget
@@ -55,6 +53,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _scrollSpeed = 5;
 
             _dirtyFlags |= DirtyFlags.Value;
+
+            Appearance = DefaultGradientSkin.DROPDOWN;
         }
 
         /// <summary>

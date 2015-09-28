@@ -1,18 +1,18 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Linq;
 using Duality.Editor;
+using Duality.Input;
 using Duality.Resources;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
-using Duality.Input;
+using System;
+using System.Linq;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
     /// <summary>
     /// A RadioButton Widget
     /// </summary>
-    
+
     [EditorHintImage(ResNames.ImageRadioButton)]
     [EditorHintCategory(ResNames.CategoryWidgets)]
     public class RadioButton : CheckButton

@@ -1,18 +1,16 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Duality;
 using Duality.Components;
-using Duality.Drawing;
 using Duality.Editor;
+using Duality.Input;
 using Duality.Resources;
-
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.Core.Components;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
-using Duality.Input;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
@@ -23,7 +21,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     /// current status, and also to manage InputVisualReceivers in a way that allows the implementation of a basic GUI.
     /// </summary>
     /// <seealso cref="BaseInputReceiver"/>
-    
+
     [RequiredComponent(typeof(Camera))]
     [EditorHintImage(ResNames.ImageWidgetController)]
     [EditorHintCategory(ResNames.CategoryWidgets)]
@@ -125,54 +123,67 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// [GET] The currently Focused InputVisualReceiver
         /// </summary>
         public Widget FocusedElement { get; private set; }
+
         /// <summary>
         /// [GET] The currently Hovered InputVisualReceiver
         /// </summary>
         public Widget HoveredElement { get; private set; }
+
         /// <summary>
         /// [GET / SET] If the Controller should register for Keyboard events
         /// </summary>
         public bool KeyboardEnabled { get; set; }
+
         /// <summary>
         /// [GET / SET] The Keyboard key that will be treated as a Left Mouse click
         /// </summary>
         public Key LeftMouseKey { get; set; }
+
         /// <summary>
         ///
         /// </summary>
         public ModifierKeys LeftMouseKeyModifier { get; set; }
+
         /// <summary>
         /// [GET / SET] The Keyboard key that will be treated as a Middle Mouse click
         /// </summary>
         public Key MiddleMouseKey { get; set; }
+
         /// <summary>
         ///
         /// </summary>
         public ModifierKeys MiddleMouseKeyModifier { get; set; }
+
         /// <summary>
         /// [GET / SET] If the Controller should register for Mouse events
         /// </summary>
         public bool MouseEnabled { get; set; }
+
         /// <summary>
         ///
         /// </summary>
         public Key NextWidgetKey { get; set; }
+
         /// <summary>
         /// [GET / SET] The Keyboard key that will be used to focus on the next widget
         /// </summary>
         public ModifierKeys NextWidgetKeyModifier { get; set; }
+
         /// <summary>
         /// [GET / SET] The Keyboard key that will be used to focus on the previous widget
         /// </summary>
         public Key PreviousWidgetKey { get; set; }
+
         /// <summary>
         ///
         /// </summary>
         public ModifierKeys PreviousWidgetKeyModifier { get; set; }
+
         /// <summary>
         /// [GET / SET] The Keyboard key that will be treated as a Right Mouse click
         /// </summary>
         public Key RightMouseKey { get; set; }
+
         /// <summary>
         ///
         /// </summary>
@@ -519,7 +530,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             return (_modifierKeys == inModifierKeys || (_modifierKeys & inModifierKeys) > ModifierKeys.None);
         }
 
-        protected virtual void OnInit(Component.InitContext context) { }
-        protected virtual void OnShutdown(Component.ShutdownContext context) { }
+        protected virtual void OnInit(Component.InitContext context)
+        {
+        }
+
+        protected virtual void OnShutdown(Component.ShutdownContext context)
+        {
+        }
     }
 }

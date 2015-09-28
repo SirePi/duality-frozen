@@ -1,17 +1,16 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
-using System;
-using System.Collections.Generic;
 using Duality;
 using Duality.Components;
 using Duality.Drawing;
 using Duality.Editor;
+using Duality.Input;
 using Duality.Resources;
-
 using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
-using Duality.Input;
+using System;
+using System.Collections.Generic;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
@@ -19,7 +18,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     /// A SkinnedCommandGrid is a Widget that behaves like the command list of Final Fantasy battle screens.
     /// It can only be controlled by keyboard and needs to be specifically assigned Focus on the WidgetController.
     /// </summary>
-    
+
     [EditorHintImage(ResNames.ImageCommandGrid)]
     [EditorHintCategory(ResNames.CategoryWidgets)]
     public class CommandGrid : Widget
@@ -69,7 +68,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         public ContentRef<ListBoxAppearance> Appearance
         {
             get { return _listAppearance; }
-            set 
+            set
             {
                 _listAppearance = value;
                 _dirtyFlags |= DirtyFlags.Appearance;
@@ -110,9 +109,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _columns = 1;
 
             _dirtyFlags |= DirtyFlags.Value;
+
+            Appearance = DefaultGradientSkin.LISTBOX;
         }
 
-       
         /// <summary>
         /// [GET / SET] the padding to apply to each item [x, y, z, w] => [left, top, right, bottom]
         /// </summary>
@@ -138,6 +138,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 _dirtyFlags |= DirtyFlags.Value;
             }
         }
+
         /// <summary>
         /// [GET / SET] the key to press to move the selected item one place down
         /// </summary>
@@ -146,6 +147,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _keyDown; }
             set { _keyDown = value; }
         }
+
         /// <summary>
         /// [GET / SET] the key to press to move the selected item one place left
         /// </summary>
@@ -154,6 +156,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _keyLeft; }
             set { _keyLeft = value; }
         }
+
         /// <summary>
         /// [GET / SET] the key to press to move the selected item one place right
         /// </summary>
@@ -162,6 +165,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _keyRight; }
             set { _keyRight = value; }
         }
+
         /// <summary>
         /// [GET / SET] the key to press to move the selected item one place up
         /// </summary>
@@ -170,6 +174,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _keyUp; }
             set { _keyUp = value; }
         }
+
         /// <summary>
         /// [GET / SET]
         /// </summary>
@@ -178,6 +183,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _leftClickArgument; }
             set { _leftClickArgument = value; }
         }
+
         /// <summary>
         /// [GET / SET]
         /// </summary>
@@ -186,6 +192,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _onLeftClick; }
             set { _onLeftClick = value; }
         }
+
         /// <summary>
         /// [GET / SET]
         /// </summary>
@@ -194,6 +201,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _onRightClick; }
             set { _onRightClick = value; }
         }
+
         /// <summary>
         /// [GET / SET]
         /// </summary>
@@ -202,6 +210,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             get { return _rightClickArgument; }
             set { _rightClickArgument = value; }
         }
+
         /// <summary>
         /// [GET / SET] the index of the Selected item
         /// </summary>
@@ -237,6 +246,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 }
             }
         }
+
         /// <summary>
         /// [GET / SET] the Color of the Text
         /// </summary>
@@ -375,12 +385,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
             if ((_dirtyFlags & DirtyFlags.Appearance) != DirtyFlags.None)
             {
-                if(_scrollbar != null)
+                if (_scrollbar != null)
                 {
                     _scrollbar.GetComponent<ScrollBar>().Appearance = _listAppearance.Res.ScrollBar;
                 }
 
-                if(_highlight != null)
+                if (_highlight != null)
                 {
                     _highlight.GetComponent<Panel>().Appearance = AppearanceManager.RequestAppearanceContentRef(_listAppearance.Res.Highlight);
                 }

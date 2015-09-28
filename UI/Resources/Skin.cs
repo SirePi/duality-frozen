@@ -4,7 +4,6 @@ using Duality;
 using Duality.Drawing;
 using Duality.Resources;
 using SnowyPeak.Duality.Plugin.Frozen.Core;
-using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
 {
