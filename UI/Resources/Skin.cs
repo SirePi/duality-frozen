@@ -301,11 +301,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
         {
             Vector3 deltaPos = (vertices[inVertexComparator].Pos - vertices[inVertexIndexes[0]].Pos) * inK;
             Vector2 deltaTex = (vertices[inVertexComparator].TexCoord - vertices[inVertexIndexes[0]].TexCoord) * inK;
+            Vector4 deltaColor = (vertices[inVertexComparator].Color.ToVector4() - vertices[inVertexIndexes[0]].Color.ToVector4()) * inK;
 
             foreach (int i in inVertexIndexes)
             {
                 vertices[i].Pos += deltaPos;
                 vertices[i].TexCoord += deltaTex;
+                vertices[i].Color = Colors.FromBase255Vector4(vertices[i].Color.ToVector4() + deltaColor);
             }
         }
 

@@ -23,8 +23,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
     [EditorHintCategory(ResNames.CategoryWidgets)]
     public abstract class Widget : Component, ICmpRenderer, ICmpUpdatable, ICmpInitializable
     {
-        private static readonly Skin DEFAULT_SKIN = new MaterialSkin() { Material = Material.Checkerboard };
-
         private Widget _next, _previous;
 
         private Rect _rect, _clipRect;
@@ -335,11 +333,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             if (_appearance != null)
             {
                 _currentSkin = _appearance.Res.GetSkin(this.Status).Res;
-
-                if (_currentSkin == null)
-                {
-                    //_currentSkin = DEFAULT_SKIN;
-                }
 
                 PrepareVertices(device);
                 DrawVertices(device);
