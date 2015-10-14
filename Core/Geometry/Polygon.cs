@@ -52,7 +52,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Geometry
         /// <param name="inCenter"></param>
         /// <param name="inRadius"></param>
         public Polygon(Vector2 inCenter, float inRadius)
-            : this(inCenter, inRadius, 12)
+            : this(inCenter, inRadius, 0, 12)
         { }
 
         /// <summary>
@@ -62,14 +62,14 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Geometry
         /// <param name="inCenter"></param>
         /// <param name="inRadius"></param>
         /// <param name="inSubdivisions"></param>
-        public Polygon(Vector2 inCenter, float inRadius, int inSubdivisions)
+        public Polygon(Vector2 inCenter, float inRadius, float inStartAngle, int inSubdivisions)
             : this(inSubdivisions)
         {
             float delta = MathF.TwoPi / Vertices.Length;
 
             for (int i = 0; i < Vertices.Length; i++)
             {
-                float angle = delta * i;
+				float angle = inStartAngle + (delta * i);
                 float x = MathF.Cos(angle) * inRadius;
                 float y = MathF.Sin(angle) * inRadius;
 

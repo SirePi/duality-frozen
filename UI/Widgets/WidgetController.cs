@@ -71,6 +71,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         [DontSerialize]
         protected ModifierKeys _modifierKeys;
 
+		[DontSerialize]
+		private Camera _camera;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -455,6 +458,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// <param name="e"></param>
         protected virtual void Mouse_Move(object sender, MouseMoveEventArgs e)
         {
+			if(_camera == null)
+			{
+				_camera = this.GameObj.GetComponent<Camera>();
+			}
+
             if (FocusedElement != null)
             {
                 FocusedElement.MouseMove(e);
@@ -464,30 +472,31 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _currentMousePosition.Y = e.Y;
 
             IEnumerable<Widget> activeGUIComponents = Scene.Current.ActiveObjects.GetComponents<Widget>();
-            IEnumerable<Widget> hoveredGUIComponents = activeGUIComponents.Where(gc => gc.ActiveArea != ActiveArea.None && gc.GetAreaOnScreen(GameObj.Camera).Contains(_currentMousePosition));
+			IEnumerable<Widget> hoveredGUIComponents = activeGUIComponents.Where(gc => gc.ActiveArea != ActiveArea.None && gc.GetAreaOnScreen(_camera).Contains(_currentMousePosition));
 
             Widget hgc = null;
 
             if (hoveredGUIComponents.Count() > 0)
             {
-                hoveredGUIComponents.Min(gc => gc.GameObj.Transform.Pos.Z);
-                hgc = hoveredGUIComponents
+                //hoveredGUIComponents.Min(gc => gc.GameObj.Transform.Pos.Z);
+				foreach(Widget w in hoveredGUIComponents
                     .OrderBy(gc => gc.IsInOverlay ? 0 : 1)
                     .ThenBy(gc => gc.GameObj.Transform.Pos.Z + gc.ZOffset)
-                    .FirstOrDefault();
+                    )
+				{
+					if (hgc == null && w.GetActiveAreaOnScreen(_camera).Contains(_currentMousePosition))
+					{
+						hgc = w;
+					}
+				}
 
-                if (hgc != null && !hgc.GetActiveAreaOnScreen(GameObj.Camera).Contains(_currentMousePosition))
-                {
-                    hgc = null;
-                }
-
-                if (hgc != null && _currentDialog != null)
-                {
-                    if (hgc.GameObj.FindAncestorWithComponent<Window>() != _currentDialog.GameObj)
-                    {
-                        hgc = null;
-                    }
-                }
+				if (hgc != null && _currentDialog != null)
+				{
+					if (hgc.GameObj.FindAncestorWithComponent<Window>() != _currentDialog.GameObj)
+					{
+						hgc = null;
+					}
+				}
             }
 
             if (HoveredElement != hgc)

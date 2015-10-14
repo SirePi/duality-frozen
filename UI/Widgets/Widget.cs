@@ -327,7 +327,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         {
             if (Frozen.Core.Utilities.IsDualityEditor)
             {
-                _appearance = GetBaseAppearance();
+                _appearance = GetAppearance();
             }
 
             if (_appearance != null)
@@ -373,7 +373,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
             if ((_dirtyFlags & DirtyFlags.Appearance) != DirtyFlags.None)
             {
-                _appearance = GetBaseAppearance();
+				_appearance = GetAppearance();
             }
 
             OnUpdate(Time.LastDelta / 1000f);
@@ -816,6 +816,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 _points[i].Tint = Colors.FromBase255Vector4((_points[i].Tint.ToVector4() * tintVector) / 255f);
             }
         }
+
+		private Appearance GetAppearance()
+		{
+			try { return GetBaseAppearance(); }
+			catch { return DefaultGradientSkin.WIDGET.Widget.Res; }
+		}
 
         protected abstract Appearance GetBaseAppearance();
     }

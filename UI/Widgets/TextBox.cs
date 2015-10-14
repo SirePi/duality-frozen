@@ -173,7 +173,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
         protected override Appearance GetBaseAppearance()
         {
-            throw new NotImplementedException();
+			return _widgetAppearance.Res.Widget.Res;
         }
 
         /// <summary>
