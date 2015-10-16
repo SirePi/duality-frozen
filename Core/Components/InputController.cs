@@ -379,7 +379,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Components
             Drag(e.X, e.Y);
 
             InputReceiverVisual irv = null;
-            Component cmp = (Component)GameObj.Camera.PickRendererAt(e.X, e.Y);
+            Component cmp = (Component)GameObj.GetComponent<Camera>().PickRendererAt(e.X, e.Y);
 
             if (cmp != null)
             {
