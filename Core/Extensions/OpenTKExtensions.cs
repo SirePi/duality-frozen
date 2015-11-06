@@ -19,7 +19,37 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core
         {
             return new Rect(inRect.X - inExpansion, inRect.Y - inExpansion, inRect.W + (inExpansion * 2), inRect.H + (inExpansion * 2));
         }
-    }
+
+		/// <summary>
+		/// Multiplies the Rect by the amount specified in a Vector2. 
+		/// Useful to pass from UV coordinates to Pixmap coordinates
+		/// </summary>
+		/// <param name="inRect"></param>
+		/// <param name="inVector"></param>
+		/// <returns></returns>
+		public static Rect Multiply(this Rect inRect, Vector2 inVector)
+		{
+			Vector2 topLeft = inRect.TopLeft * inVector;
+			Vector2 size = inRect.Size * inVector;
+
+			return new Rect(topLeft.X, topLeft.Y, size.X, size.Y);
+		}
+
+		/// <summary>
+		/// Divides the Rect by the amount specified in a Vector2.
+		/// Useful to pass from Pixmap coordinates to UV coordinates 
+		/// </summary>
+		/// <param name="inRect"></param>
+		/// <param name="inVector"></param>
+		/// <returns></returns>
+		public static Rect Divide(this Rect inRect, Vector2 inVector)
+		{
+			Vector2 topLeft = inRect.TopLeft / inVector;
+			Vector2 size = inRect.Size / inVector;
+
+			return new Rect(topLeft.X, topLeft.Y, size.X, size.Y);
+		}
+	}
 
     /// <summary>
     /// Vector4 Extensions

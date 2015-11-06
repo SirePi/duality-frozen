@@ -244,8 +244,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 {
                     DualityApp.Keyboard.KeyDown += _keyDownEventHandler;
                     DualityApp.Keyboard.KeyUp += _keyUpEventHandler;
-
-                    DualityApp.Keyboard.KeyRepeat = false;
                 }
             }
 
