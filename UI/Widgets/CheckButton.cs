@@ -119,6 +119,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             set { _text = value; }
         }
 
+		/// <summary>
+		/// [GET / SET] the Location of the Check Glyph
+		/// </summary>
         public Alignment GlyphLocation
         {
             get { return _glyphLocation; }
@@ -276,7 +279,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
                 {
                     Panel p = _glyph.GetComponent<Panel>();
                     p.Appearance = AppearanceManager.RequestAppearanceContentRef(_glyphAppearance.Res.Glyph);
-                    p.Rect = Rect.Align(Alignment.TopLeft, 0, 0, _glyphAppearance.Res.GlyphSize.X, _glyphAppearance.Res.GlyphSize.Y);
+					p.Rect = Rect.Align(GlyphLocation, 0, 0, _glyphAppearance.Res.GlyphSize.X, _glyphAppearance.Res.GlyphSize.Y);
                 }
 
                 _glyph.Active = IsChecked;
@@ -287,16 +290,55 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         {
             _glyph = new GameObject("glyph", this.GameObj);
 
+			Panel p = new Panel();
+			p.VisibilityGroup = this.VisibilityGroup;
+			p.Appearance = AppearanceManager.RequestAppearanceContentRef(_glyphAppearance.Res.Glyph);
+			p.Rect = Rect.Align(GlyphLocation, 0, 0, _glyphAppearance.Res.GlyphSize.X, _glyphAppearance.Res.GlyphSize.Y);
+
+			_glyph.AddComponent<Panel>(p);
+
             Transform t = _glyph.AddComponent<Transform>();
-            t.RelativePos = new Vector3(0, 0, 0);
-            t.RelativeAngle = 0;
+			t.RelativeAngle = 0;
 
-            Panel p = new Panel();
-            p.VisibilityGroup = this.VisibilityGroup;
-            p.Appearance = AppearanceManager.RequestAppearanceContentRef(_glyphAppearance.Res.Glyph);
-            p.Rect = Rect.Align(Alignment.Center, 0, 0, _glyphAppearance.Res.GlyphSize.X, _glyphAppearance.Res.GlyphSize.Y);
+			switch(GlyphLocation)
+			{
+				case Alignment.TopLeft:
+					t.RelativePos = new Vector3(0, 0, 0);
+					break;
 
-            _glyph.AddComponent<Panel>(p);
+				case Alignment.Top:
+					t.RelativePos = new Vector3(Rect.CenterX, 0, 0);
+					break;
+
+				case Alignment.TopRight:
+					t.RelativePos = new Vector3(Rect.W, 0, 0);
+					break;
+
+				case Alignment.Left:
+					t.RelativePos = new Vector3(0, Rect.CenterY, 0);
+					break;
+
+				case Alignment.Center:
+					t.RelativePos = new Vector3(Rect.CenterX, Rect.CenterY, 0);
+					break;
+
+				case Alignment.Right:
+					t.RelativePos = new Vector3(Rect.W, Rect.CenterY, 0);
+					break;
+
+				case Alignment.BottomLeft:
+					t.RelativePos = new Vector3(0, Rect.H, 0);
+					break;
+
+				case Alignment.Bottom:
+					t.RelativePos = new Vector3(Rect.CenterX, Rect.H, 0);
+					break;
+
+				case Alignment.BottomRight:
+					t.RelativePos = new Vector3(Rect.W, Rect.H, 0);
+					break;
+			}
+
             Scene.Current.AddObject(_glyph);
         }
 

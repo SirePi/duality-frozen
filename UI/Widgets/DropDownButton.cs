@@ -6,6 +6,7 @@ using Duality.Drawing;
 using Duality.Editor;
 using Duality.Input;
 using Duality.Resources;
+using SnowyPeak.Duality.Plugin.Frozen.Core;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
 using System.Collections.Generic;
@@ -46,7 +47,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         public DropDownButton()
         {
             ActiveArea = ActiveArea.RightBorder;
-
+			
             _items = new List<object>();
             _text = new FormattedText();
             _dropDownHeight = 100;
@@ -55,6 +56,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _dirtyFlags |= DirtyFlags.Value;
 
             Appearance = DefaultGradientSkin.DROPDOWN;
+			_textColor = Colors.White;
         }
 
         /// <summary>

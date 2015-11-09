@@ -36,6 +36,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         public TextBlock()
         {
             ActiveArea = ActiveArea.None;
+
+			Appearance = DefaultGradientSkin.MULTILINE;
         }
 
         /// <summary>

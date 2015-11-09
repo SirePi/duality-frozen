@@ -14,16 +14,16 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
         {
             ColorTopLeft = ColorRgba.VeryLightGrey,
             ColorTopRight = ColorRgba.VeryLightGrey,
-            ColorBottomLeft = ColorRgba.Grey,
-            ColorBottomRight = ColorRgba.Grey
+            ColorBottomLeft = ColorRgba.DarkGrey,
+			ColorBottomRight = ColorRgba.DarkGrey
         };
 
         internal static readonly GradientSkin HOVER = new GradientSkin()
         {
             ColorTopLeft = ColorRgba.White,
             ColorTopRight = ColorRgba.White,
-            ColorBottomLeft = ColorRgba.VeryLightGrey,
-            ColorBottomRight = ColorRgba.VeryLightGrey
+            ColorBottomLeft = ColorRgba.Grey,
+			ColorBottomRight = ColorRgba.Grey
         };
 
         internal static readonly GradientSkin ACTIVE = new GradientSkin()
