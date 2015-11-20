@@ -290,7 +290,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
         /// </summary>
         public void Close()
         {
-            Scene.Current.RemoveObject(this.GameObj);
+			this.GameObj.ParentScene.RemoveObject(this.GameObj);
         }
 
         /// <summary>

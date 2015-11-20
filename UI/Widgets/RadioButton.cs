@@ -49,7 +49,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             {
                 if (IsChecked && !String.IsNullOrWhiteSpace(RadioGroup))
                 {
-                    foreach (RadioButton button in Scene.Current.FindComponents<RadioButton>().Where(rb => rb.RadioGroup == this.RadioGroup && rb != this))
+					foreach (RadioButton button in this.GameObj.ParentScene.FindComponents<RadioButton>().Where(rb => rb.RadioGroup == this.RadioGroup && rb != this))
                     {
                         button.IsChecked = false;
                     }

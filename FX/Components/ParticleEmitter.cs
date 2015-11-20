@@ -245,6 +245,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
         /// </summary>
         public VisibilityFlag VisibilityGroup { get; set; }
 
+		/// <summary>
+		/// [GET / SET] the range of randomness a particle's geometry is generated with.
+		/// 0 = no randomness, 1 = completely random
+		/// </summary>
+		[EditorHintRange(0, 1)]
+		public float RandomGeometryStrength { get; set; }
+
         /// <summary>
         /// [GET] if there are particles still alive
         /// </summary>
@@ -354,7 +361,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
 
                             if (FXArea.ZRange.Delta != 0)
                             {
-                                float zScale = 1 - ((FXArea.ZRange.Max - p.Position.Z) / FXArea.ZRange.Delta);
+                                float zScale = 1 - ((FXArea.ZRange.Max + FXArea.GameObj.Transform.Pos.Z - p.Position.Z) / FXArea.ZRange.Delta);
                                 pos = posRange.Lerp(zScale);
                                 scale = scaleRange.Lerp(zScale);
                             }
@@ -397,7 +404,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
         {
             if (!_inEditor && FXArea != null)
             {
-                float secondsPast = Time.LastDelta / 1000f;
+                float secondsPast = Time.MsPFMult * Time.TimeMult / 1000f;
 
                 _emitterDirection = (_emitterDirection + (_emitterRotationSpeed * secondsPast)) % MathF.TwoPi;
 
@@ -443,13 +450,33 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
                 {
                     _sendBurst = false;
 
-                    foreach (Particle p in _particles.Where(p => !p.IsAlive))
+                    foreach (Particle p in _particles)
                     {
-                        InitializeParticle(p);
+						if (!p.IsAlive)
+						{
+							InitializeParticle(p);
+						}
                     }
                 }
             }
         }
+
+		/// <summary>
+		/// This method is called by Particle Alterators (Attractor/Repulsor) in order to affect the particles's 
+		/// position or direction, depending on the configuration.
+		/// </summary>
+		/// <param name="inAlterator"></param>
+		/// <param name="inSecondsPast"></param>
+		public void AlterParticles(ParticleAlterator inAlterator, float inSecondsPast)
+		{
+			foreach (Particle p in _particles)
+			{
+				if (p.IsAlive)
+				{
+					inAlterator.AlterParticle(p, inSecondsPast);
+				}
+			}
+		}
 
         /// <summary>
         /// Kills all particles currently active.
@@ -506,7 +533,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
                 _emitterDirection + direction,
                 scale,
                 ttl,
-                _colorRange);
+                _colorRange,
+				RandomGeometryStrength);
         }
     }
 }

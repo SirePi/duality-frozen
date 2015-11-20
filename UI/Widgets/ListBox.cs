@@ -229,7 +229,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _highlightPanel.Rect = Rect.Align(Alignment.TopLeft, 0, 0, 0, 0);
 
             _highlight.AddComponent<Panel>(_highlightPanel);
-            Scene.Current.AddObject(_highlight);
+			this.GameObj.ParentScene.AddObject(_highlight);
         }
 
         private void UpdateHighlight()

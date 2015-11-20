@@ -339,7 +339,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 					break;
 			}
 
-            Scene.Current.AddObject(_glyph);
+            this.GameObj.ParentScene.AddObject(_glyph);
         }
 
         private void OnCheckUncheck()

@@ -469,7 +469,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _currentMousePosition.X = e.X;
             _currentMousePosition.Y = e.Y;
 
-            IEnumerable<Widget> activeGUIComponents = Scene.Current.ActiveObjects.GetComponents<Widget>();
+			IEnumerable<Widget> activeGUIComponents = this.GameObj.ParentScene.ActiveObjects.GetComponents<Widget>();
 			IEnumerable<Widget> hoveredGUIComponents = activeGUIComponents.Where(gc => gc.ActiveArea != ActiveArea.None && gc.GetAreaOnScreen(_camera).Contains(_currentMousePosition));
 
             Widget hgc = null;
@@ -528,7 +528,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
         private GameObject FindFirstGameObject()
         {
-            Widget firstWidget = Scene.Current.FindComponents<Widget>().FirstOrDefault(w => w.PreviousWidget == null && w.NextWidget != null);
+			Widget firstWidget = this.GameObj.ParentScene.FindComponents<Widget>().FirstOrDefault(w => w.PreviousWidget == null && w.NextWidget != null);
             return firstWidget != null ? firstWidget.GameObj : null;
         }
 

@@ -229,7 +229,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _caret.AddComponent<SpriteRenderer>(sr);
             _caret.Active = false;
 
-            Scene.Current.AddObject(_caret);
+			this.GameObj.ParentScene.AddObject(_caret);
 
             _fText.SourceText = _text;
         }

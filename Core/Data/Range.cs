@@ -1,5 +1,6 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
+using Duality;
 using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.Core.Data
@@ -50,8 +51,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Data
         /// <returns></returns>
         public T Lerp(float inValue)
         {
-            System.Diagnostics.Debug.Assert(inValue >= 0);
-            System.Diagnostics.Debug.Assert(inValue <= 1);
+			inValue = MathF.Max(MathF.Min(1, inValue), 0);
+            
+			//System.Diagnostics.Debug.Assert(inValue >= 0);
+            //System.Diagnostics.Debug.Assert(inValue <= 1);
 
             return _Lerp(inValue);
         }

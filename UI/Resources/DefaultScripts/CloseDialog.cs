@@ -25,7 +25,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources.DefaultScripts
         public override void Execute(GameObject inSource, object inParameter)
         {
             inSource.FindAncestorWithComponent<Widget>().GetComponent<Widget>().Close();
-            Scene.Current.FindComponent<WidgetController>().SetDialogWindow(null);
+            inSource.ParentScene.FindComponent<WidgetController>().SetDialogWindow(null);
         }
     }
 }

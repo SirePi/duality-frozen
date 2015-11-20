@@ -459,7 +459,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             cb.Rect = Rect.Align(Alignment.TopLeft, 0, 0, _windowAppearance.Res.CloseButtonSize.X, _windowAppearance.Res.CloseButtonSize.Y);
 
             _closeButton.AddComponent<CloseButton>(cb);
-            Scene.Current.AddObject(_closeButton);
+			this.GameObj.ParentScene.AddObject(_closeButton);
         }
 
         private void AddMaximizeButton()
@@ -476,7 +476,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             mb.Rect = Rect.Align(Alignment.TopLeft, 0, 0, _windowAppearance.Res.ButtonSize.X, _windowAppearance.Res.ButtonSize.Y);
 
             _maximizeButton.AddComponent<MaximizeButton>(mb);
-            Scene.Current.AddObject(_maximizeButton);
+			this.GameObj.ParentScene.AddObject(_maximizeButton);
         }
 
         private void AddMinimizeButton()
@@ -493,7 +493,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             mb.Rect = Rect.Align(Alignment.TopLeft, 0, 0, _windowAppearance.Res.ButtonSize.X, _windowAppearance.Res.ButtonSize.Y);
 
             _minimizeButton.AddComponent<MinimizeButton>(mb);
-            Scene.Current.AddObject(_minimizeButton);
+			this.GameObj.ParentScene.AddObject(_minimizeButton);
         }
 
         private void AddRestoreButton()
@@ -511,7 +511,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
             _restoreButton.Active = false;
             _restoreButton.AddComponent<RestoreButton>(rb);
-            Scene.Current.AddObject(_restoreButton);
+			this.GameObj.ParentScene.AddObject(_restoreButton);
         }
 
         private void EnableChildren(bool inEnable)

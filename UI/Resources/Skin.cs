@@ -57,7 +57,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
 
         public virtual void PrepareVertices(ref MultiSpacePoint[] vertices, Vector4 border, Rect widgetArea, float scale)
         {
-            Rect waTemp = widgetArea.Scaled(scale, scale);
+            Rect waTemp = widgetArea.Transformed(scale, scale);
 
             Vector2 topLeft = waTemp.TopLeft;
             Vector2 bottomRight = waTemp.BottomRight;

@@ -21,6 +21,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Properties
         public const string ImageFXRect = ManifestBaseName + "iconResFXRect.png";
         public const string ImageFXSphere = ManifestBaseName + "iconResFXSphere.png";
         public const string ImageLightning = ManifestBaseName + "iconResLightning.png";
+		public const string ImageFXAttractor = ManifestBaseName + "iconResFXParticleAttractor.png";
+		public const string ImageFXRepulsor = ManifestBaseName + "iconResFXParticleRepulsor.png";
         public const string ImageParticleEmitter = ManifestBaseName + "iconResParticleEmitter.png";
     }
 

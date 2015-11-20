@@ -297,7 +297,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _scrollComponent.ScrollSpeed = _scrollSpeed;
 
             _scrollbar.AddComponent<ScrollBar>(_scrollComponent);
-            Scene.Current.AddObject(_scrollbar);
+			this.GameObj.ParentScene.AddObject(_scrollbar);
         }
 
         protected override Appearance GetBaseAppearance()

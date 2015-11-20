@@ -37,8 +37,8 @@
     <DocumentationFile>bin\Release\SnowyPeak.Duality.Frozen.UI.core.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Duality, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AdamsLair.Duality.2.0.4\lib\Duality.dll</HintPath>
+    <Reference Include="Duality, Version=2.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AdamsLair.Duality.2.1.2\lib\Duality.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DualityPrimitives, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">

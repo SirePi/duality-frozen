@@ -14,7 +14,6 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
     {
         private ColorRange _colorRange;
         private ColorRgba _currentColor;
-        private float _direction;
         private float _lifeTime;
         private ParticleMaterial _material;
         private float _movementSpeed;
@@ -23,14 +22,18 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
         private float _scale;
         private float _scaleSpeed;
         private float _timeToLive;
+		private Vector2[] _vertexFactors;
 
         internal Particle()
         {
+			_vertexFactors = new Vector2[4];
             Vertices = new VertexC1P3T2[4];
         }
 
+		internal float Direction { get; set; }
+		internal Vector3 Position { get; set; }
+
         internal bool IsAlive { get; private set; }
-        internal Vector3 Position { get; private set; }
         internal VertexC1P3T2[] Vertices { get; private set; }
 
         internal void Kill()
@@ -38,13 +41,13 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
             IsAlive = false;
         }
 
-        internal void SetData(ParticleMaterial inMaterial, Vector3 inOrigin, float inMovementSpeed, float inRotationSpeed, float inScaleSpeed, float inInitialRotation, float inInitialDirection, float inInitialScale, float inTimeToLive, ColorRange inColorRange)
+        internal void SetData(ParticleMaterial inMaterial, Vector3 inOrigin, float inMovementSpeed, float inRotationSpeed, float inScaleSpeed, float inInitialRotation, float inInitialDirection, float inInitialScale, float inTimeToLive, ColorRange inColorRange, float randomFactor)
         {
             _material = inMaterial;
 
             Position = inOrigin;
             _scale = inInitialScale;
-            _direction = inInitialDirection - MathF.PiOver2;
+			Direction = inInitialDirection - MathF.PiOver2;
             _rotation = inInitialRotation;
 
             _movementSpeed = inMovementSpeed;
@@ -57,6 +60,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
             _currentColor = _colorRange.Min;
 
             IsAlive = true;
+
+			_vertexFactors[0] = Vector2.One - MathF.Rnd.NextVector2(0, 0, randomFactor, randomFactor); //topLeft
+			_vertexFactors[1] = Vector2.One - MathF.Rnd.NextVector2(0, 0, randomFactor, randomFactor); //bottomLeft
+			_vertexFactors[2] = Vector2.One - MathF.Rnd.NextVector2(0, 0, randomFactor, randomFactor); //bottomRight
+			_vertexFactors[3] = Vector2.One - MathF.Rnd.NextVector2(0, 0, randomFactor, randomFactor); //topRight
         }
 
         internal void Update(float inElapsedTimeInSeconds)
@@ -69,8 +77,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
                 float decay = (_lifeTime - _timeToLive) / _lifeTime;
 
                 Vector3 newPosition = Position;
-                newPosition.X += (float)((Math.Cos(_direction) * _movementSpeed * inElapsedTimeInSeconds));
-                newPosition.Y += (float)((Math.Sin(_direction) * _movementSpeed * inElapsedTimeInSeconds));
+				newPosition.X += (float)((Math.Cos(Direction) * _movementSpeed * inElapsedTimeInSeconds));
+				newPosition.Y += (float)((Math.Sin(Direction) * _movementSpeed * inElapsedTimeInSeconds));
 
                 Position = newPosition;
                 _rotation += (_rotationSpeed * inElapsedTimeInSeconds);
@@ -86,11 +94,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
             Vector2 xDot, yDot;
             MathF.GetTransformDotVec(_rotation, inPreprocessedScale, out xDot, out yDot);
 
-            Rect rectTemp = _material.Rectangle.Scaled(_scale, _scale);
-            Vector2 edge1 = rectTemp.TopLeft;
-            Vector2 edge2 = rectTemp.BottomLeft;
-            Vector2 edge3 = rectTemp.BottomRight;
-            Vector2 edge4 = rectTemp.TopRight;
+            Rect rectTemp = _material.Rectangle.Transformed(_scale, _scale);
+			Vector2 edge1 = rectTemp.TopLeft * _vertexFactors[0];
+			Vector2 edge2 = rectTemp.BottomLeft * _vertexFactors[1];
+			Vector2 edge3 = rectTemp.BottomRight * _vertexFactors[2];
+			Vector2 edge4 = rectTemp.TopRight * _vertexFactors[3];
 
             MathF.TransformDotVec(ref edge1, ref xDot, ref yDot);
             MathF.TransformDotVec(ref edge2, ref xDot, ref yDot);

@@ -235,7 +235,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             sc.Rect = Rect.Align(Alignment.Center, 0, 0, _scrollAppearance.Res.CursorSize.X, _scrollAppearance.Res.CursorSize.Y);
 
             _cursor.AddComponent<ScrollCursor>(sc);
-            Scene.Current.AddObject(_cursor);
+			this.GameObj.ParentScene.AddObject(_cursor);
         }
 
         private void AddScrollDecreaseButton()
@@ -253,7 +253,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             sdb.LeftClickArgument = _scrollSpeed;
 
             _decreaseButton.AddComponent<ScrollDecreaseButton>(sdb);
-            Scene.Current.AddObject(_decreaseButton);
+			this.GameObj.ParentScene.AddObject(_decreaseButton);
         }
 
         private void AddScrollIncreaseButton()
@@ -271,7 +271,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             sib.LeftClickArgument = _scrollSpeed;
 
             _increaseButton.AddComponent<ScrollIncreaseButton>(sib);
-            Scene.Current.AddObject(_increaseButton);
+			this.GameObj.ParentScene.AddObject(_increaseButton);
         }
 
         private void UpdateCursor()

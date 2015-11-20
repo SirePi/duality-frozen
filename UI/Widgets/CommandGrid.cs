@@ -425,7 +425,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _highlightPanel.Rect = Rect.Align(Alignment.TopLeft, 0, 0, 0, 0);
 
             _highlight.AddComponent<Panel>(_highlightPanel);
-            Scene.Current.AddObject(_highlight);
+			this.GameObj.ParentScene.AddObject(_highlight);
         }
 
         private void AddScrollBar()
@@ -449,7 +449,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             _scrollComponent.ScrollSpeed = 1;
 
             _scrollbar.AddComponent<ScrollBar>(_scrollComponent);
-            Scene.Current.AddObject(_scrollbar);
+			this.GameObj.ParentScene.AddObject(_scrollbar);
         }
 
         private void UpdateComponents()

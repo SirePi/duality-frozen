@@ -229,7 +229,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 
             _listBoxComponent.SelectedItem = null;
 
-            Scene.Current.AddObject(_listBox);
+			this.GameObj.ParentScene.AddObject(_listBox);
         }
 
         protected override Appearance GetBaseAppearance()

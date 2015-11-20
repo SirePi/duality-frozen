@@ -166,7 +166,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
             sp.Rect = Rect.Align(Alignment.Left, -Rect.W / 2 + _progressAppearance.Res.Widget.Res.Border.X, 0, 0, Rect.H - _progressAppearance.Res.Widget.Res.Border.Y - _progressAppearance.Res.Widget.Res.Border.W);
 
             _bar.AddComponent<Panel>(sp);
-            Scene.Current.AddObject(_bar);
+			this.GameObj.ParentScene.AddObject(_bar);
         }
 
         private void UpdateBar()

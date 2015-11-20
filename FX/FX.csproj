@@ -66,6 +66,9 @@
     <Compile Include="Components\FXPoint.cs" />
     <Compile Include="Components\FXRectangle.cs" />
     <Compile Include="Components\Lightning.cs" />
+    <Compile Include="Components\ParticleRepulsor.cs" />
+    <Compile Include="Components\ParticleAttractor.cs" />
+    <Compile Include="Components\ParticleAlterator.cs" />
     <Compile Include="Components\ParticleEmitter.cs" />
     <Compile Include="CorePlugin.cs" />
     <Compile Include="LightningBolt.cs" />
@@ -91,6 +94,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EmbeddedResources\iconResFXParticleAttractor.png" />
+    <EmbeddedResource Include="EmbeddedResources\iconResFXParticleRepulsor.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
