@@ -6,37 +6,37 @@ using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
 {
-    /// <summary>
-    ///
-    /// </summary>
+	/// <summary>
+	///
+	/// </summary>
 
-    [EditorHintImage(ResNames.ImageScript)]
-    [EditorHintCategory(ResNames.CategoryWidgets)]
-    public abstract class Script : Resource
-    {
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="inSource"></param>
-        public void Execute(GameObject inSource)
-        {
-            Execute(inSource, null);
-        }
+	[EditorHintImage(ResNames.ImageScript)]
+	[EditorHintCategory(ResNames.CategoryWidgets)]
+	public abstract class Script : Resource
+	{
+		/// <summary>
+		///
+		/// </summary>
+		/// <param name="inSource"></param>
+		public void Execute(GameObject inSource)
+		{
+			Execute(inSource, null);
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="inSource"></param>
-        /// <param name="inParameter"></param>
-        public abstract void Execute(GameObject inSource, object inParameter);
+		/// <summary>
+		///
+		/// </summary>
+		/// <param name="inSource"></param>
+		/// <param name="inParameter"></param>
+		public abstract void Execute(GameObject inSource, object inParameter);
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public ContentRef<Script> ToScriptContentRef()
-        {
-            return new ContentRef<Script>(this);
-        }
-    }
+		/// <summary>
+		///
+		/// </summary>
+		/// <returns></returns>
+		public ContentRef<Script> ToScriptContentRef()
+		{
+			return new ContentRef<Script>(this);
+		}
+	}
 }

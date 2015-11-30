@@ -65,31 +65,14 @@
     <Compile Include="CorePlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\ResNames.cs" />
-    <Compile Include="AppearanceManager.cs" />
-    <Compile Include="Resources\DefaultAppearance\DefaultGradientSkin.cs" />
     <Compile Include="Resources\DefaultScripts\CloseDialog.cs" />
     <Compile Include="Resources\DefaultScripts\CloseWindow.cs" />
     <Compile Include="Resources\DefaultScripts\Quit.cs" />
-    <Compile Include="Resources\ProgressBarAppearance.cs" />
-    <Compile Include="Resources\ListBoxAppearance.cs" />
-    <Compile Include="Resources\MultiLineAppearance.cs" />
-    <Compile Include="Resources\DropDownAppearance.cs" />
     <Compile Include="Resources\Skin.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Resources\WindowAppearance.cs" />
-    <Compile Include="Resources\ScrollBarAppearance.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Resources\SolidColorSkin.cs" />
-    <Compile Include="Resources\GradientSkin.cs" />
     <Compile Include="Resources\Script.cs" />
     <Compile Include="Resources\Appearance.cs" />
-    <Compile Include="Resources\MaterialSkin.cs" />
-    <Compile Include="Resources\GlyphAppearance.cs" />
-    <Compile Include="Resources\WidgetAppearance.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ActiveArea.cs" />
     <Compile Include="Widgets\InternalScripts.cs" />
     <Compile Include="Widgets\InternalWidgets.cs" />
@@ -124,7 +107,9 @@
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="EmbeddedResources\frozenUi.png" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="EmbeddedResources\iconResButton.png" />
     <EmbeddedResource Include="EmbeddedResources\iconResCheckButton.png" />

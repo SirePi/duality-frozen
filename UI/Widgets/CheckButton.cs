@@ -13,294 +13,304 @@ using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
-    /// <summary>
-    /// A CheckButton Widget
-    /// </summary>
+	/// <summary>
+	/// A CheckButton Widget
+	/// </summary>
 
-    [EditorHintImage(ResNames.ImageCheckButton)]
-    [EditorHintCategory(ResNames.CategoryWidgets)]
-    public class CheckButton : Widget
-    {
-        #region NonSerialized fields
+	[EditorHintImage(ResNames.ImageCheckButton)]
+	[EditorHintCategory(ResNames.CategoryWidgets)]
+	public class CheckButton : Widget
+	{
+		#region NonSerialized fields
 
-        [DontSerialize]
-        private FormattedText _fText;
+		[DontSerialize]
+		private FormattedText _fText;
 
-        [DontSerialize]
-        private GameObject _glyph;
+		[DontSerialize]
+		private GameObject _glyph;
 
-        #endregion NonSerialized fields
+		#endregion NonSerialized fields
 
-        private object _checkedArgument;
-        private bool _isChecked;
-        private ContentRef<Script> _onChecked;
-        private ContentRef<Script> _onUnchecked;
-        private string _text;
-        private ColorRgba _textColor;
-        private ContentRef<Font> _textFont;
-        private object _uncheckedArgument;
-        private Alignment _glyphLocation;
+		private object _checkedArgument;
+		private bool _isChecked;
+		private ContentRef<Script> _onChecked;
+		private ContentRef<Script> _onUnchecked;
+		private string _text;
+		private ColorRgba _textColor;
+		private ContentRef<Font> _textFont;
+		private object _uncheckedArgument;
+		private Alignment _glyphLocation;
+		private string _customGlyphAppearance;
+		private Vector2 _glyphSize;
 
-        private ContentRef<GlyphAppearance> _glyphAppearance;
+		/// <summary>
+		/// [GET / SET] The size of the Glyph
+		/// </summary>
+		public Vector2 GlyphSize
+		{
+			get { return _glyphSize; }
+			set { _glyphSize = value; }
+		}
 
-        public ContentRef<GlyphAppearance> Appearance
-        {
-            get { return _glyphAppearance; }
-            set
-            {
-                _glyphAppearance = value;
-                _dirtyFlags |= DirtyFlags.Appearance;
-            }
-        }
+		/// <summary>
+		/// [GET / SET] The custom appearance for the Glyph
+		/// </summary>
+		public string CustomGlyphAppearance
+		{
+			get { return _customGlyphAppearance; }
+			set
+			{
+				_customGlyphAppearance = value;
+				_dirtyFlags |= DirtyFlags.Skin;
+			}
+		}
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public CheckButton()
-        {
-            ActiveArea = ActiveArea.LeftBorder;
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public CheckButton()
+		{
+			ActiveArea = ActiveArea.All;
 
-            _fText = new FormattedText();
-            _textColor = Colors.White;
-            _glyphLocation = Alignment.Left;
+			_fText = new FormattedText();
+			_textColor = Colors.White;
+			_glyphLocation = Alignment.Left;
+		}
 
-            Appearance = DefaultGradientSkin.GLYPH;
-        }
+		/// <summary>
+		///
+		/// </summary>
+		public object CheckedArgument
+		{
+			get { return _checkedArgument; }
+			set { _checkedArgument = value; }
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        public object CheckedArgument
-        {
-            get { return _checkedArgument; }
-            set { _checkedArgument = value; }
-        }
+		/// <summary>
+		/// [GET / SET] if the Button is Checked
+		/// </summary>
+		public bool IsChecked
+		{
+			get { return _isChecked; }
+			set
+			{
+				if (_isChecked != value)
+				{
+					_isChecked = value;
+					_dirtyFlags |= DirtyFlags.Value;
+				}
+			}
+		}
 
-        /// <summary>
-        /// [GET / SET] if the Button is Checked
-        /// </summary>
-        public bool IsChecked
-        {
-            get { return _isChecked; }
-            set
-            {
-                if (_isChecked != value)
-                {
-                    _isChecked = value;
-                    _dirtyFlags |= DirtyFlags.Value;
-                }
-            }
-        }
+		/// <summary>
+		///
+		/// </summary>
+		public ContentRef<Script> OnChecked
+		{
+			get { return _onChecked; }
+			set { _onChecked = value; }
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        public ContentRef<Script> OnChecked
-        {
-            get { return _onChecked; }
-            set { _onChecked = value; }
-        }
+		/// <summary>
+		///
+		/// </summary>
+		public ContentRef<Script> OnUnchecked
+		{
+			get { return _onUnchecked; }
+			set { _onUnchecked = value; }
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        public ContentRef<Script> OnUnchecked
-        {
-            get { return _onUnchecked; }
-            set { _onUnchecked = value; }
-        }
-
-        /// <summary>
-        /// [GET / SET] the Text of the Button
-        /// </summary>
-        public string Text
-        {
-            get { return _text; }
-            set { _text = value; }
-        }
+		/// <summary>
+		/// [GET / SET] the Text of the Button
+		/// </summary>
+		public string Text
+		{
+			get { return _text; }
+			set { _text = value; }
+		}
 
 		/// <summary>
 		/// [GET / SET] the Location of the Check Glyph
 		/// </summary>
-        public Alignment GlyphLocation
-        {
-            get { return _glyphLocation; }
-            set { _glyphLocation = value; }
-        }
+		public Alignment GlyphLocation
+		{
+			get { return _glyphLocation; }
+			set { _glyphLocation = value; }
+		}
 
-        /// <summary>
-        /// [GET / SET] the Color of the Text
-        /// </summary>
-        public ColorRgba TextColor
-        {
-            get { return _textColor; }
-            set { _textColor = value; }
-        }
+		/// <summary>
+		/// [GET / SET] the Color of the Text
+		/// </summary>
+		public ColorRgba TextColor
+		{
+			get { return _textColor; }
+			set { _textColor = value; }
+		}
 
-        /// <summary>
-        /// [GET / SET] the Font of the Text
-        /// </summary>
-        public ContentRef<Font> TextFont
-        {
-            get { return _textFont; }
-            set { _textFont = value; }
-        }
+		/// <summary>
+		/// [GET / SET] the Font of the Text
+		/// </summary>
+		public ContentRef<Font> TextFont
+		{
+			get { return _textFont; }
+			set { _textFont = value; }
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        public object UncheckedArgument
-        {
-            get { return _uncheckedArgument; }
-            set { _uncheckedArgument = value; }
-        }
+		/// <summary>
+		///
+		/// </summary>
+		public object UncheckedArgument
+		{
+			get { return _uncheckedArgument; }
+			set { _uncheckedArgument = value; }
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="e"></param>
-        public override void MouseDown(MouseButtonEventArgs e)
-        {
-            if (Status != WidgetStatus.Disabled)
-            {
-                if (e.Button == MouseButton.Left)
-                {
-                    Status = WidgetStatus.Active;
-                }
-            }
-        }
+		/// <summary>
+		///
+		/// </summary>
+		/// <param name="e"></param>
+		public override void MouseDown(MouseButtonEventArgs e)
+		{
+			if (Status != WidgetStatus.Disabled)
+			{
+				if (e.Button == MouseButton.Left)
+				{
+					Status = WidgetStatus.Active;
+				}
+			}
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        public override void MouseEnter()
-        {
-            _isMouseOver = true;
+		/// <summary>
+		///
+		/// </summary>
+		public override void MouseEnter()
+		{
+			_isMouseOver = true;
 
-            if (Status != WidgetStatus.Disabled)
-            {
-                Status = WidgetStatus.Hover;
-            }
-        }
+			if (Status != WidgetStatus.Disabled)
+			{
+				Status = WidgetStatus.Hover;
+			}
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        public override void MouseLeave()
-        {
-            _isMouseOver = false;
+		/// <summary>
+		///
+		/// </summary>
+		public override void MouseLeave()
+		{
+			_isMouseOver = false;
 
-            if (Status != WidgetStatus.Disabled)
-            {
-                Status = WidgetStatus.Normal;
-            }
-        }
+			if (Status != WidgetStatus.Disabled)
+			{
+				Status = WidgetStatus.Normal;
+			}
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="e"></param>
-        public override void MouseUp(MouseButtonEventArgs e)
-        {
-            if (e.Button == MouseButton.Left && _isMouseOver)
-            {
-                IsChecked = !IsChecked;
-                Status = _isMouseOver ? WidgetStatus.Hover : WidgetStatus.Normal;
+		/// <summary>
+		///
+		/// </summary>
+		/// <param name="e"></param>
+		public override void MouseUp(MouseButtonEventArgs e)
+		{
+			if (e.Button == MouseButton.Left && _isMouseOver)
+			{
+				IsChecked = !IsChecked;
+				Status = _isMouseOver ? WidgetStatus.Hover : WidgetStatus.Normal;
 
-                if (IsChecked && OnChecked.Res != null)
-                {
-                    OnChecked.Res.Execute(this.GameObj, CheckedArgument);
-                }
-                if (!IsChecked && OnUnchecked.Res != null)
-                {
-                    OnUnchecked.Res.Execute(this.GameObj, UncheckedArgument);
-                }
-            }
-        }
+				if (IsChecked && OnChecked.Res != null)
+				{
+					OnChecked.Res.Execute(this.GameObj, CheckedArgument);
+				}
+				if (!IsChecked && OnUnchecked.Res != null)
+				{
+					OnUnchecked.Res.Execute(this.GameObj, UncheckedArgument);
+				}
+			}
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="inCanvas"></param>
-        protected override void DrawCanvas(Canvas inCanvas)
-        {
-            if (!String.IsNullOrWhiteSpace(_text))
-            {
-                if (_textFont.Res != null && _fText.Fonts[0] != _textFont)
-                {
-                    _fText.Fonts[0] = _textFont;
-                }
+		/// <summary>
+		///
+		/// </summary>
+		/// <param name="inCanvas"></param>
+		protected override void DrawCanvas(Canvas inCanvas)
+		{
+			if (!String.IsNullOrWhiteSpace(_text))
+			{
+				if (_textFont.Res != null && _fText.Fonts[0] != _textFont)
+				{
+					_fText.Fonts[0] = _textFont;
+				}
 
-                _fText.SourceText = _text;
-                Vector3 buttonCenter = (_points[5].WorldCoords + _points[10].WorldCoords) / 2;
+				_fText.SourceText = _text;
+				Vector3 buttonCenter = (_points[5].WorldCoords + _points[10].WorldCoords) / 2;
 
-                inCanvas.PushState();
+				inCanvas.PushState();
 
-                inCanvas.State.ColorTint = _textColor;
-                inCanvas.State.TransformAngle = GameObj.Transform.Angle;
-                inCanvas.DrawText(_fText, buttonCenter.X, buttonCenter.Y, buttonCenter.Z + DELTA_Z, null, Alignment.Center);
+				inCanvas.State.ColorTint = _textColor;
+				inCanvas.State.TransformAngle = GameObj.Transform.Angle;
+				inCanvas.DrawText(_fText, buttonCenter.X, buttonCenter.Y, buttonCenter.Z + DELTA_Z, null, Alignment.Center);
 
-                inCanvas.PopState();
-            }
-        }
+				inCanvas.PopState();
+			}
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        protected override void OnStatusChange()
-        {
-            base.OnStatusChange();
+		/// <summary>
+		///
+		/// </summary>
+		protected override void OnStatusChange()
+		{
+			base.OnStatusChange();
 
-            if (_glyph != null)
-            {
-                _glyph.GetComponent<Panel>().Status = (Status == WidgetStatus.Disabled ? WidgetStatus.Disabled : WidgetStatus.Normal);
-            }
-        }
+			if (_glyph != null)
+			{
+				_glyph.GetComponent<Panel>().Status = (Status == WidgetStatus.Disabled ? WidgetStatus.Disabled : WidgetStatus.Normal);
+			}
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="inSecondsPast"></param>
-        protected override void OnUpdate(float inSecondsPast)
-        {
-            if (_glyph == null && !_glyphAppearance.Res.Glyph.IsExplicitNull)
-            {
-                AddGlyph();
-            }
+		/// <summary>
+		///
+		/// </summary>
+		/// <param name="inSecondsPast"></param>
+		protected override void OnUpdate(float inSecondsPast)
+		{
+			if (_glyph == null)
+			{
+				AddGlyph();
+			}
 
-            if ((_dirtyFlags & DirtyFlags.Value) != DirtyFlags.None)
-            {
-                OnCheckUncheck();
-            }
+			if ((_dirtyFlags & DirtyFlags.Value) != DirtyFlags.None)
+			{
+				OnCheckUncheck();
+			}
 
-            if (_glyph != null)
-            {
-                if ((_dirtyFlags & DirtyFlags.Appearance) != DirtyFlags.None)
-                {
-                    Panel p = _glyph.GetComponent<Panel>();
-                    p.Appearance = AppearanceManager.RequestAppearanceContentRef(_glyphAppearance.Res.Glyph);
-					p.Rect = Rect.Align(GlyphLocation, 0, 0, _glyphAppearance.Res.GlyphSize.X, _glyphAppearance.Res.GlyphSize.Y);
-                }
+			if (_glyph != null)
+			{
+				if ((_dirtyFlags & DirtyFlags.Skin) != DirtyFlags.None)
+				{
+					_glyph.GetComponent<Panel>().Skin = Skin;
+					_glyph.GetComponent<Panel>().CustomWidgetAppearance = _customGlyphAppearance;
+				}
 
-                _glyph.Active = IsChecked;
-            }
-        }
+				_glyph.Active = IsChecked;
+			}
+		}
 
-        private void AddGlyph()
-        {
-            _glyph = new GameObject("glyph", this.GameObj);
+		private void AddGlyph()
+		{
+			_glyph = new GameObject(this.GetType().Name + "Glyph", this.GameObj);
 
 			Panel p = new Panel();
-			p.VisibilityGroup = this.VisibilityGroup;
-			p.Appearance = AppearanceManager.RequestAppearanceContentRef(_glyphAppearance.Res.Glyph);
-			p.Rect = Rect.Align(GlyphLocation, 0, 0, _glyphAppearance.Res.GlyphSize.X, _glyphAppearance.Res.GlyphSize.Y);
+			p.VisibilityGroup = VisibilityGroup;
+			p.Skin = Skin;
+			p.CustomWidgetAppearance = _customGlyphAppearance;
+			p.Rect = Rect.Align(GlyphLocation, 0, 0, _glyphSize.X, _glyphSize.Y);
 
 			_glyph.AddComponent<Panel>(p);
 
-            Transform t = _glyph.AddComponent<Transform>();
+			Transform t = _glyph.AddComponent<Transform>();
 			t.RelativeAngle = 0;
 
-			switch(GlyphLocation)
+			switch (GlyphLocation)
 			{
 				case Alignment.TopLeft:
 					t.RelativePos = new Vector3(0, 0, 0);
@@ -339,30 +349,25 @@ namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 					break;
 			}
 
-            this.GameObj.ParentScene.AddObject(_glyph);
-        }
+			this.GameObj.ParentScene.AddObject(_glyph);
+		}
 
-        private void OnCheckUncheck()
-        {
-            if (IsChecked)
-            {
-                if (OnChecked.Res != null)
-                {
-                    OnChecked.Res.Execute(this.GameObj, UncheckedArgument);
-                }
-            }
-            else
-            {
-                if (OnUnchecked.Res != null)
-                {
-                    OnUnchecked.Res.Execute(this.GameObj, UncheckedArgument);
-                }
-            }
-        }
-
-        protected override Appearance GetBaseAppearance()
-        {
-            return _glyphAppearance.Res.Widget.Res;
-        }
-    }
+		private void OnCheckUncheck()
+		{
+			if (IsChecked)
+			{
+				if (OnChecked.Res != null)
+				{
+					OnChecked.Res.Execute(this.GameObj, UncheckedArgument);
+				}
+			}
+			else
+			{
+				if (OnUnchecked.Res != null)
+				{
+					OnUnchecked.Res.Execute(this.GameObj, UncheckedArgument);
+				}
+			}
+		}
+	}
 }

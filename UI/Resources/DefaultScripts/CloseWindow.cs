@@ -8,22 +8,22 @@ using SnowyPeak.Duality.Plugin.Frozen.UI.Widgets;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources.DefaultScripts
 {
-    /// <summary>
-    /// Command used to close a Window
-    /// </summary>
+	/// <summary>
+	/// Command used to close a Window
+	/// </summary>
 
-    [EditorHintImage(ResNames.ImageScript)]
-    [EditorHintCategory(ResNames.CategoryWidgets)]
-    public class CloseWindow : Script
-    {
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="inSource"></param>
-        /// <param name="inParameter"></param>
-        public override void Execute(GameObject inSource, object inParameter)
-        {
-            inSource.FindAncestorWithComponent<Widget>().GetComponent<Widget>().Close();
-        }
-    }
+	[EditorHintImage(ResNames.ImageScript)]
+	[EditorHintCategory(ResNames.CategoryWidgets)]
+	public class CloseWindow : Script
+	{
+		/// <summary>
+		///
+		/// </summary>
+		/// <param name="inSource"></param>
+		/// <param name="inParameter"></param>
+		public override void Execute(GameObject inSource, object inParameter)
+		{
+			inSource.FindAncestorWithComponent<Widget>().GetComponent<Widget>().Close();
+		}
+	}
 }

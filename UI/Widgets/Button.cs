@@ -12,263 +12,244 @@ using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
-    /// <summary>
-    /// A Button Widget
-    /// </summary>
+	/// <summary>
+	/// A Button Widget
+	/// </summary>
 
-    [EditorHintImage(ResNames.ImageButton)]
-    [EditorHintCategory(ResNames.CategoryWidgets)]
-    public class Button : Widget
-    {
-        #region NonSerialized fields
+	[EditorHintImage(ResNames.ImageButton)]
+	[EditorHintCategory(ResNames.CategoryWidgets)]
+	public class Button : Widget
+	{
+		#region NonSerialized fields
 
-        /// <summary>
-        ///
-        /// </summary>
-        [DontSerialize]
-        protected bool _leftButtonDown;
+		/// <summary>
+		///
+		/// </summary>
+		[DontSerialize]
+		protected bool _leftButtonDown;
 
-        [DontSerialize]
-        private FormattedText _fText;
+		[DontSerialize]
+		private FormattedText _fText;
 
-        [DontSerialize]
-        private float _secondsFromLastTick;
+		[DontSerialize]
+		private float _secondsFromLastTick;
 
-        #endregion NonSerialized fields
+		#endregion NonSerialized fields
 
-        private object _leftClickArgument;
-        private ContentRef<Script> _onLeftClick;
-        private ContentRef<Script> _onRightClick;
-        private float _repeatLeftClickEvery;
-        private object _rightClickArgument;
-        private string _text;
-        private ColorRgba _textColor;
-        private ContentRef<Font> _textFont;
-        private FormattedText.Icon[] _textIcons;
+		private object _leftClickArgument;
+		private ContentRef<Script> _onLeftClick;
+		private ContentRef<Script> _onRightClick;
+		private float _repeatLeftClickEvery;
+		private object _rightClickArgument;
+		private string _text;
+		private ColorRgba _textColor;
+		private ContentRef<Font> _textFont;
+		private FormattedText.Icon[] _textIcons;
 
-        private ContentRef<WidgetAppearance> _widgetAppearance;
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public Button()
+		{
+			ActiveArea = ActiveArea.All;
 
-        public ContentRef<WidgetAppearance> Appearance
-        {
-            get { return _widgetAppearance; }
-            set
-            {
-                _widgetAppearance = value;
-                _dirtyFlags |= DirtyFlags.Appearance;
-            }
-        }
+			_fText = new FormattedText();
+			_textColor = ColorRgba.Black;
+		}
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public Button()
-        {
-            ActiveArea = ActiveArea.All;
+		/// <summary>
+		///
+		/// </summary>
+		public object LeftClickArgument
+		{
+			get { return _leftClickArgument; }
+			set { _leftClickArgument = value; }
+		}
 
-            _fText = new FormattedText();
-            _textColor = Colors.White;
+		/// <summary>
+		///
+		/// </summary>
+		public ContentRef<Script> OnLeftClick
+		{
+			get { return _onLeftClick; }
+			set { _onLeftClick = value; }
+		}
 
-            Appearance = DefaultGradientSkin.WIDGET;
-        }
+		/// <summary>
+		///
+		/// </summary>
+		public ContentRef<Script> OnRightClick
+		{
+			get { return _onRightClick; }
+			set { _onRightClick = value; }
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        public object LeftClickArgument
-        {
-            get { return _leftClickArgument; }
-            set { _leftClickArgument = value; }
-        }
+		/// <summary>
+		/// [GET / SET] If set to a value different than 0, the OnLeftClick event will be fired every
+		/// RepeatLeftClickEvery seconds
+		/// </summary>
+		[EditorHintDecimalPlaces(1)]
+		public float RepeatLeftClickEvery
+		{
+			get { return _repeatLeftClickEvery; }
+			set { _repeatLeftClickEvery = value; }
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        public ContentRef<Script> OnLeftClick
-        {
-            get { return _onLeftClick; }
-            set { _onLeftClick = value; }
-        }
+		/// <summary>
+		///
+		/// </summary>
+		public object RightClickArgument
+		{
+			get { return _rightClickArgument; }
+			set { _rightClickArgument = value; }
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        public ContentRef<Script> OnRightClick
-        {
-            get { return _onRightClick; }
-            set { _onRightClick = value; }
-        }
+		/// <summary>
+		/// [GET / SET] the Text of the Button
+		/// </summary>
+		public String Text
+		{
+			get { return _text; }
+			set { _text = value; }
+		}
 
-        /// <summary>
-        /// [GET / SET] If set to a value different than 0, the OnLeftClick event will be fired every
-        /// RepeatLeftClickEvery seconds
-        /// </summary>
-        [EditorHintDecimalPlaces(1)]
-        public float RepeatLeftClickEvery
-        {
-            get { return _repeatLeftClickEvery; }
-            set { _repeatLeftClickEvery = value; }
-        }
+		/// <summary>
+		/// [GET / SET] the Color of the Text
+		/// </summary>
+		public ColorRgba TextColor
+		{
+			get { return _textColor; }
+			set { _textColor = value; }
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        public object RightClickArgument
-        {
-            get { return _rightClickArgument; }
-            set { _rightClickArgument = value; }
-        }
+		/// <summary>
+		/// [GET / SET] the Font of the Text
+		/// </summary>
+		public ContentRef<Font> TextFont
+		{
+			get { return _textFont; }
+			set { _textFont = value; }
+		}
 
-        /// <summary>
-        /// [GET / SET] the Text of the Button
-        /// </summary>
-        public String Text
-        {
-            get { return _text; }
-            set { _text = value; }
-        }
+		/// <summary>
+		///
+		/// </summary>
+		/// <param name="e"></param>
+		public override void MouseDown(MouseButtonEventArgs e)
+		{
+			if (Status != WidgetStatus.Disabled)
+			{
+				if (e.Button == MouseButton.Right && OnRightClick.Res != null)
+				{
+					OnRightClick.Res.Execute(this.GameObj, RightClickArgument);
+				}
+				if (e.Button == MouseButton.Left)
+				{
+					Status = WidgetStatus.Active;
 
-        /// <summary>
-        /// [GET / SET] the Color of the Text
-        /// </summary>
-        public ColorRgba TextColor
-        {
-            get { return _textColor; }
-            set { _textColor = value; }
-        }
+					if (OnLeftClick.Res != null && RepeatLeftClickEvery > 0)
+					{
+						_leftButtonDown = true;
+					}
+				}
+			}
+		}
 
-        /// <summary>
-        /// [GET / SET] the Font of the Text
-        /// </summary>
-        public ContentRef<Font> TextFont
-        {
-            get { return _textFont; }
-            set { _textFont = value; }
-        }
+		/// <summary>
+		///
+		/// </summary>
+		public override void MouseEnter()
+		{
+			_isMouseOver = true;
+			if (Status != WidgetStatus.Disabled)
+			{
+				Status = _leftButtonDown ? WidgetStatus.Active : WidgetStatus.Hover;
+			}
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="e"></param>
-        public override void MouseDown(MouseButtonEventArgs e)
-        {
-            if (Status != WidgetStatus.Disabled)
-            {
-                if (e.Button == MouseButton.Right && OnRightClick.Res != null)
-                {
-                    OnRightClick.Res.Execute(this.GameObj, RightClickArgument);
-                }
-                if (e.Button == MouseButton.Left)
-                {
-                    Status = WidgetStatus.Active;
+		/// <summary>
+		///
+		/// </summary>
+		public override void MouseLeave()
+		{
+			_isMouseOver = false;
 
-                    if (OnLeftClick.Res != null && RepeatLeftClickEvery > 0)
-                    {
-                        _leftButtonDown = true;
-                    }
-                }
-            }
-        }
+			if (Status != WidgetStatus.Disabled && !_leftButtonDown)
+			{
+				Status = WidgetStatus.Normal;
+			}
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        public override void MouseEnter()
-        {
-            _isMouseOver = true;
-            if (Status != WidgetStatus.Disabled)
-            {
-                Status = _leftButtonDown ? WidgetStatus.Active : WidgetStatus.Hover;
-            }
-        }
+		/// <summary>
+		///
+		/// </summary>
+		/// <param name="e"></param>
+		public override void MouseUp(MouseButtonEventArgs e)
+		{
+			if (Status != WidgetStatus.Disabled)
+			{
+				if (e.Button == MouseButton.Left)
+				{
+					_leftButtonDown = false;
 
-        /// <summary>
-        ///
-        /// </summary>
-        public override void MouseLeave()
-        {
-            _isMouseOver = false;
+					if (_isMouseOver)
+					{
+						Status = WidgetStatus.Hover;
 
-            if (Status != WidgetStatus.Disabled && !_leftButtonDown)
-            {
-                Status = WidgetStatus.Normal;
-            }
-        }
+						if (OnLeftClick.Res != null && RepeatLeftClickEvery == 0)
+						{
+							OnLeftClick.Res.Execute(this.GameObj, LeftClickArgument);
+						}
+					}
+					else
+					{
+						Status = WidgetStatus.Normal;
+					}
+				}
+			}
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="e"></param>
-        public override void MouseUp(MouseButtonEventArgs e)
-        {
-            if (Status != WidgetStatus.Disabled)
-            {
-                if (e.Button == MouseButton.Left)
-                {
-                    _leftButtonDown = false;
+		/// <summary>
+		///
+		/// </summary>
+		/// <param name="inCanvas"></param>
+		protected override void DrawCanvas(Canvas inCanvas)
+		{
+			if (!String.IsNullOrWhiteSpace(_text))
+			{
+				if (_textFont.Res != null && _fText.Fonts[0] != _textFont)
+				{
+					_fText.Fonts[0] = _textFont;
+				}
 
-                    if (_isMouseOver)
-                    {
-                        Status = WidgetStatus.Hover;
+				_fText.SourceText = _text;
+				Vector3 buttonCenter = (_points[5].WorldCoords + _points[10].WorldCoords) / 2;
 
-                        if (OnLeftClick.Res != null && RepeatLeftClickEvery == 0)
-                        {
-                            OnLeftClick.Res.Execute(this.GameObj, LeftClickArgument);
-                        }
-                    }
-                    else
-                    {
-                        Status = WidgetStatus.Normal;
-                    }
-                }
-            }
-        }
+				inCanvas.PushState();
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="inCanvas"></param>
-        protected override void DrawCanvas(Canvas inCanvas)
-        {
-            if (!String.IsNullOrWhiteSpace(_text))
-            {
-                if (_textFont.Res != null && _fText.Fonts[0] != _textFont)
-                {
-                    _fText.Fonts[0] = _textFont;
-                }
+				inCanvas.State.ColorTint = _textColor;
+				inCanvas.State.TransformAngle = GameObj.Transform.Angle;
+				inCanvas.DrawText(_fText, buttonCenter.X, buttonCenter.Y, buttonCenter.Z + DELTA_Z, null, Alignment.Center);
 
-                _fText.SourceText = _text;
-                Vector3 buttonCenter = (_points[5].WorldCoords + _points[10].WorldCoords) / 2;
+				inCanvas.PopState();
+			}
+		}
 
-                inCanvas.PushState();
+		/// <summary>
+		///
+		/// </summary>
+		/// <param name="inSecondsPast"></param>
+		protected override void OnUpdate(float inSecondsPast)
+		{
+			base.OnUpdate(inSecondsPast);
 
-                inCanvas.State.ColorTint = _textColor;
-                inCanvas.State.TransformAngle = GameObj.Transform.Angle;
-                inCanvas.DrawText(_fText, buttonCenter.X, buttonCenter.Y, buttonCenter.Z + DELTA_Z, null, Alignment.Center);
+			_secondsFromLastTick += inSecondsPast;
 
-                inCanvas.PopState();
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="inSecondsPast"></param>
-        protected override void OnUpdate(float inSecondsPast)
-        {
-            base.OnUpdate(inSecondsPast);
-
-            _secondsFromLastTick += inSecondsPast;
-
-            if (_secondsFromLastTick > RepeatLeftClickEvery && _leftButtonDown && OnLeftClick.Res != null)
-            {
-                _secondsFromLastTick = 0;
-                OnLeftClick.Res.Execute(this.GameObj, _leftClickArgument);
-            }
-        }
-
-        protected override Appearance GetBaseAppearance()
-        {
-            return _widgetAppearance.Res.Widget.Res;
-        }
-    }
+			if (_secondsFromLastTick > RepeatLeftClickEvery && _leftButtonDown && OnLeftClick.Res != null)
+			{
+				_secondsFromLastTick = 0;
+				OnLeftClick.Res.Execute(this.GameObj, _leftClickArgument);
+			}
+		}
+	}
 }

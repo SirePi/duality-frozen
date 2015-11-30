@@ -1,67 +1,69 @@
 ﻿// This code is provided under the MIT license. Originally by Alessandro Pilati.
 
 using Duality;
-using Duality.Editor;
-using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Widgets;
-using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Resources
 {
-    /// <summary>
-    ///
-    /// </summary>
-    [EditorHintImage(ResNames.ImageSkin)]
-    [EditorHintCategory(ResNames.CategoryWidgets)]
-    public class Appearance : Resource
-    {
-        private ContentRef<Skin>[] _skins;
+	/// <summary>
+	///
+	/// </summary>
+	public class Appearance
+	{
+		/// <summary>
+		/// 
+		/// </summary>
+		public Vector4 Border { get; set; }
 
-        protected Vector4 _border;
+		/// <summary>
+		/// 
+		/// </summary>
+		public int Normal { get; set; }
 
-        public Vector4 Border
-        {
-            get { return _border; }
-            set { _border = value; }
-        }
+		/// <summary>
+		/// 
+		/// </summary>
+		public int Hover { get; set; }
 
-        public ContentRef<Skin> Normal
-        {
-            get { return GetSkin(Widget.WidgetStatus.Normal); }
-            set { SetSkin(Widget.WidgetStatus.Normal, value); }
-        }
+		/// <summary>
+		/// 
+		/// </summary>
+		public int Active { get; set; }
 
-        public ContentRef<Skin> Hover
-        {
-            get { return GetSkin(Widget.WidgetStatus.Hover); }
-            set { SetSkin(Widget.WidgetStatus.Hover, value); }
-        }
+		/// <summary>
+		/// 
+		/// </summary>
+		public int Disabled { get; set; }
 
-        public ContentRef<Skin> Active
-        {
-            get { return GetSkin(Widget.WidgetStatus.Active); }
-            set { SetSkin(Widget.WidgetStatus.Active, value); }
-        }
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="status"></param>
+		/// <returns></returns>
+		public int GetAtlasForStatus(Widget.WidgetStatus status)
+		{
+			int result = 0;
 
-        public ContentRef<Skin> Disabled
-        {
-            get { return GetSkin(Widget.WidgetStatus.Disabled); }
-            set { SetSkin(Widget.WidgetStatus.Disabled, value); }
-        }
+			switch (status)
+			{
+				case Widget.WidgetStatus.Normal:
+					result = Normal;
+					break;
 
-        public Appearance()
-        {
-            _skins = new ContentRef<Skin>[Enum.GetNames(typeof(Widget.WidgetStatus)).Length];
-        }
+				case Widget.WidgetStatus.Hover:
+					result = Hover;
+					break;
 
-        internal ContentRef<Skin> GetSkin(Widget.WidgetStatus status)
-        {
-            return _skins[(int)status];
-        }
+				case Widget.WidgetStatus.Active:
+					result = Active;
+					break;
 
-        private void SetSkin(Widget.WidgetStatus status, ContentRef<Skin> skin)
-        {
-            _skins[(int)status] = skin;
-        }
-    }
+				case Widget.WidgetStatus.Disabled:
+					result = Disabled;
+					break;
+			}
+
+			return result;
+		}
+	}
 }

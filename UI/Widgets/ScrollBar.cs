@@ -3,296 +3,352 @@
 using Duality;
 using Duality.Components;
 using Duality.Editor;
-using Duality.Resources;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Properties;
 using SnowyPeak.Duality.Plugin.Frozen.UI.Resources;
 using System;
 
 namespace SnowyPeak.Duality.Plugin.Frozen.UI.Widgets
 {
-    /// <summary>
-    /// A Scrollbar Widget
-    /// </summary>
+	/// <summary>
+	/// A Scrollbar Widget
+	/// </summary>
 
-    [EditorHintImage(ResNames.ImageScrollBar)]
-    [EditorHintCategory(ResNames.CategoryWidgets)]
-    public class ScrollBar : Widget
-    {
-        #region NonSerialized fields
+	[EditorHintImage(ResNames.ImageScrollBar)]
+	[EditorHintCategory(ResNames.CategoryWidgets)]
+	public class ScrollBar : Widget
+	{
+		#region NonSerialized fields
 
-        [DontSerialize]
-        private GameObject _cursor;
+		[DontSerialize]
+		private GameObject _cursor;
 
-        [DontSerialize]
-        private GameObject _decreaseButton;
+		[DontSerialize]
+		private GameObject _decreaseButton;
 
-        [DontSerialize]
-        private GameObject _increaseButton;
+		[DontSerialize]
+		private GameObject _increaseButton;
 
-        #endregion NonSerialized fields
+		#endregion NonSerialized fields
 
-        private ContentRef<ScrollBarAppearance> _scrollAppearance;
-        private int _max;
-        private int _min;
-        private ContentRef<Script> _onValueChanged;
-        private int _scrollSpeed;
-        private int _value;
-        private object _valueChangedArgument;
+		private Vector2 _buttonSize;
+		private Vector2 _cursorSize;
+		private string _customButtonMinusAppearance;
+		private string _customButtonPlusAppearance;
+		private string _customCursorAppearance;
+		private int _max;
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public ScrollBar()
-        {
-            ActiveArea = ActiveArea.None;
+		private int _min;
 
-            _min = 0;
-            _max = 10;
-            _value = _min;
-            _scrollSpeed = 1;
+		private ContentRef<Script> _onValueChanged;
 
-            Appearance = DefaultGradientSkin.SCROLLBAR;
-        }
+		private int _scrollSpeed;
 
-        /// <summary>
-        /// [GET / SET] the Skin used for the Scrollbar Cursor
-        /// </summary>
-        public ContentRef<ScrollBarAppearance> Appearance
-        {
-            get { return _scrollAppearance; }
-            set
-            {
-                _scrollAppearance = value;
-                _dirtyFlags |= DirtyFlags.Appearance;
-            }
-        }
+		private int _value;
 
-        /// <summary>
-        /// [GET / SET] the Maximum value
-        /// </summary>
-        public int Maximum
-        {
-            get { return _max; }
-            set
-            {
-                _max = value;
-                _dirtyFlags |= DirtyFlags.Value;
-            }
-        }
+		private object _valueChangedArgument;
 
-        /// <summary>
-        /// [GET / SET] the Minimum value
-        /// </summary>
-        public int Minimum
-        {
-            get { return _min; }
-            set
-            {
-                _min = value;
-                _dirtyFlags |= DirtyFlags.Value;
-            }
-        }
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ScrollBar()
+		{
+			ActiveArea = ActiveArea.None;
 
-        /// <summary>
-        ///
-        /// </summary>
-        public ContentRef<Script> OnValueChanged
-        {
-            get { return _onValueChanged; }
-            set { _onValueChanged = value; }
-        }
+			_min = 0;
+			_max = 10;
+			_value = _min;
+			_scrollSpeed = 1;
 
-        /// <summary>
-        /// [GET / SET] the speed, in pixels/second of scrolling
-        /// </summary>
-        public int ScrollSpeed
-        {
-            get { return _scrollSpeed; }
-            set { _scrollSpeed = value; }
-        }
+			_buttonSize = new Vector2(32);
+			_cursorSize = new Vector2(32);
+		}
 
-        /// <summary>
-        /// [GET / SET] the current Value
-        /// </summary>
-        public int Value
-        {
-            get { return _value; }
-            set
-            {
-                if (_value != value)
-                {
-                    _value = value;
-                    _dirtyFlags |= DirtyFlags.Value;
+		/// <summary>
+		/// [GET / SET] The size of the buttons
+		/// </summary>
+		public Vector2 ButtonSize
+		{
+			get { return _buttonSize; }
+			set { _buttonSize = value; }
+		}
 
-                    if (_onValueChanged.Res != null)
-                    {
-                        _onValueChanged.Res.Execute(GameObj, _valueChangedArgument);
-                    }
-                }
-            }
-        }
+		/// <summary>
+		/// [GET / SET] The size of the cursor
+		/// </summary>
+		public Vector2 CursorSize
+		{
+			get { return _cursorSize; }
+			set { _cursorSize = value; }
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        public object ValueChangedArgument
-        {
-            private get { return _valueChangedArgument; }
-            set { _valueChangedArgument = value; }
-        }
+		/// <summary>
+		/// [GET / SET] The custom appearance of the decrease button
+		/// </summary>
+		public string CustomButtonMinusAppearance
+		{
+			get { return _customButtonMinusAppearance; }
+			set
+			{
+				_customButtonMinusAppearance = value;
+				_dirtyFlags |= DirtyFlags.Skin;
+			}
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        [EditorHintFlags(MemberFlags.Invisible)]
-        internal float ValueDelta
-        {
-            get
-            {
-                float cursorY = _scrollAppearance.Res.CursorSize.Y;
+		/// <summary>
+		/// [GET / SET] The custom appearance of the increase button
+		/// </summary>
+		public string CustomButtonPlusAppearance
+		{
+			get { return _customButtonPlusAppearance; }
+			set
+			{
+				_customButtonPlusAppearance = value;
+				_dirtyFlags |= DirtyFlags.Skin;
+			}
+		}
 
-                float length = Rect.H - (cursorY * 2) - (cursorY);
-                return length / (Maximum - Minimum);
-            }
-        }
+		/// <summary>
+		/// [GET / SET] The custom appearance of the cursor
+		/// </summary>
+		public string CustomCursorAppearance
+		{
+			get { return _customCursorAppearance; }
+			set
+			{
+				_customCursorAppearance = value;
+				_dirtyFlags |= DirtyFlags.Skin;
+			}
+		}
+		/// <summary>
+		/// [GET / SET] the Maximum value
+		/// </summary>
+		public int Maximum
+		{
+			get { return _max; }
+			set
+			{
+				_max = value;
+				_dirtyFlags |= DirtyFlags.Value;
+			}
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        protected override void OnStatusChange()
-        {
-            base.OnStatusChange();
+		/// <summary>
+		/// [GET / SET] the Minimum value
+		/// </summary>
+		public int Minimum
+		{
+			get { return _min; }
+			set
+			{
+				_min = value;
+				_dirtyFlags |= DirtyFlags.Value;
+			}
+		}
 
-            if (_cursor != null)
-            {
-                _cursor.GetComponent<Widget>().Status = Status;
-            }
-            if (_decreaseButton != null)
-            {
-                _decreaseButton.GetComponent<Widget>().Status = Status;
-            }
-            if (_increaseButton != null)
-            {
-                _increaseButton.GetComponent<Widget>().Status = Status;
-            }
-        }
+		/// <summary>
+		///
+		/// </summary>
+		public ContentRef<Script> OnValueChanged
+		{
+			get { return _onValueChanged; }
+			set { _onValueChanged = value; }
+		}
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="inSecondsPast"></param>
-        protected override void OnUpdate(float inSecondsPast)
-        {
-            if (_cursor == null && !_scrollAppearance.Res.Cursor.IsExplicitNull)
-            {
-                AddScrollCursor();
-                _dirtyFlags |= DirtyFlags.Value;
-            }
-            if (_increaseButton == null && !_scrollAppearance.Res.Increase.IsExplicitNull)
-            {
-                AddScrollIncreaseButton();
-            }
-            if (_decreaseButton == null && !_scrollAppearance.Res.Decrease.IsExplicitNull)
-            {
-                AddScrollDecreaseButton();
-            }
+		/// <summary>
+		/// [GET / SET] the speed, in pixels/second of scrolling
+		/// </summary>
+		public int ScrollSpeed
+		{
+			get { return _scrollSpeed; }
+			set { _scrollSpeed = value; }
+		}
 
-            if ((_dirtyFlags & DirtyFlags.Appearance) != DirtyFlags.None)
-            {
-                if (_cursor != null)
-                {
-                    _cursor.GetComponent<ScrollCursor>().Appearance = AppearanceManager.RequestAppearanceContentRef(_scrollAppearance.Res.Cursor);
-                }
-                if (_decreaseButton != null)
-                {
-                    _decreaseButton.GetComponent<ScrollDecreaseButton>().Appearance = AppearanceManager.RequestAppearanceContentRef(_scrollAppearance.Res.Decrease);
-                }
-                if (_increaseButton != null)
-                {
-                    _increaseButton.GetComponent<ScrollIncreaseButton>().Appearance = AppearanceManager.RequestAppearanceContentRef(_scrollAppearance.Res.Increase);
-                }
-            }
+		/// <summary>
+		/// [GET / SET] the current Value
+		/// </summary>
+		public int Value
+		{
+			get { return _value; }
+			set
+			{
+				if (_value != value)
+				{
+					_value = value;
+					_dirtyFlags |= DirtyFlags.Value;
 
-            if ((_dirtyFlags & DirtyFlags.Value) != DirtyFlags.None)
-            {
-                UpdateCursor();
-            }
+					if (_onValueChanged.Res != null)
+					{
+						_onValueChanged.Res.Execute(GameObj, _valueChangedArgument);
+					}
+				}
+			}
+		}
 
-            base.OnUpdate(inSecondsPast);
-        }
+		/// <summary>
+		///
+		/// </summary>
+		public object ValueChangedArgument
+		{
+			private get { return _valueChangedArgument; }
+			set { _valueChangedArgument = value; }
+		}
 
-        private void AddScrollCursor()
-        {
-            _cursor = new GameObject("cursor", this.GameObj);
+		/// <summary>
+		///
+		/// </summary>
+		[EditorHintFlags(MemberFlags.Invisible)]
+		internal float ValueDelta
+		{
+			get
+			{
+				float cursorY = _cursorSize.Y;
 
-            Transform t = _cursor.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W / 2, Rect.H / 2, 0);
-            t.RelativeAngle = 0;
+				float length = Rect.H - (cursorY * 2) - (cursorY);
+				return length / (Maximum - Minimum);
+			}
+		}
 
-            ScrollCursor sc = new ScrollCursor();
-            sc.VisibilityGroup = this.VisibilityGroup;
-            sc.Appearance = AppearanceManager.RequestAppearanceContentRef(_scrollAppearance.Res.Cursor);
-            sc.Rect = Rect.Align(Alignment.Center, 0, 0, _scrollAppearance.Res.CursorSize.X, _scrollAppearance.Res.CursorSize.Y);
+		/// <summary>
+		///
+		/// </summary>
+		protected override void OnStatusChange()
+		{
+			base.OnStatusChange();
 
-            _cursor.AddComponent<ScrollCursor>(sc);
+			if (_cursor != null)
+			{
+				_cursor.GetComponent<Widget>().Status = Status;
+			}
+			if (_decreaseButton != null)
+			{
+				_decreaseButton.GetComponent<Widget>().Status = Status;
+			}
+			if (_increaseButton != null)
+			{
+				_increaseButton.GetComponent<Widget>().Status = Status;
+			}
+		}
+
+		/// <summary>
+		///
+		/// </summary>
+		/// <param name="inSecondsPast"></param>
+		protected override void OnUpdate(float inSecondsPast)
+		{
+			if (_cursor == null)
+			{
+				AddScrollCursor();
+				_dirtyFlags |= DirtyFlags.Value;
+			}
+			if (_increaseButton == null)
+			{
+				AddScrollIncreaseButton();
+			}
+			if (_decreaseButton == null)
+			{
+				AddScrollDecreaseButton();
+			}
+
+			if ((_dirtyFlags & DirtyFlags.Skin) != DirtyFlags.None)
+			{
+				if (_cursor != null)
+				{
+					_cursor.GetComponent<ScrollCursor>().Skin = Skin;
+					_cursor.GetComponent<ScrollCursor>().CustomWidgetAppearance = _customCursorAppearance;
+				}
+				if (_decreaseButton != null)
+				{
+					_decreaseButton.GetComponent<ScrollDecreaseButton>().Skin = Skin;
+					_decreaseButton.GetComponent<ScrollDecreaseButton>().CustomWidgetAppearance = _customButtonMinusAppearance;
+				}
+				if (_increaseButton != null)
+				{
+					_increaseButton.GetComponent<ScrollIncreaseButton>().Skin = Skin;
+					_increaseButton.GetComponent<ScrollIncreaseButton>().CustomWidgetAppearance = _customButtonPlusAppearance;
+				}
+			}
+
+			if ((_dirtyFlags & DirtyFlags.Value) != DirtyFlags.None)
+			{
+				UpdateCursor();
+			}
+
+			base.OnUpdate(inSecondsPast);
+		}
+
+		private void AddScrollCursor()
+		{
+			_cursor = new GameObject("ScrollBarCursor", this.GameObj);
+
+			Transform t = _cursor.AddComponent<Transform>();
+			t.RelativePos = new Vector3(Rect.W / 2, Rect.H / 2, 0);
+			t.RelativeAngle = 0;
+
+			ScrollCursor sc = new ScrollCursor();
+			sc.Status = Status;
+			sc.VisibilityGroup = VisibilityGroup;
+			sc.Skin = Skin;
+			sc.CustomWidgetAppearance = _customCursorAppearance;
+			sc.Rect = Rect.Align(Alignment.Center, 0, 0, _cursorSize.X, _cursorSize.Y);
+
+			_cursor.AddComponent<ScrollCursor>(sc);
 			this.GameObj.ParentScene.AddObject(_cursor);
-        }
+		}
 
-        private void AddScrollDecreaseButton()
-        {
-            _decreaseButton = new GameObject("decreaseButton", this.GameObj);
+		private void AddScrollDecreaseButton()
+		{
+			_decreaseButton = new GameObject("ScrollBarDecreaseButton", this.GameObj);
 
-            Transform t = _decreaseButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W / 2, _scrollAppearance.Res.ButtonSize.Y / 2, 0);
-            t.RelativeAngle = 0;
+			Transform t = _decreaseButton.AddComponent<Transform>();
+			t.RelativePos = new Vector3(Rect.W / 2, _buttonSize.Y / 2, 0);
+			t.RelativeAngle = 0;
 
-            ScrollDecreaseButton sdb = new ScrollDecreaseButton();
-            sdb.VisibilityGroup = this.VisibilityGroup;
-            sdb.Appearance = AppearanceManager.RequestAppearanceContentRef(_scrollAppearance.Res.Decrease);
-            sdb.Rect = Rect.Align(Alignment.Center, 0, 0, _scrollAppearance.Res.ButtonSize.X, _scrollAppearance.Res.ButtonSize.Y);
-            sdb.LeftClickArgument = _scrollSpeed;
+			ScrollDecreaseButton sdb = new ScrollDecreaseButton();
+			sdb.Status = Status;
+			sdb.VisibilityGroup = VisibilityGroup;
+			sdb.Skin = Skin;
+			sdb.CustomWidgetAppearance = _customButtonMinusAppearance;
+			sdb.Rect = Rect.Align(Alignment.Center, 0, 0, _buttonSize.X, _buttonSize.Y);
+			sdb.LeftClickArgument = _scrollSpeed;
 
-            _decreaseButton.AddComponent<ScrollDecreaseButton>(sdb);
+			_decreaseButton.AddComponent<ScrollDecreaseButton>(sdb);
 			this.GameObj.ParentScene.AddObject(_decreaseButton);
-        }
+		}
 
-        private void AddScrollIncreaseButton()
-        {
-            _increaseButton = new GameObject("increaseButton", this.GameObj);
+		private void AddScrollIncreaseButton()
+		{
+			_increaseButton = new GameObject("ScrollBarIncreaseButton", this.GameObj);
 
-            Transform t = _increaseButton.AddComponent<Transform>();
-            t.RelativePos = new Vector3(Rect.W / 2, Rect.H - _scrollAppearance.Res.ButtonSize.Y / 2, 0);
-            t.RelativeAngle = 0;
+			Transform t = _increaseButton.AddComponent<Transform>();
+			t.RelativePos = new Vector3(Rect.W / 2, Rect.H - _buttonSize.Y / 2, 0);
+			t.RelativeAngle = 0;
 
-            ScrollIncreaseButton sib = new ScrollIncreaseButton();
-            sib.VisibilityGroup = this.VisibilityGroup;
-            sib.Appearance = AppearanceManager.RequestAppearanceContentRef(_scrollAppearance.Res.Increase);
-            sib.Rect = Rect.Align(Alignment.Center, 0, 0, _scrollAppearance.Res.ButtonSize.X, _scrollAppearance.Res.ButtonSize.Y);
-            sib.LeftClickArgument = _scrollSpeed;
+			ScrollIncreaseButton sib = new ScrollIncreaseButton();
+			sib.Status = Status;
+			sib.VisibilityGroup = VisibilityGroup;
+			sib.Skin = Skin;
+			sib.CustomWidgetAppearance = _customButtonPlusAppearance;
+			sib.Rect = Rect.Align(Alignment.Center, 0, 0, _buttonSize.X, _buttonSize.Y);
+			sib.LeftClickArgument = _scrollSpeed;
 
-            _increaseButton.AddComponent<ScrollIncreaseButton>(sib);
+			_increaseButton.AddComponent<ScrollIncreaseButton>(sib);
 			this.GameObj.ParentScene.AddObject(_increaseButton);
-        }
+		}
 
-        private void UpdateCursor()
-        {
-            if (_cursor != null)
-            {
-                _value = Math.Min(Value, _max);
-                _value = Math.Max(Value, _min);
+		private void UpdateCursor()
+		{
+			if (_cursor != null)
+			{
+				_value = Math.Min(Value, _max);
+				_value = Math.Max(Value, _min);
 
-                float length = Rect.H - (_scrollAppearance.Res.ButtonSize.Y * 2) - (_scrollAppearance.Res.CursorSize.Y);
-                Vector3 direction = _increaseButton.Transform.Pos - _decreaseButton.Transform.Pos;
+				float length = Rect.H - (_buttonSize.Y * 2) - (_cursorSize.Y);
+				Vector3 direction = _increaseButton.Transform.Pos - _decreaseButton.Transform.Pos;
 
-                Vector3 origin = _decreaseButton.Transform.Pos + (direction / 2) - (direction.Normalized * length / 2);
+				Vector3 origin = _decreaseButton.Transform.Pos + (direction / 2) - (direction.Normalized * length / 2);
 
-                _cursor.Transform.Pos = origin + (direction.Normalized * (Value - Minimum) * length / (Maximum - Minimum));
-            }
-        }
-
-        protected override Appearance GetBaseAppearance()
-        {
-            return _scrollAppearance.Res.Widget.Res;
-        }
-    }
+				_cursor.Transform.Pos = origin + (direction.Normalized * (Value - Minimum) * length / (Maximum - Minimum));
+			}
+		}
+	}
 }
