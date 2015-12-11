@@ -116,5 +116,19 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Procedural
                 }
             }
         }
+
+		/// <summary>
+		/// Returns all the neighboring (adjacent) Nodes of the given input node
+		/// </summary>
+		/// <param name="node"></param>
+		/// <returns></returns>
+		public IEnumerable<T> GetNeighbors(T node)
+		{
+			foreach (Link<T> link in Links.Where(l => l.From == node))
+				yield return link.To;
+
+			foreach (Link<T> link in Links.Where(l => l.To == node && !l.IsDirected))
+				yield return link.From;
+		}
     }
 }

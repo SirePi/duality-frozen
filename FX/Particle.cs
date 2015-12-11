@@ -22,6 +22,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
         private float _scale;
         private float _scaleSpeed;
         private float _timeToLive;
+		private Rect _frameRect;
+		private Rect _uvRect;
 		private Vector2[] _vertexFactors;
 
         internal Particle()
@@ -44,6 +46,11 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
         internal void SetData(ParticleMaterial inMaterial, Vector3 inOrigin, float inMovementSpeed, float inRotationSpeed, float inScaleSpeed, float inInitialRotation, float inInitialDirection, float inInitialScale, float inTimeToLive, ColorRange inColorRange, float randomFactor)
         {
             _material = inMaterial;
+			_frameRect = inMaterial.GetFrame();
+
+			Vector2 topLeft = _frameRect.TopLeft / inMaterial.Rectangle.Size;
+			Vector2 size = _frameRect.Size / inMaterial.Rectangle.Size;
+			_uvRect = Rect.Align(Alignment.TopLeft, topLeft.X, topLeft.Y, size.X, size.Y);
 
             Position = inOrigin;
             _scale = inInitialScale;
@@ -94,7 +101,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
             Vector2 xDot, yDot;
             MathF.GetTransformDotVec(_rotation, inPreprocessedScale, out xDot, out yDot);
 
-            Rect rectTemp = _material.Rectangle.Transformed(_scale, _scale);
+			Rect rectTemp = _frameRect.WithOffset(-_frameRect.Center).Transformed(_scale, _scale);
 			Vector2 edge1 = rectTemp.TopLeft * _vertexFactors[0];
 			Vector2 edge2 = rectTemp.BottomLeft * _vertexFactors[1];
 			Vector2 edge3 = rectTemp.BottomRight * _vertexFactors[2];
@@ -108,29 +115,29 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
             Vertices[0].Pos.X = preprocessedPosition.X + edge1.X;
             Vertices[0].Pos.Y = preprocessedPosition.Y + edge1.Y;
             Vertices[0].Pos.Z = preprocessedPosition.Z;
-            Vertices[0].TexCoord.X = 0;
-            Vertices[0].TexCoord.Y = 0;
+			Vertices[0].TexCoord.X = _uvRect.X;
+			Vertices[0].TexCoord.Y = _uvRect.Y;
             Vertices[0].Color = _currentColor;
 
             Vertices[1].Pos.X = preprocessedPosition.X + edge2.X;
             Vertices[1].Pos.Y = preprocessedPosition.Y + edge2.Y;
             Vertices[1].Pos.Z = preprocessedPosition.Z;
-            Vertices[1].TexCoord.X = 0;
-            Vertices[1].TexCoord.Y = 1;
+            Vertices[1].TexCoord.X = _uvRect.X;
+			Vertices[1].TexCoord.Y = _uvRect.Y + _uvRect.H;
             Vertices[1].Color = _currentColor;
 
             Vertices[2].Pos.X = preprocessedPosition.X + edge3.X;
             Vertices[2].Pos.Y = preprocessedPosition.Y + edge3.Y;
             Vertices[2].Pos.Z = preprocessedPosition.Z;
-            Vertices[2].TexCoord.X = 1;
-            Vertices[2].TexCoord.Y = 1;
+			Vertices[2].TexCoord.X = _uvRect.X + _uvRect.W;
+			Vertices[2].TexCoord.Y = _uvRect.Y + _uvRect.H;
             Vertices[2].Color = _currentColor;
 
             Vertices[3].Pos.X = preprocessedPosition.X + edge4.X;
             Vertices[3].Pos.Y = preprocessedPosition.Y + edge4.Y;
             Vertices[3].Pos.Z = preprocessedPosition.Z;
-            Vertices[3].TexCoord.X = 1;
-            Vertices[3].TexCoord.Y = 0;
+			Vertices[3].TexCoord.X = _uvRect.X + _uvRect.W;
+			Vertices[3].TexCoord.Y = _uvRect.Y;
             Vertices[3].Color = _currentColor;
         }
     }
