@@ -61,7 +61,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
             }
 
             PixelData pixelData = new PixelData();
-            
+
             Texture tx = new Texture((int)MathF.Ceiling(length), (int)MathF.Ceiling(_sway2), TextureSizeMode.NonPowerOfTwo);
 
             using (RenderTarget rt = new RenderTarget(AAQuality.Off, tx))
@@ -88,7 +88,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX
                 g.DrawLines(_pen, points);
                  * */
             }
-            
+
             /*
             g.Clear(System.Drawing.Color.Transparent);
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;

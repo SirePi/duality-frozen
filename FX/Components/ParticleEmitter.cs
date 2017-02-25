@@ -86,7 +86,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
         protected FloatRange _timeToLiveRange;
 
         [DontSerialize]
-        private static readonly Vector2 DEFAULT_PARTICLES = new Vector2(50, 100);
+        private static readonly Vector2 DEFAULT_PARTICLES = new Vector2(0, 100);
 
         [DontSerialize]
         private static readonly int DEFAULT_PARTICLES_PER_SECOND = 10;
@@ -115,12 +115,20 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
         [DontSerialize]
         private float _timeSinceLastParticle;
 
+        [DontSerialize]
+        private Vector3 _minPos;
+
+        [DontSerialize]
+        private Vector3 _maxPos;
+
+        [DontSerialize]
+        private Vector3 _fxAreaLastPosition;
+
         /// <summary>
         ///
         /// </summary>
         public ParticleEmitter()
         {
-            NewParticlesPerSecond = int.MaxValue;
             InitialScale = Vector2.One;
             ColorStart = Colors.White;
             ColorEnd = Colors.Transparent;
@@ -135,6 +143,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
             TimeToLive = DEFAULT_TTL;
 
             VisibilityGroup = VisibilityFlag.Group0;
+
+            _particles = new Particle[0];
         }
 
         /// <summary>
@@ -245,17 +255,19 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
         /// </summary>
         public VisibilityFlag VisibilityGroup { get; set; }
 
-		/// <summary>
-		/// [GET / SET] the range of randomness a particle's geometry is generated with.
-		/// 0 = no randomness, 1 = completely random
-		/// </summary>
-		[EditorHintRange(0, 1)]
-		public float RandomGeometryStrength { get; set; }
+        /// <summary>
+        /// [GET / SET] the range of randomness a particle's geometry is generated with.
+        /// 0 = no randomness, 1 = completely random
+        /// </summary>
+        [EditorHintRange(0, 1)]
+        public float RandomGeometryStrength { get; set; }
 
         /// <summary>
         /// [GET] if there are particles still alive
         /// </summary>
         public bool HasAliveParticles { get { return _particlesAlive > 0; } }
+
+        public bool RelativeParticleMovement { get; set; }
 
         /// <summary>
         /// Sends a Burst of particles (emit all particles up to the maximum number in the next frame)
@@ -298,6 +310,9 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
             _emitterDirection = EmitterDirection * MathF.Pi / 180;
             _emitterRotationSpeed = EmitterRotationSpeed * MathF.Pi / 180;
 
+            if (FXArea != null)
+                _fxAreaLastPosition = FXArea.GameObj.Transform.Pos;
+
             if (reinitializeParticles || _particleVertices.Length < _particlesNumberRange.Max * 4)
             {
                 _particleVertices = new VertexC1P3T2[_particlesNumberRange.Max * 4];
@@ -317,51 +332,51 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
             if (context == ShutdownContext.Deactivate)
             {
                 KillAll();
-                _particles = null;
             }
         }
 
         void ICmpRenderer.Draw(IDrawDevice device)
         {
-            if (_inEditor)
+            if (FXArea != null)
             {
-                if (FXArea != null)
+                if (_inEditor)
                 {
                     Canvas c = new Canvas(device);
                     FXArea.DrawInEditor(c, Colors.Cyan);
                 }
-            }
-            else
-            {
-                if (_particlesAlive > 0)
+                else
                 {
-                    Vector3 minPos = FXArea.GameObj.Transform.Pos;
-                    minPos.Z += FXArea.ZRange.Min;
-                    float minScale = 1;
-
-                    Vector3 maxPos = FXArea.GameObj.Transform.Pos;
-                    maxPos.Z += FXArea.ZRange.Max;
-                    float maxScale = 1;
-
-                    device.PreprocessCoords(ref minPos, ref minScale);
-                    device.PreprocessCoords(ref maxPos, ref maxScale);
-
-                    Vector3Range posRange = new Vector3Range(minPos, maxPos);
-                    FloatRange scaleRange = new FloatRange(minScale, maxScale);
-
-                    Vector3 pos = minPos;
-                    float scale = minScale;
-
-                    int index = 0;
-                    foreach (Particle p in _particles)
+                    if (_particlesAlive > 0)
                     {
-                        if (p.IsAlive)
+                        _minPos = FXArea.GameObj.Transform.Pos;
+                        _minPos.Z += FXArea.ZRange.Min;
+                        float minScale = 1;
+
+                        _maxPos = FXArea.GameObj.Transform.Pos;
+                        _maxPos.Z += FXArea.ZRange.Max;
+                        float maxScale = 1;
+
+                        device.PreprocessCoords(ref _minPos, ref minScale);
+                        device.PreprocessCoords(ref _maxPos, ref maxScale);
+
+                        Vector3Range posRange = new Vector3Range(_minPos, _maxPos);
+                        FloatRange scaleRange = new FloatRange(minScale, maxScale);
+
+                        Vector3 pos = _minPos;
+                        float scale = minScale;
+
+                        int index = 0;
+                        Vector3 fxAreaDelta = FXArea.GameObj.Transform.Pos - _fxAreaLastPosition;
+
+                        foreach (Particle p in _particles.Where(p => p.IsAlive))
                         {
+                            if (!RelativeParticleMovement) p.Position -= fxAreaDelta;
+
                             bool toDraw = DrawParticlesOffScreen || device.IsCoordInView(p.Position);
 
                             if (FXArea.ZRange.Delta != 0)
                             {
-                                float zScale = 1 - ((FXArea.ZRange.Max + FXArea.GameObj.Transform.Pos.Z - p.Position.Z) / FXArea.ZRange.Delta);
+                                float zScale = 1 - ((FXArea.GameObj.Transform.Pos.Z + FXArea.ZRange.Max - p.Position.Z) / FXArea.ZRange.Delta);
                                 pos = posRange.Lerp(zScale);
                                 scale = scaleRange.Lerp(zScale);
                             }
@@ -373,9 +388,10 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
                             }
                             index++;
                         }
-                    }
 
-                    device.AddVertices(_particleMaterial.Material, VertexMode.Quads, _particleVertices, index * 4);
+                        device.AddVertices(_particleMaterial.Material, VertexMode.Quads, _particleVertices, index * 4);
+                        _fxAreaLastPosition = FXArea.GameObj.Transform.Pos;
+                    }
                 }
             }
         }
@@ -404,18 +420,15 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
         {
             if (!_inEditor && FXArea != null)
             {
-                float secondsPast = Time.MsPFMult * Time.TimeMult / 1000f;
+                float secondsPast = Time.SPFMult * Time.TimeMult;
 
                 _emitterDirection = (_emitterDirection + (_emitterRotationSpeed * secondsPast)) % MathF.TwoPi;
 
                 _particlesAlive = 0;
-                foreach (Particle p in _particles)
+                foreach (Particle p in _particles.Where(p => p.IsAlive))
                 {
-                    if (p.IsAlive)
-                    {
-                        p.Update(secondsPast);
-                        _particlesAlive++;
-                    }
+                    p.Update(secondsPast);
+                    _particlesAlive++;
                 }
 
                 if (IsEnabled)
@@ -423,12 +436,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
                     if (_particlesAlive < _particlesNumberRange.Max)
                     {
                         _timeSinceLastParticle += secondsPast;
-                        int particlesLimit = (int)Math.Floor(NewParticlesPerSecond * _timeSinceLastParticle);
+                        int particlesLimit;
 
                         if (_particlesAlive < _particlesNumberRange.Min)
-                        {
                             particlesLimit = _particlesNumberRange.Min - _particlesAlive;
-                        }
+                        else
+                            particlesLimit = (int)Math.Floor(NewParticlesPerSecond * _timeSinceLastParticle);
 
                         int createdParticles = 0;
                         while (_particlesAlive < _particlesNumberRange.Max && createdParticles < particlesLimit)
@@ -439,10 +452,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
                             createdParticles++;
                         }
 
-                        if (createdParticles > 0)
-                        {
-                            _timeSinceLastParticle = 0;
-                        }
+                        if (createdParticles > 0) _timeSinceLastParticle = 0;
                     }
                 }
 
@@ -450,55 +460,45 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
                 {
                     _sendBurst = false;
 
-                    foreach (Particle p in _particles)
+                    foreach (Particle p in _particles.Where(p => !p.IsAlive))
                     {
-						if (!p.IsAlive)
-						{
-							InitializeParticle(p);
-						}
+                        InitializeParticle(p);
                     }
                 }
             }
         }
 
-		/// <summary>
-		/// This method is called by Particle Alterators (Attractor/Repulsor) in order to affect the particles's 
-		/// position or direction, depending on the configuration.
-		/// </summary>
-		/// <param name="inAlterator"></param>
-		/// <param name="inSecondsPast"></param>
-		public void AlterParticles(ParticleAlterator inAlterator, float inSecondsPast)
-		{
-			foreach (Particle p in _particles)
-			{
-				if (p.IsAlive)
-				{
-					inAlterator.AlterParticle(p, inSecondsPast);
-				}
-			}
-		}
+        /// <summary>
+        /// This method is called by Particle Alterators (Attractor/Repulsor) in order to affect the particles's 
+        /// position or direction, depending on the configuration.
+        /// </summary>
+        /// <param name="inAlterator"></param>
+        /// <param name="inSecondsPast"></param>
+        public void AlterParticles(ParticleAlterator inAlterator, float inSecondsPast)
+        {
+            foreach (Particle p in _particles.Where(p => p.IsAlive))
+            {
+                inAlterator.AlterParticle(p, inSecondsPast);
+            }
+        }
 
         /// <summary>
         /// Kills all particles currently active.
         /// </summary>
         public void KillAll()
         {
-            if (_particles != null)
+            foreach (Particle p in _particles)
             {
-                foreach (Particle p in _particles)
-                {
-                    p.Kill();
-                }
+                p.Kill();
             }
         }
 
         internal void AwakeParticle()
         {
             Particle particle = _particles.FirstOrDefault(p => !p.IsAlive);
+
             if (particle != null)
-            {
                 InitializeParticle(particle);
-            }
         }
 
         internal virtual void InitializeParticle(Particle inParticle)
@@ -507,18 +507,12 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
             float rotationSpeed = _rotationSpeedRange.GetRandom();
             float scaleSpeed = _scaleSpeedRange.GetRandom();
 
-            float direction = FXArea.GameObj.Transform.Angle +  _initialDirectionRange.GetRandom();
+            float direction = FXArea.GameObj.Transform.Angle + _initialDirectionRange.GetRandom();
             float rotation = FXArea.GameObj.Transform.Angle;
             float scale = _initialScaleRange.GetRandom();
 
-            if (AlignParticlesWithDirection)
-            {
-                rotation = direction;
-            }
-            else
-            {
-                rotation += _initialRotationRange.GetRandom();
-            }
+            if (AlignParticlesWithDirection) rotation = direction;
+            else rotation += _initialRotationRange.GetRandom();
 
             float ttl = _timeToLiveRange.GetRandom();
 
@@ -534,7 +528,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.FX.Components
                 scale,
                 ttl,
                 _colorRange,
-				RandomGeometryStrength);
+                RandomGeometryStrength);
         }
     }
 }

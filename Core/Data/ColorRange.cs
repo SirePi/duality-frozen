@@ -47,6 +47,8 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Data
         /// <returns></returns>
         protected override ColorRgba _Lerp(float inValue)
         {
+			inValue = MathF.Max(MathF.Min(1, inValue), 0);
+
             Vector4 color = _min + GetDeltaValue(inValue);
             return new ColorRgba((byte)color.X, (byte)color.Y, (byte)color.Z, (byte)color.W);
         }

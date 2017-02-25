@@ -51,7 +51,7 @@ namespace SnowyPeak.Duality.Plugin.Frozen.Core.Data
         /// <returns></returns>
         public T Lerp(float inValue)
         {
-			inValue = MathF.Max(MathF.Min(1, inValue), 0);
+			//inValue = MathF.Max(MathF.Min(1, inValue), 0);
             
 			//System.Diagnostics.Debug.Assert(inValue >= 0);
             //System.Diagnostics.Debug.Assert(inValue <= 1);
